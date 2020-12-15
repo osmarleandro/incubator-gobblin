@@ -159,16 +159,20 @@ public class CliTablePrinter {
 
     for (List<String> row : this.data) {
       for (int i=0;i<row.size(); i++) {
-        if (row.get(i) == null) {
-          widths[i] = Math.max(widths[i], 4);
-        } else {
-          widths[i] = Math.max(widths[i], row.get(i).length());
-        }
+        extracted(widths, row, i);
       }
     }
 
     return Ints.asList(widths);
   }
+
+private void extracted(int[] widths, List<String> row, int i) {
+	if (row.get(i) == null) {
+	  widths[i] = Math.max(widths[i], 4);
+	} else {
+	  widths[i] = Math.max(widths[i], row.get(i).length());
+	}
+}
 
   /**
    * Generates a simple row format string given a set of widths
