@@ -96,8 +96,7 @@ public class AdminWebServer extends AbstractIdleService {
   }
 
   private ResourceHandler buildStaticResourceHandler() {
-    ResourceHandler staticResourceHandler = new ResourceHandler();
-    staticResourceHandler.setDirectoriesListed(true);
+    ResourceHandler staticResourceHandler = extracted();
     staticResourceHandler.setWelcomeFiles(new String[] { "index.html" });
 
     String staticDir = getClass().getClassLoader().getResource("static").toExternalForm();
@@ -105,6 +104,12 @@ public class AdminWebServer extends AbstractIdleService {
     staticResourceHandler.setResourceBase(staticDir);
     return staticResourceHandler;
   }
+
+private ResourceHandler extracted() {
+	ResourceHandler staticResourceHandler = new ResourceHandler();
+    staticResourceHandler.setDirectoriesListed(true);
+	return staticResourceHandler;
+}
 
   @Override
   protected void shutDown() throws Exception {
