@@ -186,15 +186,7 @@ public class JobCommand implements CliApplication {
     }
 
     private Options createCommandLineOptions() {
-        Options options = new Options();
-
-        OptionGroup actionGroup = new OptionGroup();
-        actionGroup.addOption(new Option("h", HELP_OPT, false, "Shows the help message."));
-        actionGroup.addOption(new Option("d", DETAILS_OPT, false, "Show details about a job/task."));
-        actionGroup.addOption(new Option("l", LIST_OPT, false, "List jobs/tasks."));
-        actionGroup.addOption(new Option("p", PROPS_OPT, false, "Fetch properties with the query."));
-        actionGroup.setRequired(true);
-        options.addOptionGroup(actionGroup);
+        Options options = extracted();
 
         OptionGroup idGroup = new OptionGroup();
         idGroup.addOption(new Option("j", NAME_OPT, true, "Find job(s) matching given job name."));
@@ -208,6 +200,19 @@ public class JobCommand implements CliApplication {
 
         return options;
     }
+
+	private Options extracted() {
+		Options options = new Options();
+
+        OptionGroup actionGroup = new OptionGroup();
+        actionGroup.addOption(new Option("h", HELP_OPT, false, "Shows the help message."));
+        actionGroup.addOption(new Option("d", DETAILS_OPT, false, "Show details about a job/task."));
+        actionGroup.addOption(new Option("l", LIST_OPT, false, "List jobs/tasks."));
+        actionGroup.addOption(new Option("p", PROPS_OPT, false, "Fetch properties with the query."));
+        actionGroup.setRequired(true);
+        options.addOptionGroup(actionGroup);
+		return options;
+	}
 
     private int parseResultsLimit(CommandLine parsedOpts) {
         if (parsedOpts.hasOption("n")) {
