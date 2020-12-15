@@ -206,8 +206,7 @@ public class JobInfoPrintUtils {
      */
     public static void printJobProperties(Optional<JobExecutionInfo> jobExecutionInfoOptional) {
         if (!jobExecutionInfoOptional.isPresent()) {
-            System.err.println("Job not found.");
-            return;
+            extracted();
         }
         List<List<String>> data = new ArrayList<>();
         List<String> flags = Arrays.asList("", "-");
@@ -225,6 +224,10 @@ public class JobInfoPrintUtils {
                 .build()
                 .printTable();
     }
+
+	private static void extracted() {
+		System.err.println("Job not found.");
+	}
 
     /**
      * Print out various metrics
