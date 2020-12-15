@@ -64,9 +64,7 @@ public class AdminWebServer extends AbstractIdleService {
 
   @Override
   protected void startUp() throws Exception {
-    LOGGER.info("Starting the admin web server");
-
-    this.server = new Server(new InetSocketAddress(this.serverUri.getHost(), this.serverUri.getPort()));
+    extracted();
 
     HandlerCollection handlerCollection = new HandlerCollection();
 
@@ -76,6 +74,12 @@ public class AdminWebServer extends AbstractIdleService {
     this.server.setHandler(handlerCollection);
     this.server.start();
   }
+
+private void extracted() {
+	LOGGER.info("Starting the admin web server");
+
+    this.server = new Server(new InetSocketAddress(this.serverUri.getHost(), this.serverUri.getPort()));
+}
 
   private Handler buildSettingsHandler() {
     final String responseTemplate = "var Gobblin = window.Gobblin || {};" + "Gobblin.settings = {restServerUrl:\"%s\", hideJobsWithoutTasksByDefault:%s, refreshInterval:%s}";
