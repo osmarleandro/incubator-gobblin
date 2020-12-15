@@ -102,14 +102,19 @@ public class AdminClient {
    * @return List of jobs with the name (empty list if none can be found)
    */
   public List<JobExecutionInfo> queryByJobName(String name, int resultsLimit) throws RemoteInvocationException {
-    JobExecutionQuery query = new JobExecutionQuery();
-    query.setIdType(QueryIdTypeEnum.JOB_NAME);
+    JobExecutionQuery query = extracted();
     query.setId(JobExecutionQuery.Id.create(name));
     query.setIncludeTaskExecutions(false);
     query.setLimit(resultsLimit);
 
     return executeQuery(query);
   }
+
+private JobExecutionQuery extracted() {
+	JobExecutionQuery query = new JobExecutionQuery();
+    query.setIdType(QueryIdTypeEnum.JOB_NAME);
+	return query;
+}
 
   /**
    * Execute a query and coerce the result into a java List
