@@ -65,13 +65,18 @@ public class AdminWebServerTest {
     HttpGet getReq = new HttpGet(String.format("http://localhost:%s/js/settings.js", this.portNumber));
 
     try (CloseableHttpResponse response = client.execute(getReq)) {
-      assertEquals(200, response.getStatusLine().getStatusCode());
-      HttpEntity body = response.getEntity();
+      HttpEntity body = extracted(response);
       String bodyString = EntityUtils.toString(body);
       assertStringContains("http://foobar", bodyString);
       assertStringContains("3333", bodyString);
     }
   }
+
+private HttpEntity extracted(CloseableHttpResponse response) {
+	assertEquals(200, response.getStatusLine().getStatusCode());
+      HttpEntity body = response.getEntity();
+	return body;
+}
 
   @Test
   public void testGetIndex() throws IOException {
@@ -79,8 +84,7 @@ public class AdminWebServerTest {
     HttpGet getReq = new HttpGet(String.format("http://localhost:%s/", this.portNumber));
 
     try (CloseableHttpResponse response = client.execute(getReq)) {
-      assertEquals(200, response.getStatusLine().getStatusCode());
-      HttpEntity body = response.getEntity();
+      HttpEntity body = extracted(response);
       String bodyString = EntityUtils.toString(body);
       assertStringContains("JOB SUMMARY", bodyString);
     }
