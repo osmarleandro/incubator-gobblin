@@ -178,7 +178,13 @@ public class CliTablePrinter {
    */
   private String getRowFormat(List<Integer> widths) {
     StringBuilder rowFormat = new StringBuilder(spaces(this.indentation));
-    for (int i=0; i< widths.size(); i++) {
+    extracted(widths, rowFormat);
+
+    return rowFormat.toString();
+  }
+
+private void extracted(List<Integer> widths, StringBuilder rowFormat) {
+	for (int i=0; i< widths.size(); i++) {
       rowFormat.append("%");
       rowFormat.append(this.flags != null ? this.flags.get(i) : "");
       rowFormat.append(widths.get(i).toString());
@@ -186,9 +192,7 @@ public class CliTablePrinter {
       rowFormat.append(spaces(this.delimiterWidth));
     }
     rowFormat.append("\n");
-
-    return rowFormat.toString();
-  }
+}
 
   private static String spaces(int numSpaces) {
     StringBuilder sb = new StringBuilder();
