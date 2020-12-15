@@ -214,13 +214,17 @@ public class JobCommand implements CliApplication {
             try {
                 return Integer.parseInt(parsedOpts.getOptionValue("n"));
             } catch (NumberFormatException e) {
-                printHelpAndExit("Could not parse integer value for option n.", false);
-                return 0;
+                return extracted();
             }
         } else {
             return DEFAULT_RESULTS_LIMIT;
         }
     }
+
+	private int extracted() {
+		printHelpAndExit("Could not parse integer value for option n.", false);
+		return 0;
+	}
 
     /**
      * Print help and exit with the specified code.
