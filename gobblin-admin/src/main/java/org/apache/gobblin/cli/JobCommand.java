@@ -228,9 +228,13 @@ public class JobCommand implements CliApplication {
     private void printHelpAndExit(String errorMsg, boolean printHelp) {
         System.out.println(errorMsg);
         if (printHelp) {
-            HelpFormatter hf = new HelpFormatter();
-            hf.printHelp("gobblin-admin.sh jobs [options]", this.options);
+            extracted();
         }
         System.exit(1);
     }
+
+	private void extracted() {
+		HelpFormatter hf = new HelpFormatter();
+		hf.printHelp("gobblin-admin.sh jobs [options]", this.options);
+	}
 }
