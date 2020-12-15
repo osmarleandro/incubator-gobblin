@@ -69,13 +69,7 @@ public class JobInfoPrintUtils {
      * @param jobExecutionInfos Job execution status to print
      */
     public static void printJobRuns(List<JobExecutionInfo> jobExecutionInfos) {
-        if (jobExecutionInfos == null) {
-            System.err.println("No job executions found.");
-            System.exit(1);
-        }
-
-        List<String> labels = Arrays.asList("Job Id", "State", "Schedule", "Completed Tasks", "Launched Tasks",
-                "Start Time", "End Time", "Duration (s)");
+        List<String> labels = extracted(jobExecutionInfos);
         List<String> flags = Arrays.asList("-", "-", "-", "", "", "-", "-", "-");
         List<List<String>> data = new ArrayList<>();
         for (JobExecutionInfo jobInfo : jobExecutionInfos) {
@@ -99,6 +93,17 @@ public class JobInfoPrintUtils {
                 .build()
                 .printTable();
     }
+
+	private static List<String> extracted(List<JobExecutionInfo> jobExecutionInfos) {
+		if (jobExecutionInfos == null) {
+            System.err.println("No job executions found.");
+            System.exit(1);
+        }
+
+        List<String> labels = Arrays.asList("Job Id", "State", "Schedule", "Completed Tasks", "Launched Tasks",
+                "Start Time", "End Time", "Duration (s)");
+		return labels;
+	}
 
     /**
      * Print summary information about a bunch of jobs in the system
