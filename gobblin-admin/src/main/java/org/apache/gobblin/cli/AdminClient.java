@@ -64,14 +64,19 @@ public class AdminClient {
    * @return JobExecutionInfo representing the job
    */
   public Optional<JobExecutionInfo> queryByJobId(String id) throws RemoteInvocationException {
-    JobExecutionQuery query = new JobExecutionQuery();
-    query.setIdType(QueryIdTypeEnum.JOB_ID);
+    JobExecutionQuery query = extracted();
     query.setId(JobExecutionQuery.Id.create(id));
     query.setLimit(1);
 
     List<JobExecutionInfo> results = executeQuery(query);
     return getFirstFromQueryResults(results);
   }
+
+private JobExecutionQuery extracted() {
+	JobExecutionQuery query = new JobExecutionQuery();
+    query.setIdType(QueryIdTypeEnum.JOB_ID);
+	return query;
+}
 
   /**
    * Retrieve all jobs
