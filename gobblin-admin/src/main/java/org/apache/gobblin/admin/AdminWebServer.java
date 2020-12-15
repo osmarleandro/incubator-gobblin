@@ -85,13 +85,18 @@ public class AdminWebServer extends AbstractIdleService {
       public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
           throws IOException, ServletException {
         if (request.getRequestURI().equals("/js/settings.js")) {
-          response.setContentType("application/javascript");
+          extracted(responseTemplate, baseRequest, response);
+        }
+      }
+
+	private void extracted(final String responseTemplate, Request baseRequest, HttpServletResponse response)
+			throws IOException {
+		response.setContentType("application/javascript");
           response.setStatus(HttpServletResponse.SC_OK);
           response.getWriter().println(String.format(responseTemplate, AdminWebServer.this.restServerUri.toString(),
               AdminWebServer.this.hideJobsWithoutTasksByDefault, AdminWebServer.this.refreshInterval));
           baseRequest.setHandled(true);
-        }
-      }
+	}
     };
   }
 
