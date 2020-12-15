@@ -99,31 +99,37 @@ public class JobCommand implements CliApplication {
         AdminClient adminClient = null;
 
         try {
-            CommandLine parsedOpts = parser.parse(options, args);
-            int resultLimit = parseResultsLimit(parsedOpts);
-            String host = parsedOpts.hasOption(ADMIN_SERVER) ?
-                parsedOpts.getOptionValue(ADMIN_SERVER) : DEFAULT_ADMIN_SERVER;
-            int port = DEFAULT_ADMIN_PORT;
-            try {
-                if (parsedOpts.hasOption(ADMIN_PORT)) {
-                    port = Integer.parseInt(parsedOpts.getOptionValue(ADMIN_PORT));
-                }
-            } catch (NumberFormatException e) {
-                printHelpAndExit("The port must be a valid integer.", false);
-            }
-
-            adminClient = new AdminClient(host, port);
-            try {
-                getAction(parsedOpts).execute(parsedOpts, adminClient, resultLimit);
-            } catch (CommandException e) {
-                printHelpAndExit(e.getMessage(), false);
-            }
+            adminClient = extracted(args, parser);
         } catch (ParseException e) {
             printHelpAndExit("Failed to parse jobs arguments: " + e.getMessage(), true);
         } finally {
             if (adminClient != null) adminClient.close();
         }
     }
+
+	private AdminClient extracted(String[] args, DefaultParser parser) throws ParseException {
+		AdminClient adminClient;
+		CommandLine parsedOpts = parser.parse(options, args);
+		int resultLimit = parseResultsLimit(parsedOpts);
+		String host = parsedOpts.hasOption(ADMIN_SERVER) ?
+		    parsedOpts.getOptionValue(ADMIN_SERVER) : DEFAULT_ADMIN_SERVER;
+		int port = DEFAULT_ADMIN_PORT;
+		try {
+		    if (parsedOpts.hasOption(ADMIN_PORT)) {
+		        port = Integer.parseInt(parsedOpts.getOptionValue(ADMIN_PORT));
+		    }
+		} catch (NumberFormatException e) {
+		    printHelpAndExit("The port must be a valid integer.", false);
+		}
+
+		adminClient = new AdminClient(host, port);
+		try {
+		    getAction(parsedOpts).execute(parsedOpts, adminClient, resultLimit);
+		} catch (CommandException e) {
+		    printHelpAndExit(e.getMessage(), false);
+		}
+		return adminClient;
+	}
 
     private static class ListAllItemsCommand implements SubCommand {
         @Override
