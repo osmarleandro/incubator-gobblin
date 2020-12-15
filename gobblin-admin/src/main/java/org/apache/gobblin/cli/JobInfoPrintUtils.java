@@ -145,8 +145,7 @@ public class JobInfoPrintUtils {
                 System.err.println("Failed to process metrics");
             }
             if (recordsProcessed == null || recordsFailed == null) {
-                entry.add("-");
-                entry.add("-");
+                extracted(entry);
             }
 
             data.add(entry);
@@ -163,6 +162,11 @@ public class JobInfoPrintUtils {
             System.out.println("\nWARNING: There may be more jobs (# of results is equal to the limit)");
         }
     }
+
+	private static void extracted(List<String> entry) {
+		entry.add("-");
+		entry.add("-");
+	}
 
     /**
      * Print information about one specific job.
