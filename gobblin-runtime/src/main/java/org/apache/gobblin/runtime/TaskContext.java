@@ -265,17 +265,7 @@ public class TaskContext {
     for (String streamProcessorClass : Splitter.on(",").omitEmptyStrings().trimResults()
         .split(this.taskState.getProp(streamProcessorClassKey))) {
       try {
-        RecordStreamProcessor<?, ?, ?, ?> streamProcessor =
-            RecordStreamProcessor.class.cast(Class.forName(streamProcessorClass).newInstance());
-
-        if (streamProcessor instanceof Converter) {
-          InstrumentedConverterDecorator instrumentedConverter =
-              new InstrumentedConverterDecorator<>((Converter)streamProcessor);
-          instrumentedConverter.init(forkTaskState);
-          streamProcessors.add(instrumentedConverter);
-        } else {
-          streamProcessors.add(streamProcessor);
-        }
+        extracted(forkTaskState, streamProcessors, streamProcessorClass);
       } catch (ClassNotFoundException cnfe) {
         throw new RuntimeException(cnfe);
       } catch (InstantiationException ie) {
@@ -287,6 +277,21 @@ public class TaskContext {
 
     return streamProcessors;
   }
+
+private void extracted(TaskState forkTaskState, List<RecordStreamProcessor<?, ?, ?, ?>> streamProcessors,
+		String streamProcessorClass) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	RecordStreamProcessor<?, ?, ?, ?> streamProcessor =
+	    RecordStreamProcessor.class.cast(Class.forName(streamProcessorClass).newInstance());
+
+	if (streamProcessor instanceof Converter) {
+	  InstrumentedConverterDecorator instrumentedConverter =
+	      new InstrumentedConverterDecorator<>((Converter)streamProcessor);
+	  instrumentedConverter.init(forkTaskState);
+	  streamProcessors.add(instrumentedConverter);
+	} else {
+	  streamProcessors.add(streamProcessor);
+	}
+}
 
   /**
    * Get the {@link ForkOperator} to be applied to converted input schema and data record.
