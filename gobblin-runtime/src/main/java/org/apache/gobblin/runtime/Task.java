@@ -329,12 +329,7 @@ public class Task implements TaskIFace {
     long currentTime = System.currentTimeMillis();
     long lastRecordTimeElapsed = currentTime - this.lastRecordPulledTimestampMillis;
     if (isStreamingTask()) {
-      WatermarkManager.CommitStatus commitStatus = this.watermarkManager.get().getCommitStatus();
-      long lastWatermarkCommitTimeElapsed = currentTime - commitStatus.getLastWatermarkCommitSuccessTimestampMillis();
-
-      String progressString = String.format("recordsPulled:%d, lastRecordExtracted: %d ms ago, "
-              + "lastWatermarkCommitted: %d ms ago, lastWatermarkCommitted: %s", this.recordsPulled.get(),
-          lastRecordTimeElapsed, lastWatermarkCommitTimeElapsed, commitStatus.getLastCommittedWatermarks());
+      String progressString = extracted(currentTime, lastRecordTimeElapsed);
       return progressString;
     } else {
       String progressString = String
@@ -342,6 +337,16 @@ public class Task implements TaskIFace {
       return progressString;
     }
   }
+
+private String extracted(long currentTime, long lastRecordTimeElapsed) {
+	WatermarkManager.CommitStatus commitStatus = this.watermarkManager.get().getCommitStatus();
+      long lastWatermarkCommitTimeElapsed = currentTime - commitStatus.getLastWatermarkCommitSuccessTimestampMillis();
+
+      String progressString = String.format("recordsPulled:%d, lastRecordExtracted: %d ms ago, "
+              + "lastWatermarkCommitted: %d ms ago, lastWatermarkCommitted: %s", this.recordsPulled.get(),
+          lastRecordTimeElapsed, lastWatermarkCommitTimeElapsed, commitStatus.getLastCommittedWatermarks());
+	return progressString;
+}
 
   @Override
   @SuppressWarnings("unchecked")
