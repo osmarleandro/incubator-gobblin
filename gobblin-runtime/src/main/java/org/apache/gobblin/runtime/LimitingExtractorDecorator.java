@@ -91,8 +91,7 @@ public class LimitingExtractorDecorator<S, D> implements Extractor<S, D>, Decora
    * @return String map representing all the meta data need to report. Return null if no meta data was found.
    */
   private ImmutableMap<String, String> getLimiterStopMetadata() {
-    WorkUnit workUnit = this.taskState.getWorkunit();
-    Properties properties = workUnit.getProperties();
+    Properties properties = extracted();
 
     String metadataKeyList = properties.getProperty(LimiterConfigurationKeys.LIMITER_REPORT_KEY_LIST, LimiterConfigurationKeys.DEFAULT_LIMITER_REPORT_KEY_LIST);
     List<String> keyList = Splitter.on(',').omitEmptyStrings().trimResults()
@@ -115,6 +114,12 @@ public class LimitingExtractorDecorator<S, D> implements Extractor<S, D>, Decora
       builder.put(LIMITER_STOP_CAUSE_KEY, LIMITER_STOP_CAUSE_VALUE);
       return builder.build();
   }
+
+private Properties extracted() {
+	WorkUnit workUnit = this.taskState.getWorkunit();
+    Properties properties = workUnit.getProperties();
+	return properties;
+}
 
   private void submitLimiterStopMetadataEvents (){
     ImmutableMap<String, String> metaData = this.getLimiterStopMetadata();
