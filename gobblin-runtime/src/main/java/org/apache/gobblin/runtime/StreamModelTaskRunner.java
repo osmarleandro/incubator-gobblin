@@ -17,6 +17,7 @@
 
 package org.apache.gobblin.runtime;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -34,6 +35,7 @@ import org.apache.gobblin.fork.ForkOperator;
 import org.apache.gobblin.fork.Forker;
 import org.apache.gobblin.qualitychecker.row.RowLevelPolicyChecker;
 import org.apache.gobblin.records.RecordStreamProcessor;
+import org.apache.gobblin.records.RecordStreamProcessor.StreamProcessingException;
 import org.apache.gobblin.records.RecordStreamWithMetadata;
 import org.apache.gobblin.runtime.fork.Fork;
 import org.apache.gobblin.source.extractor.Extractor;
@@ -138,16 +140,7 @@ public class StreamModelTaskRunner {
         this.taskState.getPropAsInt(ConfigurationKeys.FORK_RECORD_QUEUE_CAPACITY_KEY, ConfigurationKeys.DEFAULT_FORK_RECORD_QUEUE_CAPACITY);
 
     for (int fidx = 0; fidx < forkedStreams.getForkedStreams().size(); fidx ++) {
-      RecordStreamWithMetadata<?, ?> forkedStream = forkedStreams.getForkedStreams().get(fidx);
-      if (forkedStream != null) {
-        if (isForkAsync) {
-          forkedStream = forkedStream.mapStream(f -> f.observeOn(Schedulers.from(this.taskExecutor.getForkExecutor()), false, bufferSize));
-        }
-        Fork fork = new Fork(this.taskContext, forkedStream.getGlobalMetadata().getSchema(), forkedStreams.getForkedStreams().size(), fidx, this.taskMode);
-        fork.consumeRecordStream(forkedStream);
-        this.forks.put(Optional.of(fork), Optional.of(Futures.immediateFuture(null)));
-        this.task.configureStreamingFork(fork);
-      }
+      extracted(forkedStreams, isForkAsync, bufferSize, fidx);
     }
 
     connectableStream.connect();
@@ -157,5 +150,19 @@ public class StreamModelTaskRunner {
       throw new TimeoutException("Forks did not finish withing specified timeout.");
     }
   }
+
+private void extracted(Forker.ForkedStream<?, ?> forkedStreams, boolean isForkAsync, int bufferSize, int fidx)
+		throws Exception, StreamProcessingException, IOException {
+	RecordStreamWithMetadata<?, ?> forkedStream = forkedStreams.getForkedStreams().get(fidx);
+      if (forkedStream != null) {
+        if (isForkAsync) {
+          forkedStream = forkedStream.mapStream(f -> f.observeOn(Schedulers.from(this.taskExecutor.getForkExecutor()), false, bufferSize));
+        }
+        Fork fork = new Fork(this.taskContext, forkedStream.getGlobalMetadata().getSchema(), forkedStreams.getForkedStreams().size(), fidx, this.taskMode);
+        fork.consumeRecordStream(forkedStream);
+        this.forks.put(Optional.of(fork), Optional.of(Futures.immediateFuture(null)));
+        this.task.configureStreamingFork(fork);
+      }
+}
 
 }
