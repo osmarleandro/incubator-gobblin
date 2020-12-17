@@ -238,13 +238,17 @@ public class GobblinMultiTaskAttempt {
     } finally {
       persistTaskStateStore();
       if (this.cleanupCommitSteps != null) {
-        for (CommitStep cleanupCommitStep : this.cleanupCommitSteps) {
-          log.info("Executing additional commit step.");
-          cleanupCommitStep.execute();
-        }
+        extracted();
       }
     }
   }
+
+private void extracted() throws IOException {
+	for (CommitStep cleanupCommitStep : this.cleanupCommitSteps) {
+	  log.info("Executing additional commit step.");
+	  cleanupCommitStep.execute();
+	}
+}
 
   /**
    * A method that shuts down all running tasks managed by this instance.
