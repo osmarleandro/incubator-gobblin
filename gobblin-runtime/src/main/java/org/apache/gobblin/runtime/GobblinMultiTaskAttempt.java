@@ -301,18 +301,7 @@ public class GobblinMultiTaskAttempt {
     if (hasTaskFailure) {
       String errorMsg ="";
       for (Task task : tasks) {
-        if (task.getTaskState().contains(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)) {
-          errorMsg = String.format("Task %s failed due to exception: %s", task.getTaskId(),
-              task.getTaskState().getProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY));
-        }
-
-        // If there are task failures then the tasks may be reattempted. Save a copy of the task state that is used
-        // to filter out successful tasks on subsequent attempts.
-        if (task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.SUCCESSFUL
-            || task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.COMMITTED) {
-          taskStateStore
-              .put(task.getJobId(), task.getTaskId() + TASK_STATE_STORE_SUCCESS_MARKER_SUFFIX, task.getTaskState());
-        }
+        errorMsg = extracted(taskStateStore, errorMsg, task);
       }
 
       throw new IOException(
@@ -320,6 +309,22 @@ public class GobblinMultiTaskAttempt {
               containerIdOptional.or(""), errorMsg));
     }
   }
+
+private String extracted(StateStore<TaskState> taskStateStore, String errorMsg, Task task) throws IOException {
+	if (task.getTaskState().contains(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)) {
+	  errorMsg = String.format("Task %s failed due to exception: %s", task.getTaskId(),
+	      task.getTaskState().getProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY));
+	}
+
+	// If there are task failures then the tasks may be reattempted. Save a copy of the task state that is used
+	// to filter out successful tasks on subsequent attempts.
+	if (task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.SUCCESSFUL
+	    || task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.COMMITTED) {
+	  taskStateStore
+	      .put(task.getJobId(), task.getTaskId() + TASK_STATE_STORE_SUCCESS_MARKER_SUFFIX, task.getTaskState());
+	}
+	return errorMsg;
+}
 
   public boolean isSpeculativeExecutionSafe() {
     for (Task task : tasks) {
