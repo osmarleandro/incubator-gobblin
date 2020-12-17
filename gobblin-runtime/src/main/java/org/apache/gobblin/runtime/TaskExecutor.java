@@ -287,7 +287,15 @@ public class TaskExecutor extends AbstractIdleService {
    * @param task failed {@link Task} to be retried
    */
   public void retry(Task task) {
-    if (GobblinMetrics.isEnabled(task.getTaskState().getWorkunit()) &&
+    long interval = extracted(task);
+    // Schedule the retry of the failed task
+    this.taskExecutor.schedule(new TrackingTask(task, interval, TimeUnit.SECONDS), interval, TimeUnit.SECONDS);
+    LOG.info(String.format("Scheduled retry of failed task %s to run in %d seconds", task.getTaskId(), interval));
+    task.incrementRetryCount();
+  }
+
+private long extracted(Task task) {
+	if (GobblinMetrics.isEnabled(task.getTaskState().getWorkunit()) &&
         task.getTaskState().contains(ConfigurationKeys.FORK_BRANCHES_KEY)) {
       // Adjust metrics to clean up numbers from the failed task
       task.getTaskState()
@@ -296,11 +304,8 @@ public class TaskExecutor extends AbstractIdleService {
 
     // Task retry interval increases linearly with number of retries
     long interval = task.getRetryCount() * this.retryIntervalInSeconds;
-    // Schedule the retry of the failed task
-    this.taskExecutor.schedule(new TrackingTask(task, interval, TimeUnit.SECONDS), interval, TimeUnit.SECONDS);
-    LOG.info(String.format("Scheduled retry of failed task %s to run in %d seconds", task.getTaskId(), interval));
-    task.incrementRetryCount();
-  }
+	return interval;
+}
 
   public MetricSet getTaskExecutorQueueMetricSet() {
     return this.metricSet;
