@@ -498,14 +498,19 @@ public class JobState extends SourceState implements JobProgress {
   public List<WorkUnitState> getTaskStatesAsWorkUnitStates() {
     ImmutableList.Builder<WorkUnitState> builder = ImmutableList.builder();
     for (TaskState taskState : this.taskStates.values()) {
-      WorkUnitState workUnitState = new WorkUnitState(taskState.getWorkunit(), taskState.getJobState());
-      workUnitState.setId(taskState.getId());
+      WorkUnitState workUnitState = extracted(taskState);
       workUnitState.addAll(taskState);
       builder.add(workUnitState);
     }
 
     return builder.build();
   }
+
+private WorkUnitState extracted(TaskState taskState) {
+	WorkUnitState workUnitState = new WorkUnitState(taskState.getWorkunit(), taskState.getJobState());
+      workUnitState.setId(taskState.getId());
+	return workUnitState;
+}
 
   /**
    * Get the {@link LauncherTypeEnum} for this {@link JobState}.
