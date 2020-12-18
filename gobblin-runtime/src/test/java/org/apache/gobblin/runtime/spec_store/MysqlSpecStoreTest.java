@@ -136,14 +136,18 @@ public class MysqlSpecStoreTest {
 
   @Test
   public void testAddSpec() throws Exception {
-    this.specStore.addSpec(this.flowSpec1);
-    this.specStore.addSpec(this.flowSpec2);
+    extracted();
     this.specStore.addSpec(this.flowSpec4);
     Assert.assertTrue(this.specStore.exists(this.uri1));
     Assert.assertTrue(this.specStore.exists(this.uri2));
     Assert.assertTrue(this.specStore.exists(this.uri4));
     Assert.assertFalse(this.specStore.exists(URI.create("dummy")));
   }
+
+private void extracted() throws IOException {
+	this.specStore.addSpec(this.flowSpec1);
+    this.specStore.addSpec(this.flowSpec2);
+}
 
   @Test (dependsOnMethods = "testAddSpec")
   public void testGetSpec() throws Exception {
