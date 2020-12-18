@@ -75,16 +75,21 @@ import org.apache.gobblin.writer.DataWriterBuilder;
 public class TaskTest {
 
   TaskState getEmptyTestTaskState(String taskId) {
-    // Create a TaskState
-    WorkUnit workUnit = WorkUnit.create(
-            new Extract(Extract.TableType.SNAPSHOT_ONLY, this.getClass().getName(), this.getClass().getSimpleName()));
-    workUnit.setProp(ConfigurationKeys.TASK_KEY_KEY, "taskKey");
+    WorkUnit workUnit = extracted();
     TaskState taskState = new TaskState(new WorkUnitState(workUnit));
     taskState.setProp(ConfigurationKeys.METRICS_ENABLED_KEY, Boolean.toString(false));
     taskState.setTaskId(taskId);
     taskState.setJobId("1234");
     return taskState;
   }
+
+private WorkUnit extracted() {
+	// Create a TaskState
+    WorkUnit workUnit = WorkUnit.create(
+            new Extract(Extract.TableType.SNAPSHOT_ONLY, this.getClass().getName(), this.getClass().getSimpleName()));
+    workUnit.setProp(ConfigurationKeys.TASK_KEY_KEY, "taskKey");
+	return workUnit;
+}
 
   @DataProvider(name = "stateOverrides")
   public Object[][] createTestsForDifferentExecutionModes() {
