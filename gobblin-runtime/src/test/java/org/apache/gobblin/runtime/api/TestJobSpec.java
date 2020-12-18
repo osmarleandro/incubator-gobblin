@@ -38,9 +38,9 @@ public class TestJobSpec {
 
   @Test
   public void testBuilder() throws URISyntaxException {
-    JobSpec.Builder b = new JobSpec.Builder("test:job");
+    JobSpec.Builder b;
 
-    JobSpec js1 = b.build();
+    JobSpec js1 = extracted();
 
     Assert.assertEquals(js1.getUri().toString(), "test:job");
     Assert.assertEquals(js1.getVersion(), "1");
@@ -113,9 +113,8 @@ public class TestJobSpec {
 
   @Test
   public void testSerDe() {
-    JobSpec.Builder b = new JobSpec.Builder("test:job");
-
-    JobSpec js1 = b.build();
+    JobSpec.Builder b;
+	JobSpec js1 = extracted();
     byte[] serializedBytes = SerializationUtils.serialize(js1);
     JobSpec js1Deserialized = SerializationUtils.deserialize(serializedBytes);
 
@@ -149,4 +148,11 @@ public class TestJobSpec {
     Assert.assertEquals(js2Deserialized.getConfig().getDouble("a2.c.d"), 12.34);
     Assert.assertTrue(js2Deserialized.getConfig().getBoolean("a2.c.d2"));
   }
+
+private JobSpec extracted() {
+	JobSpec.Builder b = new JobSpec.Builder("test:job");
+
+    JobSpec js1 = b.build();
+	return js1;
+}
 }
