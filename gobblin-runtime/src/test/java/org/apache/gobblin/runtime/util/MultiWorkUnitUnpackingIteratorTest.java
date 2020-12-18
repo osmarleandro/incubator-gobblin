@@ -57,8 +57,7 @@ public class MultiWorkUnitUnpackingIteratorTest {
 
   private WorkUnit createWorkUnit(String... names) {
     if (names.length == 1) {
-      WorkUnit workUnit = new WorkUnit();
-      workUnit.setProp(WORK_UNIT_NAME, names[0]);
+      WorkUnit workUnit = extracted(names);
       return workUnit;
     }
     MultiWorkUnit mwu = new MultiWorkUnit();
@@ -67,5 +66,11 @@ public class MultiWorkUnitUnpackingIteratorTest {
     }
     return mwu;
   }
+
+private WorkUnit extracted(String... names) {
+	WorkUnit workUnit = new WorkUnit();
+      workUnit.setProp(WORK_UNIT_NAME, names[0]);
+	return workUnit;
+}
 
 }
