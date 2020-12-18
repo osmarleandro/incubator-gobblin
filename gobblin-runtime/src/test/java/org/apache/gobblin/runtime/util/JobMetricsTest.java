@@ -44,8 +44,7 @@ public class JobMetricsTest {
     String jobName = "testJob";
     String jobId = "job_123";
 
-    JobState jobState = new JobState(jobName, jobId);
-    JobMetrics jobMetrics = JobMetrics.get(jobState);
+    JobMetrics jobMetrics = extracted(jobName, jobId);
 
     Assert.assertNotNull(jobMetrics.getMetricContext());
 
@@ -79,6 +78,12 @@ public class JobMetricsTest {
     Assert.assertNotEquals(tagMap.get(MetricContext.METRIC_CONTEXT_ID_TAG_NAME), contextId);
     Assert.assertNotEquals(tagMap.get(MetricContext.METRIC_CONTEXT_NAME_TAG_NAME), contextName);
   }
+
+private JobMetrics extracted(String jobName, String jobId) {
+	JobState jobState = new JobState(jobName, jobId);
+    JobMetrics jobMetrics = JobMetrics.get(jobState);
+	return jobMetrics;
+}
 
   @Test
   public void testCustomTags() {
