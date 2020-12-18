@@ -88,8 +88,7 @@ public class LocalTaskStateTracker extends AbstractTaskStateTracker {
       // it has not reached the maximum number of retries
       WorkUnitState.WorkingState state = task.getTaskState().getWorkingState();
       if (state == WorkUnitState.WorkingState.FAILED && task.getRetryCount() < this.maxTaskRetries) {
-        this.taskExecutor.retry(task);
-        return;
+        extracted(task);
       }
     } catch (Throwable t) {
       LOG.error("Failed to process a task completion callback", t);
@@ -97,6 +96,10 @@ public class LocalTaskStateTracker extends AbstractTaskStateTracker {
     // Mark the completion of this task
     task.markTaskCompletion();
   }
+
+private void extracted(Task task) {
+	this.taskExecutor.retry(task);
+}
 
   @Override
   public void onTaskCommitCompletion(Task task) {
