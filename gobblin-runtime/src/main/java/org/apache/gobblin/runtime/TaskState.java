@@ -321,8 +321,7 @@ public class TaskState extends WorkUnitState implements TaskProgress {
 
   @Override
   public void write(DataOutput out) throws IOException {
-    Text text = new Text();
-    text.set(this.jobId);
+    Text text = extracted();
     text.write(out);
     text.set(this.taskId);
     text.write(out);
@@ -331,6 +330,12 @@ public class TaskState extends WorkUnitState implements TaskProgress {
     out.writeLong(this.duration);
     super.write(out);
   }
+
+private Text extracted() {
+	Text text = new Text();
+    text.set(this.jobId);
+	return text;
+}
 
   @Override
   public boolean equals(Object object) {
