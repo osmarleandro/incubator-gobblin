@@ -70,10 +70,15 @@ public abstract class InheritingJobTemplate implements JobTemplate {
     if (this.resolved) {
       return;
     }
-    Map<URI, JobTemplate> loadedTemplates = Maps.newHashMap();
-    loadedTemplates.put(getUri(), this);
+    Map<URI, JobTemplate> loadedTemplates = extracted();
     resolveTemplates(loadedTemplates);
   }
+
+private Map<URI, JobTemplate> extracted() {
+	Map<URI, JobTemplate> loadedTemplates = Maps.newHashMap();
+    loadedTemplates.put(getUri(), this);
+	return loadedTemplates;
+}
 
   /**
    * Resolve all superTemplates being field variables within the class.
