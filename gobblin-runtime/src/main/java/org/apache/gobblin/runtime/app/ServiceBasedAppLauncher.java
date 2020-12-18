@@ -174,8 +174,7 @@ public class ServiceBasedAppLauncher implements ApplicationLauncher {
   @Override
   public synchronized void stop() throws ApplicationException {
     if (!this.hasStarted) {
-      LOG.warn("ApplicationLauncher was never started");
-      return;
+      extracted();
     }
     if (this.hasStopped) {
       LOG.warn("ApplicationLauncher has already stopped");
@@ -190,6 +189,10 @@ public class ServiceBasedAppLauncher implements ApplicationLauncher {
       LOG.error("Timeout in stopping the service manager", te);
     }
   }
+
+private void extracted() {
+	LOG.warn("ApplicationLauncher was never started");
+}
 
   @Override
   public void close() throws IOException {
