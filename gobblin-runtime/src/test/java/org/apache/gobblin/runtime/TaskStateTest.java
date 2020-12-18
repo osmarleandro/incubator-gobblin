@@ -80,9 +80,7 @@ public class TaskStateTest {
       throws IOException {
     Closer closer = Closer.create();
     try {
-      ByteArrayOutputStream baos = closer.register(new ByteArrayOutputStream());
-      DataOutputStream dos = closer.register(new DataOutputStream(baos));
-      this.taskState.write(dos);
+      ByteArrayOutputStream baos = extracted(closer);
 
       ByteArrayInputStream bais = closer.register((new ByteArrayInputStream(baos.toByteArray())));
       DataInputStream dis = closer.register((new DataInputStream(bais)));
@@ -103,6 +101,13 @@ public class TaskStateTest {
       closer.close();
     }
   }
+
+private ByteArrayOutputStream extracted(Closer closer) throws IOException {
+	ByteArrayOutputStream baos = closer.register(new ByteArrayOutputStream());
+      DataOutputStream dos = closer.register(new DataOutputStream(baos));
+      this.taskState.write(dos);
+	return baos;
+}
 
   @Test(dependsOnMethods = {"testSetAndGet"})
   public void testToTaskExecutionInfo() {
