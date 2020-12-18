@@ -142,8 +142,7 @@ public class MRJobLauncherTest extends BMNGRunner {
 
   @Test
   public void testLaunchJobWithConcurrencyLimit() throws Exception {
-    final Logger log = LoggerFactory.getLogger(getClass().getName() + ".testLaunchJobWithConcurrencyLimit");
-    log.info("in");
+    final Logger log = extracted();
     Properties jobProps = loadJobProps();
     jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,
         jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithConcurrencyLimit");
@@ -159,6 +158,12 @@ public class MRJobLauncherTest extends BMNGRunner {
     }
     log.info("out");
   }
+
+private Logger extracted() {
+	final Logger log = LoggerFactory.getLogger(getClass().getName() + ".testLaunchJobWithConcurrencyLimit");
+    log.info("in");
+	return log;
+}
 
   @Test
   public void testLaunchJobWithPullLimit() throws Exception {
