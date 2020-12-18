@@ -178,15 +178,20 @@ public abstract class InheritingJobTemplate implements JobTemplate {
     Set<String> requiredConfigs = Sets.newHashSet(getLocallyRequiredConfigList());
     if (this.superTemplates != null) {
       for (JobTemplate template : this.superTemplates) {
-        if (!alreadyLoadedTemplates.contains(template)) {
-          alreadyLoadedTemplates.add(template);
-          requiredConfigs.addAll(template instanceof InheritingJobTemplate ? ((InheritingJobTemplate) template).getRequiredConfigListHelper(alreadyLoadedTemplates)
-              : template.getRequiredConfigList());
-        }
+        extracted(alreadyLoadedTemplates, requiredConfigs, template);
       }
     }
     return requiredConfigs;
   }
+
+private void extracted(Set<JobTemplate> alreadyLoadedTemplates, Set<String> requiredConfigs, JobTemplate template)
+		throws SpecNotFoundException, TemplateException {
+	if (!alreadyLoadedTemplates.contains(template)) {
+	  alreadyLoadedTemplates.add(template);
+	  requiredConfigs.addAll(template instanceof InheritingJobTemplate ? ((InheritingJobTemplate) template).getRequiredConfigListHelper(alreadyLoadedTemplates)
+	      : template.getRequiredConfigList());
+	}
+}
 
   protected abstract Collection<String> getLocallyRequiredConfigList();
 
