@@ -17,6 +17,8 @@
 
 package org.apache.gobblin.util;
 
+import java.sql.SQLException;
+
 import org.junit.Assert;
 import org.testng.annotations.Test;
 
@@ -62,12 +64,17 @@ public class ReflectivePredicateEvaluatorTest {
 
 	@Test
 	public void testMultipleInterfaces() throws Exception {
+		ReflectivePredicateEvaluator evaluator = extracted();
+		Assert.assertTrue(evaluator.evaluate(new MyImplementation(2, "foo"), new MyImplementation2(3)));
+		Assert.assertTrue(evaluator.evaluate(new MyImplementation(1, "foo"), new MyImplementation2(3), new MyImplementation(1, "foo")));
+	}
+
+	private ReflectivePredicateEvaluator extracted() throws SQLException {
 		ReflectivePredicateEvaluator evaluator = new ReflectivePredicateEvaluator(
 				"SELECT true = ALL (SELECT sum(anInt) = 2 AS satisfied FROM myInterface UNION SELECT sum(anInt) = 3 AS satisfied FROM myInterface2)",
 				MyInterface.class, MyInterface2.class);
 		Assert.assertFalse(evaluator.evaluate(new MyImplementation(2, "foo")));
-		Assert.assertTrue(evaluator.evaluate(new MyImplementation(2, "foo"), new MyImplementation2(3)));
-		Assert.assertTrue(evaluator.evaluate(new MyImplementation(1, "foo"), new MyImplementation2(3), new MyImplementation(1, "foo")));
+		return evaluator;
 	}
 
 	@Test
