@@ -88,10 +88,14 @@ public class BaseServiceNodeImpl implements ServiceNode {
       return false;
     }
 
-    BaseServiceNodeImpl that = (BaseServiceNodeImpl) o;
+    return extracted(o);
+  }
+
+private boolean extracted(Object o) {
+	BaseServiceNodeImpl that = (BaseServiceNodeImpl) o;
 
     return nodeName.equals(that.nodeName);
-  }
+}
 
   @Override
   public int hashCode() {
