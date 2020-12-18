@@ -114,8 +114,7 @@ public class StandardGobblinInstanceDriver extends DefaultGobblinInstanceDriverI
       GobblinInstancePluginFactory pluginFactory, List<Service> componentServices) {
     instance.getLog().info("Instantiating a plugin of type: " + pluginFactory);
     try {
-      GobblinInstancePlugin plugin = pluginFactory.createPlugin(instance);
-      componentServices.add(plugin);
+      GobblinInstancePlugin plugin = extracted(instance, pluginFactory, componentServices);
       instance.getLog().info("Instantiated plugin: " + plugin);
       return Optional.of(plugin);
     }
@@ -124,6 +123,13 @@ public class StandardGobblinInstanceDriver extends DefaultGobblinInstanceDriverI
     }
     return Optional.absent();
   }
+
+private static GobblinInstancePlugin extracted(StandardGobblinInstanceDriver instance,
+		GobblinInstancePluginFactory pluginFactory, List<Service> componentServices) {
+	GobblinInstancePlugin plugin = pluginFactory.createPlugin(instance);
+      componentServices.add(plugin);
+	return plugin;
+}
 
   @Override
   protected void startUp() throws Exception {
