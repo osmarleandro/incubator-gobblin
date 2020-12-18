@@ -265,7 +265,16 @@ public class JobExecutionState implements JobExecutionStatus {
     long millisRemaining = timeoutMs;
     this.changeLock.lock();
     try {
-      while (!predicate.apply(this) && millisRemaining > 0) {
+      extracted(predicate, timeoutMs, startTimeMs, millisRemaining);
+    }
+    finally {
+      this.changeLock.unlock();
+    }
+  }
+
+private void extracted(Predicate<JobExecutionState> predicate, long timeoutMs, long startTimeMs, long millisRemaining)
+		throws InterruptedException, TimeoutException {
+	while (!predicate.apply(this) && millisRemaining > 0) {
         if (!this.runningStateChanged.await(millisRemaining, TimeUnit.MILLISECONDS)) {
           // Not necessary but shuts up FindBugs RV_RETURN_VALUE_IGNORED_BAD_PRACTICE
           break;
@@ -276,10 +285,6 @@ public class JobExecutionState implements JobExecutionStatus {
       if (!predicate.apply(this)) {
         throw new TimeoutException("Timeout waiting for state predicate: " + predicate);
       }
-    }
-    finally {
-      this.changeLock.unlock();
-    }
-  }
+}
 
 }
