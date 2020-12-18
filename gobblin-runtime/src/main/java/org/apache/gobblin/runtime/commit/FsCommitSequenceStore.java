@@ -18,6 +18,7 @@
 package org.apache.gobblin.runtime.commit;
 
 import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -116,13 +117,18 @@ public class FsCommitSequenceStore implements CommitSequenceStore {
   public Collection<String> get(String jobName) throws IOException {
     ImmutableList.Builder<String> builder = new ImmutableList.Builder<>();
     Path jobPath = new Path(this.rootPath, jobName);
-    if (this.fs.exists(jobPath)) {
+    return extracted(builder, jobPath);
+  }
+
+private Collection<String> extracted(ImmutableList.Builder<String> builder, Path jobPath)
+		throws IOException, FileNotFoundException {
+	if (this.fs.exists(jobPath)) {
       for (FileStatus status : this.fs.listStatus(jobPath, new HiddenFilter())) {
         builder.add(status.getPath().getName());
       }
     }
     return builder.build();
-  }
+}
 
   @Override
   public Optional<CommitSequence> get(String jobName, String datasetUrn) throws IOException {
