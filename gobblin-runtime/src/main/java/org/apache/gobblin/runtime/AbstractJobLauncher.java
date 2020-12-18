@@ -750,12 +750,16 @@ public abstract class AbstractJobLauncher implements JobLauncher {
         }
 
         synchronized (AbstractJobLauncher.this.cancellationExecution) {
-          AbstractJobLauncher.this.cancellationExecuted = true;
-          AbstractJobLauncher.this.jobContext.getJobState().setState(JobState.RunningState.CANCELLED);
+          extracted();
           // Notify that the cancellation has been executed
           AbstractJobLauncher.this.cancellationExecution.notifyAll();
         }
       }
+
+	private void extracted() {
+		AbstractJobLauncher.this.cancellationExecuted = true;
+          AbstractJobLauncher.this.jobContext.getJobState().setState(JobState.RunningState.CANCELLED);
+	}
     });
   }
 
