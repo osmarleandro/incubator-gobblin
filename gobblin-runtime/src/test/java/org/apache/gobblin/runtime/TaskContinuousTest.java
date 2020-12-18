@@ -340,7 +340,15 @@ public class TaskContinuousTest {
       Extractor mockExtractor, Boolean taskExecutionSync, int errorAtCount)
       throws Exception {
 
-    TaskState taskState = getStreamingTaskState(taskExecutionSync);
+    TaskContext mockTaskContext = extracted(mockExtractor, taskExecutionSync);
+    when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class), anyInt())).thenReturn(mock(TaskLevelPolicyChecker.class));
+    when(mockTaskContext.getDataWriterBuilder(anyInt(), anyInt())).thenReturn(new TestStreamingDataWriterBuilder(recordCollector,
+        errorAtCount));
+    return mockTaskContext;
+  }
+
+private TaskContext extracted(Extractor mockExtractor, Boolean taskExecutionSync) throws IOException, Exception {
+	TaskState taskState = getStreamingTaskState(taskExecutionSync);
     // Create a mock RowLevelPolicyChecker
     RowLevelPolicyChecker mockRowLevelPolicyChecker =
         new RowLevelPolicyChecker(Lists.newArrayList(), "stateId", FileSystem.getLocal(new Configuration()));
@@ -364,11 +372,8 @@ public class TaskContinuousTest {
         .thenReturn(mockTaskPublisher);
     when(mockTaskContext.getRowLevelPolicyChecker()).thenReturn(mockRowLevelPolicyChecker);
     when(mockTaskContext.getRowLevelPolicyChecker(anyInt())).thenReturn(mockRowLevelPolicyChecker);
-    when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class), anyInt())).thenReturn(mock(TaskLevelPolicyChecker.class));
-    when(mockTaskContext.getDataWriterBuilder(anyInt(), anyInt())).thenReturn(new TestStreamingDataWriterBuilder(recordCollector,
-        errorAtCount));
-    return mockTaskContext;
-  }
+	return mockTaskContext;
+}
 
   private TaskState getStreamingTaskState(Boolean taskExecutionSync) {
     WorkUnitState workUnitState = TestUtils.createTestWorkUnitState();
