@@ -67,8 +67,7 @@ public class TaskStateCollectorServiceTest {
 
   @BeforeClass
   public void setUp() throws Exception {
-    this.localFs = FileSystem.getLocal(new Configuration());
-    this.localFs.mkdirs(this.outputTaskStateDir);
+    extracted();
 
     this.taskStateStore = new FsStateStore<>(this.localFs, this.outputTaskStateDir.toUri().getPath(), TaskState.class);
 
@@ -78,6 +77,11 @@ public class TaskStateCollectorServiceTest {
 
     this.eventBus.register(this);
   }
+
+private void extracted() throws IOException {
+	this.localFs = FileSystem.getLocal(new Configuration());
+    this.localFs.mkdirs(this.outputTaskStateDir);
+}
 
   @Test
   public void testPutIntoTaskStateStore() throws IOException {
