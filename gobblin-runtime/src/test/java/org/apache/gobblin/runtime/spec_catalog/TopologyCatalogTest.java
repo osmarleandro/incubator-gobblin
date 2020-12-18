@@ -139,9 +139,7 @@ public class TopologyCatalogTest {
 
   @Test (dependsOnMethods = "createTopologySpec")
   public void deleteTopologySpec() {
-    // List Current Specs
-    Collection<Spec> specs = topologyCatalog.getSpecs();
-    logger.info("[Before Delete] Number of specs: " + specs.size());
+    Collection<Spec> specs = extracted();
     int i=0;
     for (Spec spec : specs) {
       TopologySpec topologySpec = (TopologySpec) spec;
@@ -161,6 +159,13 @@ public class TopologyCatalogTest {
     }
     Assert.assertTrue(specs.size() == 0, "Spec store should be empty after deletion");
   }
+
+private Collection<Spec> extracted() {
+	// List Current Specs
+    Collection<Spec> specs = topologyCatalog.getSpecs();
+    logger.info("[Before Delete] Number of specs: " + specs.size());
+	return specs;
+}
 
   public URI computeTopologySpecURI() {
     // Make sure this is relative
