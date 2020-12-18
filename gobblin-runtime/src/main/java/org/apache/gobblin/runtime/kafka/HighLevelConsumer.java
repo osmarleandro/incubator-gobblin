@@ -207,9 +207,7 @@ public abstract class HighLevelConsumer<K,V> extends AbstractIdleService {
 
   @Override
   protected void startUp() {
-    buildMetricsContextAndMetrics();
-    // Method that starts threads that processes queues
-    processQueues();
+    extracted();
     // Main thread that constantly polls messages from kafka
     consumerExecutor.scheduleAtFixedRate(new Runnable() {
       @Override
@@ -218,6 +216,12 @@ public abstract class HighLevelConsumer<K,V> extends AbstractIdleService {
       }
     }, 0, 50, TimeUnit.MILLISECONDS);
   }
+
+private void extracted() {
+	buildMetricsContextAndMetrics();
+    // Method that starts threads that processes queues
+    processQueues();
+}
 
   /**
    * Consumes {@link KafkaConsumerRecord}s and adds to a queue
