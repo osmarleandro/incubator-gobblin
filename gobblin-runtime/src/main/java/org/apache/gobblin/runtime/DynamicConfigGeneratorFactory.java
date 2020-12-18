@@ -42,12 +42,17 @@ public class DynamicConfigGeneratorFactory {
             ConfigurationKeys.DEFAULT_DYNAMIC_CONFIG_GENERATOR_CLASS_KEY);
 
     try {
-      ClassAliasResolver<DynamicConfigGenerator> aliasResolver =
-          new ClassAliasResolver<>(DynamicConfigGenerator.class);
-      return aliasResolver.resolveClass(dynamicConfigGeneratorClassName).newInstance();
+      return extracted(dynamicConfigGeneratorClassName);
     } catch (ReflectiveOperationException e) {
       throw new RuntimeException("Could not construct DynamicConfigGenerator " +
           dynamicConfigGeneratorClassName, e);
     }
   }
+
+private static DynamicConfigGenerator extracted(String dynamicConfigGeneratorClassName)
+		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	ClassAliasResolver<DynamicConfigGenerator> aliasResolver =
+          new ClassAliasResolver<>(DynamicConfigGenerator.class);
+      return aliasResolver.resolveClass(dynamicConfigGeneratorClassName).newInstance();
+}
 }
