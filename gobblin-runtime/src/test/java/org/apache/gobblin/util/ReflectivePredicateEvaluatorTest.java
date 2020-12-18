@@ -17,6 +17,8 @@
 
 package org.apache.gobblin.util;
 
+import java.sql.SQLException;
+
 import org.junit.Assert;
 import org.testng.annotations.Test;
 
@@ -42,12 +44,17 @@ public class ReflectivePredicateEvaluatorTest {
 
 	@Test
 	public void testWithAggregations() throws Exception {
+		ReflectivePredicateEvaluator evaluator = extracted();
+		Assert.assertTrue(evaluator.evaluate(new MyImplementation(1, "foo"), new MyImplementation(4, "foo")));
+		Assert.assertFalse(evaluator.evaluate(new MyImplementation(2, "foo"), new MyImplementation(4, "foo")));
+	}
+
+	private ReflectivePredicateEvaluator extracted() throws SQLException {
 		ReflectivePredicateEvaluator evaluator = new ReflectivePredicateEvaluator(
 				"SELECT sum(anInt) = 5 FROM myInterface", MyInterface.class);
 
 		Assert.assertFalse(evaluator.evaluate(new MyImplementation(1, "foo")));
-		Assert.assertTrue(evaluator.evaluate(new MyImplementation(1, "foo"), new MyImplementation(4, "foo")));
-		Assert.assertFalse(evaluator.evaluate(new MyImplementation(2, "foo"), new MyImplementation(4, "foo")));
+		return evaluator;
 	}
 
 	@Test
