@@ -47,11 +47,16 @@ public class TaskStateTest {
 
   @BeforeClass
   public void setUp() {
-    WorkUnitState workUnitState = new WorkUnitState();
-    workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY, "Job-1");
+    WorkUnitState workUnitState = extracted();
     workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY, "Task-1");
     this.taskState = new TaskState(workUnitState);
   }
+
+private WorkUnitState extracted() {
+	WorkUnitState workUnitState = new WorkUnitState();
+    workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY, "Job-1");
+	return workUnitState;
+}
 
   @Test
   public void testSetAndGet() {
