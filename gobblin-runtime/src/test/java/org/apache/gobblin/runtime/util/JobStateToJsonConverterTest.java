@@ -64,10 +64,7 @@ public class JobStateToJsonConverterTest {
   @Test
   public void testJsonKeepConfigWithoutStoreUrl()
       throws IOException {
-    String stateStorePath = getClass().getClassLoader().getResource(TEST_STORE).getPath();
-    Properties properties = new Properties();
-
-    properties.setProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY, stateStorePath);
+    Properties properties = extracted();
 
     boolean keepConfig = true;
 
@@ -83,4 +80,12 @@ public class JobStateToJsonConverterTest {
       Assert.assertNotNull(taskState.getAsJsonObject().get(PROPERTIES));
     }
   }
+
+private Properties extracted() {
+	String stateStorePath = getClass().getClassLoader().getResource(TEST_STORE).getPath();
+    Properties properties = new Properties();
+
+    properties.setProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY, stateStorePath);
+	return properties;
+}
 }
