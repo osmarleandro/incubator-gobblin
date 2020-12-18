@@ -103,9 +103,7 @@ public class JobExecutionEventSubmitter {
    * Submits an event for a given {@link TaskState}. It will include all metadata specified in the jobMetadata parameter.
    */
   private void submitTaskStateEvent(TaskState taskState, Map<String, String> jobMetadata) {
-    ImmutableMap.Builder<String, String> taskMetadataBuilder = new ImmutableMap.Builder<>();
-
-    taskMetadataBuilder.putAll(jobMetadata);
+    ImmutableMap.Builder<String, String> taskMetadataBuilder = extracted(jobMetadata);
     taskMetadataBuilder.put(METADATA_TASK_ID, taskState.getTaskId());
     taskMetadataBuilder.put(METADATA_TASK_START_TIME, Long.toString(taskState.getStartTime()));
     taskMetadataBuilder.put(METADATA_TASK_END_TIME, Long.toString(taskState.getEndTime()));
@@ -115,4 +113,11 @@ public class JobExecutionEventSubmitter {
 
     this.eventSubmitter.submit(TASK_STATE, taskMetadataBuilder.build());
   }
+
+private ImmutableMap.Builder<String, String> extracted(Map<String, String> jobMetadata) {
+	ImmutableMap.Builder<String, String> taskMetadataBuilder = new ImmutableMap.Builder<>();
+
+    taskMetadataBuilder.putAll(jobMetadata);
+	return taskMetadataBuilder;
+}
 }
