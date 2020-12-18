@@ -125,8 +125,7 @@ public class ReflectivePredicateEvaluator implements Closeable {
 	private PreparedStatement prepareStatement(String sql) throws SQLException {
 		PreparedStatement stmnt = null;
 		try {
-			stmnt = this.conn.prepareStatement(sql);
-			validateSql(stmnt, sql);
+			stmnt = extracted(sql);
 			return stmnt;
 		} catch (Throwable t) {
 			if (stmnt != null) {
@@ -134,6 +133,13 @@ public class ReflectivePredicateEvaluator implements Closeable {
 			}
 			throw t;
 		}
+	}
+
+	private PreparedStatement extracted(String sql) throws SQLException {
+		PreparedStatement stmnt;
+		stmnt = this.conn.prepareStatement(sql);
+		validateSql(stmnt, sql);
+		return stmnt;
 	}
 
 	private String computeModel() {
