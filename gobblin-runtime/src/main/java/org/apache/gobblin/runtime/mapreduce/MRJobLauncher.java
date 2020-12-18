@@ -342,11 +342,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
         eventBuilder.jobTrackingURL = "";
         eventBuilder.status = JobStateEventBuilder.Status.FAILED;
       } else {
-        eventBuilder.jobTrackingURL = this.job.getTrackingURL();
-        eventBuilder.status = JobStateEventBuilder.Status.SUCCEEDED;
-        if (this.job.getJobState() != JobStatus.State.SUCCEEDED) {
-          eventBuilder.status = JobStateEventBuilder.Status.FAILED;
-        }
+        extracted(eventBuilder);
       }
       this.eventSubmitter.submit(eventBuilder);
 
@@ -355,6 +351,14 @@ public class MRJobLauncher extends AbstractJobLauncher {
       cleanUpWorkingDirectory();
     }
   }
+
+private void extracted(JobStateEventBuilder eventBuilder) throws IOException, InterruptedException {
+	eventBuilder.jobTrackingURL = this.job.getTrackingURL();
+	eventBuilder.status = JobStateEventBuilder.Status.SUCCEEDED;
+	if (this.job.getJobState() != JobStatus.State.SUCCEEDED) {
+	  eventBuilder.status = JobStateEventBuilder.Status.FAILED;
+	}
+}
 
   @Override
   protected void executeCancellation() {
