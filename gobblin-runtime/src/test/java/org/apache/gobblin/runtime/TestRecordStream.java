@@ -161,7 +161,16 @@ public class TestRecordStream {
   @Test
   public void testMetadataUpdateControlMessages() throws Exception {
 
-    MyExtractor extractor = new MyExtractor(new StreamEntity[]{new RecordEnvelope<>("a"),
+    MyDataWriter writer = extracted();
+
+    Assert.assertEquals(writer.records, Lists.newArrayList("a:schema", "b:Schema1"));
+    Assert.assertEquals(writer.messages, Lists.newArrayList(new MetadataUpdateControlMessage<>(
+        GlobalMetadata.<String>builder().schema("Schema1").build()),
+        new MetadataUpdateControlMessage<>(GlobalMetadata.<String>builder().schema("Schema2").build())));
+  }
+
+private MyDataWriter extracted() throws Exception {
+	MyExtractor extractor = new MyExtractor(new StreamEntity[]{new RecordEnvelope<>("a"),
         new MetadataUpdateControlMessage<>(GlobalMetadata.<String>builder().schema("Schema1").build()), new RecordEnvelope<>("b"),
             new MetadataUpdateControlMessage(GlobalMetadata.<String>builder().schema("Schema2").build())});
     SchemaAppendConverter converter = new SchemaAppendConverter();
@@ -177,12 +186,8 @@ public class TestRecordStream {
     Assert.assertEquals(converter.messages,
         Lists.newArrayList(new MetadataUpdateControlMessage<>(GlobalMetadata.<String>builder().schema("Schema1").build()),
             new MetadataUpdateControlMessage<>(GlobalMetadata.<String>builder().schema("Schema2").build())));
-
-    Assert.assertEquals(writer.records, Lists.newArrayList("a:schema", "b:Schema1"));
-    Assert.assertEquals(writer.messages, Lists.newArrayList(new MetadataUpdateControlMessage<>(
-        GlobalMetadata.<String>builder().schema("Schema1").build()),
-        new MetadataUpdateControlMessage<>(GlobalMetadata.<String>builder().schema("Schema2").build())));
-  }
+	return writer;
+}
 
   /**
    * Test with the converter configured in the list of {@link RecordStreamProcessor}s.
