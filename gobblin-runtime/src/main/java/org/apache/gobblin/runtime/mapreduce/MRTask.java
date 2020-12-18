@@ -96,8 +96,7 @@ public class MRTask extends BaseAbstractTask {
       Job job = createJob();
 
       if (job == null) {
-        log.info("No MR job created. Skipping.");
-        this.workingState = WorkUnitState.WorkingState.SUCCESSFUL;
+        extracted();
         this.eventSubmitter.submit(Events.MR_JOB_SKIPPED);
         onSkippedMRJob();
         return;
@@ -128,6 +127,11 @@ public class MRTask extends BaseAbstractTask {
       this.onMRTaskComplete (false, t);
     }
   }
+
+private void extracted() {
+	log.info("No MR job created. Skipping.");
+	this.workingState = WorkUnitState.WorkingState.SUCCESSFUL;
+}
 
   protected Map<String, String> additionalEventMetadata() {
     return Maps.newHashMap();
