@@ -37,7 +37,17 @@ public class CountUpAndDownLatchTest {
 
     ExecutorService executorService = null;
     try {
-      executorService = Executors.newFixedThreadPool(1);
+      executorService = extracted();
+    } finally {
+      if (executorService != null) {
+        executorService.shutdownNow();
+      }
+    }
+  }
+
+private ExecutorService extracted() throws InterruptedException {
+	ExecutorService executorService;
+	executorService = Executors.newFixedThreadPool(1);
 
       CountUpAndDownLatch countUpAndDownLatch = new CountUpAndDownLatch(1);
 
@@ -59,11 +69,7 @@ public class CountUpAndDownLatchTest {
 
       countUpAndDownLatch.countDown();
       Assert.assertTrue(countUpAndDownLatch.await(1, TimeUnit.SECONDS));
-    } finally {
-      if (executorService != null) {
-        executorService.shutdownNow();
-      }
-    }
-  }
+	return executorService;
+}
 
 }
