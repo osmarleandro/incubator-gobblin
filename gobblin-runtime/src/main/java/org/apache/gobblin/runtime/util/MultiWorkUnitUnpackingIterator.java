@@ -47,16 +47,21 @@ public class MultiWorkUnitUnpackingIterator implements Iterator<WorkUnit> {
 
   @Override
   public WorkUnit next() {
-    // In case, the caller forgets to call hasNext()
-    seekNext();
-
-    WorkUnit wu = nextWu;
+    WorkUnit wu = extracted();
     if (nextWu instanceof MultiWorkUnit) {
       wu = this.currentIterator.next();
     }
     needSeek = true;
     return wu;
   }
+
+private WorkUnit extracted() {
+	// In case, the caller forgets to call hasNext()
+    seekNext();
+
+    WorkUnit wu = nextWu;
+	return wu;
+}
 
   /** Seek to the next available work unit, skipping all empty work units */
   private void seekNext() {
