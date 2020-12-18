@@ -354,11 +354,7 @@ final class SafeDatasetCommit implements Callable<Void> {
   private Optional<CommitSequence.Builder> generateCommitSequenceBuilder(JobState.DatasetState datasetState,
       Collection<TaskState> taskStates) {
     try (Closer closer = Closer.create()) {
-      Class<? extends CommitSequencePublisher> dataPublisherClass = (Class<? extends CommitSequencePublisher>) Class
-          .forName(datasetState
-              .getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE, ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
-      CommitSequencePublisher publisher = (CommitSequencePublisher) closer
-          .register(DataPublisher.getInstance(dataPublisherClass, this.jobContext.getJobState()));
+      CommitSequencePublisher publisher = extracted(datasetState, closer);
       publisher.publish(taskStates);
       return publisher.getCommitSequenceBuilder();
     } catch (Throwable t) {
@@ -367,6 +363,16 @@ final class SafeDatasetCommit implements Callable<Void> {
       throw Throwables.propagate(t);
     }
   }
+
+private CommitSequencePublisher extracted(JobState.DatasetState datasetState, Closer closer)
+		throws ClassNotFoundException, ReflectiveOperationException {
+	Class<? extends CommitSequencePublisher> dataPublisherClass = (Class<? extends CommitSequencePublisher>) Class
+          .forName(datasetState
+              .getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE, ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
+      CommitSequencePublisher publisher = (CommitSequencePublisher) closer
+          .register(DataPublisher.getInstance(dataPublisherClass, this.jobContext.getJobState()));
+	return publisher;
+}
 
   void checkForUnpublishedWUHandling(String datasetUrn, JobState.DatasetState datasetState,
       Class<? extends DataPublisher> dataPublisherClass, Closer closer)
