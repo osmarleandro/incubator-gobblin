@@ -603,8 +603,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
    */
   @SuppressWarnings("deprecation")
   private void addHDFSFiles(String jobFileList, Configuration conf) {
-    DistributedCache.createSymlink(conf);
-    jobFileList = PasswordManager.getInstance(this.jobProps).readPassword(jobFileList);
+    jobFileList = extracted(jobFileList, conf);
     for (String jobFile : SPLITTER.split(jobFileList)) {
       Path srcJobFile = new Path(jobFile);
       // Create a URI that is in the form path#symlink
@@ -614,6 +613,12 @@ public class MRJobLauncher extends AbstractJobLauncher {
       DistributedCache.addCacheFile(srcFileUri, conf);
     }
   }
+
+private String extracted(String jobFileList, Configuration conf) {
+	DistributedCache.createSymlink(conf);
+    jobFileList = PasswordManager.getInstance(this.jobProps).readPassword(jobFileList);
+	return jobFileList;
+}
 
   private void addHdfsJars(String hdfsJarFileList, Configuration conf) throws IOException {
     for (String jarFile : SPLITTER.split(hdfsJarFileList)) {
