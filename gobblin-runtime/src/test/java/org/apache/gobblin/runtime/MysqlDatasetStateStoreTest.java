@@ -238,8 +238,7 @@ public class MysqlDatasetStateStoreTest {
 
   @Test(dependsOnMethods = { "testGetDatasetState" })
   public void testGetStoreNames() throws IOException {
-    List<String> storeNames = this.dbJobStateStore.getStoreNames(Predicates.alwaysTrue());
-    Collections.sort(storeNames);
+    List<String> storeNames = extracted();
 
     Assert.assertTrue(storeNames.size() == 3);
     Assert.assertEquals(storeNames.get(0), TEST_JOB_NAME);
@@ -254,6 +253,12 @@ public class MysqlDatasetStateStoreTest {
     Assert.assertEquals(storeNames.get(0), TEST_JOB_NAME);
     Assert.assertEquals(storeNames.get(1), TEST_JOB_NAME2);
   }
+
+private List<String> extracted() throws IOException {
+	List<String> storeNames = this.dbJobStateStore.getStoreNames(Predicates.alwaysTrue());
+    Collections.sort(storeNames);
+	return storeNames;
+}
 
   @Test(dependsOnMethods = "testGetStoreNames")
   public void testGetPreviousDatasetStatesByUrns() throws IOException {
