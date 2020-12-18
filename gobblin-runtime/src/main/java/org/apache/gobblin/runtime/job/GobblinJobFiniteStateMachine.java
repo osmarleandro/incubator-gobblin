@@ -168,13 +168,18 @@ public class GobblinJobFiniteStateMachine extends FiniteStateMachine<GobblinJobF
 	}
 
 	private static SetMultimap<JobFSMState, JobFSMState> buildAllowedTransitions() {
-		SetMultimap<JobFSMState, JobFSMState> transitions = HashMultimap.create();
-		transitions.put(new JobFSMState(StateType.PREPARING), new JobFSMState(StateType.RUNNING));
+		SetMultimap<JobFSMState, JobFSMState> transitions = extracted();
 		transitions.put(new JobFSMState(StateType.PREPARING), new JobFSMState(StateType.FAILED));
 		transitions.put(new JobFSMState(StateType.PREPARING), new JobFSMState(StateType.INTERRUPTED));
 		transitions.put(new JobFSMState(StateType.RUNNING), new JobFSMState(StateType.SUCCESS));
 		transitions.put(new JobFSMState(StateType.RUNNING), new JobFSMState(StateType.FAILED));
 		transitions.put(new JobFSMState(StateType.RUNNING), new JobFSMState(StateType.INTERRUPTED));
+		return transitions;
+	}
+
+	private static SetMultimap<JobFSMState, JobFSMState> extracted() {
+		SetMultimap<JobFSMState, JobFSMState> transitions = HashMultimap.create();
+		transitions.put(new JobFSMState(StateType.PREPARING), new JobFSMState(StateType.RUNNING));
 		return transitions;
 	}
 }
