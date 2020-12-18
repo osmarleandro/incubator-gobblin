@@ -261,14 +261,7 @@ public class FsDatasetStateStore extends FsStateStore<JobState.DatasetState> imp
       try {
         Text key = new Text();
         while (reader.next(key)) {
-          writable = reader.getCurrentValue(writable);
-          if (writable instanceof JobState.DatasetState) {
-            states.add((JobState.DatasetState) writable);
-            writable = new JobState.DatasetState();
-          } else {
-            states.add(((JobState) writable).newDatasetState(true));
-            writable = new JobState();
-          }
+          writable = extracted(states, reader, writable);
         }
       } catch (Exception e) {
         throw new IOException(e);
@@ -276,6 +269,19 @@ public class FsDatasetStateStore extends FsStateStore<JobState.DatasetState> imp
     }
     return states;
   }
+
+private Object extracted(List<JobState.DatasetState> states, GobblinSequenceFileReader reader, Object writable)
+		throws IOException {
+	writable = reader.getCurrentValue(writable);
+	  if (writable instanceof JobState.DatasetState) {
+	    states.add((JobState.DatasetState) writable);
+	    writable = new JobState.DatasetState();
+	  } else {
+	    states.add(((JobState) writable).newDatasetState(true));
+	    writable = new JobState();
+	  }
+	return writable;
+}
 
   @Override
   public List<JobState.DatasetState> getAll(String storeName)
