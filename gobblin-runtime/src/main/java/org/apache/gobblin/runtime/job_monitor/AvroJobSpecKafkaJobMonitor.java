@@ -120,11 +120,7 @@ public class AvroJobSpecKafkaJobMonitor extends KafkaAvroJobMonitor<AvroJobSpec>
         .withDescription(record.getDescription()).withConfigAsProperties(props).withMetadata(record.getMetadata());
 
     if (!record.getTemplateUri().isEmpty()) {
-      try {
-        jobSpecBuilder.withTemplate(new URI(record.getTemplateUri()));
-      } catch (URISyntaxException e) {
-        log.error("could not parse template URI " + record.getTemplateUri());
-      }
+      extracted(record, jobSpecBuilder);
     }
 
     String verbName = record.getMetadata().get(VERB_KEY);
@@ -140,4 +136,12 @@ public class AvroJobSpecKafkaJobMonitor extends KafkaAvroJobMonitor<AvroJobSpec>
       return Lists.newArrayList(Either.right(jobSpec.getUri()));
     }
   }
+
+private void extracted(AvroJobSpec record, JobSpec.Builder jobSpecBuilder) {
+	try {
+        jobSpecBuilder.withTemplate(new URI(record.getTemplateUri()));
+      } catch (URISyntaxException e) {
+        log.error("could not parse template URI " + record.getTemplateUri());
+      }
+}
 }
