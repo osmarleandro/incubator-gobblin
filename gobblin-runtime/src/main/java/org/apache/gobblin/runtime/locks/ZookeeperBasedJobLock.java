@@ -186,7 +186,11 @@ public class ZookeeperBasedJobLock implements ListenableJobLock {
       newCuratorFramework.getConnectionStateListenable().addListener(new ConnectionStateListener() {
           @Override
           public void stateChanged(CuratorFramework curatorFramework, ConnectionState connectionState) {
-            switch (connectionState) {
+            extracted(connectionState);
+          }
+
+		private void extracted(ConnectionState connectionState) {
+			switch (connectionState) {
               case LOST:
                 log.warn("Lost connection with zookeeper");
                 for (Map.Entry<String, JobLockEventListener> lockEventListener : lockEventListeners.entrySet()) {
@@ -211,7 +215,7 @@ public class ZookeeperBasedJobLock implements ListenableJobLock {
                 log.warn("Zookeeper connection went into read-only mode");
                 break;
             }
-          }
+		}
       });
       newCuratorFramework.start();
       try {
