@@ -198,15 +198,7 @@ public class JobLauncherTestHelper {
   }
 
   public void runTestWithFork(Properties jobProps) throws Exception {
-    String jobName = jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
-    String jobId = JobLauncherUtils.newJobId(jobName).toString();
-    jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY, jobId);
-
-    try (JobLauncher jobLauncher = JobLauncherFactory.newJobLauncher(this.launcherProps, jobProps)) {
-      jobLauncher.launchJob(null);
-    }
-
-    List<JobState.DatasetState> datasetStateList = this.datasetStateStore.getAll(jobName, sanitizeJobNameForDatasetStore(jobId) + ".jst");
+    List<JobState.DatasetState> datasetStateList = extracted(jobProps);
     DatasetState datasetState = datasetStateList.get(0);
 
     Assert.assertEquals(datasetState.getState(), JobState.RunningState.COMMITTED);
@@ -231,6 +223,19 @@ public class JobLauncherTestHelper {
           TestExtractor.TOTAL_RECORDS);
     }
   }
+
+private List<JobState.DatasetState> extracted(Properties jobProps) throws JobException, IOException, Exception {
+	String jobName = jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+    String jobId = JobLauncherUtils.newJobId(jobName).toString();
+    jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY, jobId);
+
+    try (JobLauncher jobLauncher = JobLauncherFactory.newJobLauncher(this.launcherProps, jobProps)) {
+      jobLauncher.launchJob(null);
+    }
+
+    List<JobState.DatasetState> datasetStateList = this.datasetStateStore.getAll(jobName, sanitizeJobNameForDatasetStore(jobId) + ".jst");
+	return datasetStateList;
+}
 
   public void runTestWithMultipleDatasets(Properties jobProps) throws Exception {
     String jobName = jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
