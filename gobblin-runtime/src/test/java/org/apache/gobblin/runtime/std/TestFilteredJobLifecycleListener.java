@@ -44,7 +44,11 @@ public class TestFilteredJobLifecycleListener {
     Config config = ConfigFactory.empty()
         .withValue(ConfigurationKeys.JOB_NAME_KEY, ConfigValueFactory.fromAnyRef("myJob"));
     JobSpec js1_1 = JobSpec.builder("gobblin:/testSimple/job1").withVersion("1").withConfig(config).build();
-    JobSpec js1_2 = JobSpec.builder("gobblin:/testSimple/job1").withVersion("2").withConfig(config).build();
+    extracted(config, js1_1);
+  }
+
+private void extracted(Config config, JobSpec js1_1) {
+	JobSpec js1_2 = JobSpec.builder("gobblin:/testSimple/job1").withVersion("2").withConfig(config).build();
 
     JobLifecycleListener mockListener = mock(JobLifecycleListener.class);
 
@@ -92,5 +96,5 @@ public class TestFilteredJobLifecycleListener {
                                                  eq(RunningState.RUNNING));
     verify(mockListener, never()).onStageTransition(eq(jss1_1), eq("Stage1"), eq("Stage2"));
     verify(mockListener, never()).onMetadataChange(eq(jss1_1), eq("metaKey"), eq("value1"), eq("value2"));
-  }
+}
 }
