@@ -99,11 +99,7 @@ public class FsDatasetStateStoreTest {
 
   @Test(dependsOnMethods = "testPersistJobState")
   public void testGetJobState() throws IOException {
-    JobState jobState = this.fsDatasetStateStore.get(TEST_JOB_NAME,
-        FsDatasetStateStore.CURRENT_DATASET_STATE_FILE_SUFFIX + FsDatasetStateStore.DATASET_STATE_STORE_TABLE_SUFFIX,
-        TEST_JOB_ID);
-
-    Assert.assertEquals(jobState.getJobName(), TEST_JOB_NAME);
+    JobState jobState = extracted();
     Assert.assertEquals(jobState.getJobId(), TEST_JOB_ID);
     Assert.assertEquals(jobState.getState(), JobState.RunningState.COMMITTED);
     Assert.assertEquals(jobState.getStartTime(), this.startTime);
@@ -119,6 +115,15 @@ public class FsDatasetStateStoreTest {
       Assert.assertEquals(taskState.getWorkingState(), WorkUnitState.WorkingState.COMMITTED);
     }
   }
+
+private JobState extracted() throws IOException {
+	JobState jobState = this.fsDatasetStateStore.get(TEST_JOB_NAME,
+        FsDatasetStateStore.CURRENT_DATASET_STATE_FILE_SUFFIX + FsDatasetStateStore.DATASET_STATE_STORE_TABLE_SUFFIX,
+        TEST_JOB_ID);
+
+    Assert.assertEquals(jobState.getJobName(), TEST_JOB_NAME);
+	return jobState;
+}
 
   @Test(dependsOnMethods = "testGetJobState")
   public void testPersistDatasetState() throws IOException {
