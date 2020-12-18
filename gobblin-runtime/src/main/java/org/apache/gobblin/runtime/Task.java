@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -530,17 +531,21 @@ public class Task implements TaskIFace {
 
     for (Optional<Future<?>> forkFuture : this.forks.values()) {
       if (forkFuture.isPresent()) {
-        try {
-          long forkFutureStartTime = System.nanoTime();
-          forkFuture.get().get();
-          long forkDuration = System.nanoTime() - forkFutureStartTime;
-          LOG.info("Task shutdown: Fork future reaped in {} millis", forkDuration / 1000000);
-        } catch (InterruptedException ie) {
-          Thread.currentThread().interrupt();
-        }
+        extracted(forkFuture);
       }
     }
   }
+
+private void extracted(Optional<Future<?>> forkFuture) throws ExecutionException {
+	try {
+	  long forkFutureStartTime = System.nanoTime();
+	  forkFuture.get().get();
+	  long forkDuration = System.nanoTime() - forkFutureStartTime;
+	  LOG.info("Task shutdown: Fork future reaped in {} millis", forkDuration / 1000000);
+	} catch (InterruptedException ie) {
+	  Thread.currentThread().interrupt();
+	}
+}
 
   protected void configureStreamingFork(Fork fork) throws IOException {
     if (isStreamingTask()) {
