@@ -42,9 +42,7 @@ public class FlowSpecSerializer implements JsonSerializer<FlowSpec> {
 
   @Override
   public JsonElement serialize(FlowSpec src, Type typeOfSrc, JsonSerializationContext context) {
-    JsonObject flowSpecJson = new JsonObject();
-
-    flowSpecJson.add(FLOW_SPEC_URI_KEY, context.serialize(src.getUri()));
+    JsonObject flowSpecJson = extracted(src, context);
     flowSpecJson.add(FLOW_SPEC_VERSION_KEY, context.serialize(src.getVersion()));
     flowSpecJson.add(FLOW_SPEC_DESCRIPTION_KEY, context.serialize(src.getDescription()));
     flowSpecJson.add(FLOW_SPEC_CONFIG_KEY, context.serialize(src.getConfig().root().render(ConfigRenderOptions.concise())));
@@ -69,4 +67,11 @@ public class FlowSpecSerializer implements JsonSerializer<FlowSpec> {
 
     return flowSpecJson;
   }
+
+private JsonObject extracted(FlowSpec src, JsonSerializationContext context) {
+	JsonObject flowSpecJson = new JsonObject();
+
+    flowSpecJson.add(FLOW_SPEC_URI_KEY, context.serialize(src.getUri()));
+	return flowSpecJson;
+}
 }
