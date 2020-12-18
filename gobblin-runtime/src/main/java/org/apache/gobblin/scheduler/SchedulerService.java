@@ -66,12 +66,16 @@ public class SchedulerService extends AbstractIdleService {
 
   @Override protected void startUp() throws SchedulerException  {
     StdSchedulerFactory schedulerFactory = new StdSchedulerFactory();
-    if (this.quartzProps.isPresent() && this.quartzProps.get().size() > 0) {
+    extracted(schedulerFactory);
+    this.scheduler.start();
+  }
+
+private void extracted(StdSchedulerFactory schedulerFactory) throws SchedulerException {
+	if (this.quartzProps.isPresent() && this.quartzProps.get().size() > 0) {
       schedulerFactory.initialize(this.quartzProps.get());
     }
     this.scheduler = schedulerFactory.getScheduler();
-    this.scheduler.start();
-  }
+}
 
   @Override protected void shutDown() throws SchedulerException  {
     this.scheduler.shutdown(this.waitForJobCompletion);
