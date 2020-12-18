@@ -91,8 +91,7 @@ public class FlowCatalogTest {
    * Create FLowSpec with specified URI and SpecStore location.
    */
   public static FlowSpec initFlowSpec(String specStore, URI uri){
-    Properties properties = new Properties();
-    properties.put("specStore.fs.dir", specStore);
+    Properties properties = extracted(specStore);
     properties.put("specExecInstance.capabilities", "source:destination");
     Config config = ConfigUtils.propertiesToConfig(properties);
 
@@ -106,6 +105,12 @@ public class FlowCatalogTest {
         .withTemplate(URI.create("templateURI"));
     return flowSpecBuilder.build();
   }
+
+private static Properties extracted(String specStore) {
+	Properties properties = new Properties();
+    properties.put("specStore.fs.dir", specStore);
+	return properties;
+}
 
   @AfterClass
   public void cleanUp() throws Exception {
