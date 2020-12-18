@@ -586,7 +586,18 @@ public class GobblinMultiTaskAttempt {
       SharedResourcesBroker<GobblinScopeTypes> jobBroker, Predicate<GobblinMultiTaskAttempt> interruptionPredicate)
       throws IOException, InterruptedException {
 
-    // dump the work unit if tracking logs are enabled
+    GobblinMultiTaskAttempt multiTaskAttempt = extracted(jobId, containerId, jobState, workUnits, taskStateTracker,
+			taskExecutor, taskStateStore, jobBroker);
+    multiTaskAttempt.setInterruptionPredicate(interruptionPredicate);
+
+    multiTaskAttempt.runAndOptionallyCommitTaskAttempt(multiTaskAttemptCommitPolicy);
+    return multiTaskAttempt;
+  }
+
+private static GobblinMultiTaskAttempt extracted(String jobId, String containerId, JobState jobState,
+		List<WorkUnit> workUnits, TaskStateTracker taskStateTracker, TaskExecutor taskExecutor,
+		StateStore<TaskState> taskStateStore, SharedResourcesBroker<GobblinScopeTypes> jobBroker) {
+	// dump the work unit if tracking logs are enabled
     if (jobState.getPropAsBoolean(ConfigurationKeys.WORK_UNIT_ENABLE_TRACKING_LOGS)) {
       Logger log = LoggerFactory.getLogger(GobblinMultiTaskAttempt.class.getName());
       log.info("Work unit tracking log: {}", workUnits);
@@ -595,9 +606,6 @@ public class GobblinMultiTaskAttempt {
     GobblinMultiTaskAttempt multiTaskAttempt =
         new GobblinMultiTaskAttempt(workUnits.iterator(), jobId, jobState, taskStateTracker, taskExecutor,
             Optional.of(containerId), Optional.of(taskStateStore), jobBroker);
-    multiTaskAttempt.setInterruptionPredicate(interruptionPredicate);
-
-    multiTaskAttempt.runAndOptionallyCommitTaskAttempt(multiTaskAttemptCommitPolicy);
-    return multiTaskAttempt;
-  }
+	return multiTaskAttempt;
+}
 }
