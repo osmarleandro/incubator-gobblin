@@ -138,10 +138,7 @@ public class InheritingJobTemplateTest {
 
   @Test
   public void testSatisfySuperTemplateRequirements() throws Exception {
-    TestTemplate template1 = new TestTemplate(new URI("template1"), Lists.<JobTemplate>newArrayList(), ImmutableMap.of("key1", "value1"),
-        Lists.newArrayList("required"));
-    TestTemplate template2 = new TestTemplate(new URI("template2"), Lists.<JobTemplate>newArrayList(template1), ImmutableMap.of("required", "r1"),
-        Lists.newArrayList("required2"));
+    TestTemplate template2 = extracted();
 
     Collection<String> required = template2.getRequiredConfigList();
     Assert.assertEquals(required.size(), 1);
@@ -156,6 +153,14 @@ public class InheritingJobTemplateTest {
     Assert.assertEquals(resolved.getString("required"), "r1");
     Assert.assertEquals(resolved.getString("required2"), "r2");
   }
+
+private TestTemplate extracted() throws URISyntaxException {
+	TestTemplate template1 = new TestTemplate(new URI("template1"), Lists.<JobTemplate>newArrayList(), ImmutableMap.of("key1", "value1"),
+        Lists.newArrayList("required"));
+    TestTemplate template2 = new TestTemplate(new URI("template2"), Lists.<JobTemplate>newArrayList(template1), ImmutableMap.of("required", "r1"),
+        Lists.newArrayList("required2"));
+	return template2;
+}
 
   @AllArgsConstructor
   public static class TestTemplateAnswer implements Answer<JobTemplate> {
