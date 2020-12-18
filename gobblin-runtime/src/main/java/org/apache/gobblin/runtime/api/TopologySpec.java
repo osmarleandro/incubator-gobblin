@@ -84,10 +84,7 @@ public class TopologySpec implements Configurable, Spec {
    */
   public synchronized SpecExecutor getSpecExecutor() {
     if (null == specExecutorInstance) {
-      String specExecutorClass = DEFAULT_SPEC_EXECUTOR_INSTANCE;
-      if (config.hasPath(SPEC_EXECUTOR_INSTANCE_KEY)) {
-        specExecutorClass = config.getString(SPEC_EXECUTOR_INSTANCE_KEY);
-      }
+      String specExecutorClass = extracted();
       try {
         ClassAliasResolver<SpecExecutor> _aliasResolver =
             new ClassAliasResolver<>(SpecExecutor.class);
@@ -101,6 +98,14 @@ public class TopologySpec implements Configurable, Spec {
     }
     return specExecutorInstance;
   }
+
+private String extracted() {
+	String specExecutorClass = DEFAULT_SPEC_EXECUTOR_INSTANCE;
+      if (config.hasPath(SPEC_EXECUTOR_INSTANCE_KEY)) {
+        specExecutorClass = config.getString(SPEC_EXECUTOR_INSTANCE_KEY);
+      }
+	return specExecutorClass;
+}
 
   public static TopologySpec.Builder builder(URI topologySpecUri) {
     return new TopologySpec.Builder(topologySpecUri);
