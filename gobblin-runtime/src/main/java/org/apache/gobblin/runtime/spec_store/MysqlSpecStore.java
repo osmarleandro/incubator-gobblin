@@ -251,12 +251,16 @@ public class MysqlSpecStore extends InstrumentedSpecStore {
   public Iterator<URI> getSpecURIsWithTag(String tag) throws IOException {
     try (Connection connection = this.dataSource.getConnection();
         PreparedStatement statement = connection.prepareStatement(String.format(GET_ALL_STATEMENT_WITH_TAG, this.tableName))) {
-      statement.setString(1, tag);
-      return getURIIteratorByQuery(statement);
+      return extracted(tag, statement);
     } catch (SQLException e) {
       throw new IOException(e);
     }
   }
+
+private Iterator<URI> extracted(String tag, PreparedStatement statement) throws SQLException {
+	statement.setString(1, tag);
+      return getURIIteratorByQuery(statement);
+}
 
   private Iterator<URI> getURIIteratorByQuery(PreparedStatement statement) throws SQLException {
     List<URI> specs = new ArrayList<>();
