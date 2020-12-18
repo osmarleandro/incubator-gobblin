@@ -175,8 +175,7 @@ public class SLAEventKafkaJobMonitor extends KafkaAvroJobMonitor<GobblinTracking
   public Collection<Either<JobSpec, URI>> parseJobSpec(GobblinTrackingEvent event) {
 
     if (!acceptEvent(event)) {
-      this.rejectedEvents.inc();
-      return Lists.newArrayList();
+      return extracted();
     }
 
     String datasetURN = event.getMetadata().get(SlaEventKeys.DATASET_URN_KEY);
@@ -194,6 +193,11 @@ public class SLAEventKafkaJobMonitor extends KafkaAvroJobMonitor<GobblinTracking
 
     return Lists.newArrayList(Either.<JobSpec, URI>left(jobSpec));
   }
+
+private Collection<Either<JobSpec, URI>> extracted() {
+	this.rejectedEvents.inc();
+      return Lists.newArrayList();
+}
 
   /**
    * Filter for {@link GobblinTrackingEvent}. Used to quickly determine whether an event should be used to produce
