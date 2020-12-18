@@ -18,6 +18,7 @@
 package org.apache.gobblin.runtime.kafka;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -152,16 +153,23 @@ public abstract class HighLevelConsumer<K,V> extends AbstractIdleService {
     String kafkaConsumerClientClass = config.getString(CONSUMER_CLIENT_FACTORY_CLASS_KEY);
 
     try {
-      Class clientFactoryClass = Class.forName(kafkaConsumerClientClass);
-      final GobblinKafkaConsumerClient.GobblinKafkaConsumerClientFactory factory =
-          (GobblinKafkaConsumerClient.GobblinKafkaConsumerClientFactory)
-              ConstructorUtils.invokeConstructor(clientFactoryClass);
+      final GobblinKafkaConsumerClient.GobblinKafkaConsumerClientFactory factory = extracted(kafkaConsumerClientClass);
 
       return factory.create(config);
     } catch (ReflectiveOperationException e) {
       throw new RuntimeException("Failed to instantiate Kafka consumer client " + kafkaConsumerClientClass, e);
     }
   }
+
+private GobblinKafkaConsumerClient.GobblinKafkaConsumerClientFactory extracted(String kafkaConsumerClientClass)
+		throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException,
+		InstantiationException {
+	Class clientFactoryClass = Class.forName(kafkaConsumerClientClass);
+      final GobblinKafkaConsumerClient.GobblinKafkaConsumerClientFactory factory =
+          (GobblinKafkaConsumerClient.GobblinKafkaConsumerClientFactory)
+              ConstructorUtils.invokeConstructor(clientFactoryClass);
+	return factory;
+}
 
   /**
    * Called once on {@link #startUp()} to start metrics.
