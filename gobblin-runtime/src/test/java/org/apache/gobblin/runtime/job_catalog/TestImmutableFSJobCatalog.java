@@ -37,12 +37,7 @@ public class TestImmutableFSJobCatalog {
 
   @Test
   public void testConfigAccessor() throws Exception {
-    Config sysConfig1 = ConfigFactory.parseMap(ImmutableMap.<String, Object>builder()
-        .put(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY, "/tmp")
-        .build());
-
-    ImmutableFSJobCatalog.ConfigAccessor cfgAccessor1 =
-        new ImmutableFSJobCatalog.ConfigAccessor(sysConfig1);
+    ImmutableFSJobCatalog.ConfigAccessor cfgAccessor1 = extracted();
 
     Assert.assertEquals(cfgAccessor1.getJobConfDir(), "/tmp");
     Assert.assertEquals(cfgAccessor1.getJobConfDirPath(), new Path("/tmp"));
@@ -70,5 +65,15 @@ public class TestImmutableFSJobCatalog {
       }
     });
   }
+
+private ImmutableFSJobCatalog.ConfigAccessor extracted() {
+	Config sysConfig1 = ConfigFactory.parseMap(ImmutableMap.<String, Object>builder()
+        .put(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY, "/tmp")
+        .build());
+
+    ImmutableFSJobCatalog.ConfigAccessor cfgAccessor1 =
+        new ImmutableFSJobCatalog.ConfigAccessor(sysConfig1);
+	return cfgAccessor1;
+}
 
 }
