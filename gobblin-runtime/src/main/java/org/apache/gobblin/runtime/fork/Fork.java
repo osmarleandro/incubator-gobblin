@@ -439,14 +439,7 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
   @Override
   public void close()
       throws IOException {
-    // Tell this fork that the parent task is done. This is a second chance call if the parent
-    // task failed and didn't do so through the normal way of calling markParentTaskDone().
-    this.parentTaskDone = true;
-
-    // Record the fork state into the task state that will be persisted into the state store
-    this.taskState.setProp(
-        ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.FORK_STATE_KEY, this.branches, this.index),
-        this.forkState.get().name());
+    extracted();
 
     try {
       this.closer.close();
@@ -456,6 +449,17 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
       }
     }
   }
+
+private void extracted() {
+	// Tell this fork that the parent task is done. This is a second chance call if the parent
+    // task failed and didn't do so through the normal way of calling markParentTaskDone().
+    this.parentTaskDone = true;
+
+    // Record the fork state into the task state that will be persisted into the state store
+    this.taskState.setProp(
+        ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.FORK_STATE_KEY, this.branches, this.index),
+        this.forkState.get().name());
+}
 
   /**
    * Get the number of records written by this {@link Fork}.
