@@ -247,15 +247,20 @@ public class LocalJobLauncherTest {
 
   @Test
   public void testLaunchJobWithMultipleDatasets() throws Exception {
-    Properties jobProps = loadJobProps();
-    jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,
-        jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithMultipleDatasets");
+    Properties jobProps = extracted();
     try {
       this.jobLauncherTestHelper.runTestWithMultipleDatasets(jobProps);
     } finally {
       this.jobLauncherTestHelper.deleteStateStore(jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY));
     }
   }
+
+private Properties extracted() throws IOException {
+	Properties jobProps = loadJobProps();
+    jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,
+        jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithMultipleDatasets");
+	return jobProps;
+}
 
   @Test
   public void testLaunchJobWithCommitSuccessfulTasksPolicy() throws Exception {
