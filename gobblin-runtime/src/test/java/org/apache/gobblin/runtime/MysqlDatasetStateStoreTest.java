@@ -173,9 +173,7 @@ public class MysqlDatasetStateStoreTest {
 
   @Test(dependsOnMethods = "testGetJobState")
   public void testPersistDatasetState() throws IOException {
-    JobState.DatasetState datasetState = new JobState.DatasetState(TEST_JOB_NAME, TEST_JOB_ID);
-
-    datasetState.setDatasetUrn(TEST_DATASET_URN);
+    JobState.DatasetState datasetState = extracted();
     datasetState.setState(JobState.RunningState.COMMITTED);
     datasetState.setId(TEST_DATASET_URN);
     datasetState.setStartTime(this.startTime);
@@ -211,6 +209,13 @@ public class MysqlDatasetStateStoreTest {
     datasetState.setJobName(TEST_JOB_NAME2);
     dbDatasetStateStore.persistDatasetState(TEST_DATASET_URN2, datasetState);
   }
+
+private JobState.DatasetState extracted() {
+	JobState.DatasetState datasetState = new JobState.DatasetState(TEST_JOB_NAME, TEST_JOB_ID);
+
+    datasetState.setDatasetUrn(TEST_DATASET_URN);
+	return datasetState;
+}
 
   @Test(dependsOnMethods = "testPersistDatasetState")
   public void testGetDatasetState() throws IOException {
