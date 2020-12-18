@@ -584,12 +584,16 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
     if (monitoredObject == null) {
       return null;
     }
-    if (!(monitoredObject instanceof RunningState)) {
+    return extracted(monitoredObject);
+  }
+
+private RunningState extracted(MonitoredObject monitoredObject) {
+	if (!(monitoredObject instanceof RunningState)) {
       throw new UnsupportedOperationException("Cannot process monitored object other than " + JobState.RunningState.class.getName());
     }
 
     return (RunningState) monitoredObject;
-  }
+}
 
   @Override public boolean cancel(boolean mayInterruptIfRunning) {
     // FIXME there is a race condition here as the job may complete successfully before we
