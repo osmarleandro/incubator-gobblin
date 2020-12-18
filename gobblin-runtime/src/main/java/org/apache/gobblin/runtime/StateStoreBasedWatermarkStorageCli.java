@@ -138,10 +138,7 @@ public class StateStoreBasedWatermarkStorageCli implements CliApplication {
       do {
         boolean foundWatermark = false;
         try {
-          for (CheckpointableWatermarkState wmState : stateStoreBasedWatermarkStorage.getAllCommittedWatermarks()) {
-            foundWatermark = true;
-            System.out.println(wmState.getProperties());
-          }
+          foundWatermark = extracted(stateStoreBasedWatermarkStorage, foundWatermark);
         } catch (IOException ie) {
           Throwables.propagate(ie);
         }
@@ -157,6 +154,16 @@ public class StateStoreBasedWatermarkStorageCli implements CliApplication {
       Throwables.propagate(e);
     }
   }
+
+
+private boolean extracted(StateStoreBasedWatermarkStorage stateStoreBasedWatermarkStorage, boolean foundWatermark)
+		throws IOException {
+	for (CheckpointableWatermarkState wmState : stateStoreBasedWatermarkStorage.getAllCommittedWatermarks()) {
+	    foundWatermark = true;
+	    System.out.println(wmState.getProperties());
+	  }
+	return foundWatermark;
+}
 
 
   private void printUsage(Options options) {
