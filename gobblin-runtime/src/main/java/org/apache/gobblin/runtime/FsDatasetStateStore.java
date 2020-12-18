@@ -383,12 +383,7 @@ public class FsDatasetStateStore extends FsStateStore<JobState.DatasetState> imp
     String jobId = datasetState.getJobId();
 
     datasetUrn = CharMatcher.is(':').replaceFrom(datasetUrn, '.');
-    String datasetStatestoreName = sanitizeDatasetStatestoreNameFromDatasetURN(jobName, datasetUrn);
-    String tableName = Strings.isNullOrEmpty(datasetUrn) ? sanitizeJobId(jobId) + DATASET_STATE_STORE_TABLE_SUFFIX
-        : datasetStatestoreName + "-" + sanitizeJobId(jobId) + DATASET_STATE_STORE_TABLE_SUFFIX;
-    LOGGER.info("Persisting " + tableName + " to the job state store");
-    put(jobName, tableName, datasetState);
-    createAlias(jobName, tableName, getAliasName(datasetStatestoreName));
+    String datasetStatestoreName = extracted(datasetUrn, datasetState, jobName, jobId);
 
     Path originalDatasetUrnPath = new Path(new Path(this.storeRootDir, jobName), getAliasName(datasetUrn));
     // This should only happen for the first time.
@@ -398,6 +393,17 @@ public class FsDatasetStateStore extends FsStateStore<JobState.DatasetState> imp
       fs.delete(originalDatasetUrnPath, true);
     }
   }
+
+private String extracted(String datasetUrn, JobState.DatasetState datasetState, String jobName, String jobId)
+		throws IOException {
+	String datasetStatestoreName = sanitizeDatasetStatestoreNameFromDatasetURN(jobName, datasetUrn);
+    String tableName = Strings.isNullOrEmpty(datasetUrn) ? sanitizeJobId(jobId) + DATASET_STATE_STORE_TABLE_SUFFIX
+        : datasetStatestoreName + "-" + sanitizeJobId(jobId) + DATASET_STATE_STORE_TABLE_SUFFIX;
+    LOGGER.info("Persisting " + tableName + " to the job state store");
+    put(jobName, tableName, datasetState);
+    createAlias(jobName, tableName, getAliasName(datasetStatestoreName));
+	return datasetStatestoreName;
+}
 
   private String sanitizeJobId(String jobId) {
     return jobId.replaceAll("[-/]", "_");
