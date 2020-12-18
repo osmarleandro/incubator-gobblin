@@ -87,9 +87,7 @@ public class LocalJobLauncherTest {
 
   @Test
   public void testJobTemplateResolutionInAbstractLauncher() throws Exception {
-    Properties jobProps = loadJobProps();
-    String jobId = JobLauncherUtils.newJobId("beforeResolution");
-    jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY, jobId);
+    Properties jobProps = extracted();
     jobProps.setProperty("job.name", "beforeResolution");
     jobProps.setProperty(GOBBLIN_JOB_TEMPLATE_KEY, "resource:///templates/distcp-ng.template");
 
@@ -105,10 +103,7 @@ public class LocalJobLauncherTest {
 
   @Test
   public void testMultipleJobTemplatesResoluion() throws Exception {
-    Properties jobProps = loadJobProps();
-    // Job Name shouldn't be overwritten by any templates and the precedence of template is lower than job configuration.
-    String jobId = JobLauncherUtils.newJobId("beforeResolution");
-    jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY, jobId);
+    Properties jobProps = extracted();
     jobProps.setProperty("job.name", "beforeResolution");
     jobProps.setProperty(GOBBLIN_JOB_MULTI_TEMPLATE_KEY,
         "resource:///templates/test.template,resource:///templates/test-overwrite.template");
@@ -139,6 +134,14 @@ public class LocalJobLauncherTest {
     // Picked an distcp-specific configuration that there's no default value being set in jobConf.
     Assert.assertEquals(jobContext.getJobState().getProp("distcp.persist.dir"), "/tmp/distcp-persist-dir");
   }
+
+private Properties extracted() throws IOException {
+	Properties jobProps = loadJobProps();
+    // Job Name shouldn't be overwritten by any templates and the precedence of template is lower than job configuration.
+    String jobId = JobLauncherUtils.newJobId("beforeResolution");
+    jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY, jobId);
+	return jobProps;
+}
 
   /**
    * Initialize a jobContext by initializing jobLauncher. This code is mostly used for
