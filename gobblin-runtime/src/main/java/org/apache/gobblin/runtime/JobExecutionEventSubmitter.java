@@ -66,9 +66,7 @@ public class JobExecutionEventSubmitter {
    * Submits an event for the given {@link JobState}.
    */
   private void submitJobStateEvent(JobState jobState) {
-    ImmutableMap.Builder<String, String> jobMetadataBuilder = new ImmutableMap.Builder<>();
-
-    jobMetadataBuilder.put(METADATA_JOB_ID, jobState.getJobId());
+    ImmutableMap.Builder<String, String> jobMetadataBuilder = extracted(jobState);
     jobMetadataBuilder.put(METADATA_JOB_NAME, jobState.getJobName());
     jobMetadataBuilder.put(METADATA_JOB_START_TIME, Long.toString(jobState.getStartTime()));
     jobMetadataBuilder.put(METADATA_JOB_END_TIME, Long.toString(jobState.getEndTime()));
@@ -82,13 +80,18 @@ public class JobExecutionEventSubmitter {
     this.eventSubmitter.submit(JOB_STATE, jobMetadataBuilder.build());
   }
 
+private ImmutableMap.Builder<String, String> extracted(JobState jobState) {
+	ImmutableMap.Builder<String, String> jobMetadataBuilder = new ImmutableMap.Builder<>();
+
+    jobMetadataBuilder.put(METADATA_JOB_ID, jobState.getJobId());
+	return jobMetadataBuilder;
+}
+
   /**
    * Submits an event for each {@link TaskState} in the given {@link JobState}.
    */
   private void submitTaskStateEvents(JobState jobState) {
-    // Build Job Metadata applicable for TaskStates
-    ImmutableMap.Builder<String, String> jobMetadataBuilder = new ImmutableMap.Builder<>();
-    jobMetadataBuilder.put(METADATA_JOB_ID, jobState.getJobId());
+    ImmutableMap.Builder<String, String> jobMetadataBuilder = extracted(jobState);
     jobMetadataBuilder.put(METADATA_JOB_NAME, jobState.getJobName());
     jobMetadataBuilder.put(METADATA_JOB_TRACKING_URL, jobState.getTrackingURL().or(UNKNOWN_VALUE));
     Map<String, String> jobMetadata = jobMetadataBuilder.build();
