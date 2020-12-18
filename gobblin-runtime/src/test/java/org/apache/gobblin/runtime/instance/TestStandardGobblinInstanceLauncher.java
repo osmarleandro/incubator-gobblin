@@ -102,13 +102,7 @@ public class TestStandardGobblinInstanceLauncher {
 
   private void checkLaunchJob(StandardGobblinInstanceLauncher instanceLauncher, JobSpec js1,
       GobblinInstanceDriver instance) throws TimeoutException, InterruptedException, ExecutionException {
-    JobExecutionDriver jobDriver = null;
-    JobExecutionMonitor monitor = instance.getJobLauncher().launchJob(js1);
-    if (monitor instanceof JobLauncherExecutionDriver.JobExecutionMonitorAndDriver) {
-      jobDriver = ((JobLauncherExecutionDriver.JobExecutionMonitorAndDriver) monitor).getDriver();
-    }
-
-    new Thread(jobDriver).run();
+    JobExecutionDriver jobDriver = extracted(js1, instance);
     JobExecutionResult jobResult = jobDriver.get(5, TimeUnit.SECONDS);
 
     Assert.assertTrue(jobResult.isSuccessful());
@@ -118,6 +112,18 @@ public class TestStandardGobblinInstanceLauncher {
     Assert.assertEquals(instance.getMetrics().getUpFlag().getValue().intValue(), 0);
     Assert.assertEquals(instance.getMetrics().getUptimeMs().getValue().longValue(), 0);
   }
+
+
+private JobExecutionDriver extracted(JobSpec js1, GobblinInstanceDriver instance) {
+	JobExecutionDriver jobDriver = null;
+    JobExecutionMonitor monitor = instance.getJobLauncher().launchJob(js1);
+    if (monitor instanceof JobLauncherExecutionDriver.JobExecutionMonitorAndDriver) {
+      jobDriver = ((JobLauncherExecutionDriver.JobExecutionMonitorAndDriver) monitor).getDriver();
+    }
+
+    new Thread(jobDriver).run();
+	return jobDriver;
+}
 
 
   @Test
