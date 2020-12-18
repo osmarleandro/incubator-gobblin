@@ -1036,11 +1036,15 @@ public class Task implements TaskIFace {
    */
   public synchronized boolean cancel() {
     if (this.taskFuture != null && this.taskFuture.cancel(true)) {
-      this.taskStateTracker.onTaskRunCompletion(this);
-      this.completeShutdown();
+      extracted();
       return true;
     } else {
       return false;
     }
   }
+
+private void extracted() {
+	this.taskStateTracker.onTaskRunCompletion(this);
+      this.completeShutdown();
+}
 }
