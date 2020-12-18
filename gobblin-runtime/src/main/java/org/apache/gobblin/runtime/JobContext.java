@@ -209,12 +209,16 @@ public class JobContext implements Closeable {
     boolean jobHistoryStoreEnabled = Boolean
         .valueOf(jobProps.getProperty(ConfigurationKeys.JOB_HISTORY_STORE_ENABLED_KEY, Boolean.FALSE.toString()));
     if (jobHistoryStoreEnabled) {
-      Injector injector = Guice.createInjector(new MetaStoreModule(jobProps));
-      return Optional.of(injector.getInstance(JobHistoryStore.class));
+      return extracted(jobProps);
     } else {
       return Optional.absent();
     }
   }
+
+private Optional<JobHistoryStore> extracted(Properties jobProps) {
+	Injector injector = Guice.createInjector(new MetaStoreModule(jobProps));
+      return Optional.of(injector.getInstance(JobHistoryStore.class));
+}
 
   protected Optional<CommitSequenceStore> createCommitSequenceStore()
       throws IOException {
