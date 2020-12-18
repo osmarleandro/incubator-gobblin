@@ -448,10 +448,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
    * Prepare the Hadoop MR job, including configuring the job and setting up the input/output paths.
    */
   private void prepareHadoopJob(List<WorkUnit> workUnits) throws IOException {
-    TimingEvent mrJobSetupTimer = this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.MR_JOB_SETUP);
-
-    // Add dependent jars/files
-    addDependencies(this.job.getConfiguration());
+    TimingEvent mrJobSetupTimer = extracted();
 
     this.job.setJarByClass(MRJobLauncher.class);
     this.job.setMapperClass(TaskRunner.class);
@@ -491,6 +488,14 @@ public class MRJobLauncher extends AbstractJobLauncher {
 
     mrJobSetupTimer.stop();
   }
+
+private TimingEvent extracted() throws IOException {
+	TimingEvent mrJobSetupTimer = this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.MR_JOB_SETUP);
+
+    // Add dependent jars/files
+    addDependencies(this.job.getConfiguration());
+	return mrJobSetupTimer;
+}
 
   static boolean isSpeculativeExecutionEnabled(Properties props) {
     return Boolean.valueOf(
