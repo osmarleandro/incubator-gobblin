@@ -94,14 +94,18 @@ public class TaskStateCollectorServiceTest {
 
   @Test(dependsOnMethods = "testPutIntoTaskStateStore")
   public void testCollectOutputTaskStates() throws Exception {
-    this.taskStateCollectorService.runOneIteration();
-    Assert.assertEquals(this.jobState.getTaskStates().size(), 2);
+    extracted();
     Assert.assertEquals(this.taskStateMap.size(), 2);
     Assert.assertEquals(this.taskStateMap.get(TASK_ID_0).getJobId(), JOB_ID);
     Assert.assertEquals(this.taskStateMap.get(TASK_ID_0).getTaskId(), TASK_ID_0);
     Assert.assertEquals(this.taskStateMap.get(TASK_ID_1).getJobId(), JOB_ID);
     Assert.assertEquals(this.taskStateMap.get(TASK_ID_1).getTaskId(), TASK_ID_1);
   }
+
+private void extracted() throws Exception {
+	this.taskStateCollectorService.runOneIteration();
+    Assert.assertEquals(this.jobState.getTaskStates().size(), 2);
+}
 
   @Test
   public void testHandlerResolution() throws Exception{
