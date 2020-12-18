@@ -276,14 +276,7 @@ public class SchedulerUtilsTest {
 
   @Test
   public void testTemplateLoad() throws Exception {
-    Path path = new Path(getClass().getClassLoader().getResource("schedulerUtilsTest").getFile());
-
-    Properties pullFile =
-        SchedulerUtils.loadGenericJobConfig(new Properties(), new Path(path, "templated.pull"), path,
-            JobSpecResolver.builder(ConfigFactory.empty()).build());
-
-    Assert.assertEquals(pullFile.getProperty("gobblin.dataset.pattern"), "pattern");
-    Assert.assertEquals(pullFile.getProperty("job.name"), "GobblinDatabaseCopyTest");
+    Path path = extracted();
 
     List<Properties> jobConfigs = SchedulerUtils.loadGenericJobConfigs(new Properties(), new Path(path, "templated.pull"),
         path, JobSpecResolver.mock());
@@ -300,6 +293,18 @@ public class SchedulerUtilsTest {
     Assert.assertEquals(pullFile3.getProperty("gobblin.dataset.pattern"), "pattern");
     Assert.assertEquals(pullFile3.getProperty("job.name"), "GobblinDatabaseCopyTest");
   }
+
+private Path extracted() throws ConfigurationException, IOException {
+	Path path = new Path(getClass().getClassLoader().getResource("schedulerUtilsTest").getFile());
+
+    Properties pullFile =
+        SchedulerUtils.loadGenericJobConfig(new Properties(), new Path(path, "templated.pull"), path,
+            JobSpecResolver.builder(ConfigFactory.empty()).build());
+
+    Assert.assertEquals(pullFile.getProperty("gobblin.dataset.pattern"), "pattern");
+    Assert.assertEquals(pullFile.getProperty("job.name"), "GobblinDatabaseCopyTest");
+	return path;
+}
 
   @AfterClass
   public void tearDown()
