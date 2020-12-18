@@ -76,8 +76,7 @@ public class CliEmbeddedGobblin implements CliApplication {
     EmbeddedGobblinCliFactory factory;
     if (!Strings.isNullOrEmpty(alias)) {
       try {
-        ClassAliasResolver<EmbeddedGobblinCliFactory> resolver = new ClassAliasResolver<>(EmbeddedGobblinCliFactory.class);
-        factoryClass = resolver.resolveClass(alias);
+        factoryClass = extracted(alias);
         factory = factoryClass.newInstance();
       } catch (ReflectiveOperationException roe) {
         System.out.println("Error: Could not find job with alias " + alias);
@@ -103,6 +102,13 @@ public class CliEmbeddedGobblin implements CliApplication {
       throw new RuntimeException("Failed to run Gobblin job.", exc);
     }
   }
+
+private Class<? extends EmbeddedGobblinCliFactory> extracted(String alias) throws ClassNotFoundException {
+	Class<? extends EmbeddedGobblinCliFactory> factoryClass;
+	ClassAliasResolver<EmbeddedGobblinCliFactory> resolver = new ClassAliasResolver<>(EmbeddedGobblinCliFactory.class);
+	factoryClass = resolver.resolveClass(alias);
+	return factoryClass;
+}
 
   private List<Alias> getAllAliases() {
     ClassAliasResolver<EmbeddedGobblinCliFactory> resolver = new ClassAliasResolver<>(EmbeddedGobblinCliFactory.class);
