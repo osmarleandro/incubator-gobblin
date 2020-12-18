@@ -102,22 +102,26 @@ public abstract class KafkaJobMonitor extends HighLevelConsumer<byte[], byte[]> 
     try {
       Collection<Either<JobSpec, URI>> parsedCollection = parseJobSpec(message.getValue());
       for (Either<JobSpec, URI> parsedMessage : parsedCollection) {
-        if (parsedMessage instanceof Either.Left) {
-          this.newSpecs.inc();
-          this.jobCatalog.put(((Either.Left<JobSpec, URI>) parsedMessage).getLeft());
-        } else if (parsedMessage instanceof Either.Right) {
-          this.removedSpecs.inc();
-          URI jobSpecUri = ((Either.Right<JobSpec, URI>) parsedMessage).getRight();
-          this.jobCatalog.remove(jobSpecUri, true);
-          // Delete the job state if it is a delete spec request
-          deleteStateStore(jobSpecUri);
-        }
+        extracted(parsedMessage);
       }
     } catch (IOException ioe) {
       String messageStr = new String(message.getValue(), Charsets.UTF_8);
       log.error(String.format("Failed to parse kafka message with offset %d: %s.", message.getOffset(), messageStr), ioe);
     }
   }
+
+private void extracted(Either<JobSpec, URI> parsedMessage) throws IOException {
+	if (parsedMessage instanceof Either.Left) {
+	  this.newSpecs.inc();
+	  this.jobCatalog.put(((Either.Left<JobSpec, URI>) parsedMessage).getLeft());
+	} else if (parsedMessage instanceof Either.Right) {
+	  this.removedSpecs.inc();
+	  URI jobSpecUri = ((Either.Right<JobSpec, URI>) parsedMessage).getRight();
+	  this.jobCatalog.remove(jobSpecUri, true);
+	  // Delete the job state if it is a delete spec request
+	  deleteStateStore(jobSpecUri);
+	}
+}
 
   /**
    * It fetches the job name from the given jobSpecUri
