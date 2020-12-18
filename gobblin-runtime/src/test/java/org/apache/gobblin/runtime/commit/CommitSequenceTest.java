@@ -89,12 +89,16 @@ public class CommitSequenceTest {
 
   @Test
   public void testExecute() throws IOException {
-    this.sequence.execute();
-
-    Assert.assertTrue(this.fs.exists(new Path(ROOT_DIR, "dir1/file2")));
+    extracted();
     Assert.assertTrue(this.fs.exists(new Path(ROOT_DIR, "dir2/file1")));
     Assert.assertTrue(this.fs.exists(new Path(ROOT_DIR, "store/job-name/urn-job_id.jst")));
     Assert.assertTrue(this.fs.exists(new Path(ROOT_DIR, "store/job-name/urn-current.jst")));
   }
+
+private void extracted() throws IOException {
+	this.sequence.execute();
+
+    Assert.assertTrue(this.fs.exists(new Path(ROOT_DIR, "dir1/file2")));
+}
 
 }
