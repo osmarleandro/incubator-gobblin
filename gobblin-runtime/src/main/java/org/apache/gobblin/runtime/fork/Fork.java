@@ -536,7 +536,18 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
    */
   private DataWriter<Object> buildWriter()
       throws IOException {
-    String writerId = this.taskId;
+    DataWriterBuilder<Object, Object> builder = extracted();
+    if (this.taskAttemptId.isPresent()) {
+      builder.withAttemptId(this.taskAttemptId.get());
+    }
+
+    DataWriter<Object> writer = new PartitionedDataWriter<>(builder, this.taskContext.getTaskState());
+    logger.info("Wrapping writer " + writer);
+    return new DataWriterWrapperBuilder<>(writer, this.taskState).build();
+  }
+
+private DataWriterBuilder<Object, Object> extracted() {
+	String writerId = this.taskId;
 
     // Add the task starting time if configured.
     // This is used to reduce file name collisions which can happen due to the execution of a workunit across multiple
@@ -554,14 +565,8 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
         .writeTo(Destination.of(this.taskContext.getDestinationType(this.branches, this.index), this.taskState))
         .writeInFormat(this.taskContext.getWriterOutputFormat(this.branches, this.index)).withWriterId(writerId)
         .withSchema(this.convertedSchema.orNull()).withBranches(this.branches).forBranch(this.index);
-    if (this.taskAttemptId.isPresent()) {
-      builder.withAttemptId(this.taskAttemptId.get());
-    }
-
-    DataWriter<Object> writer = new PartitionedDataWriter<>(builder, this.taskContext.getTaskState());
-    logger.info("Wrapping writer " + writer);
-    return new DataWriterWrapperBuilder<>(writer, this.taskState).build();
-  }
+	return builder;
+}
 
   private void buildWriterIfNotPresent()
       throws IOException {
