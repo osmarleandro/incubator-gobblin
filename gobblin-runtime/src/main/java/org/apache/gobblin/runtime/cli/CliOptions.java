@@ -52,7 +52,20 @@ public class CliOptions {
    */
   public static Properties parseArgs(Class<?> caller, String[] args) throws IOException {
     try {
-      // Parse command-line options
+      CommandLine cmd = extracted(caller, args);
+
+      // Load system and job configuration properties
+      Properties sysConfig = JobConfigurationUtils.fileToProperties(cmd.getOptionValue(SYS_CONFIG_OPTION.getLongOpt()));
+      Properties jobConfig = JobConfigurationUtils.fileToProperties(cmd.getOptionValue(JOB_CONFIG_OPTION.getLongOpt()));
+
+      return JobConfigurationUtils.combineSysAndJobProperties(sysConfig, jobConfig);
+    } catch (ParseException | ConfigurationException e) {
+      throw new IOException(e);
+    }
+  }
+
+private static CommandLine extracted(Class<?> caller, String[] args) throws ParseException {
+	// Parse command-line options
       CommandLine cmd = new DefaultParser().parse(options(), args);
 
       if (cmd.hasOption(HELP_OPTION.getOpt())) {
@@ -64,16 +77,8 @@ public class CliOptions {
         printUsage(caller);
         System.exit(1);
       }
-
-      // Load system and job configuration properties
-      Properties sysConfig = JobConfigurationUtils.fileToProperties(cmd.getOptionValue(SYS_CONFIG_OPTION.getLongOpt()));
-      Properties jobConfig = JobConfigurationUtils.fileToProperties(cmd.getOptionValue(JOB_CONFIG_OPTION.getLongOpt()));
-
-      return JobConfigurationUtils.combineSysAndJobProperties(sysConfig, jobConfig);
-    } catch (ParseException | ConfigurationException e) {
-      throw new IOException(e);
-    }
-  }
+	return cmd;
+}
 
   /**
    * Prints the usage of cli.
