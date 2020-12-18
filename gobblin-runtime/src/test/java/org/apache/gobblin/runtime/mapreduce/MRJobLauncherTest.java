@@ -178,9 +178,7 @@ public class MRJobLauncherTest extends BMNGRunner {
 
   @Test
   public void testLaunchJobWithMultiWorkUnit() throws Exception {
-    Properties jobProps = loadJobProps();
-    jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,
-        jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithMultiWorkUnit");
+    Properties jobProps = extracted();
     jobProps.setProperty("use.multiworkunit", Boolean.toString(true));
     try {
       this.jobLauncherTestHelper.runTest(jobProps);
@@ -188,6 +186,13 @@ public class MRJobLauncherTest extends BMNGRunner {
       this.jobLauncherTestHelper.deleteStateStore(jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY));
     }
   }
+
+private Properties extracted() throws IOException {
+	Properties jobProps = loadJobProps();
+    jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,
+        jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithMultiWorkUnit");
+	return jobProps;
+}
 
   @Test(groups = { "ignore" })
   public void testCancelJob() throws Exception {
