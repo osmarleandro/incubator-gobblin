@@ -121,8 +121,7 @@ public class DatasetStateStoreTest {
   }
 
   private void verifyJobState(int run) throws IOException {
-    List<JobState.DatasetState> datasetStateList = this.datasetStateStore.getAll(JOB_NAME, "current.jst");
-    Assert.assertEquals(datasetStateList.size(), 1);
+    List<JobState.DatasetState> datasetStateList = extracted();
 
     JobState jobState = datasetStateList.get(0);
     Assert.assertEquals(jobState.getState(), JobState.RunningState.COMMITTED);
@@ -146,6 +145,12 @@ public class DatasetStateStoreTest {
       Assert.assertEquals(taskState.getPropAsInt(LAST_READ_RECORD_KEY), expectedHighWatermark);
     }
   }
+
+private List<JobState.DatasetState> extracted() throws IOException {
+	List<JobState.DatasetState> datasetStateList = this.datasetStateStore.getAll(JOB_NAME, "current.jst");
+    Assert.assertEquals(datasetStateList.size(), 1);
+	return datasetStateList;
+}
 
   /**
    * A dummy implementation of {@link Source}.
