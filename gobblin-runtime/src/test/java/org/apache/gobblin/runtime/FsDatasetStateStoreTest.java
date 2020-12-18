@@ -145,10 +145,7 @@ public class FsDatasetStateStoreTest {
 
   @Test(dependsOnMethods = "testPersistDatasetState")
   public void testGetDatasetState() throws IOException {
-    JobState.DatasetState datasetState =
-        this.fsDatasetStateStore.getLatestDatasetState(TEST_JOB_NAME, TEST_DATASET_URN);
-
-    Assert.assertEquals(datasetState.getDatasetUrn(), TEST_DATASET_URN);
+    JobState.DatasetState datasetState = extracted();
     Assert.assertEquals(datasetState.getJobName(), TEST_JOB_NAME);
     Assert.assertEquals(datasetState.getJobId(), TEST_JOB_ID);
     Assert.assertEquals(datasetState.getState(), JobState.RunningState.COMMITTED);
@@ -165,6 +162,14 @@ public class FsDatasetStateStoreTest {
       Assert.assertEquals(taskState.getWorkingState(), WorkUnitState.WorkingState.COMMITTED);
     }
   }
+
+private JobState.DatasetState extracted() throws IOException {
+	JobState.DatasetState datasetState =
+        this.fsDatasetStateStore.getLatestDatasetState(TEST_JOB_NAME, TEST_DATASET_URN);
+
+    Assert.assertEquals(datasetState.getDatasetUrn(), TEST_DATASET_URN);
+	return datasetState;
+}
 
   @Test(dependsOnMethods = "testGetDatasetState")
   public void testGetPreviousDatasetStatesByUrns() throws IOException {
