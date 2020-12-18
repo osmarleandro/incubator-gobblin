@@ -80,12 +80,7 @@ public class InheritingJobTemplateTest {
 
   @Test
   public void testMultiInheritance() throws Exception {
-    TestTemplate template1 = new TestTemplate(new URI("template1"), Lists.<JobTemplate>newArrayList(), ImmutableMap.of("key1", "value1"),
-        Lists.newArrayList("required"));
-    TestTemplate template2 = new TestTemplate(new URI("template2"), Lists.<JobTemplate>newArrayList(), ImmutableMap.of("key2", "value2"),
-        Lists.newArrayList("required2"));
-    TestTemplate inheriting = new TestTemplate(new URI("inheriting"), Lists.<JobTemplate>newArrayList(template1, template2), ImmutableMap.<String, String>of(),
-        Lists.<String>newArrayList());
+    TestTemplate inheriting = extracted();
 
     Collection<String> required = inheriting.getRequiredConfigList();
     Assert.assertEquals(required.size(), 2);
@@ -102,6 +97,16 @@ public class InheritingJobTemplateTest {
     Assert.assertEquals(resolved.getString("required"), "r1");
     Assert.assertEquals(resolved.getString("required2"), "r2");
   }
+
+private TestTemplate extracted() throws URISyntaxException {
+	TestTemplate template1 = new TestTemplate(new URI("template1"), Lists.<JobTemplate>newArrayList(), ImmutableMap.of("key1", "value1"),
+        Lists.newArrayList("required"));
+    TestTemplate template2 = new TestTemplate(new URI("template2"), Lists.<JobTemplate>newArrayList(), ImmutableMap.of("key2", "value2"),
+        Lists.newArrayList("required2"));
+    TestTemplate inheriting = new TestTemplate(new URI("inheriting"), Lists.<JobTemplate>newArrayList(template1, template2), ImmutableMap.<String, String>of(),
+        Lists.<String>newArrayList());
+	return inheriting;
+}
 
   @Test
   public void testLoopInheritance() throws Exception {
