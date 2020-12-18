@@ -350,8 +350,8 @@ public class JobState extends SourceState implements JobProgress {
    * If not already present, set the {@link EventMetadataUtils#JOB_FAILURE_MESSAGE_KEY} to the given {@link String}.
    */
   public void setJobFailureMessage(String jobFailureMessage) {
-    String previousMessages = this.getProp(ConfigurationKeys.JOB_FAILURE_EXCEPTION_KEY);
     String aggregatedMessages;
+	String previousMessages = extracted();
 
     if (StringUtils.isEmpty(previousMessages)) {
       aggregatedMessages = jobFailureMessage;
@@ -361,6 +361,12 @@ public class JobState extends SourceState implements JobProgress {
 
     this.setProp(EventMetadataUtils.JOB_FAILURE_MESSAGE_KEY, aggregatedMessages);
   }
+
+private String extracted() {
+	String previousMessages = this.getProp(ConfigurationKeys.JOB_FAILURE_EXCEPTION_KEY);
+    String aggregatedMessages;
+	return previousMessages;
+}
 
   /**
    * Increment the number of tasks by 1.
