@@ -97,14 +97,19 @@ public class TaskIFaceWrapper extends Task {
 
   @Override
   public TaskState getTaskState() {
-    TaskState taskState = this.taskContext.getTaskState();
-    taskState.setTaskId(getTaskId());
+    TaskState taskState = extracted();
     taskState.setJobId(getJobId());
     taskState.setWorkingState(getWorkingState());
     taskState.addAll(getExecutionMetadata());
     taskState.addAll(getPersistentState());
     return taskState;
   }
+
+private TaskState extracted() {
+	TaskState taskState = this.taskContext.getTaskState();
+    taskState.setTaskId(getTaskId());
+	return taskState;
+}
 
   @Override
   public State getPersistentState() {
