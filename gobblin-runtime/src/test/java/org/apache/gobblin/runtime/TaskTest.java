@@ -274,15 +274,7 @@ public class TaskTest {
     for (int forkNumber=0; forkNumber < numForks; ++ forkNumber) {
       ArrayList<Object> forkRecords = recordCollectors.get(forkNumber);
       for (Object forkRecord: forkRecords) {
-        String recordAsString = (String) forkRecord;
-        totalRecordsFound++;
-        if (recordsMap.containsKey(recordAsString)) {
-          recordsMap.get(recordAsString).add(forkNumber);
-        } else {
-          ArrayList<Integer> forksFound = new ArrayList<>();
-          forksFound.add(forkNumber);
-          recordsMap.put(recordAsString, forksFound);
-        }
+        totalRecordsFound = extracted(totalRecordsFound, recordsMap, forkNumber, forkRecord);
       }
     }
     Assert.assertEquals(totalRecordsFound, totalRecordsExpected, "Total records");
@@ -291,6 +283,20 @@ public class TaskTest {
     }
 
   }
+
+private int extracted(int totalRecordsFound, HashMap<String, ArrayList<Integer>> recordsMap, int forkNumber,
+		Object forkRecord) {
+	String recordAsString = (String) forkRecord;
+	totalRecordsFound++;
+	if (recordsMap.containsKey(recordAsString)) {
+	  recordsMap.get(recordAsString).add(forkNumber);
+	} else {
+	  ArrayList<Integer> forksFound = new ArrayList<>();
+	  forksFound.add(forkNumber);
+	  recordsMap.put(recordAsString, forksFound);
+	}
+	return totalRecordsFound;
+}
 
 
 
