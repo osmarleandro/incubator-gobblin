@@ -20,6 +20,8 @@ package org.apache.gobblin.runtime.mapreduce;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.List;
@@ -61,7 +63,12 @@ public class GobblinWorkUnitsInputFormatTest {
     URI baseUri = new URI(GobblinWorkUnitsInputFormatTest.class.getSimpleName() + "://testGetSplits");
     Configuration configuration = new Configuration();
 
-    Path workUnitsDir = new Path(new Path(baseUri), "/workUnits");
+    extracted(baseUri, configuration);
+  }
+
+private void extracted(URI baseUri, Configuration configuration)
+		throws FileNotFoundException, IOException, InterruptedException {
+	Path workUnitsDir = new Path(new Path(baseUri), "/workUnits");
 
     FileSystem fs = Mockito.mock(FileSystem.class);
     FileStatus[] statuses = createFileStatuses(20, workUnitsDir);
@@ -84,7 +91,7 @@ public class GobblinWorkUnitsInputFormatTest {
 
     Assert.assertEquals(splits.size(), 20);
     verifyPaths(splits, statuses);
-  }
+}
 
   @Test
   public void testGetSplitsMaxSize()
