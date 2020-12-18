@@ -157,12 +157,17 @@ public abstract class InstrumentedSpecStore implements SpecStore {
     if (!instrumentationEnabled) {
       return getSpecURIsImpl();
     } else {
-      long startTimeMillis = System.currentTimeMillis();
-      Iterator<URI> specURIs = getSpecURIsImpl();
-      Instrumented.updateTimer(this.getURIsTimer, System.currentTimeMillis() - startTimeMillis, TimeUnit.MILLISECONDS);
+      Iterator<URI> specURIs = extracted();
       return specURIs;
     }
   }
+
+private Iterator<URI> extracted() throws IOException {
+	long startTimeMillis = System.currentTimeMillis();
+      Iterator<URI> specURIs = getSpecURIsImpl();
+      Instrumented.updateTimer(this.getURIsTimer, System.currentTimeMillis() - startTimeMillis, TimeUnit.MILLISECONDS);
+	return specURIs;
+}
 
   public abstract void addSpecImpl(Spec spec) throws IOException;
   public abstract Spec updateSpecImpl(Spec spec) throws IOException, SpecNotFoundException;
