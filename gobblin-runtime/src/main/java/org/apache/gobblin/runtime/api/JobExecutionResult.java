@@ -59,8 +59,7 @@ public class JobExecutionResult implements ExecutionResult {
   }
 
   public static JobExecutionResult createFromState(JobExecutionState state) {
-    Preconditions.checkArgument(null != state.getRunningState());
-    Preconditions.checkArgument(state.getRunningState().isDone());
+    extracted(state);
 
     if (state.getRunningState().isSuccess()) {
       return JobExecutionResult.createSuccessResult();
@@ -74,4 +73,9 @@ public class JobExecutionResult implements ExecutionResult {
           new RuntimeException("Gobblin job failed:" + state.getJobExecution()));
     }
   }
+
+private static void extracted(JobExecutionState state) {
+	Preconditions.checkArgument(null != state.getRunningState());
+    Preconditions.checkArgument(state.getRunningState().isDone());
+}
 }
