@@ -140,13 +140,18 @@ public class MysqlSpecStore extends InstrumentedSpecStore {
   public void addSpec(Spec spec, String tagValue) throws IOException {
     try (Connection connection = this.dataSource.getConnection();
         PreparedStatement statement = connection.prepareStatement(String.format(INSERT_STATEMENT, this.tableName))) {
-      setAddPreparedStatement(statement, spec, tagValue);
-      statement.executeUpdate();
-      connection.commit();
+      extracted(spec, tagValue, connection, statement);
     } catch (SQLException | SpecSerDeException e) {
       throw new IOException(e);
     }
   }
+
+private void extracted(Spec spec, String tagValue, Connection connection, PreparedStatement statement)
+		throws SQLException {
+	setAddPreparedStatement(statement, spec, tagValue);
+      statement.executeUpdate();
+      connection.commit();
+}
 
   @Override
   public boolean deleteSpec(Spec spec) throws IOException {
