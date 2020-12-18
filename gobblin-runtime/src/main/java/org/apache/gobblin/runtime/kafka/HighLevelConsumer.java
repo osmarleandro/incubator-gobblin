@@ -265,11 +265,16 @@ public abstract class HighLevelConsumer<K,V> extends AbstractIdleService {
   }
 
   private void copyAndCommit() {
-    Map<KafkaPartition, Long> copy = new HashMap<>(partitionOffsetsToCommit);
-    recordsProcessed.set(0);
+    Map<KafkaPartition, Long> copy = extracted();
     lastCommitTime = System.currentTimeMillis();
     commitOffsets(copy);
   }
+
+private Map<KafkaPartition, Long> extracted() {
+	Map<KafkaPartition, Long> copy = new HashMap<>(partitionOffsetsToCommit);
+    recordsProcessed.set(0);
+	return copy;
+}
 
   private boolean shouldCommitOffsets() {
     return recordsProcessed.intValue() >= offsetsCommitNumRecordsThreshold || ((System.currentTimeMillis() - lastCommitTime) / 1000 >= offsetsCommitTimeThresholdSecs);
