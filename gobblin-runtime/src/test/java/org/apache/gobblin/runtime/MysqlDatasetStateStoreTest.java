@@ -100,8 +100,7 @@ public class MysqlDatasetStateStoreTest {
 
   @Test
   public void testPersistJobState() throws IOException {
-    JobState jobState = new JobState(TEST_JOB_NAME, TEST_JOB_ID);
-    jobState.setId(TEST_JOB_ID);
+    JobState jobState = extracted();
     jobState.setProp("foo", "bar");
     jobState.setState(JobState.RunningState.COMMITTED);
     jobState.setStartTime(this.startTime);
@@ -134,6 +133,12 @@ public class MysqlDatasetStateStoreTest {
         MysqlDatasetStateStore.CURRENT_DATASET_STATE_FILE_SUFFIX + MysqlDatasetStateStore.DATASET_STATE_STORE_TABLE_SUFFIX,
         jobState);
   }
+
+private JobState extracted() {
+	JobState jobState = new JobState(TEST_JOB_NAME, TEST_JOB_ID);
+    jobState.setId(TEST_JOB_ID);
+	return jobState;
+}
 
   @Test(dependsOnMethods = "testPersistJobState")
   public void testGetJobState() throws IOException {
