@@ -317,9 +317,7 @@ public class MRJobLauncherTest extends BMNGRunner {
           action = "$taskStateStore.put($0.jobId, $1 + \".suc\", new org.apache.gobblin.runtime.TaskState(org.apache.gobblin.runtime.mapreduce.MRJobLauncherTest.wus))")
   })
   public void testLaunchJobWithMultiWorkUnitAndSucFile() throws Exception {
-    Properties jobProps = loadJobProps();
-    jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,
-        jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithMultiWorkUnitAndSucFile");
+    Properties jobProps = extracted();
     jobProps.setProperty("use.multiworkunit", Boolean.toString(true));
 
     jobProps.setProperty("dynamicConfigGenerator.class",
@@ -334,6 +332,13 @@ public class MRJobLauncherTest extends BMNGRunner {
       this.jobLauncherTestHelper.deleteStateStore(jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY));
     }
   }
+
+private Properties extracted() throws IOException {
+	Properties jobProps = loadJobProps();
+    jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,
+        jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithMultiWorkUnitAndSucFile");
+	return jobProps;
+}
 
   @Test
   public void testLaunchJobWithMultipleDatasets() throws Exception {
