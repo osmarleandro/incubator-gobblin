@@ -358,10 +358,7 @@ public class GobblinMultiTaskAttempt {
       // This usually happens if the task is retried upon failure.
       try {
         if (taskStateStore.exists(jobId, taskId + TASK_STATE_STORE_SUCCESS_MARKER_SUFFIX)) {
-          log.info("Skipping task {} that successfully executed in a prior attempt.", taskId);
-
-          // skip tasks that executed successfully in a previous attempt
-          return true;
+          return extracted(taskId);
         }
       } catch (IOException e) {
         // if an error while looking up the task state store then treat like it was not processed
@@ -371,6 +368,13 @@ public class GobblinMultiTaskAttempt {
 
     return false;
   }
+
+private boolean extracted(String taskId) {
+	log.info("Skipping task {} that successfully executed in a prior attempt.", taskId);
+
+	  // skip tasks that executed successfully in a previous attempt
+	  return true;
+}
 
   /**
    * Run a given list of {@link WorkUnit}s of a job.
