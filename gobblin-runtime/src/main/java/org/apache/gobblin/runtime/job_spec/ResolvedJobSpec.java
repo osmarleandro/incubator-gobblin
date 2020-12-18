@@ -27,6 +27,7 @@ import org.apache.gobblin.runtime.api.JobCatalog;
 import org.apache.gobblin.runtime.api.JobCatalogWithTemplates;
 import org.apache.gobblin.runtime.api.JobSpec;
 import org.apache.gobblin.runtime.api.JobTemplate;
+import org.apache.gobblin.runtime.api.JobTemplate.TemplateException;
 import org.apache.gobblin.runtime.api.SpecNotFoundException;
 import org.apache.gobblin.runtime.job_catalog.InMemoryJobCatalog;
 import org.apache.gobblin.runtime.job_catalog.PackagedTemplatesJobCatalogDecorator;
@@ -84,14 +85,20 @@ public class ResolvedJobSpec extends JobSpec {
 
     Optional<URI> templateURIOpt = jobSpec.getTemplateURI();
     if (templateURIOpt.isPresent()) {
-      JobCatalogWithTemplates catalogWithTemplates = new PackagedTemplatesJobCatalogDecorator(catalog);
-      JobTemplate template = catalogWithTemplates.getTemplate(templateURIOpt.get());
+      JobTemplate template = extracted(catalog, templateURIOpt);
       return template.getResolvedConfig(jobSpec.getConfig()).resolve();
     } else {
       return jobSpec.getConfig().resolve();
     }
 
   }
+
+private static JobTemplate extracted(JobCatalog catalog, Optional<URI> templateURIOpt)
+		throws SpecNotFoundException, TemplateException {
+	JobCatalogWithTemplates catalogWithTemplates = new PackagedTemplatesJobCatalogDecorator(catalog);
+      JobTemplate template = catalogWithTemplates.getTemplate(templateURIOpt.get());
+	return template;
+}
 
   @Override
   public boolean equals(Object other) {
