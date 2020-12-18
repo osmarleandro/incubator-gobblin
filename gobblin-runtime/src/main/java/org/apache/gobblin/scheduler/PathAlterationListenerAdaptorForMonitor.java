@@ -75,7 +75,17 @@ public class PathAlterationListenerAdaptorForMonitor extends PathAlterationListe
 
     String customizedInfo = "";
     try {
-      Properties jobProps =
+      customizedInfo = extracted(path, action, customizedInfo);
+    } catch (ConfigurationException | IOException e) {
+      LOG.error("Failed to load from job configuration file " + path.toString(), e);
+    } catch (JobException je) {
+      LOG.error("Failed to " + customizedInfo + " new job loaded from job configuration file " + path.toString(), je);
+    }
+  }
+
+private String extracted(Path path, JobScheduler.Action action, String customizedInfo)
+		throws ConfigurationException, IOException, JobException {
+	Properties jobProps =
           SchedulerUtils.loadGenericJobConfig(this.jobScheduler.properties, path, jobConfigFileDirPath, this.jobSpecResolver);
       LOG.debug("Loaded job properties: {}", jobProps);
       switch (action) {
@@ -94,12 +104,8 @@ public class PathAlterationListenerAdaptorForMonitor extends PathAlterationListe
         default:
           break;
       }
-    } catch (ConfigurationException | IOException e) {
-      LOG.error("Failed to load from job configuration file " + path.toString(), e);
-    } catch (JobException je) {
-      LOG.error("Failed to " + customizedInfo + " new job loaded from job configuration file " + path.toString(), je);
-    }
-  }
+	return customizedInfo;
+}
 
   public void loadNewCommonConfigAndHandleNewJob(Path path, JobScheduler.Action action) {
     String customizedInfoAction = "";
