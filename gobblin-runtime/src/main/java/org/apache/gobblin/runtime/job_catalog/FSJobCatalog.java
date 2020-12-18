@@ -116,8 +116,7 @@ public class FSJobCatalog extends ImmutableFSJobCatalog implements MutableJobCat
    */
   @Override
   public synchronized void put(JobSpec jobSpec) {
-    Preconditions.checkState(state() == State.RUNNING, String.format("%s is not running.", this.getClass().getName()));
-    Preconditions.checkNotNull(jobSpec);
+    extracted(jobSpec);
     try {
       long startTime = System.currentTimeMillis();
       Path jobSpecPath = getPathForURI(this.jobConfDirPath, jobSpec.getUri());
@@ -129,6 +128,11 @@ public class FSJobCatalog extends ImmutableFSJobCatalog implements MutableJobCat
       throw new RuntimeException("When replacing a existed JobSpec, unexpected issue happen:" + e.getMessage());
     }
   }
+
+private void extracted(JobSpec jobSpec) {
+	Preconditions.checkState(state() == State.RUNNING, String.format("%s is not running.", this.getClass().getName()));
+    Preconditions.checkNotNull(jobSpec);
+}
 
   /**
    * Allow user to programmatically delete a new JobSpec.
