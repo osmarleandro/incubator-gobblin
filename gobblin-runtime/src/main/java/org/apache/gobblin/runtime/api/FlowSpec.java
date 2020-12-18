@@ -110,19 +110,25 @@ public class FlowSpec implements Configurable, Spec {
     String group = flowProps.getProperty(ConfigurationKeys.FLOW_GROUP_KEY, "default");
 
     try {
-      URI flowURI = new URI(catalogURI.getScheme(), catalogURI.getAuthority(),
-          "/" + group + "/" + name, null);
-      FlowSpec.Builder builder = new FlowSpec.Builder(flowURI).withConfigAsProperties(flowProps);
-      String descr = flowProps.getProperty(ConfigurationKeys.FLOW_DESCRIPTION_KEY, null);
-      if (null != descr) {
-        builder = builder.withDescription(descr);
-      }
+      FlowSpec.Builder builder = extracted(catalogURI, flowProps, name, group);
 
       return builder;
     } catch (URISyntaxException e) {
       throw new RuntimeException("Unable to create a FlowSpec URI: " + e, e);
     }
   }
+
+private static FlowSpec.Builder extracted(URI catalogURI, Properties flowProps, String name, String group)
+		throws URISyntaxException {
+	URI flowURI = new URI(catalogURI.getScheme(), catalogURI.getAuthority(),
+          "/" + group + "/" + name, null);
+      FlowSpec.Builder builder = new FlowSpec.Builder(flowURI).withConfigAsProperties(flowProps);
+      String descr = flowProps.getProperty(ConfigurationKeys.FLOW_DESCRIPTION_KEY, null);
+      if (null != descr) {
+        builder = builder.withDescription(descr);
+      }
+	return builder;
+}
 
   public String toShortString() {
     return getUri().toString() + "/" + getVersion();
