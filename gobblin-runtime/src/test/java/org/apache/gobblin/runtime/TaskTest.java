@@ -106,9 +106,7 @@ public class TaskTest {
    */
   @Test(dataProvider = "stateOverrides")
   public void testRetryTask(State overrides) throws Exception {
-    // Create a TaskState
-    TaskState taskState = getEmptyTestTaskState("testRetryTaskId");
-    taskState.addAll(overrides);
+    TaskState taskState = extracted(overrides);
     // Create a mock TaskContext
     TaskContext mockTaskContext = mock(TaskContext.class);
     when(mockTaskContext.getTaskMetrics()).thenReturn(TaskMetrics.get(taskState));
@@ -149,6 +147,13 @@ public class TaskTest {
     task.commit();
     Assert.assertEquals(task.getTaskState().getWorkingState(), WorkUnitState.WorkingState.SUCCESSFUL);
   }
+
+private TaskState extracted(State overrides) {
+	// Create a TaskState
+    TaskState taskState = getEmptyTestTaskState("testRetryTaskId");
+    taskState.addAll(overrides);
+	return taskState;
+}
 
   private TaskContext getMockTaskContext(TaskState taskState, Extractor mockExtractor,
       ArrayList<ArrayList<Object>> writerCollectors, ForkOperator mockForkOperator)
