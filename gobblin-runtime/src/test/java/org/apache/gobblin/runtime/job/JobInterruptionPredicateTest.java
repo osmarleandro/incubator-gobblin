@@ -53,6 +53,11 @@ public class JobInterruptionPredicateTest {
 	@Test
 	public void testTaskPredicate() {
 		SettableTaskProgress t1 = new SettableTaskProgress("j1", "t1", WorkUnitState.WorkingState.RUNNING, false);
+		AtomicBoolean atomicBoolean = extracted(t1);
+		Assert.assertTrue(atomicBoolean.get());
+	}
+
+	private AtomicBoolean extracted(SettableTaskProgress t1) {
 		SettableTaskProgress t2 = new SettableTaskProgress("j1", "t1", WorkUnitState.WorkingState.RUNNING, false);
 
 		SettableJobProgress jobProgress = new SettableJobProgress("job123", 10, 0, 0, JobState.RunningState.RUNNING,
@@ -68,7 +73,7 @@ public class JobInterruptionPredicateTest {
 		t2.workingState = WorkUnitState.WorkingState.FAILED;
 
 		predicate.runOneIteration();
-		Assert.assertTrue(atomicBoolean.get());
+		return atomicBoolean;
 	}
 
 	@Test
