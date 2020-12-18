@@ -56,12 +56,16 @@ public class FlowStatusGenerator {
     if (flowExecutionIds == null || flowExecutionIds.isEmpty()) {
       return null;
     }
-    List<FlowStatus> flowStatuses =
+    return extracted(flowName, flowGroup, tag, flowExecutionIds);
+  }
+
+private List<FlowStatus> extracted(String flowName, String flowGroup, String tag, List<Long> flowExecutionIds) {
+	List<FlowStatus> flowStatuses =
         flowExecutionIds.stream().map(flowExecutionId -> getFlowStatus(flowName, flowGroup, flowExecutionId, tag))
             .collect(Collectors.toList());
 
     return flowStatuses;
-  }
+}
 
   /**
    * Get the flow statuses of last <code>count</code> (or fewer) executions
