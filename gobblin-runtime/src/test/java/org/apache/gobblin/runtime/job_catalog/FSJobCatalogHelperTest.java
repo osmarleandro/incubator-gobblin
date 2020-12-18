@@ -209,10 +209,7 @@ public class FSJobCatalogHelperTest {
   @Test(enabled=false, dependsOnMethods = {"testloadGenericJobConfigs"})
   public void testloadGenericJobConfig()
       throws ConfigurationException, IOException {
-    Path jobConfigPath = new Path(this.subDir11.getAbsolutePath(), "test111.pull");
-
-    Properties jobProps =
-        ConfigUtils.configToProperties(loader.loadPullFile(jobConfigPath, this.sysConfig, false));
+    Properties jobProps = extracted();
 
     Assert.assertEquals(jobProps.stringPropertyNames().size(), 5);
     Assert.assertEquals(jobProps.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY),
@@ -221,6 +218,14 @@ public class FSJobCatalogHelperTest {
     Assert.assertEquals(jobProps.getProperty("k8"), "a8");
     Assert.assertEquals(jobProps.getProperty("k9"), "a8");
   }
+
+private Properties extracted() throws IOException {
+	Path jobConfigPath = new Path(this.subDir11.getAbsolutePath(), "test111.pull");
+
+    Properties jobProps =
+        ConfigUtils.configToProperties(loader.loadPullFile(jobConfigPath, this.sysConfig, false));
+	return jobProps;
+}
 
   @Test(enabled=false, dependsOnMethods = {"testloadGenericJobConfig"})
   public void testPathAlterationObserver()
