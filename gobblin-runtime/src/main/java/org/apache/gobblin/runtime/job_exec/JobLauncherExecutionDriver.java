@@ -118,7 +118,17 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
 
     Logger actualLog = log.isPresent() ? log.get() : LoggerFactory.getLogger(JobLauncherExecutionDriver.class);
 
-    JobExecutionStateListeners callbackDispatcher = new JobExecutionStateListeners(actualLog);
+    DriverRunnable runnable = extracted(sysConfig, jobSpec, jobLauncherType, instrumentationEnabled, launcherMetrics,
+			instanceBroker, actualLog);
+
+    return new JobLauncherExecutionDriver(jobSpec, actualLog, runnable);
+  }
+
+private static DriverRunnable extracted(Configurable sysConfig, JobSpec jobSpec,
+		Optional<JobLauncherFactory.JobLauncherType> jobLauncherType, boolean instrumentationEnabled,
+		JobExecutionLauncher.StandardMetrics launcherMetrics, SharedResourcesBroker<GobblinScopeTypes> instanceBroker,
+		Logger actualLog) {
+	JobExecutionStateListeners callbackDispatcher = new JobExecutionStateListeners(actualLog);
     JobExecutionUpdatable jobExec = JobExecutionUpdatable.createFromJobSpec(jobSpec);
     JobExecutionState jobState = new JobExecutionState(jobSpec, jobExec,
         Optional.<JobExecutionStateListener>of(callbackDispatcher));
@@ -129,9 +139,8 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
     JobListenerToJobStateBridge bridge = new JobListenerToJobStateBridge(actualLog, jobState, instrumentationEnabled, launcherMetrics);
 
     DriverRunnable runnable = new DriverRunnable(jobLauncher, bridge, jobState, callbackDispatcher, jobExec);
-
-    return new JobLauncherExecutionDriver(jobSpec, actualLog, runnable);
-  }
+	return runnable;
+}
 
   protected JobLauncherExecutionDriver(JobSpec jobSpec, Logger log, DriverRunnable runnable) {
     super(runnable);
