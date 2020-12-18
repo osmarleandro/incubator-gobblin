@@ -50,17 +50,22 @@ public class TestDefaultConfigurableImpl {
 
   @Test
   public void testFromConfig() {
-    Config cfg =
+    DefaultConfigurableImpl c = extracted();
+    Assert.assertEquals(c.getConfigAsProperties().getProperty("a1"), "some_string");
+    Assert.assertEquals(c.getConfigAsProperties().getProperty("a2.b"), "-1");
+    Assert.assertEquals(c.getConfigAsProperties().getProperty("a2.c.d"), "1.2");
+    Assert.assertEquals(c.getConfigAsProperties().getProperty("a2.e.f"), "true");
+  }
+
+private DefaultConfigurableImpl extracted() {
+	Config cfg =
         ConfigFactory.empty()
                      .withValue("a1", ConfigValueFactory.fromAnyRef("some_string"))
                      .withValue("a2.b", ConfigValueFactory.fromAnyRef(-1))
                      .withValue("a2.c.d", ConfigValueFactory.fromAnyRef(1.2))
                      .withValue("a2.e.f", ConfigValueFactory.fromAnyRef(true));
     DefaultConfigurableImpl c = DefaultConfigurableImpl.createFromConfig(cfg);
-    Assert.assertEquals(c.getConfigAsProperties().getProperty("a1"), "some_string");
-    Assert.assertEquals(c.getConfigAsProperties().getProperty("a2.b"), "-1");
-    Assert.assertEquals(c.getConfigAsProperties().getProperty("a2.c.d"), "1.2");
-    Assert.assertEquals(c.getConfigAsProperties().getProperty("a2.e.f"), "true");
-  }
+	return c;
+}
 
 }
