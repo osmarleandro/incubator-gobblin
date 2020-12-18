@@ -80,11 +80,7 @@ public class LimiterStopEventTest {
         String subKey2 = key2 + ".1";
         String subKey3 = key2 + ".2";
         String subKey4 = key2 + ".3";
-        String subKey5 = "partition";
-        properties.setProperty(LimiterConfigurationKeys.LIMITER_REPORT_KEY_LIST, keyList);
-        properties.setProperty(subKey1, "1111");
-        properties.setProperty(subKey2, "1111");
-        properties.setProperty(subKey3, "1111");
+        String subKey5 = extracted(properties, keyList, subKey1, subKey2, subKey3);
         properties.setProperty(subKey4, "1111");
 
         Extractor extractor = mock (Extractor.class);
@@ -112,6 +108,15 @@ public class LimiterStopEventTest {
             Assert.fail();
         }
     }
+
+	private String extracted(Properties properties, String keyList, String subKey1, String subKey2, String subKey3) {
+		String subKey5 = "partition";
+        properties.setProperty(LimiterConfigurationKeys.LIMITER_REPORT_KEY_LIST, keyList);
+        properties.setProperty(subKey1, "1111");
+        properties.setProperty(subKey2, "1111");
+        properties.setProperty(subKey3, "1111");
+		return subKey5;
+	}
 
     @Test
     public void testGetLimiterStopMetadataCase3() throws InterruptedException {
