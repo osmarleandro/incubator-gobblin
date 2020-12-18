@@ -354,9 +354,7 @@ public class JobScheduler extends AbstractIdleService {
   public void scheduleJob(Properties jobProps, JobListener jobListener, Map<String, Object> additionalJobData,
       Class<? extends Job> jobClass)
       throws JobException {
-    Preconditions.checkArgument(jobProps.containsKey(ConfigurationKeys.JOB_NAME_KEY),
-        "A job must have a job name specified by job.name");
-    String jobName = jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+    String jobName = extracted(jobProps);
 
     if (this.scheduledJobs.containsKey(jobName)) {
       LOG.info("Job " + jobName + " was already scheduled, un-scheduling it now.");
@@ -406,6 +404,13 @@ public class JobScheduler extends AbstractIdleService {
 
     this.scheduledJobs.put(jobName, job.getKey());
   }
+
+private String extracted(Properties jobProps) {
+	Preconditions.checkArgument(jobProps.containsKey(ConfigurationKeys.JOB_NAME_KEY),
+        "A job must have a job name specified by job.name");
+    String jobName = jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+	return jobName;
+}
 
   /**
    * Unschedule and delete a job.
@@ -471,9 +476,7 @@ public class JobScheduler extends AbstractIdleService {
    */
   public boolean runJob(Properties jobProps, JobListener jobListener, JobLauncher jobLauncher)
       throws JobException {
-    Preconditions.checkArgument(jobProps.containsKey(ConfigurationKeys.JOB_NAME_KEY),
-        "A job must have a job name specified by job.name");
-    String jobName = jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+    String jobName = extracted(jobProps);
 
     // Check if the job has been disabled
     boolean disabled = Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_DISABLED_KEY, "false"));
