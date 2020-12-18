@@ -305,8 +305,7 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
   public boolean putRecord(Object record)
       throws InterruptedException {
     if (this.forkState.compareAndSet(ForkState.FAILED, ForkState.FAILED)) {
-      ForkThrowableHolder holder = Task.getForkThrowableHolder(this.broker);
-      Optional<Throwable> forkThrowable = holder.getThrowable(this.index);
+      Optional<Throwable> forkThrowable = extracted();
       if (forkThrowable.isPresent()) {
         throw new IllegalStateException(
             String.format("Fork %d of task %s has failed and is no longer running", this.index, this.taskId), forkThrowable.get());
@@ -317,6 +316,12 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
     }
     return this.putRecordImpl(record);
   }
+
+private Optional<Throwable> extracted() {
+	ForkThrowableHolder holder = Task.getForkThrowableHolder(this.broker);
+      Optional<Throwable> forkThrowable = holder.getThrowable(this.index);
+	return forkThrowable;
+}
 
   /**
    * Tell this {@link Fork} that the parent task is already done pulling records and
