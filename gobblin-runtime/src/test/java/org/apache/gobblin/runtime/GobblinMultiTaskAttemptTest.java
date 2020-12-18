@@ -95,19 +95,7 @@ public class GobblinMultiTaskAttemptTest {
   @Test
   public void testRunWithTaskStatsTrackerNotScheduledFailure()
       throws Exception {
-    TaskStateTracker stateTracker = new FailingTestStateTracker(new Properties(), log);
-    // Preparing Instance of TaskAttempt with designed failure on task creation
-    WorkUnit tmpWU = new WorkUnit();
-    // Put necessary attributes in workunit
-    tmpWU.setProp(ConfigurationKeys.TASK_ID_KEY, "task_test");
-    List<WorkUnit> workUnit = ImmutableList.of(tmpWU);
-    JobState jobState = new JobState();
-    // Limit the number of times of retry in task-creation.
-    jobState.setProp(RETRY_TIME_OUT_MS, 1000);
-    jobState.setProp(ConfigurationKeys.SOURCE_CLASS_KEY, DatasetStateStoreTest.DummySource.class.getName());
-
-    taskAttempt = new GobblinMultiTaskAttempt(workUnit.iterator(), "testJob", jobState, stateTracker, taskExecutorMock,
-        Optional.absent(), Optional.absent(), jobBroker);
+    extracted();
 
     try {
       // This attempt will automatically fail since the registerNewTask call will directly throw RuntimeException
@@ -121,6 +109,22 @@ public class GobblinMultiTaskAttemptTest {
     // Should never reach here.
     Assert.fail();
   }
+
+private void extracted() {
+	TaskStateTracker stateTracker = new FailingTestStateTracker(new Properties(), log);
+    // Preparing Instance of TaskAttempt with designed failure on task creation
+    WorkUnit tmpWU = new WorkUnit();
+    // Put necessary attributes in workunit
+    tmpWU.setProp(ConfigurationKeys.TASK_ID_KEY, "task_test");
+    List<WorkUnit> workUnit = ImmutableList.of(tmpWU);
+    JobState jobState = new JobState();
+    // Limit the number of times of retry in task-creation.
+    jobState.setProp(RETRY_TIME_OUT_MS, 1000);
+    jobState.setProp(ConfigurationKeys.SOURCE_CLASS_KEY, DatasetStateStoreTest.DummySource.class.getName());
+
+    taskAttempt = new GobblinMultiTaskAttempt(workUnit.iterator(), "testJob", jobState, stateTracker, taskExecutorMock,
+        Optional.absent(), Optional.absent(), jobBroker);
+}
 
   public static class FailingTestStateTracker extends AbstractTaskStateTracker {
     public FailingTestStateTracker(Properties properties, Logger logger) {
