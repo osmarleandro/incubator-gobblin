@@ -296,13 +296,18 @@ public class TaskState extends WorkUnitState implements TaskProgress {
     TaskMetrics metrics = TaskMetrics.get(this);
 
     for (int i = 0; i < branches; i++) {
-      String forkBranchId = ForkOperatorUtils.getForkId(this.taskId, i);
-      long recordsWritten = metrics.getCounter(MetricGroup.TASK.name(), forkBranchId, RECORDS).getCount();
-      long bytesWritten = metrics.getCounter(MetricGroup.TASK.name(), forkBranchId, BYTES).getCount();
-      metrics.getCounter(MetricGroup.JOB.name(), this.jobId, RECORDS).dec(recordsWritten);
+      long bytesWritten = extracted(metrics, i);
       metrics.getCounter(MetricGroup.JOB.name(), this.jobId, BYTES).dec(bytesWritten);
     }
   }
+
+private long extracted(TaskMetrics metrics, int i) {
+	String forkBranchId = ForkOperatorUtils.getForkId(this.taskId, i);
+      long recordsWritten = metrics.getCounter(MetricGroup.TASK.name(), forkBranchId, RECORDS).getCount();
+      long bytesWritten = metrics.getCounter(MetricGroup.TASK.name(), forkBranchId, BYTES).getCount();
+      metrics.getCounter(MetricGroup.JOB.name(), this.jobId, RECORDS).dec(recordsWritten);
+	return bytesWritten;
+}
 
   @Override
   public void readFields(DataInput in) throws IOException {
