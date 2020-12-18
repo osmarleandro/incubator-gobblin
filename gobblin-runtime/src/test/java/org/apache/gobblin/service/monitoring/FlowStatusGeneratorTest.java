@@ -31,8 +31,7 @@ public class FlowStatusGeneratorTest {
   public void testIsFlowRunning() {
     JobStatusRetriever jobStatusRetriever = Mockito.mock(JobStatusRetriever.class);
     String flowName = "testName";
-    String flowGroup = "testGroup";
-    Mockito.when(jobStatusRetriever.getLatestExecutionIdsForFlow(flowName, flowGroup, 1)).thenReturn(null);
+    String flowGroup = extracted(jobStatusRetriever, flowName);
 
     FlowStatusGenerator flowStatusGenerator = FlowStatusGenerator.builder().jobStatusRetriever(jobStatusRetriever).build();
     Assert.assertFalse(flowStatusGenerator.isFlowRunning(flowName, flowGroup));
@@ -69,4 +68,10 @@ public class FlowStatusGeneratorTest {
     Mockito.when(jobStatusRetriever.getJobStatusesForFlowExecution(flowName, flowGroup, flowExecutionId)).thenReturn(jobStatusIterator);
     Assert.assertTrue(flowStatusGenerator.isFlowRunning(flowName, flowGroup));
   }
+
+private String extracted(JobStatusRetriever jobStatusRetriever, String flowName) {
+	String flowGroup = "testGroup";
+    Mockito.when(jobStatusRetriever.getLatestExecutionIdsForFlow(flowName, flowGroup, 1)).thenReturn(null);
+	return flowGroup;
+}
 }
