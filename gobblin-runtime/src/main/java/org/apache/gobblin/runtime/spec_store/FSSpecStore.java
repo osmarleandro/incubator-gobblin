@@ -293,14 +293,18 @@ public class FSSpecStore extends InstrumentedSpecStore {
       if (fileStatus.isDirectory()) {
         getSpecs(fileStatus.getPath(), specs);
       } else {
-        try {
-          specs.add(readSpecFromFile(fileStatus.getPath()));
-        } catch (Exception e) {
-          log.warn(String.format("Path[%s] cannot be correctly deserialized as Spec", fileStatus.getPath()), e);
-        }
+        extracted(specs, fileStatus);
       }
     }
   }
+
+private void extracted(Collection<Spec> specs, FileStatus fileStatus) {
+	try {
+	  specs.add(readSpecFromFile(fileStatus.getPath()));
+	} catch (Exception e) {
+	  log.warn(String.format("Path[%s] cannot be correctly deserialized as Spec", fileStatus.getPath()), e);
+	}
+}
 
   /***
    * Read and deserialized Spec from a file.
