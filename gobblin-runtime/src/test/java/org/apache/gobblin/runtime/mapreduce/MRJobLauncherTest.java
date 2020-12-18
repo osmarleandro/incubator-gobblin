@@ -417,8 +417,7 @@ public class MRJobLauncherTest extends BMNGRunner {
 
   @Test
   public void testLaunchJobWithThreadsafeDataPublisher() throws Exception {
-    final Logger log = LoggerFactory.getLogger(getClass().getName() + ".testLaunchJobWithThreadsafeDataPublisher");
-    log.info("in");
+    final Logger log = extracted();
     Properties jobProps = loadJobProps();
     jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,
         jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithThreadsafeDataPublisher");
@@ -438,6 +437,12 @@ public class MRJobLauncherTest extends BMNGRunner {
 
     log.info("out");
   }
+
+private Logger extracted() {
+	final Logger log = LoggerFactory.getLogger(getClass().getName() + ".testLaunchJobWithThreadsafeDataPublisher");
+    log.info("in");
+	return log;
+}
 
 
   @AfterClass(alwaysRun = true)
