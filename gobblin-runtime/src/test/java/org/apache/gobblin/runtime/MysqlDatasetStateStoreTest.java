@@ -294,11 +294,7 @@ public class MysqlDatasetStateStoreTest {
 
   @Test(dependsOnMethods = "testGetPreviousDatasetStatesByUrns")
   public void testDeleteJobState() throws IOException {
-    JobState jobState = dbJobStateStore.get(TEST_JOB_NAME,
-        dbDatasetStateStore.CURRENT_DATASET_STATE_FILE_SUFFIX + dbDatasetStateStore.DATASET_STATE_STORE_TABLE_SUFFIX,
-        TEST_JOB_ID);
-
-    Assert.assertNotNull(jobState);
+    JobState jobState = extracted();
     Assert.assertEquals(jobState.getJobId(), TEST_JOB_ID);
 
     dbJobStateStore.delete(TEST_JOB_NAME);
@@ -309,6 +305,15 @@ public class MysqlDatasetStateStoreTest {
 
     Assert.assertNull(jobState);
   }
+
+private JobState extracted() throws IOException {
+	JobState jobState = dbJobStateStore.get(TEST_JOB_NAME,
+        dbDatasetStateStore.CURRENT_DATASET_STATE_FILE_SUFFIX + dbDatasetStateStore.DATASET_STATE_STORE_TABLE_SUFFIX,
+        TEST_JOB_ID);
+
+    Assert.assertNotNull(jobState);
+	return jobState;
+}
 
   @Test(dependsOnMethods = "testGetPreviousDatasetStatesByUrns")
   public void testDeleteDatasetJobState() throws IOException {
