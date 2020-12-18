@@ -454,7 +454,17 @@ public class JobContext implements Closeable {
     }
 
     try {
-      if (this.datasetStatesByUrns.isPresent()) {
+      extracted(isJobCancelled, shouldCommitDataInJob, deliverySemantics, numCommitThreads);
+    } catch (InterruptedException exc) {
+      throw new IOException(exc);
+    }
+    this.jobState.setState(JobState.RunningState.COMMITTED);
+  }
+
+private void extracted(final boolean isJobCancelled, final boolean shouldCommitDataInJob,
+		final DeliverySemantics deliverySemantics, final int numCommitThreads)
+		throws IOException, InterruptedException {
+	if (this.datasetStatesByUrns.isPresent()) {
         this.logger.info("Persisting dataset urns.");
         this.datasetStateStore.persistDatasetURNs(this.jobName, this.datasetStatesByUrns.get().keySet());
       }
@@ -480,11 +490,7 @@ public class JobContext implements Closeable {
         this.jobState.setJobFailureMessage(errMsg);
         throw new IOException(errMsg);
       }
-    } catch (InterruptedException exc) {
-      throw new IOException(exc);
-    }
-    this.jobState.setState(JobState.RunningState.COMMITTED);
-  }
+}
 
   @Override
   public void close()
