@@ -254,9 +254,7 @@ public class TaskState extends WorkUnitState implements TaskProgress {
    * @deprecated see {@link org.apache.gobblin.instrumented.writer.InstrumentedDataWriterBase}.
    */
   public synchronized void updateRecordMetrics(long recordsWritten, int branchIndex) {
-    TaskMetrics metrics = TaskMetrics.get(this);
-    // chopping branch index from metric name
-    // String forkBranchId = ForkOperatorUtils.getForkId(this.taskId, branchIndex);
+    TaskMetrics metrics = extracted();
     String forkBranchId = TaskMetrics.taskInstanceRemoved(this.taskId);
 
     Counter taskRecordCounter = metrics.getCounter(MetricGroup.TASK.name(), forkBranchId, RECORDS);
@@ -267,6 +265,13 @@ public class TaskState extends WorkUnitState implements TaskProgress {
     metrics.getMeter(MetricGroup.JOB.name(), this.jobId, RECORDS_PER_SECOND).mark(inc);
   }
 
+private TaskMetrics extracted() {
+	TaskMetrics metrics = TaskMetrics.get(this);
+    // chopping branch index from metric name
+    // String forkBranchId = ForkOperatorUtils.getForkId(this.taskId, branchIndex);
+	return metrics;
+}
+
   /**
    * Collect byte-level metrics.
    *
@@ -276,7 +281,7 @@ public class TaskState extends WorkUnitState implements TaskProgress {
    * @deprecated see {@link org.apache.gobblin.instrumented.writer.InstrumentedDataWriterBase}.
    */
   public synchronized void updateByteMetrics(long bytesWritten, int branchIndex) {
-    TaskMetrics metrics = TaskMetrics.get(this);
+    TaskMetrics metrics = extracted();
     String forkBranchId = TaskMetrics.taskInstanceRemoved(this.taskId);
 
     Counter taskByteCounter = metrics.getCounter(MetricGroup.TASK.name(), forkBranchId, BYTES);
@@ -293,7 +298,7 @@ public class TaskState extends WorkUnitState implements TaskProgress {
    * @param branches number of forked branches
    */
   public void adjustJobMetricsOnRetry(int branches) {
-    TaskMetrics metrics = TaskMetrics.get(this);
+    TaskMetrics metrics = extracted();
 
     for (int i = 0; i < branches; i++) {
       String forkBranchId = ForkOperatorUtils.getForkId(this.taskId, i);
