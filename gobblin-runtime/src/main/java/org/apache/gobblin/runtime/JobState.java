@@ -620,8 +620,7 @@ public class JobState extends SourceState implements JobProgress {
    */
   public void toJson(JsonWriter jsonWriter, boolean keepConfig)
       throws IOException {
-    jsonWriter.beginObject();
-    writeStateSummary(jsonWriter);
+    extracted(jsonWriter);
 
     jsonWriter.name("task states");
     jsonWriter.beginArray();
@@ -640,6 +639,11 @@ public class JobState extends SourceState implements JobProgress {
 
     jsonWriter.endObject();
   }
+
+private void extracted(JsonWriter jsonWriter) throws IOException {
+	jsonWriter.beginObject();
+    writeStateSummary(jsonWriter);
+}
 
   /**
    * Write a summary to the json document
