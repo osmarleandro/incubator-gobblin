@@ -563,8 +563,7 @@ public class Task implements TaskIFace {
   }
 
   private void failTask(Throwable t) {
-    LOG.error(String.format("Task %s failed", this.taskId), t);
-    this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
+    extracted(t);
     this.taskState.setProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY, Throwables.getStackTraceAsString(t));
 
     // Send task failure event
@@ -574,6 +573,11 @@ public class Task implements TaskIFace {
     failureEvent.addAdditionalMetadata(this.taskEventMetadataGenerator.getMetadata(this.taskState, failureEvent.getName()));
     failureEvent.submit(taskContext.getTaskMetrics().getMetricContext());
   }
+
+private void extracted(Throwable t) {
+	LOG.error(String.format("Task %s failed", this.taskId), t);
+    this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
+}
 
   /**
    * Whether the task should directly publish its output data to the final publisher output directory.
