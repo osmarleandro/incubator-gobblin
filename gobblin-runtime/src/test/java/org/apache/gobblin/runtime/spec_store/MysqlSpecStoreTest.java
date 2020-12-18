@@ -203,7 +203,15 @@ public class MysqlSpecStoreTest {
   @Test  (dependsOnMethods = "testGetSpec")
   public void testGetSpecWithTag() throws Exception {
 
-    //Creating and inserting flowspecs with tags
+    URI uri6 = extracted();
+    Assert.assertTrue(this.specStore.exists(uri6));
+    List<URI> result = new ArrayList<>();
+    this.specStore.getSpecURIsWithTag("dr").forEachRemaining(result::add);
+    Assert.assertEquals(result.size(), 2);
+  }
+
+private URI extracted() throws IOException {
+	//Creating and inserting flowspecs with tags
     URI uri5 = URI.create("flowspec5");
     FlowSpec flowSpec5 = FlowSpec.builder(uri5)
         .withConfig(ConfigBuilder.create()
@@ -232,11 +240,8 @@ public class MysqlSpecStoreTest {
     this.specStore.addSpec(flowSpec6, "dr");
 
     Assert.assertTrue(this.specStore.exists(uri5));
-    Assert.assertTrue(this.specStore.exists(uri6));
-    List<URI> result = new ArrayList<>();
-    this.specStore.getSpecURIsWithTag("dr").forEachRemaining(result::add);
-    Assert.assertEquals(result.size(), 2);
-  }
+	return uri6;
+}
 
   @Test (expectedExceptions = {IOException.class})
   public void testGetCorruptedSpec() throws Exception {
