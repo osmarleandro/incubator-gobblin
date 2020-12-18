@@ -91,9 +91,7 @@ public class FSJobCatalogHelperTest {
   @BeforeClass
   public void setUp()
       throws IOException {
-    this.jobConfigDir = java.nio.file.Files.createTempDirectory(
-        String.format("gobblin-test_%s_job-conf", this.getClass().getSimpleName())).toFile();
-    FileUtils.forceDeleteOnExit(this.jobConfigDir);
+    extracted();
     this.subDir1 = new File(this.jobConfigDir, "test1");
     this.subDir11 = new File(this.subDir1, "test11");
     this.subDir2 = new File(this.jobConfigDir, "test2");
@@ -150,6 +148,12 @@ public class FSJobCatalogHelperTest {
     // test-job-conf-dir/test2/test21.PULL
     jobProps4.store(new FileWriter(new File(this.subDir2, "test21.PULL")), "");
   }
+
+private void extracted() throws IOException {
+	this.jobConfigDir = java.nio.file.Files.createTempDirectory(
+        String.format("gobblin-test_%s_job-conf", this.getClass().getSimpleName())).toFile();
+    FileUtils.forceDeleteOnExit(this.jobConfigDir);
+}
 
   // This test doesn't delete framework attributes and
   @Test (enabled=false)
