@@ -143,12 +143,16 @@ public class JobContextTest {
     Future future = executorService.submit(new Runnable() {
       @Override
       public void run() {
-        try {
+        extracted(jobContext);
+      }
+
+	private void extracted(final JobContext jobContext) {
+		try {
           jobContext.commit();
         } catch (IOException ioe) {
           throw new RuntimeException(ioe);
         }
-      }
+	}
     });
 
     // Parallelized, should be able to get all 5 commits running
