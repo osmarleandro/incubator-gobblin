@@ -782,8 +782,7 @@ public class JobState extends SourceState implements JobProgress {
    * @return a new {@link JobState.DatasetState} object
    */
   public DatasetState newDatasetState(boolean fullCopy) {
-    DatasetState datasetState = new DatasetState(this.jobName, this.jobId);
-    datasetState.setStartTime(this.startTime);
+    DatasetState datasetState = extracted();
     datasetState.setEndTime(this.endTime);
     datasetState.setDuration(this.duration);
     if (fullCopy) {
@@ -794,6 +793,12 @@ public class JobState extends SourceState implements JobProgress {
     }
     return datasetState;
   }
+
+private DatasetState extracted() {
+	DatasetState datasetState = new DatasetState(this.jobName, this.jobId);
+    datasetState.setStartTime(this.startTime);
+	return datasetState;
+}
 
   public static List<WorkUnitState> workUnitStatesFromDatasetStates(Iterable<JobState.DatasetState> datasetStates) {
     ImmutableList.Builder<WorkUnitState> taskStateBuilder = ImmutableList.builder();
