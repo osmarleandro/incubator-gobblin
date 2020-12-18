@@ -144,16 +144,22 @@ public abstract class InheritingJobTemplate implements JobTemplate {
     Config rawTemplate = getLocalRawTemplate();
     if (this.superTemplates != null) {
       for (JobTemplate template : Lists.reverse(this.superTemplates)) {
-        if (!alreadyInheritedTemplates.contains(template)) {
-          alreadyInheritedTemplates.add(template);
-          Config thisFallback = template instanceof InheritingJobTemplate ? ((InheritingJobTemplate) template).getRawTemplateConfigHelper(alreadyInheritedTemplates)
-              : template.getRawTemplateConfig();
-          rawTemplate = rawTemplate.withFallback(thisFallback);
-        }
+        rawTemplate = extracted(alreadyInheritedTemplates, rawTemplate, template);
       }
     }
     return rawTemplate;
   }
+
+private Config extracted(Set<JobTemplate> alreadyInheritedTemplates, Config rawTemplate, JobTemplate template)
+		throws SpecNotFoundException, TemplateException {
+	if (!alreadyInheritedTemplates.contains(template)) {
+	  alreadyInheritedTemplates.add(template);
+	  Config thisFallback = template instanceof InheritingJobTemplate ? ((InheritingJobTemplate) template).getRawTemplateConfigHelper(alreadyInheritedTemplates)
+	      : template.getRawTemplateConfig();
+	  rawTemplate = rawTemplate.withFallback(thisFallback);
+	}
+	return rawTemplate;
+}
 
   protected abstract Config getLocalRawTemplate();
 
