@@ -210,8 +210,7 @@ public class FsDatasetStateStoreTest {
   @Test
   public void testGetMetadataForTables() throws Exception {
 
-    File tmpDir = Files.createTempDir();
-    tmpDir.deleteOnExit();
+    File tmpDir = extracted();
 
     FsDatasetStateStore store = new FsDatasetStateStore(FileSystem.getLocal(new Configuration()), tmpDir.getAbsolutePath());
 
@@ -262,6 +261,12 @@ public class FsDatasetStateStoreTest {
     ));
     Assert.assertTrue(metadataList.isEmpty());
   }
+
+private File extracted() {
+	File tmpDir = Files.createTempDir();
+    tmpDir.deleteOnExit();
+	return tmpDir;
+}
 
   @AfterClass
   public void tearDown() throws IOException {
