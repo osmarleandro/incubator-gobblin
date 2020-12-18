@@ -46,11 +46,17 @@ public class GobblinInstancePluginUtils {
       throws ClassNotFoundException, InstantiationException, IllegalAccessException {
     String pluginsStr = config.getString(PLUGINS_KEY);
     List<GobblinInstancePluginFactory> plugins = Lists.newArrayList();
-    for (String pluginName : Splitter.on(",").split(pluginsStr)) {
+    return extracted(pluginsStr, plugins);
+  }
+
+private static Collection<GobblinInstancePluginFactory> extracted(String pluginsStr,
+		List<GobblinInstancePluginFactory> plugins)
+		throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+	for (String pluginName : Splitter.on(",").split(pluginsStr)) {
       plugins.add(instantiatePluginByAlias(pluginName));
     }
     return plugins;
-  }
+}
 
   /**
    * Instantiate a {@link GobblinInstancePluginFactory} by alias.
