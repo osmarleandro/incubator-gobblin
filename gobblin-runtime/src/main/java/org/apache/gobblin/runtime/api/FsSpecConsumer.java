@@ -142,10 +142,14 @@ public class FsSpecConsumer implements SpecConsumer<Spec> {
   public void commit(Spec spec) throws IOException {
     Path path = this.specToPathMap.get(spec.getUri());
     if (path != null) {
-      log.debug("Calling delete on path: {}", path.toString());
-      this.fs.delete(path, false);
+      extracted(path);
     } else {
       log.error("No path found for job: {}", spec.getUri().toString());
     }
   }
+
+private void extracted(Path path) throws IOException {
+	log.debug("Calling delete on path: {}", path.toString());
+      this.fs.delete(path, false);
+}
 }
