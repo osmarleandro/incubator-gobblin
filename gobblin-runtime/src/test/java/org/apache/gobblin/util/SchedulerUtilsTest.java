@@ -209,12 +209,7 @@ public class SchedulerUtilsTest {
   @Test
   public void testloadGenericJobConfig()
       throws ConfigurationException, IOException {
-    Path jobConfigPath = new Path(this.subDir11.getAbsolutePath(), "test111.pull");
-    Properties properties = new Properties();
-    properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY, this.jobConfigDir.getAbsolutePath());
-    Properties jobProps =
-        SchedulerUtils.loadGenericJobConfig(properties, jobConfigPath, new Path(this.jobConfigDir.getAbsolutePath()),
-            JobSpecResolver.builder(ConfigFactory.empty()).build());
+    Properties jobProps = extracted();
 
     Assert.assertEquals(jobProps.stringPropertyNames().size(), 7);
     Assert.assertTrue(jobProps.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY) || jobProps.containsKey(
@@ -226,6 +221,16 @@ public class SchedulerUtilsTest {
     Assert.assertEquals(jobProps.getProperty("k8"), "a8");
     Assert.assertEquals(jobProps.getProperty("k9"), "a8");
   }
+
+private Properties extracted() throws ConfigurationException, IOException {
+	Path jobConfigPath = new Path(this.subDir11.getAbsolutePath(), "test111.pull");
+    Properties properties = new Properties();
+    properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY, this.jobConfigDir.getAbsolutePath());
+    Properties jobProps =
+        SchedulerUtils.loadGenericJobConfig(properties, jobConfigPath, new Path(this.jobConfigDir.getAbsolutePath()),
+            JobSpecResolver.builder(ConfigFactory.empty()).build());
+	return jobProps;
+}
 
   @Test(dependsOnMethods = {"testLoadJobConfigsForCommonPropsFile", "testloadGenericJobConfig"})
   public void testPathAlterationObserver()
