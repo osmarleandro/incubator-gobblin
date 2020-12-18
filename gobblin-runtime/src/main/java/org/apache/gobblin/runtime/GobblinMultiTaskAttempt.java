@@ -520,13 +520,17 @@ public class GobblinMultiTaskAttempt {
       throws IOException, InterruptedException {
     run();
     if (multiTaskAttemptCommitPolicy.equals(GobblinMultiTaskAttempt.CommitPolicy.IMMEDIATE)) {
-      this.log.info("Will commit tasks directly.");
-      commit();
+      extracted();
     } else if (!isSpeculativeExecutionSafe()) {
       throw new RuntimeException(
           "Speculative execution is enabled. However, the task context is not safe for speculative execution.");
     }
   }
+
+private void extracted() throws IOException {
+	this.log.info("Will commit tasks directly.");
+      commit();
+}
 
   /**
    * <p> During the task execution, the fork/task instances will create metric contexts (fork, task, job, container)
