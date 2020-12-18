@@ -19,6 +19,8 @@ package org.apache.gobblin.runtime.embedded;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -59,7 +61,18 @@ public class EmbeddedGobblinTest {
 
   @Test
   public void testRunWithJobFile() throws Exception {
-    String eventBusId = this.getClass().getName() + ".jobFileTest";
+    TestingEventBusAsserter asserter = extracted();
+
+    ArrayList<String> expectedEvents = new ArrayList<>();
+    for (int i = 1; i <= 10; ++i) {
+      expectedEvents.add(HelloWorldSource.ExtractorImpl.helloMessage(i));
+    }
+    asserter.assertNextValuesEq(expectedEvents);
+    asserter.close();
+  }
+
+private TestingEventBusAsserter extracted() throws InterruptedException, TimeoutException, ExecutionException {
+	String eventBusId = this.getClass().getName() + ".jobFileTest";
 
     TestingEventBusAsserter asserter = new TestingEventBusAsserter(eventBusId);
 
@@ -71,14 +84,8 @@ public class EmbeddedGobblinTest {
     JobExecutionResult result = embeddedGobblin.run();
 
     Assert.assertTrue(result.isSuccessful());
-
-    ArrayList<String> expectedEvents = new ArrayList<>();
-    for (int i = 1; i <= 10; ++i) {
-      expectedEvents.add(HelloWorldSource.ExtractorImpl.helloMessage(i));
-    }
-    asserter.assertNextValuesEq(expectedEvents);
-    asserter.close();
-  }
+	return asserter;
+}
 
   @Test
   public void testDistributedJars() throws Exception {
