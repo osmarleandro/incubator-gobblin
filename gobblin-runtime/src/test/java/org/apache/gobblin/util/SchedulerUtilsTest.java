@@ -119,8 +119,7 @@ public class SchedulerUtilsTest {
   @Test
   public void testloadGenericJobConfigs()
       throws ConfigurationException, IOException {
-    Properties properties = new Properties();
-    properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY, this.jobConfigDir.getAbsolutePath());
+    Properties properties = extracted();
     List<Properties> jobConfigs = SchedulerUtils.loadGenericJobConfigs(properties, JobSpecResolver.mock());
     Assert.assertEquals(jobConfigs.size(), 4);
 
@@ -168,6 +167,12 @@ public class SchedulerUtilsTest {
     Assert.assertEquals(jobProps4.getProperty("k2"), "b2");
     Assert.assertEquals(jobProps4.getProperty("k5"), "b5");
   }
+
+private Properties extracted() {
+	Properties properties = new Properties();
+    properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY, this.jobConfigDir.getAbsolutePath());
+	return properties;
+}
 
   @Test
   public void testLoadJobConfigsForCommonPropsFile()
