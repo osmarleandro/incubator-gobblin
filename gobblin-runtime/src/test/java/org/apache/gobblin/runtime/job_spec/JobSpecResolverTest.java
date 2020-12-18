@@ -17,12 +17,15 @@
 
 package org.apache.gobblin.runtime.job_spec;
 
+import java.io.IOException;
 import java.net.URI;
 
 import org.apache.gobblin.runtime.api.JobCatalogWithTemplates;
 import org.apache.gobblin.runtime.api.JobSpec;
 import org.apache.gobblin.runtime.api.JobTemplate;
+import org.apache.gobblin.runtime.api.JobTemplate.TemplateException;
 import org.apache.gobblin.runtime.api.SecureJobTemplate;
+import org.apache.gobblin.runtime.api.SpecNotFoundException;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -37,6 +40,19 @@ public class JobSpecResolverTest {
 	@Test
 	public void test() throws Exception {
 
+		JobSpecResolver resolver = extracted();
+		JobSpec jobSpec = JobSpec.builder()
+				.withConfig(ConfigFactory.parseMap(ImmutableMap.of("key", "value")))
+				.withTemplate(URI.create("my://template")).build();
+		ResolvedJobSpec resolvedJobSpec = resolver.resolveJobSpec(jobSpec);
+
+		Assert.assertEquals(resolvedJobSpec.getOriginalJobSpec(), jobSpec);
+		Assert.assertEquals(resolvedJobSpec.getConfig().entrySet().size(), 2);
+		Assert.assertEquals(resolvedJobSpec.getConfig().getString("key"), "value");
+		Assert.assertEquals(resolvedJobSpec.getConfig().getString("template.value"), "foo");
+	}
+
+	private JobSpecResolver extracted() throws SpecNotFoundException, TemplateException, IOException {
 		Config sysConfig = ConfigFactory.empty();
 
 		JobTemplate jobTemplate = Mockito.mock(JobTemplate.class);
@@ -49,15 +65,7 @@ public class JobSpecResolverTest {
 		Mockito.when(catalog.getTemplate(Mockito.eq(URI.create("my://template")))).thenReturn(jobTemplate);
 
 		JobSpecResolver resolver = JobSpecResolver.builder(sysConfig).jobCatalog(catalog).build();
-		JobSpec jobSpec = JobSpec.builder()
-				.withConfig(ConfigFactory.parseMap(ImmutableMap.of("key", "value")))
-				.withTemplate(URI.create("my://template")).build();
-		ResolvedJobSpec resolvedJobSpec = resolver.resolveJobSpec(jobSpec);
-
-		Assert.assertEquals(resolvedJobSpec.getOriginalJobSpec(), jobSpec);
-		Assert.assertEquals(resolvedJobSpec.getConfig().entrySet().size(), 2);
-		Assert.assertEquals(resolvedJobSpec.getConfig().getString("key"), "value");
-		Assert.assertEquals(resolvedJobSpec.getConfig().getString("template.value"), "foo");
+		return resolver;
 	}
 
 	@Test
