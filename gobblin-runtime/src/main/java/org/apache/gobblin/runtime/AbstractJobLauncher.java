@@ -247,16 +247,21 @@ public abstract class AbstractJobLauncher implements JobLauncher {
       URI templateUri = new URI(jobProps.getProperty(GOBBLIN_JOB_TEMPLATE_KEY));
       jobSpec = JobSpec.builder().withConfig(config).withTemplate(templateUri).build();
     } else if (jobProps.containsKey(GOBBLIN_JOB_MULTI_TEMPLATE_KEY)) {
-      List<URI> templatesURIs = new ArrayList<>();
-      for (String uri : jobProps.getProperty(GOBBLIN_JOB_MULTI_TEMPLATE_KEY).split(",")) {
-        templatesURIs.add(new URI(uri));
-      }
+      List<URI> templatesURIs = extracted(jobProps);
       jobSpec = JobSpec.builder().withConfig(config).withResourceTemplates(templatesURIs).build();
     }
     if (jobSpec != null ) {
       jobProps.putAll(ConfigUtils.configToProperties(resolver.resolveJobSpec(jobSpec).getConfig()));
     }
   }
+
+private static List<URI> extracted(Properties jobProps) throws URISyntaxException {
+	List<URI> templatesURIs = new ArrayList<>();
+      for (String uri : jobProps.getProperty(GOBBLIN_JOB_MULTI_TEMPLATE_KEY).split(",")) {
+        templatesURIs.add(new URI(uri));
+      }
+	return templatesURIs;
+}
 
   private static SharedResourcesBroker<GobblinScopeTypes> createDefaultInstanceBroker(Properties jobProps) {
     LOG.warn("Creating a job specific {}. Objects will only be shared at the job level.",
