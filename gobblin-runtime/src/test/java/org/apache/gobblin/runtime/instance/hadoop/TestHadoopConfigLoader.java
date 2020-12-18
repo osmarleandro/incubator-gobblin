@@ -32,14 +32,7 @@ public class TestHadoopConfigLoader {
 
   @Test
   public void testOverride() {
-    Config testConfig = ConfigFactory.parseMap(ImmutableMap.<String, Object>builder()
-        .put("c.d", "1")
-        .put("e.f", "2")
-        .put("hadoop-inject.a.b.c.ROOT", "2")
-        .put("hadoop-inject.a.b.c.d", "3")
-        .put("hadoop-inject.e.f", "4")
-        .build());
-    HadoopConfigLoader configLoader = new HadoopConfigLoader(testConfig);
+    HadoopConfigLoader configLoader = extracted();
     Configuration conf1 = configLoader.getConf();
 
     Assert.assertEquals(conf1.get("a.b.c"), "2");
@@ -54,5 +47,17 @@ public class TestHadoopConfigLoader {
     Assert.assertEquals(conf2.get("a.b.c.d"), "3");
     Assert.assertEquals(conf2.get("e.f"), "4");
   }
+
+private HadoopConfigLoader extracted() {
+	Config testConfig = ConfigFactory.parseMap(ImmutableMap.<String, Object>builder()
+        .put("c.d", "1")
+        .put("e.f", "2")
+        .put("hadoop-inject.a.b.c.ROOT", "2")
+        .put("hadoop-inject.a.b.c.d", "3")
+        .put("hadoop-inject.e.f", "4")
+        .build());
+    HadoopConfigLoader configLoader = new HadoopConfigLoader(testConfig);
+	return configLoader;
+}
 
 }
