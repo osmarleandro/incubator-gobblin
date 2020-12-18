@@ -293,15 +293,19 @@ public class JobLauncherTestHelper {
     // one task is skipped out of 4
     Assert.assertEquals(jobState.getCompletedTasks(), 3);
     for (TaskState taskState : jobState.getTaskStates()) {
-      if (taskState.getTaskId().endsWith(skippedTaskSuffix)) {
+      extracted(skippedTaskSuffix, taskState);
+    }
+  }
+
+private void extracted(String skippedTaskSuffix, TaskState taskState) {
+	if (taskState.getTaskId().endsWith(skippedTaskSuffix)) {
         Assert.assertEquals(taskState.getWorkingState(), WorkUnitState.WorkingState.PENDING);
       } else {
         Assert.assertEquals(taskState.getWorkingState(), WorkUnitState.WorkingState.COMMITTED);
         Assert.assertEquals(taskState.getPropAsLong(ConfigurationKeys.WRITER_RECORDS_WRITTEN),
             TestExtractor.TOTAL_RECORDS);
       }
-    }
-  }
+}
 
   public void runTestWithCommitSuccessfulTasksPolicy(Properties jobProps) throws Exception {
     String jobName = jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
