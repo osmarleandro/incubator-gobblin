@@ -42,8 +42,7 @@ public class ForkTest {
 
   @Test(dataProvider = "closeConfigProvider")
   public void TestForCloseWriterTrue(String closeConfig, int expectedCloseCount) throws Exception {
-    WorkUnitState wus = new WorkUnitState();
-    wus.setProp(ConfigurationKeys.FORK_CLOSE_WRITER_ON_COMPLETION, closeConfig);
+    WorkUnitState wus = extracted(closeConfig);
     wus.setProp(ConfigurationKeys.JOB_ID_KEY, "job2");
     wus.setProp(ConfigurationKeys.TASK_ID_KEY, "task1");
     wus.setProp(RetryWriter.RETRY_WRITER_ENABLED, "false");
@@ -59,6 +58,12 @@ public class ForkTest {
 
     Assert.assertEquals(expectedCloseCount, DummyDataWriterBuilder.getWriter().getCloseCount());
   }
+
+private WorkUnitState extracted(String closeConfig) {
+	WorkUnitState wus = new WorkUnitState();
+    wus.setProp(ConfigurationKeys.FORK_CLOSE_WRITER_ON_COMPLETION, closeConfig);
+	return wus;
+}
 
   private static class TestFork extends Fork {
 
