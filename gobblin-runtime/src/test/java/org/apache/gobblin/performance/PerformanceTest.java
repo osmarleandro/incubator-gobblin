@@ -17,8 +17,11 @@
 
 package org.apache.gobblin.performance;
 
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.testng.Assert;
 
@@ -26,6 +29,8 @@ import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
+import org.apache.gobblin.runtime.api.JobTemplate.TemplateException;
+import org.apache.gobblin.runtime.api.SpecNotFoundException;
 import org.apache.gobblin.runtime.embedded.EmbeddedGobblin;
 import org.apache.gobblin.util.test.FastSequentialSource;
 import org.apache.gobblin.writer.test.GobblinTestEventBusWriter;
@@ -47,16 +52,7 @@ public class PerformanceTest {
    * Test the throughput of a Gobblin pipeline with trivial source and writers and no converters / forks, etc.
    */
   public static void testGobblinThroughput() throws Exception {
-    String eventBusId = PerformanceTest.class.getName();
-
-    EmbeddedGobblin embeddedGobblin = new EmbeddedGobblin("PerformanceTest")
-        .setTemplate("resource:///templates/performanceTest.template")
-        .setConfiguration(GobblinTestEventBusWriter.FULL_EVENTBUSID_KEY, eventBusId);
-
-    EventHandler eventHandler = new EventHandler();
-    TestingEventBuses.getEventBus(eventBusId).register(eventHandler);
-
-    embeddedGobblin.run();
+    EventHandler eventHandler = extracted();
 
     Assert.assertEquals(eventHandler.runSummaries.size(), 1);
 
@@ -66,6 +62,21 @@ public class PerformanceTest {
         runSummary.getTimeElapsedMillis(),
         (double) runSummary.getRecordsWritten() * 1000 / runSummary.getTimeElapsedMillis()));
   }
+
+private static EventHandler extracted() throws URISyntaxException, SpecNotFoundException, TemplateException,
+		InterruptedException, TimeoutException, ExecutionException {
+	String eventBusId = PerformanceTest.class.getName();
+
+    EmbeddedGobblin embeddedGobblin = new EmbeddedGobblin("PerformanceTest")
+        .setTemplate("resource:///templates/performanceTest.template")
+        .setConfiguration(GobblinTestEventBusWriter.FULL_EVENTBUSID_KEY, eventBusId);
+
+    EventHandler eventHandler = new EventHandler();
+    TestingEventBuses.getEventBus(eventBusId).register(eventHandler);
+
+    embeddedGobblin.run();
+	return eventHandler;
+}
 
   /**
    * Test the throughput of the source used on {@link #testGobblinThroughput()} to prove it is not a bottleneck.
