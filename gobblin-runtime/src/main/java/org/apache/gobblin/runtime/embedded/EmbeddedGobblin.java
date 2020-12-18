@@ -598,13 +598,7 @@ public class EmbeddedGobblin {
 
   @VisibleForTesting
   protected List<String> getPrioritizedDistributedJars() {
-    List<Map.Entry<String, Integer>> jarsWithPriority = Lists.newArrayList(this.distributedJars.entrySet());
-    Collections.sort(jarsWithPriority, new Comparator<Map.Entry<String, Integer>>() {
-      @Override
-      public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-        return Integer.compare(o1.getValue(), o2.getValue());
-      }
-    });
+    List<Map.Entry<String, Integer>> jarsWithPriority = extracted();
     return Lists.transform(jarsWithPriority, new Function<Map.Entry<String, Integer>, String>() {
       @Override
       public String apply(Map.Entry<String, Integer> input) {
@@ -612,6 +606,17 @@ public class EmbeddedGobblin {
       }
     });
   }
+
+private List<Map.Entry<String, Integer>> extracted() {
+	List<Map.Entry<String, Integer>> jarsWithPriority = Lists.newArrayList(this.distributedJars.entrySet());
+    Collections.sort(jarsWithPriority, new Comparator<Map.Entry<String, Integer>>() {
+      @Override
+      public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+        return Integer.compare(o1.getValue(), o2.getValue());
+      }
+    });
+	return jarsWithPriority;
+}
 
   /**
    * A {@link org.apache.gobblin.runtime.api.JobLifecycleListener} that listens for a particular job and detects the start of the job.
