@@ -136,19 +136,7 @@ public class JobLauncherTestHelper {
   }
 
   public void runTestWithPullLimit(Properties jobProps, long limit) throws Exception {
-    String jobName = jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
-    String jobId = JobLauncherUtils.newJobId(jobName).toString();
-    jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY, jobId);
-
-    Closer closer = Closer.create();
-    try {
-      JobLauncher jobLauncher = closer.register(JobLauncherFactory.newJobLauncher(this.launcherProps, jobProps));
-      jobLauncher.launchJob(null);
-    } finally {
-      closer.close();
-    }
-
-    List<JobState.DatasetState> datasetStateList = this.datasetStateStore.getAll(jobName, sanitizeJobNameForDatasetStore(jobId) + ".jst");
+    List<JobState.DatasetState> datasetStateList = extracted(jobProps);
     DatasetState datasetState = datasetStateList.get(0);
 
     Assert.assertEquals(datasetState.getState(), JobState.RunningState.COMMITTED);
@@ -161,6 +149,23 @@ public class JobLauncherTestHelper {
       Assert.assertEquals(taskState.getPropAsLong(ConfigurationKeys.WRITER_ROWS_WRITTEN), limit);
     }
   }
+
+private List<JobState.DatasetState> extracted(Properties jobProps) throws Exception, JobException, IOException {
+	String jobName = jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+    String jobId = JobLauncherUtils.newJobId(jobName).toString();
+    jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY, jobId);
+
+    Closer closer = Closer.create();
+    try {
+      JobLauncher jobLauncher = closer.register(JobLauncherFactory.newJobLauncher(this.launcherProps, jobProps));
+      jobLauncher.launchJob(null);
+    } finally {
+      closer.close();
+    }
+
+    List<JobState.DatasetState> datasetStateList = this.datasetStateStore.getAll(jobName, sanitizeJobNameForDatasetStore(jobId) + ".jst");
+	return datasetStateList;
+}
 
   public void runTestWithCancellation(final Properties jobProps) throws Exception {
     String jobName = jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
