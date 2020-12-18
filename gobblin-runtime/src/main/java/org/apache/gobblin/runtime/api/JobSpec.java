@@ -101,19 +101,25 @@ public class JobSpec implements Configurable, Spec {
       group = "default";
     }
     try {
-      URI jobURI = new URI(catalogURI.getScheme(), catalogURI.getAuthority(),
-          "/" + group + "/" + name, null);
-      Builder builder = new Builder(jobURI).withConfigAsProperties(jobProps);
-      String descr = JobState.getJobDescriptionFromProps(jobProps);
-      if (null != descr) {
-        builder.withDescription(descr);
-      }
+      Builder builder = extracted(catalogURI, jobProps, name, group);
 
       return builder;
     } catch (URISyntaxException e) {
       throw new RuntimeException("Unable to create a JobSpec URI: " + e, e);
     }
   }
+
+private static Builder extracted(URI catalogURI, Properties jobProps, String name, String group)
+		throws URISyntaxException {
+	URI jobURI = new URI(catalogURI.getScheme(), catalogURI.getAuthority(),
+          "/" + group + "/" + name, null);
+      Builder builder = new Builder(jobURI).withConfigAsProperties(jobProps);
+      String descr = JobState.getJobDescriptionFromProps(jobProps);
+      if (null != descr) {
+        builder.withDescription(descr);
+      }
+	return builder;
+}
 
   public String toShortString() {
     return getUri().toString() + "/" + getVersion();
