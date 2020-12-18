@@ -57,13 +57,17 @@ public abstract class BaseGobblinJob implements Job {
     try {
       executeImpl(context);
     } finally {
-      if (originalContext != null) {
+      extracted(originalContext);
+    }
+  }
+
+private void extracted(Map<String, String> originalContext) {
+	if (originalContext != null) {
         MDC.setContextMap(originalContext);
       } else {
         MDC.clear();
       }
-    }
-  }
+}
 
   /**
    * <p>
