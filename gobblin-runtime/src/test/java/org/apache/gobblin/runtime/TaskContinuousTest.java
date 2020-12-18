@@ -422,18 +422,7 @@ public class TaskContinuousTest {
       int currentIteration = 0;
 
       while (currentIteration < sleepIterations) {
-        Thread.sleep(1000);
-        currentIteration++;
-        Map<String, CheckpointableWatermark> externalWatermarkStorage = mockTaskContext.getWatermarkStorage()
-            .getCommittedWatermarks(CheckpointableWatermark.class, ImmutableList.of("default"));
-        if (!externalWatermarkStorage.isEmpty()) {
-          for (CheckpointableWatermark watermark : externalWatermarkStorage.values()) {
-            log.info("Observed committed watermark: {}", watermark);
-          }
-          log.info("Task progress: {}", task.getProgress());
-          // Ensure that watermarks seem reasonable at each step
-          Assert.assertTrue(continuousExtractor.validateWatermarks(false, externalWatermarkStorage));
-        }
+        currentIteration = extracted(continuousExtractor, mockTaskContext, task, currentIteration);
       }
 
       // Let's try to shutdown the task
@@ -456,6 +445,23 @@ public class TaskContinuousTest {
     }
 
   }
+
+private int extracted(ContinuousExtractor continuousExtractor, TaskContext mockTaskContext, Task task,
+		int currentIteration) throws InterruptedException, IOException {
+	Thread.sleep(1000);
+	currentIteration++;
+	Map<String, CheckpointableWatermark> externalWatermarkStorage = mockTaskContext.getWatermarkStorage()
+	    .getCommittedWatermarks(CheckpointableWatermark.class, ImmutableList.of("default"));
+	if (!externalWatermarkStorage.isEmpty()) {
+	  for (CheckpointableWatermark watermark : externalWatermarkStorage.values()) {
+	    log.info("Observed committed watermark: {}", watermark);
+	  }
+	  log.info("Task progress: {}", task.getProgress());
+	  // Ensure that watermarks seem reasonable at each step
+	  Assert.assertTrue(continuousExtractor.validateWatermarks(false, externalWatermarkStorage));
+	}
+	return currentIteration;
+}
 
   /**
    * Test that a streaming task will work correctly when an extractor is continuously producing records and encounters
