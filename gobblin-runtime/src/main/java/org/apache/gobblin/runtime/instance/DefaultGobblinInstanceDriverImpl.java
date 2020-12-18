@@ -16,6 +16,7 @@
  */
 package org.apache.gobblin.runtime.instance;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
@@ -158,12 +159,16 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
 
   @Override protected void shutDown() throws Exception {
     getLog().info("Default driver: shuttind down ...");
-    if (null != _jobSpecListener) {
+    extracted();
+    getLog().info("Default driver: shut down.");
+  }
+
+private void extracted() throws IOException {
+	if (null != _jobSpecListener) {
       _jobCatalog.removeListener(_jobSpecListener);
     }
     _callbacksDispatcher.close();
-    getLog().info("Default driver: shut down.");
-  }
+}
 
   /** Keeps track of a job execution */
   class JobStateTracker extends DefaultJobExecutionStateListenerImpl {
