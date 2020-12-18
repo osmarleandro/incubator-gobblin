@@ -149,8 +149,7 @@ public class StandardGobblinInstanceDriver extends DefaultGobblinInstanceDriverI
   }
 
   @Override protected void shutDown() throws Exception {
-    getLog().info("Shutting down driver ...");
-    super.shutDown();
+    extracted();
     if (null != _subservices) {
       getLog().info("Shutting down subservices ...");
       _subservices.stopAsync();
@@ -158,6 +157,11 @@ public class StandardGobblinInstanceDriver extends DefaultGobblinInstanceDriverI
       getLog().info("All subservices have been shutdown.");
     }
   }
+
+private void extracted() throws Exception {
+	getLog().info("Shutting down driver ...");
+    super.shutDown();
+}
 
   public static Builder builder() {
     return new Builder();
