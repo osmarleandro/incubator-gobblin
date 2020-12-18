@@ -218,15 +218,19 @@ public class JobScheduler extends AbstractIdleService {
     cancelRequested = true;
     List<JobExecutionContext> currentExecutions = this.scheduler.getScheduler().getCurrentlyExecutingJobs();
     for (JobExecutionContext jobExecutionContext : currentExecutions) {
-      try {
-        this.scheduler.getScheduler().interrupt(jobExecutionContext.getFireInstanceId());
-      } catch (UnableToInterruptJobException e) {
-        LOG.error("Failed to cancel job " + jobExecutionContext.getJobDetail().getKey(), e);
-      }
+      extracted(jobExecutionContext);
     }
 
     ExecutorsUtils.shutdownExecutorService(this.jobExecutor, Optional.of(LOG));
   }
+
+private void extracted(JobExecutionContext jobExecutionContext) {
+	try {
+        this.scheduler.getScheduler().interrupt(jobExecutionContext.getFireInstanceId());
+      } catch (UnableToInterruptJobException e) {
+        LOG.error("Failed to cancel job " + jobExecutionContext.getJobDetail().getKey(), e);
+      }
+}
 
   /**
    * Schedule a job.
