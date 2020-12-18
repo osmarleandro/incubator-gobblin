@@ -52,8 +52,7 @@ public class TestConverter extends ToAvroConverterBase<String, String> {
   @Override
   public Iterable<GenericRecord> convertRecord(Schema schema, String inputRecord, WorkUnitState workUnit) {
 
-    JsonElement element = GSON.fromJson(inputRecord, JsonElement.class);
-    Map<String, Object> fields = GSON.fromJson(element, FIELD_ENTRY_TYPE);
+    Map<String, Object> fields = extracted(inputRecord);
     GenericRecord record = new GenericData.Record(schema);
     for (Map.Entry<String, Object> entry : fields.entrySet()) {
       record.put(entry.getKey(), entry.getValue());
@@ -61,4 +60,10 @@ public class TestConverter extends ToAvroConverterBase<String, String> {
 
     return new SingleRecordIterable<GenericRecord>(record);
   }
+
+private Map<String, Object> extracted(String inputRecord) {
+	JsonElement element = GSON.fromJson(inputRecord, JsonElement.class);
+    Map<String, Object> fields = GSON.fromJson(element, FIELD_ENTRY_TYPE);
+	return fields;
+}
 }
