@@ -121,21 +121,10 @@ public class MultiConverterTest {
    */
   @Test
   public void testConversionWithMultiplicityAndOneOrEmpty() throws Exception {
-    MultiConverter multiConverter =
-        new MultiConverter(Lists.newArrayList(new SchemaSimplificationConverter(), new MultiIdentityConverter(20),
-            new OneOrEmptyConverter(1), new TestConverter()));
-    WorkUnitState workUnitState = new WorkUnitState();
-
-    Schema schema = (Schema) multiConverter.convertSchema(TEST_SCHEMA, workUnitState);
-    Iterable<Object> convertedRecordIterable = multiConverter.convertRecord(schema, TEST_RECORD, workUnitState);
-    Assert.assertEquals(Iterables.size(convertedRecordIterable), 20);
-    for (Object record : convertedRecordIterable) {
-      checkConvertedAvroData(schema, (GenericRecord) record);
-    }
-
-    multiConverter =
-        new MultiConverter(Lists.newArrayList(new SchemaSimplificationConverter(), new MultiIdentityConverter(20),
-            new OneOrEmptyConverter(10), new TestConverter()));
+    WorkUnitState workUnitState;
+	Schema schema;
+	Iterable<Object> convertedRecordIterable;
+	MultiConverter multiConverter = extracted();
     workUnitState = new WorkUnitState();
 
     schema = (Schema) multiConverter.convertSchema(TEST_SCHEMA, workUnitState);
@@ -157,6 +146,25 @@ public class MultiConverterTest {
       checkConvertedAvroData(schema, (GenericRecord) record);
     }
   }
+
+private MultiConverter extracted() throws SchemaConversionException, DataConversionException {
+	MultiConverter multiConverter =
+        new MultiConverter(Lists.newArrayList(new SchemaSimplificationConverter(), new MultiIdentityConverter(20),
+            new OneOrEmptyConverter(1), new TestConverter()));
+    WorkUnitState workUnitState = new WorkUnitState();
+
+    Schema schema = (Schema) multiConverter.convertSchema(TEST_SCHEMA, workUnitState);
+    Iterable<Object> convertedRecordIterable = multiConverter.convertRecord(schema, TEST_RECORD, workUnitState);
+    Assert.assertEquals(Iterables.size(convertedRecordIterable), 20);
+    for (Object record : convertedRecordIterable) {
+      checkConvertedAvroData(schema, (GenericRecord) record);
+    }
+
+    multiConverter =
+        new MultiConverter(Lists.newArrayList(new SchemaSimplificationConverter(), new MultiIdentityConverter(20),
+            new OneOrEmptyConverter(10), new TestConverter()));
+	return multiConverter;
+}
 
   @Test
   public void testConversionWithEmptyConverter() throws Exception {
