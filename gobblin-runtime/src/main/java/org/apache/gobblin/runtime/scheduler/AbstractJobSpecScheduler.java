@@ -111,17 +111,23 @@ public abstract class AbstractJobSpecScheduler extends AbstractIdleService
   @Override public void unscheduleJob(URI jobSpecURI) {
     JobSpecSchedule existingSchedule = null;
     synchronized (this) {
-      existingSchedule = _schedules.get(jobSpecURI);
-      if (null != existingSchedule) {
-        _log.info("Unscheduling " + existingSchedule);
-        this._schedules.remove(jobSpecURI);
-        doUnschedule(existingSchedule);
-      }
+      existingSchedule = extracted(jobSpecURI);
     }
     if (null != existingSchedule) {
       _callbacksDispatcher.onJobUnscheduled(existingSchedule);
     }
   }
+
+private JobSpecSchedule extracted(URI jobSpecURI) {
+	JobSpecSchedule existingSchedule;
+	existingSchedule = _schedules.get(jobSpecURI);
+      if (null != existingSchedule) {
+        _log.info("Unscheduling " + existingSchedule);
+        this._schedules.remove(jobSpecURI);
+        doUnschedule(existingSchedule);
+      }
+	return existingSchedule;
+}
 
   /** Actual implementation of scheduling */
   protected abstract JobSpecSchedule doScheduleJob(JobSpec jobSpec, Runnable jobRunnable);
