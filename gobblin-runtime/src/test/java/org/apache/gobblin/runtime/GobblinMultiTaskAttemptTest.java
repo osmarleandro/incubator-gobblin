@@ -52,15 +52,20 @@ public class GobblinMultiTaskAttemptTest {
 
   @BeforeClass
   public void setup() {
-    // Initializing jobBroker
-    Config config = ConfigFactory.empty();
-    SharedResourcesBrokerImpl<GobblinScopeTypes> topBroker = SharedResourcesBrokerFactory
-        .createDefaultTopLevelBroker(config, GobblinScopeTypes.GLOBAL.defaultScopeInstance());
+    SharedResourcesBrokerImpl<GobblinScopeTypes> topBroker = extracted();
     this.jobBroker = topBroker.newSubscopedBuilder(new JobScopeInstance("testJob", "job123")).build();
 
     // Mocking task executor
     this.taskExecutorMock = Mockito.mock(TaskExecutor.class);
   }
+
+private SharedResourcesBrokerImpl<GobblinScopeTypes> extracted() {
+	// Initializing jobBroker
+    Config config = ConfigFactory.empty();
+    SharedResourcesBrokerImpl<GobblinScopeTypes> topBroker = SharedResourcesBrokerFactory
+        .createDefaultTopLevelBroker(config, GobblinScopeTypes.GLOBAL.defaultScopeInstance());
+	return topBroker;
+}
 
   @Test
   public void testRunWithTaskCreationFailure()
