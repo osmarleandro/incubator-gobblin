@@ -107,7 +107,12 @@ public class TestJobExecutionState {
         .withConfig(ConfigFactory.empty()
             .withValue(ConfigurationKeys.JOB_NAME_KEY, ConfigValueFactory.fromAnyRef("myJob")))
         .build();
-    JobExecution je1 = JobExecutionUpdatable.createFromJobSpec(js1);
+    extracted(log, js1);
+  }
+
+
+private void extracted(final Logger log, JobSpec js1) throws TimeoutException, InterruptedException {
+	JobExecution je1 = JobExecutionUpdatable.createFromJobSpec(js1);
 
     final JobExecutionStateListener listener = mock(JobExecutionStateListener.class);
 
@@ -139,7 +144,7 @@ public class TestJobExecutionState {
     assertTransition(je3, listener, RunningState.PENDING, RunningState.RUNNING, log);
     assertTransition(je3, listener, RunningState.RUNNING, RunningState.SUCCESSFUL, log);
     assertTransition(je3, listener, RunningState.SUCCESSFUL, RunningState.FAILED, log);
-  }
+}
 
   @Test public void testStateTransitionsCancel() throws TimeoutException, InterruptedException {
     final Logger log = LoggerFactory.getLogger(getClass().getSimpleName() + ".testStateTransitionsCancel");
