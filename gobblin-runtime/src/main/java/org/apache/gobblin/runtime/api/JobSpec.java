@@ -380,11 +380,15 @@ public class JobSpec implements Configurable, Spec {
 
   private void readObject(java.io.ObjectInputStream stream)
       throws IOException, ClassNotFoundException {
-    uri = (URI) stream.readObject();
-    version = (String) stream.readObject();
+    extracted(stream);
     description = (String) stream.readObject();
     templateURI = Optional.fromNullable((URI) stream.readObject());
     configAsProperties = (Properties) stream.readObject();
     config = ConfigUtils.propertiesToConfig(configAsProperties);
   }
+
+private void extracted(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
+	uri = (URI) stream.readObject();
+    version = (String) stream.readObject();
+}
 }
