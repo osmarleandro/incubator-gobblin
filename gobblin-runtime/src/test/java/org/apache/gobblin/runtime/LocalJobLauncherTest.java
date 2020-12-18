@@ -158,9 +158,7 @@ public class LocalJobLauncherTest {
   @Test
   public void testLaunchJobWithPullLimit() throws Exception {
     int limit = 10;
-    Properties jobProps = loadJobProps();
-    jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,
-        jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithPullLimit");
+    Properties jobProps = extracted();
     jobProps.setProperty(ConfigurationKeys.EXTRACT_LIMIT_ENABLED_KEY, Boolean.TRUE.toString());
     jobProps.setProperty(DefaultLimiterFactory.EXTRACT_LIMIT_TYPE_KEY, BaseLimiterType.COUNT_BASED.toString());
     jobProps.setProperty(DefaultLimiterFactory.EXTRACT_LIMIT_COUNT_LIMIT_KEY, Integer.toString(limit));
@@ -170,6 +168,13 @@ public class LocalJobLauncherTest {
       this.jobLauncherTestHelper.deleteStateStore(jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY));
     }
   }
+
+private Properties extracted() throws IOException {
+	Properties jobProps = loadJobProps();
+    jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,
+        jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithPullLimit");
+	return jobProps;
+}
 
   @Test
   public void testLaunchJobWithMultiWorkUnit() throws Exception {
