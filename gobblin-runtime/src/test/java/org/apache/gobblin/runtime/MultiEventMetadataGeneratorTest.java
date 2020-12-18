@@ -35,17 +35,22 @@ public class MultiEventMetadataGeneratorTest {
 
   @Test
   public void testInstantiate() {
-    JobContext jobContext = Mockito.mock(JobContext.class);
-    MultiEventMetadataGenerator multiEventMetadataGenerator = new MultiEventMetadataGenerator(ImmutableList.of(
-        "org.apache.gobblin.runtime.MultiEventMetadataGeneratorTest$DummyEventMetadataGenerator",
-        "org.apache.gobblin.runtime.MultiEventMetadataGeneratorTest$DummyEventMetadataGenerator2"));
-
-    Map<String, String> metadata = multiEventMetadataGenerator.getMetadata(jobContext, EventName.getEnumFromEventId("JobCompleteTimer"));
+    Map<String, String> metadata = extracted();
     Assert.assertEquals(metadata.size(), 3);
     Assert.assertEquals(metadata.get("dummyKey11"), "dummyValue11");
     Assert.assertEquals(metadata.get("dummyKey12"), "dummyValue22");
     Assert.assertEquals(metadata.get("dummyKey21"), "dummyValue21");
   }
+
+private Map<String, String> extracted() {
+	JobContext jobContext = Mockito.mock(JobContext.class);
+    MultiEventMetadataGenerator multiEventMetadataGenerator = new MultiEventMetadataGenerator(ImmutableList.of(
+        "org.apache.gobblin.runtime.MultiEventMetadataGeneratorTest$DummyEventMetadataGenerator",
+        "org.apache.gobblin.runtime.MultiEventMetadataGeneratorTest$DummyEventMetadataGenerator2"));
+
+    Map<String, String> metadata = multiEventMetadataGenerator.getMetadata(jobContext, EventName.getEnumFromEventId("JobCompleteTimer"));
+	return metadata;
+}
 
   public static class DummyEventMetadataGenerator implements EventMetadataGenerator {
 
