@@ -119,8 +119,7 @@ public class GobblinOutputCommitterTest {
    * @throws IOException
    */
   private WorkUnit createAndSetWorkUnit(String workUnitName) throws IOException {
-    WorkUnit wu = WorkUnit.createEmpty();
-    wu.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.TASK_ID_KEY, 1, 0), System.nanoTime());
+    WorkUnit wu = extracted();
 
     Path wuStagingDir =
         new Path(OUTPUT_PATH, JOB_NAME + Path.SEPARATOR + workUnitName + Path.SEPARATOR + STAGING_DIR_NAME);
@@ -137,6 +136,12 @@ public class GobblinOutputCommitterTest {
     this.stagingDirs.add(wuOutputDir);
     return wu;
   }
+
+private WorkUnit extracted() {
+	WorkUnit wu = WorkUnit.createEmpty();
+    wu.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.TASK_ID_KEY, 1, 0), System.nanoTime());
+	return wu;
+}
 
   @AfterClass
   public void deleteWorkUnitFiles() throws IOException {
