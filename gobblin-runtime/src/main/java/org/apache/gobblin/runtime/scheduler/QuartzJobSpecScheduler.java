@@ -139,14 +139,18 @@ public class QuartzJobSpecScheduler extends AbstractJobSpecScheduler {
   }
 
   @Override protected void startUp() throws TimeoutException {
-    super.startUp();
-    _scheduler.startAsync();
+    extracted();
     // Start-up should not take long
     getLog().info("Waiting QuartzJobSpecScheduler to run. Timeout is {} ms", _cfg.getStartUpTimeoutMs());
     long startTime = System.currentTimeMillis();
     _scheduler.awaitRunning(_cfg.getStartUpTimeoutMs(), TimeUnit.MILLISECONDS);
     getLog().info("QuartzJobSpecScheduler runs. Time waited is {} ms", System.currentTimeMillis() - startTime);
   }
+
+private void extracted() throws TimeoutException {
+	super.startUp();
+    _scheduler.startAsync();
+}
 
   @Override protected void shutDown() throws TimeoutException {
     super.shutDown();
