@@ -111,13 +111,7 @@ public abstract class JobLockTest {
           try {
             stepsLock.lock();
             try {
-              log.debug("Wait for thread1 to acquire the lock and verify we can't acquire it.");
-              while (!thread1Locked.get()) thread1Done.await();
-              Assert.assertFalse(lock.tryLock());
-              log.debug("Notify thread1 that we are done with the check.");
-              thread2Done.signal();
-              log.debug("Wait for thread1 to release the lock and try to acquire it.");
-              while (thread1Locked.get()) thread1Done.await();
+              extracted(lock, thread1Locked, thread1Done, thread2Done, log);
               Assert.assertTrue(lock.tryLock());
               thread2Locked.set(true);
               thread2Done.signal();
@@ -136,6 +130,17 @@ public abstract class JobLockTest {
             log.error("error: " + e, e);
           }
         }
+
+		private void extracted(final JobLock lock, final AtomicBoolean thread1Locked, final Condition thread1Done,
+				final Condition thread2Done, final Logger log) throws InterruptedException, JobLockException {
+			log.debug("Wait for thread1 to acquire the lock and verify we can't acquire it.");
+              while (!thread1Locked.get()) thread1Done.await();
+              Assert.assertFalse(lock.tryLock());
+              log.debug("Notify thread1 that we are done with the check.");
+              thread2Done.signal();
+              log.debug("Wait for thread1 to release the lock and try to acquire it.");
+              while (thread1Locked.get()) thread1Done.await();
+		}
       }, "testLocalJobLock.thread2");
       thread2.setDaemon(true);
       thread2.start();
