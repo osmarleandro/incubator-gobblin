@@ -638,16 +638,20 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
     }
 
     try {
-      if (GobblinMetrics.isEnabled(this.taskState.getWorkunit())) {
-        // Update record-level and byte-level metrics after the writer commits
-        updateRecordMetrics();
-        updateByteMetrics();
-      }
+      extracted();
     } catch (IOException ioe) {
       // Trap the exception as failing to update metrics should not cause the task to fail
       this.logger.error("Failed to update byte-level metrics of task " + this.taskId);
     }
   }
+
+private void extracted() throws IOException {
+	if (GobblinMetrics.isEnabled(this.taskState.getWorkunit())) {
+        // Update record-level and byte-level metrics after the writer commits
+        updateRecordMetrics();
+        updateByteMetrics();
+      }
+}
 
   /**
    * Compare and set the state of this {@link Fork} to a new state if and only if the current state
