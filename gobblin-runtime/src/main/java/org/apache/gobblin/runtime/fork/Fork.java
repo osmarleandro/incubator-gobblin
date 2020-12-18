@@ -247,15 +247,7 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
   public void run() {
     compareAndSetForkState(ForkState.PENDING, ForkState.RUNNING);
     try {
-      processRecords();
-
-      // Close the writer now if configured. One case where this is set is to release memory from ORC writers that can
-      // have large buffers. Making this an opt-in option to avoid breaking anything that relies on keeping the writer
-      // open until commit.
-      if (this.writer.isPresent() && taskContext.getTaskState().getPropAsBoolean(
-        ConfigurationKeys.FORK_CLOSE_WRITER_ON_COMPLETION, ConfigurationKeys.DEFAULT_FORK_CLOSE_WRITER_ON_COMPLETION)) {
-        this.writer.get().close();
-      }
+      extracted();
 
       compareAndSetForkState(ForkState.RUNNING, ForkState.SUCCEEDED);
     } catch (Throwable t) {
@@ -268,6 +260,18 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
       this.cleanup();
     }
   }
+
+private void extracted() throws IOException, DataConversionException {
+	processRecords();
+
+      // Close the writer now if configured. One case where this is set is to release memory from ORC writers that can
+      // have large buffers. Making this an opt-in option to avoid breaking anything that relies on keeping the writer
+      // open until commit.
+      if (this.writer.isPresent() && taskContext.getTaskState().getPropAsBoolean(
+        ConfigurationKeys.FORK_CLOSE_WRITER_ON_COMPLETION, ConfigurationKeys.DEFAULT_FORK_CLOSE_WRITER_ON_COMPLETION)) {
+        this.writer.get().close();
+      }
+}
 
   /**
    * {@inheritDoc}.
