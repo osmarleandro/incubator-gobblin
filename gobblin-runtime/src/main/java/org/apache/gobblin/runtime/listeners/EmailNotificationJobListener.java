@@ -62,14 +62,18 @@ public class EmailNotificationJobListener extends AbstractJobListener {
     }
 
     if (notificationEmailEnabled) {
-      try {
+      extracted(jobState);
+    }
+  }
+
+private void extracted(JobState jobState) {
+	try {
         EmailUtils.sendJobCompletionEmail(
             jobState.getJobId(), jobState.toString(), jobState.getState().toString(), jobState);
       } catch (EmailException ee) {
         LOGGER.error("Failed to send job completion notification email for job " + jobState.getJobId(), ee);
       }
-    }
-  }
+}
 
   @Override
   public void onJobCancellation(JobContext jobContext) {
