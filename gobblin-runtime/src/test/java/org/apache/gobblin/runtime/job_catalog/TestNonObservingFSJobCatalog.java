@@ -18,6 +18,7 @@
 package org.apache.gobblin.runtime.job_catalog;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.util.Hashtable;
@@ -53,9 +54,7 @@ public class TestNonObservingFSJobCatalog {
   @Test
   public void testCallbacks()
       throws Exception {
-    this.jobConfigDir = java.nio.file.Files.createTempDirectory(
-        String.format("gobblin-test_%s_job-conf", this.getClass().getSimpleName())).toFile();
-    this.jobConfigDirPath = new Path(this.jobConfigDir.getPath());
+    extracted();
 
     try (PrintWriter printWriter = new PrintWriter(new Path(jobConfigDirPath, "job3.template").toString(), "UTF-8")) {
       printWriter.println("param1 = value1");
@@ -142,4 +141,10 @@ public class TestNonObservingFSJobCatalog {
     cat.stopAsync();
     cat.awaitTerminated(10, TimeUnit.SECONDS);
   }
+
+private void extracted() throws IOException {
+	this.jobConfigDir = java.nio.file.Files.createTempDirectory(
+        String.format("gobblin-test_%s_job-conf", this.getClass().getSimpleName())).toFile();
+    this.jobConfigDirPath = new Path(this.jobConfigDir.getPath());
+}
 }
