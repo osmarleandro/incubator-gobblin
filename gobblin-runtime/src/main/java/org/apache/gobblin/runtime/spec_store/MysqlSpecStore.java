@@ -193,12 +193,17 @@ public class MysqlSpecStore extends InstrumentedSpecStore {
 
     try (Connection connection = this.dataSource.getConnection();
         PreparedStatement statement = connection.prepareStatement(createGetPreparedStatement(flowSpecSearchObject, this.tableName))) {
-      setGetPreparedStatement(statement, flowSpecSearchObject);
-      return getSpecsInternal(statement);
+      return extracted(flowSpecSearchObject, statement);
     } catch (SQLException e) {
       throw new IOException(e);
     }
   }
+
+private Collection<Spec> extracted(FlowSpecSearchObject flowSpecSearchObject, PreparedStatement statement)
+		throws SQLException, IOException {
+	setGetPreparedStatement(statement, flowSpecSearchObject);
+      return getSpecsInternal(statement);
+}
 
   @Override
   public Spec getSpec(URI specUri, String version) throws IOException, SpecNotFoundException {
