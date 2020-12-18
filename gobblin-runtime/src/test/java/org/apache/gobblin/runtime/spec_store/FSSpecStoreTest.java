@@ -66,8 +66,7 @@ public class FSSpecStoreTest {
   public void testGetSpecRobustness() throws Exception {
 
     File specDir = Files.createTempDir();
-    Properties properties = new Properties();
-    properties.setProperty(FSSpecStore.SPECSTORE_FS_DIR_KEY, specDir.getAbsolutePath());
+    Properties properties = extracted(specDir);
     SpecSerDe serde = Mockito.mock(SpecSerDe.class);
     TestFsSpecStore fsSpecStore = new TestFsSpecStore(ConfigUtils.propertiesToConfig(properties), serde);
 
@@ -120,8 +119,7 @@ public class FSSpecStoreTest {
   @Test
   public void testGetSpecURI() throws Exception {
     File specDir = Files.createTempDir();
-    Properties properties = new Properties();
-    properties.setProperty(FSSpecStore.SPECSTORE_FS_DIR_KEY, specDir.getAbsolutePath());
+    Properties properties = extracted(specDir);
     SpecSerDe serde = Mockito.mock(SpecSerDe.class);
     FSSpecStore fsSpecStore = new FSSpecStore(ConfigUtils.propertiesToConfig(properties), serde);
 
@@ -153,4 +151,10 @@ public class FSSpecStoreTest {
     Assert.assertTrue(result.contains(specURI1));
     Assert.assertTrue(result.contains(specURI2));
   }
+
+private Properties extracted(File specDir) {
+	Properties properties = new Properties();
+    properties.setProperty(FSSpecStore.SPECSTORE_FS_DIR_KEY, specDir.getAbsolutePath());
+	return properties;
+}
 }
