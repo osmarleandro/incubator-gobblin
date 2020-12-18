@@ -1005,13 +1005,17 @@ public abstract class AbstractJobLauncher implements JobLauncher {
         }
       }
     } finally {
-      try {
+      extracted(closer);
+    }
+  }
+
+private static void extracted(Closer closer) {
+	try {
         closer.close();
       } catch (IOException e) {
         LOG.error("Failed to clean staging data", e);
       }
-    }
-  }
+}
 
   private static void cleanupStagingDataForEntireJob(JobState jobState) {
     try {
