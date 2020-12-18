@@ -187,7 +187,11 @@ public class ImmutableFSJobCatalog extends JobCatalogBase implements JobCatalog 
       @Nullable
       @Override
       public JobSpec apply(@Nullable Path jobFile) {
-        if (jobFile == null) {
+        return extracted(jobFile);
+      }
+
+	private JobSpec extracted(Path jobFile) {
+		if (jobFile == null) {
           return null;
         }
 
@@ -200,7 +204,7 @@ public class ImmutableFSJobCatalog extends JobCatalogBase implements JobCatalog 
           log.error("Cannot load job from {} due to {}", jobFile, ExceptionUtils.getFullStackTrace(e));
           return null;
         }
-      }
+	}
     });
 
     return jobSpecIterator;
