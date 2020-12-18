@@ -17,6 +17,7 @@
 
 package org.apache.gobblin.runtime;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
@@ -301,8 +302,7 @@ public class LocalJobLauncherTest {
   }
 
   private Properties loadJobProps() throws IOException {
-    Properties jobProps = new Properties();
-    jobProps.load(new FileReader("gobblin-test/resource/job-conf/GobblinTest1.pull"));
+    Properties jobProps = extracted();
     jobProps.putAll(this.launcherProps);
     jobProps.setProperty(JobLauncherTestHelper.SOURCE_FILE_LIST_KEY,
         "gobblin-test/resource/source/test.avro.0," + "gobblin-test/resource/source/test.avro.1,"
@@ -310,4 +310,10 @@ public class LocalJobLauncherTest {
 
     return jobProps;
   }
+
+private Properties extracted() throws IOException, FileNotFoundException {
+	Properties jobProps = new Properties();
+    jobProps.load(new FileReader("gobblin-test/resource/job-conf/GobblinTest1.pull"));
+	return jobProps;
+}
 }
