@@ -520,8 +520,7 @@ public class EmbeddedGobblin {
 
   private void dumpJStackOnTimeout(String loc) {
     if (this.dumpJStackOnTimeout) {
-      log.info("=== Dump jstack ({}) ===", loc);
-      ThreadMXBean bean = ManagementFactory.getThreadMXBean();
+      ThreadMXBean bean = extracted(loc);
       ThreadInfo[] infos = bean.dumpAllThreads(true, true);
       Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
       Map<Long, Thread> threadMap = new HashMap<>();
@@ -538,6 +537,12 @@ public class EmbeddedGobblin {
       log.info("Dump jstack ({}) is disabled.", loc);
     }
   }
+
+private ThreadMXBean extracted(String loc) {
+	log.info("=== Dump jstack ({}) ===", loc);
+      ThreadMXBean bean = ManagementFactory.getThreadMXBean();
+	return bean;
+}
 
   @VisibleForTesting
   public Configurable getSysConfig() {
