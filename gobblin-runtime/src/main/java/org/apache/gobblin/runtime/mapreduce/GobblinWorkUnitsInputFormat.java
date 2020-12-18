@@ -19,6 +19,7 @@ package org.apache.gobblin.runtime.mapreduce;
 
 import java.io.DataInput;
 import java.io.DataOutput;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -84,17 +85,7 @@ public class GobblinWorkUnitsInputFormat extends InputFormat<LongWritable, Text>
     List<String> allPaths = Lists.newArrayList();
 
     for (Path path : inputPaths) {
-      // path is a single work unit / multi work unit
-      FileSystem fs = path.getFileSystem(context.getConfiguration());
-      FileStatus[] inputs = fs.listStatus(path);
-
-      if (inputs == null) {
-        throw new IOException(String.format("Path %s does not exist.", path));
-      }
-      log.info(String.format("Found %d input files at %s: %s", inputs.length, path, Arrays.toString(inputs)));
-      for (FileStatus input : inputs) {
-        allPaths.add(input.getPath().toString());
-      }
+      extracted(context, allPaths, path);
     }
 
     int maxMappers = getMaxMapper(context.getConfiguration());
@@ -110,6 +101,20 @@ public class GobblinWorkUnitsInputFormat extends InputFormat<LongWritable, Text>
 
     return splits;
   }
+
+private void extracted(JobContext context, List<String> allPaths, Path path) throws IOException, FileNotFoundException {
+	// path is a single work unit / multi work unit
+      FileSystem fs = path.getFileSystem(context.getConfiguration());
+      FileStatus[] inputs = fs.listStatus(path);
+
+      if (inputs == null) {
+        throw new IOException(String.format("Path %s does not exist.", path));
+      }
+      log.info(String.format("Found %d input files at %s: %s", inputs.length, path, Arrays.toString(inputs)));
+      for (FileStatus input : inputs) {
+        allPaths.add(input.getPath().toString());
+      }
+}
 
   @Override
   public RecordReader<LongWritable, Text> createRecordReader(InputSplit split, TaskAttemptContext context)
