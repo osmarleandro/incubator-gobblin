@@ -29,6 +29,8 @@ import org.apache.gobblin.writer.test.TestingEventBuses;
 import java.io.File;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import org.junit.internal.runners.statements.Fail;
 import org.testng.Assert;
@@ -49,18 +51,7 @@ public class CustomTaskTest {
   @Test
   public void testCustomTask() throws Exception {
 
-    String eventBusId = UUID.randomUUID().toString();
-    EventBusPublishingTaskFactory.EventListener listener = new EventBusPublishingTaskFactory.EventListener();
-
-    EventBus eventBus = TestingEventBuses.getEventBus(eventBusId);
-    eventBus.register(listener);
-
-    JobExecutionResult result =
-        new EmbeddedGobblin("testJob").setConfiguration(ConfigurationKeys.SOURCE_CLASS_KEY, EventBusPublishingTaskFactory.Source.class.getName())
-        .setConfiguration(EventBusPublishingTaskFactory.Source.NUM_TASKS_KEY, "10").setConfiguration(EventBusPublishingTaskFactory.EVENTBUS_ID_KEY, eventBusId)
-        .run();
-
-    Assert.assertTrue(result.isSuccessful());
+    EventBusPublishingTaskFactory.EventListener listener = extracted();
 
     SetMultimap<String, Integer> seenEvents = HashMultimap.create();
     Set<Integer> expected = Sets.newHashSet(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
@@ -74,6 +65,23 @@ public class CustomTaskTest {
     Assert.assertEquals(seenEvents.get("commit"), expected);
     Assert.assertEquals(seenEvents.get("publish"), expected);
   }
+
+private EventBusPublishingTaskFactory.EventListener extracted()
+		throws InterruptedException, TimeoutException, ExecutionException {
+	String eventBusId = UUID.randomUUID().toString();
+    EventBusPublishingTaskFactory.EventListener listener = new EventBusPublishingTaskFactory.EventListener();
+
+    EventBus eventBus = TestingEventBuses.getEventBus(eventBusId);
+    eventBus.register(listener);
+
+    JobExecutionResult result =
+        new EmbeddedGobblin("testJob").setConfiguration(ConfigurationKeys.SOURCE_CLASS_KEY, EventBusPublishingTaskFactory.Source.class.getName())
+        .setConfiguration(EventBusPublishingTaskFactory.Source.NUM_TASKS_KEY, "10").setConfiguration(EventBusPublishingTaskFactory.EVENTBUS_ID_KEY, eventBusId)
+        .run();
+
+    Assert.assertTrue(result.isSuccessful());
+	return listener;
+}
 
   @Test
   public void testStatePersistence() throws Exception {
