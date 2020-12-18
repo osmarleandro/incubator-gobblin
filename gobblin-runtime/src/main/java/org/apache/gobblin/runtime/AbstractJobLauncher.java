@@ -914,17 +914,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
     try {
       if (this.jobContext.shouldCleanupStagingDataPerTask()) {
         if (workUnits.isSafeToMaterialize()) {
-          Closer closer = Closer.create();
-          Map<String, ParallelRunner> parallelRunners = Maps.newHashMap();
-          try {
-            for (WorkUnit workUnit : JobLauncherUtils.flattenWorkUnits(workUnits.getMaterializedWorkUnitCollection())) {
-              JobLauncherUtils.cleanTaskStagingData(new WorkUnitState(workUnit, jobState), LOG, closer, parallelRunners);
-            }
-          } catch (Throwable t) {
-            throw closer.rethrow(t);
-          } finally {
-            closer.close();
-          }
+          extracted(workUnits, jobState);
         } else {
           throw new RuntimeException("Work unit streams do not support cleaning staging data per task.");
         }
@@ -939,6 +929,20 @@ public abstract class AbstractJobLauncher implements JobLauncher {
       LOG.error("Failed to clean leftover staging data", t);
     }
   }
+
+private void extracted(WorkUnitStream workUnits, JobState jobState) throws IOException {
+	Closer closer = Closer.create();
+	  Map<String, ParallelRunner> parallelRunners = Maps.newHashMap();
+	  try {
+	    for (WorkUnit workUnit : JobLauncherUtils.flattenWorkUnits(workUnits.getMaterializedWorkUnitCollection())) {
+	      JobLauncherUtils.cleanTaskStagingData(new WorkUnitState(workUnit, jobState), LOG, closer, parallelRunners);
+	    }
+	  } catch (Throwable t) {
+	    throw closer.rethrow(t);
+	  } finally {
+	    closer.close();
+	  }
+}
 
 
 
