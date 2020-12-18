@@ -172,9 +172,7 @@ public class JobMetrics extends GobblinMetrics {
    * match the creator tag, this {@link JobMetrics} won't be removed.
    */
   public static void attemptRemove(String jobId, Tag matchTag) {
-    Optional<GobblinMetrics> gobblinMetricsOptional = GOBBLIN_METRICS_REGISTRY.get(
-        GobblinMetrics.METRICS_ID_PREFIX + jobId);
-    JobMetrics jobMetrics = gobblinMetricsOptional.isPresent()? (JobMetrics) (gobblinMetricsOptional.get()): null;
+    JobMetrics jobMetrics = extracted(jobId);
 
     // only remove if the tag matches
     if (jobMetrics != null && jobMetrics.getCreatorTag().equals(matchTag)) {
@@ -182,6 +180,13 @@ public class JobMetrics extends GobblinMetrics {
       GOBBLIN_METRICS_REGISTRY.remove(GobblinMetrics.METRICS_ID_PREFIX + jobId);
     }
   }
+
+private static JobMetrics extracted(String jobId) {
+	Optional<GobblinMetrics> gobblinMetricsOptional = GOBBLIN_METRICS_REGISTRY.get(
+        GobblinMetrics.METRICS_ID_PREFIX + jobId);
+    JobMetrics jobMetrics = gobblinMetricsOptional.isPresent()? (JobMetrics) (gobblinMetricsOptional.get()): null;
+	return jobMetrics;
+}
 
   private static String name(JobState jobState) {
     return METRICS_ID_PREFIX + jobState.getJobId();
