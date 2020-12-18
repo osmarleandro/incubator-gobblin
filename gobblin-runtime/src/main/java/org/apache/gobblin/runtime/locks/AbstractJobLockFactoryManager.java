@@ -57,14 +57,19 @@ public abstract class AbstractJobLockFactoryManager<T extends JobLock, F extends
   public F getJobLockFactory(final Config sysConfig, final Optional<Logger> log) {
     final Config factoryConfig = getFactoryConfig(sysConfig);
     try {
-      return _factoryCache.get(factoryConfig, new Callable<F>() {
-        @Override public F call() throws Exception {
-          return createFactoryInstance(log, sysConfig, factoryConfig);
-        }
-      }) ;
+      return extracted(sysConfig, log, factoryConfig);
     } catch (ExecutionException e) {
       throw new RuntimeException("Unable to create a job lock factory: " + e, e);
     }
   }
+
+private F extracted(final Config sysConfig, final Optional<Logger> log, final Config factoryConfig)
+		throws ExecutionException {
+	return _factoryCache.get(factoryConfig, new Callable<F>() {
+        @Override public F call() throws Exception {
+          return createFactoryInstance(log, sysConfig, factoryConfig);
+        }
+      }) ;
+}
 
 }
