@@ -82,8 +82,7 @@ public class FsCommitSequenceStoreTest {
 
   @Test
   public void testPut() throws IOException {
-    tearDown();
-    this.store.put(this.jobName, this.datasetUrn, this.sequence);
+    extracted();
     Assert.assertTrue(this.store.exists(this.jobName, this.datasetUrn));
 
     try {
@@ -93,6 +92,11 @@ public class FsCommitSequenceStoreTest {
       // Expected to catch IOException
     }
   }
+
+private void extracted() throws IOException {
+	tearDown();
+    this.store.put(this.jobName, this.datasetUrn, this.sequence);
+}
 
   @Test(dependsOnMethods = { "testPut" })
   public void testGet() throws IOException {
