@@ -57,14 +57,18 @@ public class InMemorySpecProducer implements SpecProducer<Spec>, Serializable {
 
   @Override
   public Future<?> updateSpec(Spec updatedSpec) {
-    if (!provisionedSpecs.containsKey(updatedSpec.getUri())) {
-      throw new RuntimeException("Spec not found: " + updatedSpec.getUri());
-    }
-    provisionedSpecs.put(updatedSpec.getUri(), updatedSpec);
+    extracted(updatedSpec);
     log.info(String.format("Updated Spec: %s with Uri: %s for execution on this executor.", updatedSpec, updatedSpec.getUri()));
 
     return new CompletedFuture(Boolean.TRUE, null);
   }
+
+private void extracted(Spec updatedSpec) {
+	if (!provisionedSpecs.containsKey(updatedSpec.getUri())) {
+      throw new RuntimeException("Spec not found: " + updatedSpec.getUri());
+    }
+    provisionedSpecs.put(updatedSpec.getUri(), updatedSpec);
+}
 
   @Override
   public Future<?> deleteSpec(URI deletedSpecURI, Properties headers) {
