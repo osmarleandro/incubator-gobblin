@@ -103,9 +103,13 @@ public class AsynchronousFork extends Fork {
         this.processRecord(record);
       }
     } catch (InterruptedException ie) {
-      log.warn("Interrupted while trying to get a record off the queue", ie);
-      Throwables.propagate(ie);
+      extracted(ie);
     }
     return true;
   }
+
+private void extracted(InterruptedException ie) {
+	log.warn("Interrupted while trying to get a record off the queue", ie);
+      Throwables.propagate(ie);
+}
 }
