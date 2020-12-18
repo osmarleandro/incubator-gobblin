@@ -25,6 +25,7 @@ import java.util.Collection;
 import org.apache.gobblin.runtime.api.JobCatalog;
 import org.apache.gobblin.runtime.api.JobCatalogWithTemplates;
 import org.apache.gobblin.runtime.api.JobTemplate;
+import org.apache.gobblin.runtime.api.JobTemplate.TemplateException;
 import org.apache.gobblin.runtime.api.SpecNotFoundException;
 import org.apache.gobblin.runtime.template.ResourceBasedJobTemplate;
 import org.apache.gobblin.util.Decorator;
@@ -89,14 +90,19 @@ public class PackagedTemplatesJobCatalogDecorator implements Decorator, JobCatal
       }
     }
     if (this.underlying != null && this.underlying instanceof JobCatalogWithTemplates) {
-      JobTemplate template = ((JobCatalogWithTemplates) this.underlying).getTemplate(uri);
-      if (template == null) {
-        throw new SpecNotFoundException(uri);
-      }
+      JobTemplate template = extracted(uri);
       return template;
     }
     throw new SpecNotFoundException(uri);
   }
+
+private JobTemplate extracted(URI uri) throws SpecNotFoundException, TemplateException {
+	JobTemplate template = ((JobCatalogWithTemplates) this.underlying).getTemplate(uri);
+      if (template == null) {
+        throw new SpecNotFoundException(uri);
+      }
+	return template;
+}
 
   @Override
   public Collection<JobTemplate> getAllTemplates() {
