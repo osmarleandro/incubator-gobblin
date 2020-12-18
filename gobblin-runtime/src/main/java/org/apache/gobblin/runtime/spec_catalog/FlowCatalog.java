@@ -176,17 +176,21 @@ public class FlowCatalog extends AbstractIdleService implements SpecCatalog, Mut
 
     if (state() == State.RUNNING) {
       try {
-        Iterator<URI> uriIterator = getSpecURIs();
-        while (uriIterator.hasNext()) {
-          SpecCatalogListener.AddSpecCallback addJobCallback =
-              new SpecCatalogListener.AddSpecCallback(getSpecWrapper(uriIterator.next()));
-          this.listeners.callbackOneListener(addJobCallback, specListener);
-        }
+        extracted(specListener);
       } catch (IOException e) {
         log.error("Cannot retrieve specs from catalog:", e);
       }
     }
   }
+
+private void extracted(SpecCatalogListener specListener) throws IOException {
+	Iterator<URI> uriIterator = getSpecURIs();
+	while (uriIterator.hasNext()) {
+	  SpecCatalogListener.AddSpecCallback addJobCallback =
+	      new SpecCatalogListener.AddSpecCallback(getSpecWrapper(uriIterator.next()));
+	  this.listeners.callbackOneListener(addJobCallback, specListener);
+	}
+}
 
   @Override
   public void removeListener(SpecCatalogListener specCatalogListener) {
