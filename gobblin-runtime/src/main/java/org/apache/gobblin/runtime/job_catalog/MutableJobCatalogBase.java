@@ -54,8 +54,7 @@ public abstract class MutableJobCatalogBase extends JobCatalogBase implements Mu
 
   @Override
   public void put(JobSpec jobSpec) {
-    Preconditions.checkState(allowMutationsBeforeStartup() || state() == State.RUNNING, String.format("%s is not running.", this.getClass().getName()));
-    Preconditions.checkNotNull(jobSpec);
+    extracted(jobSpec);
     JobSpec oldSpec = doPut(jobSpec);
     if (null == oldSpec) {
       this.listeners.onAddJob(jobSpec);
@@ -63,6 +62,11 @@ public abstract class MutableJobCatalogBase extends JobCatalogBase implements Mu
       this.listeners.onUpdateJob(jobSpec);
     }
   }
+
+private void extracted(JobSpec jobSpec) {
+	Preconditions.checkState(allowMutationsBeforeStartup() || state() == State.RUNNING, String.format("%s is not running.", this.getClass().getName()));
+    Preconditions.checkNotNull(jobSpec);
+}
 
   /**
    * Add the {@link JobSpec} to the catalog. If a {@link JobSpec} already existed with that {@link URI}, it should be
