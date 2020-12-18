@@ -182,7 +182,14 @@ public class JobStateTest {
 
   @Test(dependsOnMethods = {"testSetAndGet"})
   public void testToJobExecutionInfo() {
-    JobExecutionInfo jobExecutionInfo = this.jobState.toJobExecutionInfo();
+    List<String> taskStateIds = extracted();
+
+    Collections.sort(taskStateIds);
+    Assert.assertEquals(taskStateIds, Lists.newArrayList("TestTask-0", "TestTask-1", "TestTask-2"));
+  }
+
+private List<String> extracted() {
+	JobExecutionInfo jobExecutionInfo = this.jobState.toJobExecutionInfo();
     Assert.assertEquals(jobExecutionInfo.getJobName(), "TestJob");
     Assert.assertEquals(jobExecutionInfo.getJobId(), "TestJob-1");
     Assert.assertEquals(jobExecutionInfo.getStartTime().longValue(), this.startTime);
@@ -203,8 +210,6 @@ public class JobStateTest {
       Assert.assertEquals(taskExecutionInfo.getTaskProperties().get("foo"), "bar");
       taskStateIds.add(taskExecutionInfo.getTaskId());
     }
-
-    Collections.sort(taskStateIds);
-    Assert.assertEquals(taskStateIds, Lists.newArrayList("TestTask-0", "TestTask-1", "TestTask-2"));
-  }
+	return taskStateIds;
+}
 }
