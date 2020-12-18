@@ -78,7 +78,12 @@ public class MysqlDatasetStateStore extends MysqlStateStore<JobState.DatasetStat
 
     Map<String, JobState.DatasetState> datasetStatesByUrns = Maps.newHashMap();
 
-    for (JobState.DatasetState previousDatasetState : previousDatasetStates) {
+    return extracted(previousDatasetStates, datasetStatesByUrns);
+  }
+
+private Map<String, JobState.DatasetState> extracted(List<JobState.DatasetState> previousDatasetStates,
+		Map<String, JobState.DatasetState> datasetStatesByUrns) {
+	for (JobState.DatasetState previousDatasetState : previousDatasetStates) {
       datasetStatesByUrns.put(previousDatasetState.getDatasetUrn(), previousDatasetState);
     }
 
@@ -89,7 +94,7 @@ public class MysqlDatasetStateStore extends MysqlStateStore<JobState.DatasetStat
     }
 
     return datasetStatesByUrns;
-  }
+}
 
   /**
    * Get the latest {@link JobState.DatasetState} of a given dataset.
