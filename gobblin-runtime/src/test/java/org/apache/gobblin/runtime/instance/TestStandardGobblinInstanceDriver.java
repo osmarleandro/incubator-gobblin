@@ -47,13 +47,7 @@ public class TestStandardGobblinInstanceDriver {
 
   @Test
   public void testBuilder() {
-    Config instanceCfg = ConfigFactory.parseMap(ImmutableMap.<String, Object>builder()
-        .put(StandardGobblinInstanceDriver.PLUGINS_FULL_KEY, "fake1")
-        .put(EmailNotificationPlugin.EMAIL_NOTIFICATIONS_DISABLED_KEY, Boolean.valueOf(true))
-        .build());
-    GobblinInstanceEnvironment mockEnv = Mockito.mock(GobblinInstanceEnvironment.class);
-    Mockito.when(mockEnv.getSysConfig())
-           .thenReturn(DefaultConfigurableImpl.createFromConfig(instanceCfg));
+    GobblinInstanceEnvironment mockEnv = extracted();
     StandardGobblinInstanceDriver.Builder builder =
         StandardGobblinInstanceDriver.builder()
         .withInstanceEnvironment(mockEnv)
@@ -69,6 +63,17 @@ public class TestStandardGobblinInstanceDriver {
     Assert.assertTrue(pluginClasses.contains(FakePluginFactory1.class));
     Assert.assertTrue(pluginClasses.contains(FakePluginFactory2.class));
   }
+
+private GobblinInstanceEnvironment extracted() {
+	Config instanceCfg = ConfigFactory.parseMap(ImmutableMap.<String, Object>builder()
+        .put(StandardGobblinInstanceDriver.PLUGINS_FULL_KEY, "fake1")
+        .put(EmailNotificationPlugin.EMAIL_NOTIFICATIONS_DISABLED_KEY, Boolean.valueOf(true))
+        .build());
+    GobblinInstanceEnvironment mockEnv = Mockito.mock(GobblinInstanceEnvironment.class);
+    Mockito.when(mockEnv.getSysConfig())
+           .thenReturn(DefaultConfigurableImpl.createFromConfig(instanceCfg));
+	return mockEnv;
+}
 
   @AllArgsConstructor
   static class FakePlugin extends AbstractIdleService implements GobblinInstancePlugin {
