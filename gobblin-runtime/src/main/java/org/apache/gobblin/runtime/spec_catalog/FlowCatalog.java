@@ -393,8 +393,7 @@ public class FlowCatalog extends AbstractIdleService implements SpecCatalog, Mut
 
   public void remove(URI uri, Properties headers, boolean triggerListener) {
     try {
-      Preconditions.checkState(state() == State.RUNNING, String.format("%s is not running.", this.getClass().getName()));
-      Preconditions.checkNotNull(uri);
+      extracted(uri);
       long startTime = System.currentTimeMillis();
       log.info(String.format("Removing FlowSpec with URI: %s", uri));
       specStore.deleteSpec(uri);
@@ -406,6 +405,11 @@ public class FlowCatalog extends AbstractIdleService implements SpecCatalog, Mut
       throw new RuntimeException("Cannot delete Spec from Spec store for URI: " + uri, e);
     }
   }
+
+private void extracted(URI uri) {
+	Preconditions.checkState(state() == State.RUNNING, String.format("%s is not running.", this.getClass().getName()));
+      Preconditions.checkNotNull(uri);
+}
 
   public Object getSyncObject(String specUri) {
     return this.specSyncObjects.getOrDefault(specUri, null);
