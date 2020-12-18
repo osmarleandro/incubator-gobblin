@@ -75,7 +75,16 @@ public class SourceDecorator<S, D> implements WorkUnitStreamSource<S, D>, Decora
   @Override
   public WorkUnitStream getWorkunitStream(SourceState state) {
     try {
-      if (this.source instanceof WorkUnitStreamSource) {
+      return extracted(state);
+    } catch (Throwable t) {
+      this.logger.error("Failed to get work units for job " + this.jobId, t);
+      // Return null in case of errors
+      return null;
+    }
+  }
+
+private WorkUnitStream extracted(SourceState state) {
+	if (this.source instanceof WorkUnitStreamSource) {
         return ((WorkUnitStreamSource) this.source).getWorkunitStream(state);
       }
       List<WorkUnit> workUnits = this.source.getWorkunits(state);
@@ -84,12 +93,7 @@ public class SourceDecorator<S, D> implements WorkUnitStreamSource<S, D>, Decora
         workUnits = Collections.emptyList();
       }
       return new BasicWorkUnitStream.Builder(workUnits).build();
-    } catch (Throwable t) {
-      this.logger.error("Failed to get work units for job " + this.jobId, t);
-      // Return null in case of errors
-      return null;
-    }
-  }
+}
 
   @Override
   public Extractor<S, D> getExtractor(WorkUnitState state) throws IOException {
