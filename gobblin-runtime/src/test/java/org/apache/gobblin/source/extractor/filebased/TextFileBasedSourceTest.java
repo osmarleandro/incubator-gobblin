@@ -39,8 +39,7 @@ public class TextFileBasedSourceTest {
 
   @Test(enabled=false, groups = { "disabledOnTravis" })
   public void test() throws Exception {
-    File stateStoreDir = Files.createTempDir();
-    stateStoreDir.deleteOnExit();
+    File stateStoreDir = extracted();
 
     File dataDir = Files.createTempDir();
     dataDir.deleteOnExit();
@@ -94,8 +93,7 @@ public class TextFileBasedSourceTest {
 
   @Test (enabled=false)
   public void testFileLimit() throws Exception {
-    File stateStoreDir = Files.createTempDir();
-    stateStoreDir.deleteOnExit();
+    File stateStoreDir = extracted();
 
     File dataDir = Files.createTempDir();
     dataDir.deleteOnExit();
@@ -128,5 +126,11 @@ public class TextFileBasedSourceTest {
     Assert.assertEquals(events, Sets.newHashSet("record6", "record7"));
     asserter.clear();
   }
+
+private File extracted() {
+	File stateStoreDir = Files.createTempDir();
+    stateStoreDir.deleteOnExit();
+	return stateStoreDir;
+}
 
 }
