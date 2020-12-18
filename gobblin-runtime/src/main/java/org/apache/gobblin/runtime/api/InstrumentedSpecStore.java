@@ -86,11 +86,16 @@ public abstract class InstrumentedSpecStore implements SpecStore {
     if (!instrumentationEnabled) {
       addSpecImpl(spec);
     } else {
-      long startTimeMillis = System.currentTimeMillis();
-      addSpecImpl(spec);
+      long startTimeMillis = extracted(spec);
       Instrumented.updateTimer(this.addTimer, System.currentTimeMillis() - startTimeMillis, TimeUnit.MILLISECONDS);
     }
   }
+
+private long extracted(Spec spec) throws IOException {
+	long startTimeMillis = System.currentTimeMillis();
+      addSpecImpl(spec);
+	return startTimeMillis;
+}
 
   @Override
   public boolean deleteSpec(URI specUri) throws IOException {
