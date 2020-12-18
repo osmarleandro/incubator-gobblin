@@ -202,16 +202,20 @@ public class JobExecutionState implements JobExecutionStatus {
   public void setStage(String newStage) {
     this.changeLock.lock();
     try {
-      String oldStage = this.stage;
-      this.stage = newStage;
-      if (this.listener.isPresent()) {
-        this.listener.get().onStageTransition(this, oldStage, this.stage);
-      }
+      extracted(newStage);
     }
     finally {
       this.changeLock.unlock();
     }
   }
+
+private void extracted(String newStage) {
+	String oldStage = this.stage;
+      this.stage = newStage;
+      if (this.listener.isPresent()) {
+        this.listener.get().onStageTransition(this, oldStage, this.stage);
+      }
+}
 
   public void setMedatata(String key, Object value) {
     this.changeLock.lock();
