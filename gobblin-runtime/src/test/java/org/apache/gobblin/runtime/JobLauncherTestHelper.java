@@ -370,7 +370,12 @@ public class JobLauncherTestHelper {
     }
 
     for (int i = 1; i < 4; i++) {
-      List<JobState.DatasetState> datasetStateList =
+      extracted(jobName, i);
+    }
+  }
+
+private void extracted(String jobName, int i) throws IOException {
+	List<JobState.DatasetState> datasetStateList =
           this.datasetStateStore.getAll(jobName, "Dataset" + i + "-current.jst");
       JobState.DatasetState datasetState = datasetStateList.get(0);
 
@@ -381,8 +386,7 @@ public class JobLauncherTestHelper {
         Assert.assertEquals(taskState.getProp(ConfigurationKeys.DATASET_URN_KEY), "Dataset" + i);
         Assert.assertEquals(taskState.getWorkingState(), WorkUnitState.WorkingState.COMMITTED);
       }
-    }
-  }
+}
 
   public void deleteStateStore(String storeName) throws IOException {
     this.datasetStateStore.delete(storeName);
