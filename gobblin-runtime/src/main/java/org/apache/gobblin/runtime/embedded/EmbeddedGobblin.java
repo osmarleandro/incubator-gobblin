@@ -176,8 +176,7 @@ public class EmbeddedGobblin {
    * Specify job should run in MR mode.
    */
   public EmbeddedGobblin mrMode() throws IOException {
-    this.sysConfigOverrides.put(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY, JobLauncherFactory.JobLauncherType.MAPREDUCE.name());
-    this.builtConfigMap.put(ConfigurationKeys.FS_URI_KEY, FileSystem.get(new Configuration()).getUri().toString());
+    extracted();
     this.builtConfigMap.put(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY, "/tmp/EmbeddedGobblin_" + System.currentTimeMillis());
     this.distributeJarsFunction = new Runnable() {
       @Override
@@ -189,6 +188,11 @@ public class EmbeddedGobblin {
     };
     return this;
   }
+
+private void extracted() throws IOException {
+	this.sysConfigOverrides.put(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY, JobLauncherFactory.JobLauncherType.MAPREDUCE.name());
+    this.builtConfigMap.put(ConfigurationKeys.FS_URI_KEY, FileSystem.get(new Configuration()).getUri().toString());
+}
 
   /**
    * Specify that the input jar should be added to workers' classpath on distributed mode.
