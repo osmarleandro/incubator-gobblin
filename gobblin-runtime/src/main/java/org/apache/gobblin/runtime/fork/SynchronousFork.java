@@ -44,13 +44,17 @@ public class SynchronousFork extends Fork {
     try {
       this.autoResetEvent.waitOne();
       if (this.throwable != null) {
-        Throwables.propagateIfPossible(this.throwable, IOException.class, DataConversionException.class);
-        throw new RuntimeException(throwable);
+        extracted();
       }
     } catch (InterruptedException ie) {
       Throwables.propagate(ie);
     }
   }
+
+private void extracted() throws IOException, DataConversionException {
+	Throwables.propagateIfPossible(this.throwable, IOException.class, DataConversionException.class);
+	throw new RuntimeException(throwable);
+}
 
   @Override
   protected boolean putRecordImpl(Object record) throws InterruptedException {
