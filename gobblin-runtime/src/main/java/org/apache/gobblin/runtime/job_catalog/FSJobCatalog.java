@@ -183,8 +183,7 @@ public class FSJobCatalog extends ImmutableFSJobCatalog implements MutableJobCat
    */
   synchronized void materializedJobSpec(Path jobSpecPath, JobSpec jobSpec, FileSystem fs)
       throws IOException, JobSpecNotFoundException {
-    Path shadowDirectoryPath = new Path("/tmp");
-    Path shadowFilePath = new Path(shadowDirectoryPath, UUID.randomUUID().toString());
+    Path shadowFilePath = extracted();
     /* If previously existed, should delete anyway */
     if (fs.exists(shadowFilePath)) {
       fs.delete(shadowFilePath, false);
@@ -216,6 +215,12 @@ public class FSJobCatalog extends ImmutableFSJobCatalog implements MutableJobCat
       throw new IOException("Unable to rename job file: " + shadowFilePath + " to " + jobSpecPath);
     }
   }
+
+private Path extracted() {
+	Path shadowDirectoryPath = new Path("/tmp");
+    Path shadowFilePath = new Path(shadowDirectoryPath, UUID.randomUUID().toString());
+	return shadowFilePath;
+}
 
   @Override
   public JobTemplate getTemplate(URI uri)
