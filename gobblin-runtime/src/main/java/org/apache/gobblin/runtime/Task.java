@@ -876,7 +876,19 @@ public class Task implements TaskIFace {
   private void addConstructsFinalStateToTaskState(InstrumentedExtractorBase<?, ?> extractor,
       Converter<?, ?, ?, ?> converter, RowLevelPolicyChecker rowChecker) {
     ConstructState constructState = new ConstructState();
-    if (extractor != null) {
+    int forkIdx = extracted(extractor, converter, rowChecker, constructState);
+    for (Optional<Fork> fork : this.forks.keySet()) {
+      constructState.addConstructState(Constructs.FORK_OPERATOR, new ConstructState(fork.get().getFinalState()),
+          Integer.toString(forkIdx));
+      forkIdx++;
+    }
+
+    constructState.mergeIntoWorkUnitState(this.taskState);
+  }
+
+private int extracted(InstrumentedExtractorBase<?, ?> extractor, Converter<?, ?, ?, ?> converter,
+		RowLevelPolicyChecker rowChecker, ConstructState constructState) {
+	if (extractor != null) {
       constructState.addConstructState(Constructs.EXTRACTOR, new ConstructState(extractor.getFinalState()));
     }
     if (converter != null) {
@@ -886,14 +898,8 @@ public class Task implements TaskIFace {
       constructState.addConstructState(Constructs.ROW_QUALITY_CHECKER, new ConstructState(rowChecker.getFinalState()));
     }
     int forkIdx = 0;
-    for (Optional<Fork> fork : this.forks.keySet()) {
-      constructState.addConstructState(Constructs.FORK_OPERATOR, new ConstructState(fork.get().getFinalState()),
-          Integer.toString(forkIdx));
-      forkIdx++;
-    }
-
-    constructState.mergeIntoWorkUnitState(this.taskState);
-  }
+	return forkIdx;
+}
 
   /**
    * Commit this task by doing the following things:
