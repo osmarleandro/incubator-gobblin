@@ -147,10 +147,14 @@ public class TaskStateCollectorService extends AbstractScheduledService {
     try {
       runOneIteration();
     } finally {
-      super.shutDown();
-      this.handlerCloser.close();
+      extracted();
     }
   }
+
+private void extracted() throws Exception, IOException {
+	super.shutDown();
+      this.handlerCloser.close();
+}
 
   /**
    * Collect output {@link TaskState}s of tasks of the job launched.
