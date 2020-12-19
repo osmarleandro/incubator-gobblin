@@ -89,8 +89,7 @@ public class FsSpecProducer implements SpecProducer<Spec> {
     if (spec instanceof JobSpec) {
       try {
         AvroJobSpec avroJobSpec = convertToAvroJobSpec((JobSpec) spec, verb);
-        writeAvroJobSpec(avroJobSpec);
-        return new CompletedFuture<>(Boolean.TRUE, null);
+        return extracted(avroJobSpec);
       } catch (IOException e) {
         log.error("Exception encountered when adding Spec {}", spec);
         return new CompletedFuture<>(Boolean.TRUE, e);
@@ -109,13 +108,17 @@ public class FsSpecProducer implements SpecProducer<Spec> {
         .setMetadata(ImmutableMap.of(VERB_KEY, SpecExecutor.Verb.DELETE.name()))
         .setProperties(Maps.fromProperties(headers)).build();
     try {
-      writeAvroJobSpec(avroJobSpec);
-      return new CompletedFuture<>(Boolean.TRUE, null);
+      return extracted(avroJobSpec);
     } catch (IOException e) {
       log.error("Exception encountered when writing DELETE spec");
       return new CompletedFuture<>(Boolean.TRUE, e);
     }
   }
+
+private Future<?> extracted(AvroJobSpec avroJobSpec) throws IOException {
+	writeAvroJobSpec(avroJobSpec);
+      return new CompletedFuture<>(Boolean.TRUE, null);
+}
 
   /** List all {@link Spec} being executed on {@link org.apache.gobblin.runtime.api.SpecExecutor}. */
   @Override
