@@ -227,7 +227,13 @@ public class PathAlterationListenerAdaptorForMonitor extends PathAlterationListe
 
   private void rescheduleJob(Properties jobProps)
       throws JobException {
-    String jobName = jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+    String jobName = extracted(jobProps);
+    addToJobNameMap(jobProps);
+    LOG.debug("[JobScheduler] The new job " + jobName + " is rescheduled.");
+  }
+
+private String extracted(Properties jobProps) throws JobException {
+	String jobName = jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
     Path jobPath = getJobPath(jobProps);
     // First unschedule and delete the old job
     if (this.jobNameMap.containsKey(jobPath)) {
@@ -237,9 +243,8 @@ public class PathAlterationListenerAdaptorForMonitor extends PathAlterationListe
     boolean runOnce = Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY, "false"));
     // Reschedule the job with the new job configuration
     jobScheduler.scheduleJob(jobProps, runOnce ? new RunOnceJobListener() : new EmailNotificationJobListener());
-    addToJobNameMap(jobProps);
-    LOG.debug("[JobScheduler] The new job " + jobName + " is rescheduled.");
-  }
+	return jobName;
+}
 
   /**
    * Given the target rootPath, check if there's common properties existed. Return false if so.
