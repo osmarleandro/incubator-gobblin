@@ -115,10 +115,15 @@ public abstract class JobCatalogBase extends AbstractIdleService implements JobC
 
   private Iterator<JobSpec> getJobSpecsWithTimeUpdate() {
     long startTime = System.currentTimeMillis();
-    Iterator<JobSpec> jobSpecs = getJobSpecIterator();
-    this.metrics.updateGetJobTime(startTime);
+    Iterator<JobSpec> jobSpecs = extracted(startTime);
     return jobSpecs;
   }
+
+private Iterator<JobSpec> extracted(long startTime) {
+	Iterator<JobSpec> jobSpecs = getJobSpecIterator();
+    this.metrics.updateGetJobTime(startTime);
+	return jobSpecs;
+}
 
   /**{@inheritDoc}*/
   @Override
