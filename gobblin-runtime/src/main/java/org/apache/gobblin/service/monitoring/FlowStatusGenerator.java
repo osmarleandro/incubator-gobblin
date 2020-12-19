@@ -124,7 +124,12 @@ public class FlowStatusGenerator {
     Iterator<JobStatus> jobStatusIterator =
         jobStatusRetriever.getJobStatusesForFlowExecution(flowName, flowGroup, flowExecutionId);
 
-    if (tag != null) {
+    return extracted(flowName, flowGroup, flowExecutionId, tag, flowStatus, jobStatusIterator);
+  }
+
+private FlowStatus extracted(String flowName, String flowGroup, long flowExecutionId, String tag, FlowStatus flowStatus,
+		Iterator<JobStatus> jobStatusIterator) {
+	if (tag != null) {
       jobStatusIterator = Iterators.filter(jobStatusIterator, js -> JobStatusRetriever.isFlowStatus(js) ||
           (js.getJobTag() != null && js.getJobTag().equals(tag)));
     }
@@ -134,7 +139,7 @@ public class FlowStatusGenerator {
     }
 
     return flowStatus;
-  }
+}
 
   /**
    * Return true if another instance of a flow is running. A flow is determined to be in the RUNNING state, if any of the
