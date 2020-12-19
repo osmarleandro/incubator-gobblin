@@ -241,14 +241,20 @@ public class ServiceBasedAppLauncher implements ApplicationLauncher {
         new ClassAliasResolver<>(AdminWebServerFactory.class);
     try
     {
-      AdminWebServerFactory factoryInstance = classResolver.resolveClass(factoryClassName).newInstance();
-      return factoryInstance.createInstance(properties, executionInfoServerURI);
+      return extracted(properties, executionInfoServerURI, factoryClassName, classResolver);
     }
     catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
       throw new RuntimeException("Unable to instantiate the AdminWebServer factory. " +
            "Have you included the module in the gobblin distribution? :" + e, e);
     }
   }
+
+private static Service extracted(Properties properties, URI executionInfoServerURI, String factoryClassName,
+		ClassAliasResolver<AdminWebServerFactory> classResolver)
+		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	AdminWebServerFactory factoryInstance = classResolver.resolveClass(factoryClassName).newInstance();
+      return factoryInstance.createInstance(properties, executionInfoServerURI);
+}
 
   private void addMetricsService(Properties properties) {
     if (GobblinMetrics.isEnabled(properties)) {
