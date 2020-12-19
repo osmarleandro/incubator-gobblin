@@ -36,6 +36,8 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
 import org.apache.gobblin.configuration.ConfigurationKeys;
+import org.apache.gobblin.runtime.api.JobTemplate.TemplateException;
+import org.apache.gobblin.runtime.api.SpecNotFoundException;
 import org.apache.gobblin.runtime.job_catalog.PackagedTemplatesJobCatalogDecorator;
 import org.apache.gobblin.runtime.template.HOCONInputStreamJobTemplate;
 import org.apache.gobblin.runtime.template.ResourceBasedJobTemplate;
@@ -77,16 +79,22 @@ public class TemplateTest {
 
   @Test
   public void testRequiredAttrList() throws Exception {
-    Properties jobProps = this.userProp;
-
-    Collection<String> requiredConfigList = ResourceBasedJobTemplate.forURI(new URI(
-        jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH)), new PackagedTemplatesJobCatalogDecorator())
-        .getRequiredConfigList();
+    Collection<String> requiredConfigList = extracted();
     Assert.assertEquals(requiredConfigList.size(), 3);
     Assert.assertTrue( requiredConfigList.contains("required0"));
     Assert.assertTrue( requiredConfigList.contains("required1"));
     Assert.assertTrue( requiredConfigList.contains("required2"));
   }
+
+private Collection<String> extracted()
+		throws SpecNotFoundException, TemplateException, IOException, URISyntaxException {
+	Properties jobProps = this.userProp;
+
+    Collection<String> requiredConfigList = ResourceBasedJobTemplate.forURI(new URI(
+        jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH)), new PackagedTemplatesJobCatalogDecorator())
+        .getRequiredConfigList();
+	return requiredConfigList;
+}
 
   // Testing the resolving of userCustomized attributes and template is correct.
   @Test
