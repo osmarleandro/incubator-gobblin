@@ -247,17 +247,7 @@ public class MRJobLauncherTest extends BMNGRunner {
       targetMethod = "countersToMetrics(GobblinMetrics)", targetLocation = "AT ENTRY", condition = "true",
       action = "throw new IOException(\"Exception for testJobCleanupOnError\")")
   public void testJobCleanupOnError() throws IOException {
-    Properties props = loadJobProps();
-    try {
-      this.jobLauncherTestHelper.runTest(props);
-      Assert.fail("Byteman is not configured properly, the runTest method should have throw an exception");
-    } catch (Exception e) {
-      // The job should throw an exception, ignore it
-    } finally {
-      this.jobLauncherTestHelper.deleteStateStore(props.getProperty(ConfigurationKeys.JOB_NAME_KEY));
-    }
-
-    Assert.assertTrue(props.containsKey(ConfigurationKeys.WRITER_STAGING_DIR));
+    Properties props = extracted();
     Assert.assertTrue(props.containsKey(ConfigurationKeys.WRITER_OUTPUT_DIR));
 
     File stagingDir = new File(props.getProperty(ConfigurationKeys.WRITER_STAGING_DIR));
@@ -268,6 +258,21 @@ public class MRJobLauncherTest extends BMNGRunner {
       Assert.assertEquals(FileUtils.listFiles(outputDir, null, true).size(), 0);
     }
   }
+
+private Properties extracted() throws IOException {
+	Properties props = loadJobProps();
+    try {
+      this.jobLauncherTestHelper.runTest(props);
+      Assert.fail("Byteman is not configured properly, the runTest method should have throw an exception");
+    } catch (Exception e) {
+      // The job should throw an exception, ignore it
+    } finally {
+      this.jobLauncherTestHelper.deleteStateStore(props.getProperty(ConfigurationKeys.JOB_NAME_KEY));
+    }
+
+    Assert.assertTrue(props.containsKey(ConfigurationKeys.WRITER_STAGING_DIR));
+	return props;
+}
 
   // This test uses byteman to check that the ".suc" files are recorded in the task state store for successful
   // tasks when there are some task failures.
