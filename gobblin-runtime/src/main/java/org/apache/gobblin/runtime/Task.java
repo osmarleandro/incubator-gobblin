@@ -616,9 +616,7 @@ public class Task implements TaskIFace {
       throws IOException {
     Closer closer = Closer.create();
     try {
-      Class<? extends DataPublisher> dataPublisherClass = getTaskPublisherClass();
-      SingleTaskDataPublisher publisher =
-          closer.register(SingleTaskDataPublisher.getInstance(dataPublisherClass, this.taskState));
+      SingleTaskDataPublisher publisher = extracted(closer);
 
       LOG.info("Publishing data from task " + this.taskId);
       publisher.publish(this.taskState);
@@ -634,6 +632,13 @@ public class Task implements TaskIFace {
       closer.close();
     }
   }
+
+private SingleTaskDataPublisher extracted(Closer closer) throws ReflectiveOperationException {
+	Class<? extends DataPublisher> dataPublisherClass = getTaskPublisherClass();
+      SingleTaskDataPublisher publisher =
+          closer.register(SingleTaskDataPublisher.getInstance(dataPublisherClass, this.taskState));
+	return publisher;
+}
 
   @SuppressWarnings("unchecked")
   private Class<? extends DataPublisher> getTaskPublisherClass()
