@@ -99,7 +99,14 @@ public class TestRecordStream {
 
   @Test
   public void testFlushControlMessages() throws Exception {
-    MyExtractor extractor = new MyExtractor(new StreamEntity[]{new RecordEnvelope<>("a"),
+    MyFlushDataWriter writer = extracted();
+
+    Assert.assertEquals(writer.records, Lists.newArrayList("a", "b"));
+    Assert.assertEquals(writer.flush_messages, Lists.newArrayList("flush called", "flush called"));
+  }
+
+private MyFlushDataWriter extracted() throws Exception {
+	MyExtractor extractor = new MyExtractor(new StreamEntity[]{new RecordEnvelope<>("a"),
         FlushControlMessage.builder().flushReason("flush1").build(), new RecordEnvelope<>("b"),
         FlushControlMessage.builder().flushReason("flush2").build()});
     MyConverter converter = new MyConverter();
@@ -115,10 +122,8 @@ public class TestRecordStream {
     Assert.assertEquals(converter.messages, Lists.newArrayList(
         FlushControlMessage.builder().flushReason("flush1").build(),
         FlushControlMessage.builder().flushReason("flush2").build()));
-
-    Assert.assertEquals(writer.records, Lists.newArrayList("a", "b"));
-    Assert.assertEquals(writer.flush_messages, Lists.newArrayList("flush called", "flush called"));
-  }
+	return writer;
+}
 
   @Test
   public void testFlushFailure() throws Exception {
