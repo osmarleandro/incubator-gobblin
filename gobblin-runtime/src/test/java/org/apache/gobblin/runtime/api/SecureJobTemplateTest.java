@@ -37,8 +37,7 @@ public class SecureJobTemplateTest {
 	@Test
 	public void test() {
 
-		SecureJobTemplate template = Mockito.mock(SecureJobTemplate.class);
-		Mockito.when(template.getUri()).thenReturn(URI.create("my://template"));
+		SecureJobTemplate template = extracted();
 		Mockito.when(template.isSecure()).thenReturn(true);
 		Mockito.when(template.overridableProperties()).thenReturn(Lists.newArrayList("my.overridable.property1", "my.overridable.property2"));
 
@@ -74,6 +73,12 @@ public class SecureJobTemplateTest {
 		Assert.assertEquals(result.entrySet().size(), 2);
 		Assert.assertEquals(result.getString("my.overridable.property1"), "bar");
 		Assert.assertEquals(result.getString("my.overridable.property2"), "baz");
+	}
+
+	private SecureJobTemplate extracted() {
+		SecureJobTemplate template = Mockito.mock(SecureJobTemplate.class);
+		Mockito.when(template.getUri()).thenReturn(URI.create("my://template"));
+		return template;
 	}
 
 }
