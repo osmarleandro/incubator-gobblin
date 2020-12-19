@@ -29,7 +29,11 @@ public class TestJobSpecFilter {
   @Test public void testUriAndVersion() {
     JobSpec js1_1 = JobSpec.builder("gobblin:/test/job1").withVersion("1").build();
     JobSpec js1_2 = JobSpec.builder("gobblin:/test/job1").withVersion("2").build();
-    JobSpec js2_1 = JobSpec.builder("gobblin:/test/job2").withVersion("1").build();
+    extracted(js1_1, js1_2);
+  }
+
+private void extracted(JobSpec js1_1, JobSpec js1_2) {
+	JobSpec js2_1 = JobSpec.builder("gobblin:/test/job2").withVersion("1").build();
     JobSpec js2_2 = JobSpec.builder("gobblin:/test/job2").withVersion("2").build();
 
     JobSpecFilter filter1 = JobSpecFilter.eqJobSpecURI("gobblin:/test/job1");
@@ -44,6 +48,6 @@ public class TestJobSpecFilter {
     Assert.assertFalse(filter2.apply(js1_2));
     Assert.assertFalse(filter2.apply(js2_1));
     Assert.assertTrue(filter2.apply(js2_2));
-  }
+}
 
 }
