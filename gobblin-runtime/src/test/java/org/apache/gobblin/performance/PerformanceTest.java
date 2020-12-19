@@ -99,8 +99,7 @@ public class PerformanceTest {
   public static void testWriterThroughput() throws Exception {
     EventBus eventBus = new EventBus();
 
-    EventHandler eventHandler = new EventHandler();
-    eventBus.register(eventHandler);
+    EventHandler eventHandler = extracted(eventBus);
 
     GobblinTestEventBusWriter writer = new GobblinTestEventBusWriter(eventBus, GobblinTestEventBusWriter.Mode.COUNTING);
 
@@ -121,6 +120,12 @@ public class PerformanceTest {
         (double) records * 1000 / elapsedMillis));
 
   }
+
+private static EventHandler extracted(EventBus eventBus) {
+	EventHandler eventHandler = new EventHandler();
+    eventBus.register(eventHandler);
+	return eventHandler;
+}
 
   private static class EventHandler {
     List<GobblinTestEventBusWriter.RunSummary> runSummaries = Lists.newArrayList();
