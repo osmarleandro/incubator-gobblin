@@ -193,9 +193,7 @@ public class PathAlterationListenerAdaptorForMonitor extends PathAlterationListe
   public void onFileDelete(Path path) {
     String fileExtension = path.getName().substring(path.getName().lastIndexOf('.') + 1);
     if (fileExtension.equalsIgnoreCase(SchedulerUtils.JOB_PROPS_FILE_EXTENSION)) {
-      LOG.info("Detected deletion of common properties file " + path.toString());
-      // For JobProps, deletion in local folder means inheritance from ancestor folder and reschedule.
-      loadNewCommonConfigAndHandleNewJob(path, JobScheduler.Action.RESCHEDULE);
+      extracted(path);
       return;
     }
 
@@ -208,6 +206,12 @@ public class PathAlterationListenerAdaptorForMonitor extends PathAlterationListe
     // As for normal job file, deletion means unschedule
     unscheduleJobAtPath(path);
   }
+
+private void extracted(Path path) {
+	LOG.info("Detected deletion of common properties file " + path.toString());
+      // For JobProps, deletion in local folder means inheritance from ancestor folder and reschedule.
+      loadNewCommonConfigAndHandleNewJob(path, JobScheduler.Action.RESCHEDULE);
+}
 
   private void unscheduleJobAtPath(Path path) {
     try {
