@@ -466,9 +466,7 @@ public class JobState extends SourceState implements JobProgress {
     Map<String, DatasetState> datasetStatesByUrns = Maps.newHashMap();
 
     for (TaskState taskState : this.taskStates.values()) {
-      String datasetUrn = createDatasetUrn(datasetStatesByUrns, taskState);
-
-      datasetStatesByUrns.get(datasetUrn).incrementTaskCount();
+      String datasetUrn = extracted(datasetStatesByUrns, taskState);
       datasetStatesByUrns.get(datasetUrn).addTaskState(taskState);
     }
 
@@ -479,6 +477,13 @@ public class JobState extends SourceState implements JobProgress {
 
     return ImmutableMap.copyOf(datasetStatesByUrns);
   }
+
+private String extracted(Map<String, DatasetState> datasetStatesByUrns, TaskState taskState) {
+	String datasetUrn = createDatasetUrn(datasetStatesByUrns, taskState);
+
+      datasetStatesByUrns.get(datasetUrn).incrementTaskCount();
+	return datasetUrn;
+}
 
   private String createDatasetUrn(Map<String, DatasetState> datasetStatesByUrns, TaskState taskState) {
     String datasetUrn = taskState.getProp(ConfigurationKeys.DATASET_URN_KEY, ConfigurationKeys.DEFAULT_DATASET_URN);
