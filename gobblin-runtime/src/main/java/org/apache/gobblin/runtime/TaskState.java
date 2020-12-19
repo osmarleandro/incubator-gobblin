@@ -372,16 +372,20 @@ public class TaskState extends WorkUnitState implements TaskProgress {
     }
 
     if (keepConfig) {
-      jsonWriter.name("properties");
-      jsonWriter.beginObject();
-      for (String key : this.getPropertyNames()) {
-        jsonWriter.name(key).value(this.getProp(key));
-      }
+      extracted(jsonWriter);
       jsonWriter.endObject();
     }
 
     jsonWriter.endObject();
   }
+
+private void extracted(JsonWriter jsonWriter) throws IOException {
+	jsonWriter.name("properties");
+      jsonWriter.beginObject();
+      for (String key : this.getPropertyNames()) {
+        jsonWriter.name(key).value(this.getProp(key));
+      }
+}
 
   /**
    * Convert this {@link TaskState} instance to a {@link TaskExecutionInfo} instance.
