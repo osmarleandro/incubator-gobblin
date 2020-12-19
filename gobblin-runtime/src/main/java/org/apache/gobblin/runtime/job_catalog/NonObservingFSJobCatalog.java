@@ -77,7 +77,16 @@ public class NonObservingFSJobCatalog extends FSJobCatalog {
     Preconditions.checkState(state() == State.RUNNING, String.format("%s is not running.", this.getClass().getName()));
     Preconditions.checkNotNull(jobSpec);
     try {
-      long startTime = System.currentTimeMillis();
+      extracted(jobSpec);
+    } catch (IOException e) {
+      throw new RuntimeException("When persisting a new JobSpec, unexpected issues happen:" + e.getMessage());
+    } catch (JobSpecNotFoundException e) {
+      throw new RuntimeException("When replacing a existed JobSpec, unexpected issue happen:" + e.getMessage());
+    }
+  }
+
+private void extracted(JobSpec jobSpec) throws IOException, JobSpecNotFoundException {
+	long startTime = System.currentTimeMillis();
       Path jobSpecPath = getPathForURI(this.jobConfDirPath, jobSpec.getUri());
       boolean isUpdate = fs.exists(jobSpecPath);
 
@@ -88,12 +97,7 @@ public class NonObservingFSJobCatalog extends FSJobCatalog {
       } else {
         this.listeners.onAddJob(jobSpec);
       }
-    } catch (IOException e) {
-      throw new RuntimeException("When persisting a new JobSpec, unexpected issues happen:" + e.getMessage());
-    } catch (JobSpecNotFoundException e) {
-      throw new RuntimeException("When replacing a existed JobSpec, unexpected issue happen:" + e.getMessage());
-    }
-  }
+}
 
   /**
    * Allow user to programmatically delete a new JobSpec.
