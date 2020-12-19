@@ -121,8 +121,7 @@ public class GobblinWorkUnitsInputFormatTest {
 
   @Test
   public void testSplit() throws Exception {
-    List<String> paths = Lists.newArrayList("/path1", "/path2");
-    GobblinWorkUnitsInputFormat.GobblinSplit split = new GobblinWorkUnitsInputFormat.GobblinSplit(paths);
+    GobblinWorkUnitsInputFormat.GobblinSplit split = extracted();
 
     ByteArrayOutputStream os = new ByteArrayOutputStream();
     split.write(new DataOutputStream(os));
@@ -134,12 +133,17 @@ public class GobblinWorkUnitsInputFormatTest {
     Assert.assertEquals(split, deserSplit);
   }
 
+private GobblinWorkUnitsInputFormat.GobblinSplit extracted() {
+	List<String> paths = Lists.newArrayList("/path1", "/path2");
+    GobblinWorkUnitsInputFormat.GobblinSplit split = new GobblinWorkUnitsInputFormat.GobblinSplit(paths);
+	return split;
+}
+
   @Test
   public void testRecordReader()
       throws Exception {
 
-    List<String> paths = Lists.newArrayList("/path1", "/path2");
-    GobblinWorkUnitsInputFormat.GobblinSplit split = new GobblinWorkUnitsInputFormat.GobblinSplit(paths);
+    GobblinWorkUnitsInputFormat.GobblinSplit split = extracted();
 
     GobblinWorkUnitsInputFormat inputFormat = new GobblinWorkUnitsInputFormat();
     RecordReader<LongWritable, Text> recordReader =
