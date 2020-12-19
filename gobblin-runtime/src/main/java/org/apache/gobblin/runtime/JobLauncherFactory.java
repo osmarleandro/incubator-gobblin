@@ -139,14 +139,7 @@ public class JobLauncherFactory {
 
     try {
       if (launcherType.isPresent()) {
-        switch (launcherType.get()) {
-          case LOCAL:
-              return new LocalJobLauncher(JobConfigurationUtils.combineSysAndJobProperties(sysProps, jobProps), instanceBroker, metadataTags);
-          case MAPREDUCE:
-            return new MRJobLauncher(JobConfigurationUtils.combineSysAndJobProperties(sysProps, jobProps), instanceBroker, metadataTags);
-          default:
-            throw new RuntimeException("Unsupported job launcher type: " + launcherType.get().name());
-        }
+        return extracted(sysProps, jobProps, instanceBroker, metadataTags, launcherType);
       }
 
       @SuppressWarnings("unchecked")
@@ -158,4 +151,17 @@ public class JobLauncherFactory {
       throw new RuntimeException("Failed to create job launcher: " + e, e);
     }
   }
+
+private static JobLauncher extracted(Properties sysProps, Properties jobProps,
+		SharedResourcesBroker<GobblinScopeTypes> instanceBroker, List<? extends Tag<?>> metadataTags,
+		Optional<JobLauncherType> launcherType) throws Exception {
+	switch (launcherType.get()) {
+	  case LOCAL:
+	      return new LocalJobLauncher(JobConfigurationUtils.combineSysAndJobProperties(sysProps, jobProps), instanceBroker, metadataTags);
+	  case MAPREDUCE:
+	    return new MRJobLauncher(JobConfigurationUtils.combineSysAndJobProperties(sysProps, jobProps), instanceBroker, metadataTags);
+	  default:
+	    throw new RuntimeException("Unsupported job launcher type: " + launcherType.get().name());
+	}
+}
 }
