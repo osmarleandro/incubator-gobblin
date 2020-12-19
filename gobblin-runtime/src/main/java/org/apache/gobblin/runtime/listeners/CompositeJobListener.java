@@ -81,12 +81,7 @@ public class CompositeJobListener extends AbstractJobListener {
   public void onJobCompletion(JobContext jobContext) throws Exception {
     StringBuffer buf = new StringBuffer();
     for (JobListener listener: listeners) {
-      try {
-        listener.onJobCompletion(jobContext);
-      } catch (Exception e) {
-        buf.append(listener.getClass().getName() + ":" + e.toString());
-        log.error(ExceptionUtils.getFullStackTrace(e));
-      }
+      extracted(jobContext, buf, listener);
     }
 
     String exceptions = buf.toString();
@@ -94,6 +89,15 @@ public class CompositeJobListener extends AbstractJobListener {
       throw new RuntimeException(exceptions);
     }
   }
+
+private void extracted(JobContext jobContext, StringBuffer buf, JobListener listener) {
+	try {
+        listener.onJobCompletion(jobContext);
+      } catch (Exception e) {
+        buf.append(listener.getClass().getName() + ":" + e.toString());
+        log.error(ExceptionUtils.getFullStackTrace(e));
+      }
+}
 
   @Override
   public void onJobCancellation(JobContext jobContext) throws Exception {
