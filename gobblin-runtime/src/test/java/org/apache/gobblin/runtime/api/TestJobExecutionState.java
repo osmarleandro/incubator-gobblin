@@ -196,8 +196,7 @@ public class TestJobExecutionState {
       final RunningState fromState,  final RunningState toState,
       final Logger log) throws TimeoutException, InterruptedException {
 
-    jes1.setRunningState(toState);
-    Assert.assertEquals(jes1.getRunningState(), toState);
+    extracted(jes1, toState);
     AssertWithBackoff.assertTrue(new Predicate<Void>() {
       @Override public boolean apply(Void input) {
         try {
@@ -210,6 +209,12 @@ public class TestJobExecutionState {
       }
     }, 50, "expecting state callback", log, 2.0, 10);
   }
+
+
+private void extracted(final JobExecutionState jes1, final RunningState toState) {
+	jes1.setRunningState(toState);
+    Assert.assertEquals(jes1.getRunningState(), toState);
+}
 
   @Test public void testAwait() throws InterruptedException {
     final Logger log = LoggerFactory.getLogger(getClass().getSimpleName() + ".testAwait");
