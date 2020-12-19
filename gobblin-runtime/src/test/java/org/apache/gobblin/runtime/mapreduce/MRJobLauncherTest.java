@@ -381,15 +381,20 @@ public class MRJobLauncherTest extends BMNGRunner {
 
   @Test(groups = { "ignore" })
   public void testLaunchJobWithMultipleDatasetsAndFaultyExtractorAndPartialCommitPolicy() throws Exception {
-    Properties jobProps = loadJobProps();
-    jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY, jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY)
-        + "-testLaunchJobWithMultipleDatasetsAndFaultyExtractorAndPartialCommitPolicy");
+    Properties jobProps = extracted();
     try {
       this.jobLauncherTestHelper.runTestWithMultipleDatasetsAndFaultyExtractor(jobProps, true);
     } finally {
       this.jobLauncherTestHelper.deleteStateStore(jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY));
     }
   }
+
+private Properties extracted() throws IOException {
+	Properties jobProps = loadJobProps();
+    jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY, jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY)
+        + "-testLaunchJobWithMultipleDatasetsAndFaultyExtractorAndPartialCommitPolicy");
+	return jobProps;
+}
 
   @Test
   public void testLaunchJobWithNonThreadsafeDataPublisher() throws Exception {
