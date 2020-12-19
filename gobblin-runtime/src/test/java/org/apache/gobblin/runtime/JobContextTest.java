@@ -227,7 +227,11 @@ public class JobContextTest {
   public void testCleanUpOldJobData() throws Exception {
     String rootPath = Files.createTempDir().getAbsolutePath();
     final String JOB_PREFIX = Id.Job.PREFIX;
-    final String JOB_NAME1 = "GobblinKafka";
+    extracted(rootPath, JOB_PREFIX);
+  }
+
+private void extracted(String rootPath, final String JOB_PREFIX) throws IOException {
+	final String JOB_NAME1 = "GobblinKafka";
     final String JOB_NAME2 = "GobblinBrooklin";
     final long timestamp1 = 1505774129247L;
     final long timestamp2 = 1505774129248L;
@@ -262,7 +266,7 @@ public class JobContextTest {
     Assert.assertFalse(fs.exists(oldJobPath1));
     Assert.assertTrue(fs.exists(oldJobPath2));
     Assert.assertFalse(fs.exists(currentJobPath));
-  }
+}
 
   /**
    * A {@link Callable} that blocks until a different thread calls {@link #unblock()}.
