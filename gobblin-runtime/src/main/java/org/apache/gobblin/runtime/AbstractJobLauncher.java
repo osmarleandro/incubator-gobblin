@@ -832,16 +832,20 @@ public abstract class AbstractJobLauncher implements JobLauncher {
       } catch (JobLockException ioe) {
         LOG.error(String.format("Failed to unlock for job %s: %s", this.jobContext.getJobId(), ioe), ioe);
       } finally {
-        try {
-          this.jobLockOptional.get().close();
-        } catch (IOException e) {
-          LOG.error(String.format("Failed to close job lock for job %s: %s", this.jobContext.getJobId(), e), e);
-        } finally {
-          this.jobLockOptional = Optional.absent();
-        }
+        extracted();
       }
     }
   }
+
+private void extracted() {
+	try {
+	  this.jobLockOptional.get().close();
+	} catch (IOException e) {
+	  LOG.error(String.format("Failed to close job lock for job %s: %s", this.jobContext.getJobId(), e), e);
+	} finally {
+	  this.jobLockOptional = Optional.absent();
+	}
+}
 
   /**
    * Combines the specified {@link JobListener} with the {@link #mandatoryJobListeners} for this job. Uses
