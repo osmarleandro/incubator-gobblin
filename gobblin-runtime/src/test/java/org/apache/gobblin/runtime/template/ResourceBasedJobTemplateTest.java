@@ -17,8 +17,12 @@
 
 package org.apache.gobblin.runtime.template;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Collection;
 
+import org.apache.gobblin.runtime.api.JobTemplate.TemplateException;
+import org.apache.gobblin.runtime.api.SpecNotFoundException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -31,13 +35,7 @@ public class ResourceBasedJobTemplateTest {
 
   @Test
   public void test() throws Exception {
-    ResourceBasedJobTemplate template = ResourceBasedJobTemplate.forResourcePath("templates/test.template", null);
-
-    Collection<String> required = template.getRequiredConfigList();
-    Assert.assertEquals(required.size(), 3);
-    Assert.assertTrue(required.contains("required0"));
-    Assert.assertTrue(required.contains("required1"));
-    Assert.assertTrue(required.contains("required2"));
+    ResourceBasedJobTemplate template = extracted();
 
     Config rawTemplate = template.getRawTemplateConfig();
     Assert.assertEquals(rawTemplate.getString("templated0"), "x");
@@ -48,5 +46,17 @@ public class ResourceBasedJobTemplateTest {
     Assert.assertEquals(resolved.getString("templated0"), "x");
     Assert.assertEquals(resolved.getString("required0"), "r0");
   }
+
+private ResourceBasedJobTemplate extracted()
+		throws SpecNotFoundException, TemplateException, IOException, URISyntaxException {
+	ResourceBasedJobTemplate template = ResourceBasedJobTemplate.forResourcePath("templates/test.template", null);
+
+    Collection<String> required = template.getRequiredConfigList();
+    Assert.assertEquals(required.size(), 3);
+    Assert.assertTrue(required.contains("required0"));
+    Assert.assertTrue(required.contains("required1"));
+    Assert.assertTrue(required.contains("required2"));
+	return template;
+}
 
 }
