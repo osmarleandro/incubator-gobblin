@@ -172,14 +172,19 @@ public class FsDatasetStateStore extends FsStateStore<JobState.DatasetState> imp
       return datasetURN;
     }
     try {
-      Path statestoreDirWithStoreName = new Path(this.storeRootDir, storeName);
-      DatasetUrnStateStoreNameParser datasetUrnBasedStateStoreNameParser =
-          this.stateStoreNameParserLoadingCache.get(statestoreDirWithStoreName);
+      DatasetUrnStateStoreNameParser datasetUrnBasedStateStoreNameParser = extracted(storeName);
       return datasetUrnBasedStateStoreNameParser.getStateStoreNameFromDatasetUrn(datasetURN);
     } catch (ExecutionException e) {
       throw new IOException("Failed to load dataset state store name parser: " + e, e);
     }
   }
+
+private DatasetUrnStateStoreNameParser extracted(String storeName) throws ExecutionException {
+	Path statestoreDirWithStoreName = new Path(this.storeRootDir, storeName);
+      DatasetUrnStateStoreNameParser datasetUrnBasedStateStoreNameParser =
+          this.stateStoreNameParserLoadingCache.get(statestoreDirWithStoreName);
+	return datasetUrnBasedStateStoreNameParser;
+}
 
   @Override
   public JobState.DatasetState get(String storeName, String tableName, String stateId)
