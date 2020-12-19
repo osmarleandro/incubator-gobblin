@@ -76,18 +76,22 @@ public class MRTaskStateTracker extends AbstractTaskStateTracker {
     WorkUnit workUnit = task.getTaskState().getWorkunit();
 
     if (GobblinMetrics.isEnabled(workUnit)) {
-      task.updateRecordMetrics();
+      extracted(task, workUnit);
+    }
+    LOG.info(String
+        .format("Task %s completed running in %dms with state %s", task.getTaskId(), task.getTaskState().getTaskDuration(),
+            task.getTaskState().getWorkingState()));
+  }
+
+private void extracted(Task task, WorkUnit workUnit) {
+	task.updateRecordMetrics();
       task.updateByteMetrics();
 
       if (workUnit.getPropAsBoolean(ConfigurationKeys.MR_REPORT_METRICS_AS_COUNTERS_KEY,
           ConfigurationKeys.DEFAULT_MR_REPORT_METRICS_AS_COUNTERS)) {
         updateCounters(task);
       }
-    }
-    LOG.info(String
-        .format("Task %s completed running in %dms with state %s", task.getTaskId(), task.getTaskState().getTaskDuration(),
-            task.getTaskState().getWorkingState()));
-  }
+}
 
   /**
    * An extension to {@link AbstractTaskStateTracker.TaskMetricsUpdater} for updating task metrics
