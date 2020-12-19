@@ -172,16 +172,21 @@ public class TaskContext {
    * @return output format of the writer
    */
   public WriterOutputFormat getWriterOutputFormat(int branches, int index) {
-    String writerOutputFormatValue = this.taskState.getProp(
-        ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_FORMAT_KEY, branches, index),
-        WriterOutputFormat.OTHER.name());
-    log.debug("Found writer output format value = {}", writerOutputFormatValue);
+    String writerOutputFormatValue = extracted(branches, index);
 
     WriterOutputFormat wof = Enums.getIfPresent(WriterOutputFormat.class, writerOutputFormatValue.toUpperCase())
         .or(WriterOutputFormat.OTHER);
     log.debug("Returning writer output format = {}", wof);
     return wof;
   }
+
+private String extracted(int branches, int index) {
+	String writerOutputFormatValue = this.taskState.getProp(
+        ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_FORMAT_KEY, branches, index),
+        WriterOutputFormat.OTHER.name());
+    log.debug("Found writer output format value = {}", writerOutputFormatValue);
+	return writerOutputFormatValue;
+}
 
   /**
    * Get the list of pre-fork {@link Converter}s.
