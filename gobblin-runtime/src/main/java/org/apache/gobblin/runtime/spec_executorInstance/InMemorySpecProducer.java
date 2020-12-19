@@ -89,10 +89,14 @@ public class InMemorySpecProducer implements SpecProducer<Spec>, Serializable {
     try {
       return completedFuture.get().toString();
     } catch (ExecutionException e) {
-      log.error("Error during future serialization in {}.", getClass(), e);
-      return "";
+      return extracted(e);
     }
   }
+
+private String extracted(ExecutionException e) {
+	log.error("Error during future serialization in {}.", getClass(), e);
+      return "";
+}
 
   @Override
   public Future<?> deserializeAddSpecResponse(String serializedResponse) {
