@@ -82,17 +82,22 @@ public class StateStoreMigrationCli implements CliApplication {
 
     // if migrating state for all jobs then list the store names (job names) and copy the current jst files
     if (ConfigUtils.getBoolean(config, MIGRATE_ALL_JOBS, Boolean.valueOf(DEFAULT_MIGRATE_ALL_JOBS))) {
-      List<String> jobNames = srcDatasetStateStore.getStoreNames(Predicates.alwaysTrue());
-
-      for (String jobName : jobNames) {
-        migrateStateForJob(srcDatasetStateStore, dstDatasetStateStore, jobName, command.deleteSourceStateStore);
-      }
+      extracted(command, dstDatasetStateStore, srcDatasetStateStore);
     } else {
       Preconditions.checkNotNull(config.getString(JOB_NAME_KEY));
       migrateStateForJob(srcDatasetStateStore, dstDatasetStateStore, config.getString(JOB_NAME_KEY),
           command.deleteSourceStateStore);
     }
   }
+
+private void extracted(Command command, DatasetStateStore dstDatasetStateStore, DatasetStateStore srcDatasetStateStore)
+		throws IOException {
+	List<String> jobNames = srcDatasetStateStore.getStoreNames(Predicates.alwaysTrue());
+
+      for (String jobName : jobNames) {
+        migrateStateForJob(srcDatasetStateStore, dstDatasetStateStore, jobName, command.deleteSourceStateStore);
+      }
+}
 
   private static void migrateStateForJob(DatasetStateStore srcDatasetStateStore, DatasetStateStore dstDatasetStateStore,
       String jobName, boolean deleteFromSource) throws IOException {
