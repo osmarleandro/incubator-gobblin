@@ -92,13 +92,18 @@ public class JobBrokerInjectionTest {
         JobSpecFilter.eqJobSpecURI(js1.getUri()),
         new DefaultJobLifecycleListenerImpl(instance.getLog()) {
           @Override public void onJobLaunch(JobExecutionDriver jobDriver) {
-            super.onJobLaunch(jobDriver);
+            extracted(instance, jobDrivers, jobDriver);
+          }
+
+		private void extracted(final StandardGobblinInstanceDriver instance,
+				final ArrayBlockingQueue<JobExecutionDriver> jobDrivers, JobExecutionDriver jobDriver) {
+			super.onJobLaunch(jobDriver);
             try {
               jobDrivers.offer(jobDriver, 5, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
               instance.getLog().error("Offer interrupted.");
             }
-          }
+		}
         });
     instance.registerWeakJobLifecycleListener(js1Listener);
 
