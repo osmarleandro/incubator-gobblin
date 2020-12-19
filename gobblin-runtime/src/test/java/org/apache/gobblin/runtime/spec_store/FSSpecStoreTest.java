@@ -47,9 +47,7 @@ public class FSSpecStoreTest {
 
   @Test
   public void testPathConversion() throws Exception {
-    Properties properties = new Properties();
-    File tmpDir = Files.createTempDir();
-    properties.setProperty(FSSpecStore.SPECSTORE_FS_DIR_KEY, tmpDir.getAbsolutePath());
+    Properties properties = extracted();
     SpecSerDe specSerDe = Mockito.mock(SpecSerDe.class);
     FSSpecStore fsSpecStore = new FSSpecStore(ConfigUtils.propertiesToConfig(properties), specSerDe);
 
@@ -57,6 +55,13 @@ public class FSSpecStoreTest {
     URI uri = URI.create("ddd");
     Assert.assertEquals(fsSpecStore.getURIFromPath(fsSpecStore.getPathForURI(rootPath, uri, ""), rootPath), uri);
   }
+
+private Properties extracted() {
+	Properties properties = new Properties();
+    File tmpDir = Files.createTempDir();
+    properties.setProperty(FSSpecStore.SPECSTORE_FS_DIR_KEY, tmpDir.getAbsolutePath());
+	return properties;
+}
 
   /**
    * Make sure that when there's on spec failed to be deserialized, the rest of spec in specStore can
