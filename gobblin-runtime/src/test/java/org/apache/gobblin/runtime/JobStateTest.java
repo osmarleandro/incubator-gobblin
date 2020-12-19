@@ -101,9 +101,7 @@ public class JobStateTest {
       throws IOException {
     Closer closer = Closer.create();
     try {
-      ByteArrayOutputStream baos = closer.register(new ByteArrayOutputStream());
-      DataOutputStream dos = closer.register(new DataOutputStream(baos));
-      this.jobState.write(dos);
+      ByteArrayOutputStream baos = extracted(closer);
 
       ByteArrayInputStream bais = closer.register((new ByteArrayInputStream(baos.toByteArray())));
       DataInputStream dis = closer.register((new DataInputStream(bais)));
@@ -116,6 +114,13 @@ public class JobStateTest {
       closer.close();
     }
   }
+
+private ByteArrayOutputStream extracted(Closer closer) throws IOException {
+	ByteArrayOutputStream baos = closer.register(new ByteArrayOutputStream());
+      DataOutputStream dos = closer.register(new DataOutputStream(baos));
+      this.jobState.write(dos);
+	return baos;
+}
 
   private void doAsserts(JobState jobState, boolean considerTaskStates, boolean initial) {
     Assert.assertEquals(jobState.getJobName(), "TestJob");
