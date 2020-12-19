@@ -221,7 +221,16 @@ public class TestRecordStream {
   @Test
   public void testInjectedControlMessages() throws Exception {
 
-    MyExtractor extractor = new MyExtractor(new StreamEntity[]{new RecordEnvelope<>("schema:a"),
+    MyDataWriter writer = extracted();
+
+    Assert.assertEquals(writer.records, Lists.newArrayList("a:schema", "b:schema", "c:schema1", "d:schema2"));
+    Assert.assertEquals(writer.messages, Lists.newArrayList(new MetadataUpdateControlMessage<>(
+        GlobalMetadata.<String>builder().schema("schema1").build()),
+        new MetadataUpdateControlMessage<>(GlobalMetadata.<String>builder().schema("schema2").build())));
+  }
+
+private MyDataWriter extracted() throws Exception {
+	MyExtractor extractor = new MyExtractor(new StreamEntity[]{new RecordEnvelope<>("schema:a"),
         new RecordEnvelope<>("schema:b"), new RecordEnvelope<>("schema1:c"), new RecordEnvelope<>("schema2:d")});
     SchemaChangeDetectionInjector injector = new SchemaChangeDetectionInjector();
     SchemaAppendConverter converter = new SchemaAppendConverter();
@@ -238,12 +247,8 @@ public class TestRecordStream {
     Assert.assertEquals(converter.messages,
         Lists.newArrayList(new MetadataUpdateControlMessage<>(GlobalMetadata.<String>builder().schema("schema1").build()),
             new MetadataUpdateControlMessage<>(GlobalMetadata.<String>builder().schema("schema2").build())));
-
-    Assert.assertEquals(writer.records, Lists.newArrayList("a:schema", "b:schema", "c:schema1", "d:schema2"));
-    Assert.assertEquals(writer.messages, Lists.newArrayList(new MetadataUpdateControlMessage<>(
-        GlobalMetadata.<String>builder().schema("schema1").build()),
-        new MetadataUpdateControlMessage<>(GlobalMetadata.<String>builder().schema("schema2").build())));
-  }
+	return writer;
+}
 
   @Test
   public void testAcks() throws Exception {
