@@ -44,13 +44,17 @@ public class FileBasedJobLockTest extends JobLockTest {
 
   @BeforeClass
   public void setUp() throws IOException {
-    BasicConfigurator.configure();
-    this.fs = FileSystem.getLocal(new Configuration());
+    extracted();
     this.path = new Path("MRJobLockTest");
     if (!this.fs.exists(this.path)) {
       this.fs.mkdirs(this.path);
     }
   }
+
+private void extracted() throws IOException {
+	BasicConfigurator.configure();
+    this.fs = FileSystem.getLocal(new Configuration());
+}
 
   @Override
   protected JobLock getJobLock() throws JobLockException {
