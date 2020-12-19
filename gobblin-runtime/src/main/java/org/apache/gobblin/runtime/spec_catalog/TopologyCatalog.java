@@ -242,7 +242,15 @@ public class TopologyCatalog extends AbstractIdleService implements SpecCatalog,
     Map<String, AddSpecResponse> responseMap = new HashMap<>();
 
     try {
-      Preconditions.checkState(state() == Service.State.RUNNING, String.format("%s is not running.", this.getClass().getName()));
+      extracted(spec, responseMap);
+    } catch (IOException e) {
+      throw new RuntimeException("Cannot add Spec to Spec store: " + spec, e);
+    }
+    return responseMap;
+  }
+
+private void extracted(Spec spec, Map<String, AddSpecResponse> responseMap) throws IOException {
+	Preconditions.checkState(state() == Service.State.RUNNING, String.format("%s is not running.", this.getClass().getName()));
       Preconditions.checkNotNull(spec);
 
       log.info(String.format("Adding TopologySpec with URI: %s and Config: %s", spec.getUri(),
@@ -252,11 +260,7 @@ public class TopologyCatalog extends AbstractIdleService implements SpecCatalog,
       for (Map.Entry<SpecCatalogListener, CallbackResult<AddSpecResponse>> entry: response.getValue().getSuccesses().entrySet()) {
         responseMap.put(entry.getKey().getName(), entry.getValue().getResult());
       }
-    } catch (IOException e) {
-      throw new RuntimeException("Cannot add Spec to Spec store: " + spec, e);
-    }
-    return responseMap;
-  }
+}
 
   public void remove(URI uri) {
     remove(uri, new Properties());
