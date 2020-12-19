@@ -271,15 +271,20 @@ public class LocalJobLauncherTest {
 
   @Test
   public void testLaunchJobWithMultipleDatasetsAndFaultyExtractor() throws Exception {
-    Properties jobProps = loadJobProps();
-    jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,
-        jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithMultipleDatasetsAndFaultyExtractor");
+    Properties jobProps = extracted();
     try {
       this.jobLauncherTestHelper.runTestWithMultipleDatasetsAndFaultyExtractor(jobProps, false);
     } finally {
       this.jobLauncherTestHelper.deleteStateStore(jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY));
     }
   }
+
+private Properties extracted() throws IOException {
+	Properties jobProps = loadJobProps();
+    jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,
+        jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithMultipleDatasetsAndFaultyExtractor");
+	return jobProps;
+}
 
   @Test
   public void testLaunchJobWithMultipleDatasetsAndFaultyExtractorAndPartialCommitPolicy() throws Exception {
