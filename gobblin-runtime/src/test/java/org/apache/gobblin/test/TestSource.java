@@ -62,11 +62,7 @@ public class TestSource extends AbstractSource<String, String> {
     }
 
     if (state.getPropAsBoolean(ConfigurationKeys.WORK_UNIT_SKIP_KEY, false)) {
-      for (int i = 0; i < list.size(); i++) {
-        if (i % 2 == 0) {
-          workUnits.get(i).setProp(ConfigurationKeys.WORK_UNIT_SKIP_KEY, true);
-        }
-      }
+      extracted(list, workUnits);
     }
 
     if (state.getPropAsBoolean("use.multiworkunit", false)) {
@@ -78,6 +74,14 @@ public class TestSource extends AbstractSource<String, String> {
 
     return workUnits;
   }
+
+private void extracted(List<String> list, List<WorkUnit> workUnits) {
+	for (int i = 0; i < list.size(); i++) {
+        if (i % 2 == 0) {
+          workUnits.get(i).setProp(ConfigurationKeys.WORK_UNIT_SKIP_KEY, true);
+        }
+      }
+}
 
   @Override
   public Extractor<String, String> getExtractor(WorkUnitState state) {
