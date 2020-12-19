@@ -68,14 +68,19 @@ public class EventMetadataUtils {
    * @return The concatenated failure messages from all the task states
    */
   public static String getTaskFailureExceptions(List<TaskState> taskStates) {
-    StringBuffer sb = new StringBuffer();
-
-    // Add task failure messages in a group followed by task failure exceptions
-    appendTaskStateValues(taskStates, sb, TASK_FAILURE_MESSAGE_KEY);
+    StringBuffer sb = extracted(taskStates);
     appendTaskStateValues(taskStates, sb, ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY);
 
     return sb.toString();
   }
+
+private static StringBuffer extracted(List<TaskState> taskStates) {
+	StringBuffer sb = new StringBuffer();
+
+    // Add task failure messages in a group followed by task failure exceptions
+    appendTaskStateValues(taskStates, sb, TASK_FAILURE_MESSAGE_KEY);
+	return sb;
+}
 
   /**
    * Append values for the given key from all {@link TaskState}s
