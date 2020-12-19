@@ -92,8 +92,7 @@ public class BoundedBlockingRecordQueueTest {
 
   @Test(dependsOnMethods = "testPutAndGet")
   public void testQueueStats() throws InterruptedException {
-    BoundedBlockingRecordQueue<Integer>.QueueStats stats = this.boundedBlockingRecordQueue.stats().get();
-    Assert.assertEquals(stats.queueSize(), 0);
+    BoundedBlockingRecordQueue<Integer>.QueueStats stats = extracted();
     Assert.assertEquals(stats.fillRatio(), 0d);
     Assert.assertEquals(stats.getAttemptCount(), 7);
     Assert.assertEquals(stats.putAttemptCount(), 6);
@@ -106,6 +105,12 @@ public class BoundedBlockingRecordQueueTest {
     Assert.assertEquals(stats.getAttemptCount(), 7);
     Assert.assertEquals(stats.putAttemptCount(), 8);
   }
+
+private BoundedBlockingRecordQueue<Integer>.QueueStats extracted() {
+	BoundedBlockingRecordQueue<Integer>.QueueStats stats = this.boundedBlockingRecordQueue.stats().get();
+    Assert.assertEquals(stats.queueSize(), 0);
+	return stats;
+}
 
   @Test(dependsOnMethods = "testQueueStats")
   public void testRegisterAll() {
