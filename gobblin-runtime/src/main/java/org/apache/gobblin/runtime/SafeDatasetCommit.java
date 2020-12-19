@@ -179,15 +179,7 @@ final class SafeDatasetCommit implements Callable<Void> {
       throw new RuntimeException(throwable);
     } finally {
       try {
-        finalizeDatasetState(datasetState, datasetUrn);
-        maySubmitFailureEvent(datasetState);
-        maySubmitLineageEvent(datasetState);
-        if (commitSequenceBuilder.isPresent()) {
-          buildAndExecuteCommitSequence(commitSequenceBuilder.get(), datasetState, datasetUrn);
-          datasetState.setState(JobState.RunningState.COMMITTED);
-        } else if (canPersistStates) {
-          persistDatasetState(datasetUrn, datasetState);
-        }
+        extracted(commitSequenceBuilder, canPersistStates);
 
       } catch (IOException | RuntimeException ioe) {
         log.error(String
@@ -198,6 +190,19 @@ final class SafeDatasetCommit implements Callable<Void> {
     }
     return null;
   }
+
+private void extracted(Optional<CommitSequence.Builder> commitSequenceBuilder, boolean canPersistStates)
+		throws IOException {
+	finalizeDatasetState(datasetState, datasetUrn);
+	maySubmitFailureEvent(datasetState);
+	maySubmitLineageEvent(datasetState);
+	if (commitSequenceBuilder.isPresent()) {
+	  buildAndExecuteCommitSequence(commitSequenceBuilder.get(), datasetState, datasetUrn);
+	  datasetState.setState(JobState.RunningState.COMMITTED);
+	} else if (canPersistStates) {
+	  persistDatasetState(datasetUrn, datasetState);
+	}
+}
 
   private void maySubmitFailureEvent(JobState.DatasetState datasetState) {
     if (datasetState.getState() == JobState.RunningState.FAILED) {
