@@ -686,13 +686,17 @@ public class JobState extends SourceState implements JobProgress {
   public String toString() {
     StringWriter stringWriter = new StringWriter();
     try (JsonWriter jsonWriter = new JsonWriter(stringWriter)) {
-      jsonWriter.setIndent("\t");
-      this.toJson(jsonWriter, false);
+      extracted(jsonWriter);
     } catch (IOException ioe) {
       // Ignored
     }
     return stringWriter.toString();
   }
+
+private void extracted(JsonWriter jsonWriter) throws IOException {
+	jsonWriter.setIndent("\t");
+      this.toJson(jsonWriter, false);
+}
 
   /**
    * Convert this {@link JobState} instance to a {@link JobExecutionInfo} instance.
