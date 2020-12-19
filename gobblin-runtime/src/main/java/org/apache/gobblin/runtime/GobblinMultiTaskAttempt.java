@@ -461,7 +461,11 @@ public class GobblinMultiTaskAttempt {
   private void printMemoryUsage() {
     MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
     MemoryUsage heapMemory = memoryBean.getHeapMemoryUsage();
-    MemoryUsage nonHeapMemory = memoryBean.getNonHeapMemoryUsage();
+    extracted(memoryBean, heapMemory);
+  }
+
+private void extracted(MemoryMXBean memoryBean, MemoryUsage heapMemory) {
+	MemoryUsage nonHeapMemory = memoryBean.getNonHeapMemoryUsage();
     String format = "%-15s%-15s%-15s%-15s";
 
     this.log.info("Heap Memory");
@@ -473,7 +477,7 @@ public class GobblinMultiTaskAttempt {
     this.log.info(String.format(format, "init", "used", "Committed", "max"));
     this.log.info(String.format(format, nonHeapMemory.getInit(), nonHeapMemory.getUsed(), nonHeapMemory.getCommitted(),
         nonHeapMemory.getMax()));
-  }
+}
 
   private Task createTaskRunnable(WorkUnitState workUnitState, CountDownLatch countDownLatch) {
     Optional<TaskFactory> taskFactoryOpt = TaskUtils.getTaskFactory(workUnitState);
