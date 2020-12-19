@@ -326,9 +326,7 @@ public class TaskTest {
   @Test
   public void testTimestampInFilename()
       throws Exception {
-    // Create a TaskState
-    TaskState taskState = getEmptyTestTaskState("testTimestampInFilename");
-    taskState.setProp(ConfigurationKeys.TASK_START_TIME_MILLIS_KEY, "12345");
+    TaskState taskState = extracted();
     taskState.setProp(ConfigurationKeys.WRITER_ADD_TASK_TIMESTAMP, "true");
 
     int numRecords = 1;
@@ -361,6 +359,13 @@ public class TaskTest {
     // writer id should have the expected name with the timestamp
     Assert.assertEquals(writerBuilder.getWriterId(), "testTimestampInFilename_12345_0");
   }
+
+private TaskState extracted() {
+	// Create a TaskState
+    TaskState taskState = getEmptyTestTaskState("testTimestampInFilename");
+    taskState.setProp(ConfigurationKeys.TASK_START_TIME_MILLIS_KEY, "12345");
+	return taskState;
+}
 
   /**
    * Test the addition of a task timestamp to the file name fails if the task start time is not present
