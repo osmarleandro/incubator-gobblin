@@ -122,8 +122,7 @@ public class JobStateToJsonConverter implements CliApplication {
   public void convertAll(String jobName, Writer writer) throws IOException {
     List<? extends JobState> jobStates = this.jobStateStore.getAll(jobName);
     if (jobStates.isEmpty()) {
-      LOGGER.warn(String.format("No job state found for job with name %s", jobName));
-      return;
+      extracted(jobName);
     }
 
     try (JsonWriter jsonWriter = new JsonWriter(writer)) {
@@ -131,6 +130,10 @@ public class JobStateToJsonConverter implements CliApplication {
       writeJobStates(jsonWriter, jobStates);
     }
   }
+
+private void extracted(String jobName) {
+	LOGGER.warn(String.format("No job state found for job with name %s", jobName));
+}
 
   /**
    * Write a single {@link JobState} to json document.
