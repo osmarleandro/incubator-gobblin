@@ -72,15 +72,21 @@ public class FsSpecProducerTest {
 
   @Test (dependsOnMethods = "testAddSpec")
   public void testUpdateSpec() throws ExecutionException, InterruptedException, URISyntaxException {
-    this._fsSpecProducer.updateSpec(createTestJobSpec());
-
-    List<Pair<SpecExecutor.Verb, Spec>> jobSpecs = this._fsSpecConsumer.changedSpecs().get();
+    List<Pair<SpecExecutor.Verb, Spec>> jobSpecs = extracted();
     Assert.assertEquals(jobSpecs.size(), 1);
     Assert.assertEquals(jobSpecs.get(0).getLeft(), SpecExecutor.Verb.UPDATE);
     Assert.assertEquals(jobSpecs.get(0).getRight().getUri().toString(), "testJob");
     Assert.assertEquals(((JobSpec) jobSpecs.get(0).getRight()).getConfig().getString("key1"), "val1");
     Assert.assertEquals(((JobSpec) jobSpecs.get(0).getRight()).getConfig().getString("key2"), "val2");
   }
+
+private List<Pair<SpecExecutor.Verb, Spec>> extracted()
+		throws URISyntaxException, InterruptedException, ExecutionException {
+	this._fsSpecProducer.updateSpec(createTestJobSpec());
+
+    List<Pair<SpecExecutor.Verb, Spec>> jobSpecs = this._fsSpecConsumer.changedSpecs().get();
+	return jobSpecs;
+}
 
   @Test (dependsOnMethods = "testUpdateSpec")
   public void testDeleteSpec() throws URISyntaxException, ExecutionException, InterruptedException {
