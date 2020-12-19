@@ -43,8 +43,7 @@ public class TestInMemoryJobCatalog {
   @Test
   public void testCallbacks()
       throws Exception {
-    InMemoryJobCatalog cat = new InMemoryJobCatalog();
-    cat.startAsync();
+    InMemoryJobCatalog cat = extracted();
     cat.awaitRunning(1, TimeUnit.SECONDS);
 
     JobCatalogListener l = Mockito.mock(JobCatalogListener.class);
@@ -75,6 +74,12 @@ public class TestInMemoryJobCatalog {
     cat.stopAsync();
     cat.awaitTerminated(1, TimeUnit.SECONDS);
   }
+
+private InMemoryJobCatalog extracted() {
+	InMemoryJobCatalog cat = new InMemoryJobCatalog();
+    cat.startAsync();
+	return cat;
+}
 
   @SuppressWarnings("unchecked")
   @Test
