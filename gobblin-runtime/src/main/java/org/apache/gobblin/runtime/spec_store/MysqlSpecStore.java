@@ -400,7 +400,13 @@ public class MysqlSpecStore extends InstrumentedSpecStore {
 
   protected void setAddPreparedStatement(PreparedStatement statement, Spec spec, String tagValue) throws SQLException {
     FlowSpec flowSpec = (FlowSpec) spec;
-    URI specUri = flowSpec.getUri();
+    int i = extracted(statement, tagValue, flowSpec);
+    statement.setBlob(++i, new ByteArrayInputStream(this.specSerDe.serialize(flowSpec)));
+    statement.setString(++i, new String(this.specSerDe.serialize(flowSpec), Charsets.UTF_8));
+  }
+
+private int extracted(PreparedStatement statement, String tagValue, FlowSpec flowSpec) throws SQLException {
+	URI specUri = flowSpec.getUri();
     Config flowConfig = flowSpec.getConfig();
     String flowGroup = flowConfig.getString(ConfigurationKeys.FLOW_GROUP_KEY);
     String flowName = flowConfig.getString(ConfigurationKeys.FLOW_NAME_KEY);
@@ -424,7 +430,6 @@ public class MysqlSpecStore extends InstrumentedSpecStore {
     statement.setString(++i, tagValue);
     statement.setBoolean(++i, isRunImmediately);
     statement.setString(++i, owningGroup);
-    statement.setBlob(++i, new ByteArrayInputStream(this.specSerDe.serialize(flowSpec)));
-    statement.setString(++i, new String(this.specSerDe.serialize(flowSpec), Charsets.UTF_8));
-  }
+	return i;
+}
 }
