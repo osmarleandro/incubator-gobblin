@@ -59,8 +59,7 @@ public class GobblinOutputCommitterTest {
 
   @BeforeClass
   public void setupWorkUnitFiles() throws IOException {
-    this.conf = new Configuration();
-    this.fs = FileSystem.getLocal(this.conf);
+    extracted();
     this.stagingDirs = Lists.newArrayList();
 
     // Create a list of WorkUnits to serialize
@@ -89,6 +88,11 @@ public class GobblinOutputCommitterTest {
       closer.close();
     }
   }
+
+private void extracted() throws IOException {
+	this.conf = new Configuration();
+    this.fs = FileSystem.getLocal(this.conf);
+}
 
   @Test()
   public void testAbortJob() throws IOException {
