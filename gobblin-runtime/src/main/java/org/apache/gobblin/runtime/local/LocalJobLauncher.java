@@ -134,8 +134,7 @@ public class LocalJobLauncher extends AbstractJobLauncher {
 
     Iterator<WorkUnit> workUnitIterator = workUnitStream.getWorkUnits();
     if (!workUnitIterator.hasNext()) {
-      LOG.warn("No work units to run");
-      CountEventBuilder countEventBuilder = new CountEventBuilder(JobEvent.WORK_UNITS_EMPTY, 0);
+      CountEventBuilder countEventBuilder = extracted();
       this.eventSubmitter.submit(countEventBuilder);
       return;
     }
@@ -173,6 +172,12 @@ public class LocalJobLauncher extends AbstractJobLauncher {
       jobState.setState(JobState.RunningState.SUCCESSFUL);
     }
   }
+
+private CountEventBuilder extracted() {
+	LOG.warn("No work units to run");
+      CountEventBuilder countEventBuilder = new CountEventBuilder(JobEvent.WORK_UNITS_EMPTY, 0);
+	return countEventBuilder;
+}
 
   @Override
   protected void executeCancellation() {
