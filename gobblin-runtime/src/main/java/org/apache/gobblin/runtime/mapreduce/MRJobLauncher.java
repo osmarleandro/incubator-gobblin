@@ -635,7 +635,16 @@ public class MRJobLauncher extends AbstractJobLauncher {
   private void prepareJobInput(List<WorkUnit> workUnits) throws IOException {
     Closer closer = Closer.create();
     try {
-      ParallelRunner parallelRunner = closer.register(new ParallelRunner(this.parallelRunnerThreads, this.fs));
+      extracted(workUnits, closer);
+    } catch (Throwable t) {
+      throw closer.rethrow(t);
+    } finally {
+      closer.close();
+    }
+  }
+
+private void extracted(List<WorkUnit> workUnits, Closer closer) {
+	ParallelRunner parallelRunner = closer.register(new ParallelRunner(this.parallelRunnerThreads, this.fs));
 
       int multiTaskIdSequence = 0;
       // Serialize each work unit into a file named after the task ID
@@ -655,12 +664,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
 
         // Append the work unit file path to the job input file
       }
-    } catch (Throwable t) {
-      throw closer.rethrow(t);
-    } finally {
-      closer.close();
-    }
-  }
+}
 
   /**
    * Cleanup the Hadoop MR working directory.
