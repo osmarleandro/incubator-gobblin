@@ -98,17 +98,21 @@ public class StaticJobTemplate extends InheritingJobTemplate implements SecureJo
     if (config.hasPath(SUPER_TEMPLATE_KEY)) {
       List<URI> uris = Lists.newArrayList();
       for (String uriString : ConfigUtils.getStringList(config, SUPER_TEMPLATE_KEY)) {
-        try {
-          uris.add(new URI(uriString));
-        } catch (URISyntaxException use) {
-          throw new TemplateException("Super template uri is malformed: " + uriString, use);
-        }
+        extracted(uris, uriString);
       }
       return uris;
     } else {
       return Lists.newArrayList();
     }
   }
+
+private static void extracted(List<URI> uris, String uriString) throws TemplateException {
+	try {
+	  uris.add(new URI(uriString));
+	} catch (URISyntaxException use) {
+	  throw new TemplateException("Super template uri is malformed: " + uriString, use);
+	}
+}
 
   @Override
   protected Config getLocalRawTemplate() {
