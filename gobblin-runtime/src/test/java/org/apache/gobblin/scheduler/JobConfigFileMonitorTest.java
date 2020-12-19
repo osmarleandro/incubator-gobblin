@@ -127,8 +127,7 @@ public class JobConfigFileMonitorTest {
   @Test(enabled=false, dependsOnMethods = {"testAddNewJobConfigFile"})
   public void testChangeJobConfigFile()
       throws Exception {
-    final Logger log = LoggerFactory.getLogger("testChangeJobConfigFile");
-    log.info("testChangeJobConfigFile: start");
+    final Logger log = extracted();
     Assert.assertEquals(this.jobScheduler.getScheduledJobs().size(), 4);
 
     // Make a change to the new job configuration file
@@ -157,6 +156,12 @@ public class JobConfigFileMonitorTest {
         }, expectedJobNames, "Job change detected");
     log.info("testChangeJobConfigFile: end");
   }
+
+private Logger extracted() {
+	final Logger log = LoggerFactory.getLogger("testChangeJobConfigFile");
+    log.info("testChangeJobConfigFile: start");
+	return log;
+}
 
   @Test(enabled=false, dependsOnMethods = {"testChangeJobConfigFile"})
   public void testUnscheduleJob()
