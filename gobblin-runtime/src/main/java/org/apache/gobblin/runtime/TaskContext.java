@@ -369,8 +369,7 @@ public class TaskContext {
 
     String dataWriterBuilderClassName = this.taskState.getProp(writerBuilderPropertyName, null);
     if (dataWriterBuilderClassName == null) {
-      dataWriterBuilderClassName = ConfigurationKeys.DEFAULT_WRITER_BUILDER_CLASS;
-      log.info("No configured writer builder found, using {} as the default builder", dataWriterBuilderClassName);
+      dataWriterBuilderClassName = extracted();
     } else {
       log.info("Found configured writer builder as {}", dataWriterBuilderClassName);
     }
@@ -384,6 +383,13 @@ public class TaskContext {
       throw new RuntimeException(iae);
     }
   }
+
+private String extracted() {
+	String dataWriterBuilderClassName;
+	dataWriterBuilderClassName = ConfigurationKeys.DEFAULT_WRITER_BUILDER_CLASS;
+      log.info("No configured writer builder found, using {} as the default builder", dataWriterBuilderClassName);
+	return dataWriterBuilderClassName;
+}
 
   public WatermarkStorage getWatermarkStorage() {
     return new StateStoreBasedWatermarkStorage(taskState);
