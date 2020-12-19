@@ -93,13 +93,7 @@ public class LocalFsSpecProducer implements SpecProducer<Spec> {
    */
   @Override
   public Future<?> deleteSpec(URI deletedSpecURI, Properties headers) {
-    String prefix = String.join("_", deletedSpecURI.getPath().split("/"));
-    // delete all of the jobs related to the spec
-    File dir = new File(this.specProducerPath);
-    File[] foundFiles = dir.listFiles((File file, String name) -> {
-        // only delete the jobs in progress
-        return name.startsWith(prefix) && name.endsWith(".job");
-    });
+    File[] foundFiles = extracted(deletedSpecURI);
 
     for (int i = 0; i < foundFiles.length; i++) {
         Boolean didDelete = foundFiles[i].delete();
@@ -110,6 +104,17 @@ public class LocalFsSpecProducer implements SpecProducer<Spec> {
 
     return new CompletedFuture<>(Boolean.TRUE, null);
   }
+
+private File[] extracted(URI deletedSpecURI) {
+	String prefix = String.join("_", deletedSpecURI.getPath().split("/"));
+    // delete all of the jobs related to the spec
+    File dir = new File(this.specProducerPath);
+    File[] foundFiles = dir.listFiles((File file, String name) -> {
+        // only delete the jobs in progress
+        return name.startsWith(prefix) && name.endsWith(".job");
+    });
+	return foundFiles;
+}
 
   /** List all {@link Spec} being executed on {@link org.apache.gobblin.runtime.api.SpecExecutor}. */
   @Override
