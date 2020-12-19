@@ -76,12 +76,18 @@ public class MultiConverterTest {
     WorkUnitState workUnitState = new WorkUnitState();
 
     Schema schema = (Schema) multiConverter.convertSchema(TEST_SCHEMA, workUnitState);
-    Iterable<Object> convertedRecordIterable = multiConverter.convertRecord(schema, TEST_RECORD, workUnitState);
-    Assert.assertEquals(Iterables.size(convertedRecordIterable), 4);
+    Iterable<Object> convertedRecordIterable = extracted(multiConverter, workUnitState, schema);
     for (Object record : convertedRecordIterable) {
       checkConvertedAvroData(schema, (GenericRecord) record);
     }
   }
+
+private Iterable<Object> extracted(MultiConverter multiConverter, WorkUnitState workUnitState, Schema schema)
+		throws DataConversionException {
+	Iterable<Object> convertedRecordIterable = multiConverter.convertRecord(schema, TEST_RECORD, workUnitState);
+    Assert.assertEquals(Iterables.size(convertedRecordIterable), 4);
+	return convertedRecordIterable;
+}
 
   /**
    * Combines {@link MultiIdentityConverter()} with {@link AlternatingConverter()}
