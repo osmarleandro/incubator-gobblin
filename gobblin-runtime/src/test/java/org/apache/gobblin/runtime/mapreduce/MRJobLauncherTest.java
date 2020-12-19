@@ -357,15 +357,20 @@ public class MRJobLauncherTest extends BMNGRunner {
    */
   @Test(groups = { "ignore" })
   public void testLaunchJobWithCommitSuccessfulTasksPolicy() throws Exception {
-    Properties jobProps = loadJobProps();
-    jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,
-        jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithCommitSuccessfulTasksPolicy");
+    Properties jobProps = extracted();
     try {
       this.jobLauncherTestHelper.runTestWithCommitSuccessfulTasksPolicy(jobProps);
     } finally {
       this.jobLauncherTestHelper.deleteStateStore(jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY));
     }
   }
+
+private Properties extracted() throws IOException {
+	Properties jobProps = loadJobProps();
+    jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,
+        jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithCommitSuccessfulTasksPolicy");
+	return jobProps;
+}
 
   @Test(groups = { "ignore" })
   public void testLaunchJobWithMultipleDatasetsAndFaultyExtractor() throws Exception {
