@@ -78,16 +78,20 @@ public class SchedulerUtils {
 
     List<Properties> jobConfigs = Lists.newArrayList();
     for (Config config : configs) {
-      try {
+      extracted(resolver, jobConfigs, config);
+    }
+
+    return jobConfigs;
+  }
+
+private static void extracted(JobSpecResolver resolver, List<Properties> jobConfigs, Config config) {
+	try {
         jobConfigs.add(resolveTemplate(ConfigUtils.configToProperties(config), resolver));
       } catch (IOException ioe) {
         LOGGER.error("Could not parse job config at " + ConfigUtils.getString(config,
             ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY, "Unknown path"), ioe);
       }
-    }
-
-    return jobConfigs;
-  }
+}
 
   /**
    * Load job configurations from job configuration files affected by changes to the given common properties file.
@@ -109,12 +113,7 @@ public class SchedulerUtils {
 
     List<Properties> jobConfigs = Lists.newArrayList();
     for (Config config : configs) {
-      try {
-        jobConfigs.add(resolveTemplate(ConfigUtils.configToProperties(config), resolver));
-      } catch (IOException ioe) {
-        LOGGER.error("Could not parse job config at " + ConfigUtils.getString(config,
-            ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY, "Unknown path"), ioe);
-      }
+      extracted(resolver, jobConfigs, config);
     }
 
     return jobConfigs;
