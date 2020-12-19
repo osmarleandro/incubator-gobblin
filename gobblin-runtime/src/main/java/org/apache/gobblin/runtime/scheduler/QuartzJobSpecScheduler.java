@@ -99,9 +99,7 @@ public class QuartzJobSpecScheduler extends AbstractJobSpecScheduler {
   /** {@inheritDoc} */
   @Override protected JobSpecSchedule doScheduleJob(JobSpec jobSpec, Runnable jobRunnable) {
 
-    // Build a data map that gets passed to the job
-    JobDataMap jobDataMap = new JobDataMap();
-    jobDataMap.put(JOB_SPEC_KEY, jobSpec);
+    JobDataMap jobDataMap = extracted(jobSpec);
     jobDataMap.put(JOB_RUNNABLE_KEY, jobRunnable);
 
     // Build a Quartz job
@@ -123,6 +121,13 @@ public class QuartzJobSpecScheduler extends AbstractJobSpecScheduler {
 
     return jobSchedule;
   }
+
+private JobDataMap extracted(JobSpec jobSpec) {
+	// Build a data map that gets passed to the job
+    JobDataMap jobDataMap = new JobDataMap();
+    jobDataMap.put(JOB_SPEC_KEY, jobSpec);
+	return jobDataMap;
+}
 
   /** {@inheritDoc} */
   @Override protected void doUnschedule(JobSpecSchedule existingSchedule) {
