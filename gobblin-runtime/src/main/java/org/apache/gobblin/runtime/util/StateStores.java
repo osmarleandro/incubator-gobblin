@@ -118,10 +118,14 @@ public class StateStores {
             .withValue(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY, ConfigValueFactory.fromAnyRef(rootDir))
             .withValue(ConfigurationKeys.STATE_STORE_DB_TABLE_KEY, ConfigValueFactory.fromAnyRef(dbTableKey));
     Config scopedConfig = ConfigFactory.empty();
-    for (Map.Entry<String, ConfigValue> entry : config.withOnlyPath(ConfigurationKeys.INTERMEDIATE_STATE_STORE_PREFIX).entrySet()) {
+    return extracted(config, fallbackConfig, scopedConfig);
+  }
+
+private static Config extracted(Config config, Config fallbackConfig, Config scopedConfig) {
+	for (Map.Entry<String, ConfigValue> entry : config.withOnlyPath(ConfigurationKeys.INTERMEDIATE_STATE_STORE_PREFIX).entrySet()) {
       scopedConfig.withValue(entry.getKey().substring(ConfigurationKeys.INTERMEDIATE_STATE_STORE_PREFIX.length()),
               entry.getValue());
     }
     return scopedConfig.withFallback(fallbackConfig);
-  }
+}
 }
