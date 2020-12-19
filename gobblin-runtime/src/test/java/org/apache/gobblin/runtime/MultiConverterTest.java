@@ -198,11 +198,16 @@ public class MultiConverterTest {
     MultiConverter multiConverter =
         new MultiConverter(
             Lists.<Converter<? extends Object, ? extends Object, ? extends Object, ? extends Object>> newArrayList());
-    WorkUnitState workUnitState = new WorkUnitState();
-    Assert.assertEquals(TEST_SCHEMA, multiConverter.convertSchema(TEST_SCHEMA, workUnitState));
+    WorkUnitState workUnitState = extracted(multiConverter);
     Assert.assertEquals(TEST_RECORD, multiConverter.convertRecord(TEST_SCHEMA, TEST_RECORD, workUnitState).iterator()
         .next());
   }
+
+private WorkUnitState extracted(MultiConverter multiConverter) throws SchemaConversionException {
+	WorkUnitState workUnitState = new WorkUnitState();
+    Assert.assertEquals(TEST_SCHEMA, multiConverter.convertSchema(TEST_SCHEMA, workUnitState));
+	return workUnitState;
+}
 
   private void checkConvertedAvroData(Schema schema, GenericRecord record) {
     Assert.assertEquals(schema.getNamespace(), "example.avro");
