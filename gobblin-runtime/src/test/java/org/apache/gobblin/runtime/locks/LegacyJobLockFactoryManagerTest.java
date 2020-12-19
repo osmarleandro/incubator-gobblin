@@ -62,8 +62,7 @@ public class LegacyJobLockFactoryManagerTest {
   public void testMissingJobLockType_ResultsIn_FileBasedJobLock() throws JobLockException, IOException {
     Closer closer = Closer.create();
     try {
-      Properties properties = new Properties();
-      properties.setProperty(ConfigurationKeys.FS_URI_KEY, "file:///");
+      Properties properties = extracted();
       properties.setProperty(FileBasedJobLock.JOB_LOCK_DIR, "JobLockFactoryTest");
       properties.setProperty(ConfigurationKeys.JOB_NAME_KEY, "JobLockFactoryTest-" + System.currentTimeMillis());
       properties.setProperty(ConfigurationKeys.JOB_LOCK_TYPE, FileBasedJobLock.class.getName());
@@ -73,6 +72,12 @@ public class LegacyJobLockFactoryManagerTest {
       closer.close();
     }
   }
+
+private Properties extracted() {
+	Properties properties = new Properties();
+      properties.setProperty(ConfigurationKeys.FS_URI_KEY, "file:///");
+	return properties;
+}
 
   @Test(expectedExceptions = { JobLockException.class })
   public void testInvalidJobLockType_ThrowsException() throws JobLockException, IOException {
@@ -91,8 +96,7 @@ public class LegacyJobLockFactoryManagerTest {
   public void testGetFileBasedJobLock() throws JobLockException, IOException {
     Closer closer = Closer.create();
     try {
-      Properties properties = new Properties();
-      properties.setProperty(ConfigurationKeys.FS_URI_KEY, "file:///");
+      Properties properties = extracted();
       properties.setProperty(FileBasedJobLock.JOB_LOCK_DIR, "JobLockFactoryTest");
       properties.setProperty(ConfigurationKeys.JOB_NAME_KEY, "JobLockFactoryTest-" + System.currentTimeMillis());
       properties.setProperty(ConfigurationKeys.JOB_LOCK_TYPE, FileBasedJobLock.class.getName());
