@@ -21,6 +21,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.io.IOException;
+
 import com.google.common.collect.Lists;
 import org.testng.annotations.Test;
 
@@ -36,7 +38,14 @@ public class JobListenersTest {
   public void testParallelJobListener()
       throws Exception {
       JobContext jobContext = mock(JobContext.class);
-    JobListener mockJobListener1 = mock(JobListener.class);
+    JobListener mockJobListener2 = extracted(jobContext);
+
+    verify(mockJobListener2, times(1)).onJobCompletion(jobContext);
+    verify(mockJobListener2, times(1)).onJobCancellation(jobContext);
+  }
+
+private JobListener extracted(JobContext jobContext) throws Exception, IOException {
+	JobListener mockJobListener1 = mock(JobListener.class);
     JobListener mockJobListener2 = mock(JobListener.class);
 
     CloseableJobListener closeableJobListener =
@@ -47,8 +56,6 @@ public class JobListenersTest {
 
     verify(mockJobListener1, times(1)).onJobCompletion(jobContext);
     verify(mockJobListener1, times(1)).onJobCancellation(jobContext);
-
-    verify(mockJobListener2, times(1)).onJobCompletion(jobContext);
-    verify(mockJobListener2, times(1)).onJobCancellation(jobContext);
-  }
+	return mockJobListener2;
+}
 }
