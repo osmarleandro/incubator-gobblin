@@ -71,11 +71,7 @@ public class JobConfigFileMonitorTest {
 
   @BeforeClass
   public void setUp() throws Exception {
-    this.jobConfigDir =
-        Files.createTempDirectory(String.format("gobblin-test_%s_job-conf", this.getClass().getSimpleName()))
-            .toString();
-
-    FileUtils.forceDeleteOnExit(new File(this.jobConfigDir));
+    extracted();
     FileUtils.copyDirectory(new File(JOB_CONFIG_FILE_DIR), new File(jobConfigDir));
 
     Properties properties = new Properties();
@@ -92,6 +88,14 @@ public class JobConfigFileMonitorTest {
     this.serviceManager = new ServiceManager(Lists.newArrayList(quartzService, this.jobScheduler));
     this.serviceManager.startAsync().awaitHealthy(10, TimeUnit.SECONDS);;
   }
+
+private void extracted() throws IOException {
+	this.jobConfigDir =
+        Files.createTempDirectory(String.format("gobblin-test_%s_job-conf", this.getClass().getSimpleName()))
+            .toString();
+
+    FileUtils.forceDeleteOnExit(new File(this.jobConfigDir));
+}
 
   @Test (enabled=false)
   public void testAddNewJobConfigFile() throws Exception {
