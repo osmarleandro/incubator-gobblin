@@ -291,12 +291,7 @@ public class FSJobCatalogHelperTest {
   private List<Properties> convertJobSpecList2PropList(List<JobSpec> jobConfigs) {
     List<Properties> result = Lists.newArrayList();
     for (JobSpec js : jobConfigs) {
-      Properties propToBeAdded;
-      if (js.getConfigAsProperties() != null) {
-        propToBeAdded = js.getConfigAsProperties();
-      } else {
-        propToBeAdded = ConfigUtils.configToProperties(js.getConfig());
-      }
+      Properties propToBeAdded = extracted(js);
 
       // For the testing purpose, added it back when doing the comparison.
       propToBeAdded.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY, js.getUri().toString());
@@ -304,4 +299,14 @@ public class FSJobCatalogHelperTest {
     }
     return result;
   }
+
+private Properties extracted(JobSpec js) {
+	Properties propToBeAdded;
+      if (js.getConfigAsProperties() != null) {
+        propToBeAdded = js.getConfigAsProperties();
+      } else {
+        propToBeAdded = ConfigUtils.configToProperties(js.getConfig());
+      }
+	return propToBeAdded;
+}
 }
