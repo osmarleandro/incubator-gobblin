@@ -109,10 +109,7 @@ public class DatasetStateCommitStep extends CommitStepBase {
           this.props.getProp(ConfigurationKeys.STATE_STORE_TYPE_KEY, ConfigurationKeys.DEFAULT_STATE_STORE_TYPE));
 
       try {
-        DatasetStateStore.Factory stateStoreFactory =
-            resolver.resolveClass(stateStoreType).newInstance();
-
-        this.stateStore = stateStoreFactory.createStateStore(ConfigFactory.parseProperties(props.getProperties()));
+        extracted(resolver, stateStoreType);
       } catch (RuntimeException e) {
         throw e;
       } catch (Exception e) {
@@ -121,5 +118,13 @@ public class DatasetStateCommitStep extends CommitStepBase {
     }
     return this.stateStore;
   }
+
+private void extracted(ClassAliasResolver<DatasetStateStore.Factory> resolver, String stateStoreType)
+		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	DatasetStateStore.Factory stateStoreFactory =
+	    resolver.resolveClass(stateStoreType).newInstance();
+
+	this.stateStore = stateStoreFactory.createStateStore(ConfigFactory.parseProperties(props.getProperties()));
+}
 
 }
