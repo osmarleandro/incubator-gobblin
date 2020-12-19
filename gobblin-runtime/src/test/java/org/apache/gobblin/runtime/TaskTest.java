@@ -207,14 +207,18 @@ public class TaskTest {
     // Check that we got the right records in the collectors
     int recordsPerFork = numRecords/numForks;
     for (int forkNumber=0; forkNumber < numForks; ++ forkNumber) {
-      ArrayList<Object> forkRecords = recordCollectors.get(forkNumber);
+      extracted(recordCollectors, recordsPerFork, forkNumber);
+    }
+  }
+
+private void extracted(ArrayList<ArrayList<Object>> recordCollectors, int recordsPerFork, int forkNumber) {
+	ArrayList<Object> forkRecords = recordCollectors.get(forkNumber);
       Assert.assertEquals(forkRecords.size(), recordsPerFork);
       for (int j=0; j < recordsPerFork; ++j) {
         Object forkRecord = forkRecords.get(j);
         Assert.assertEquals((String) forkRecord, "" + (j * recordsPerFork + forkNumber));
       }
-    }
-  }
+}
 
   /**
    * Test that forks work correctly when the operator picks all outgoing forks
