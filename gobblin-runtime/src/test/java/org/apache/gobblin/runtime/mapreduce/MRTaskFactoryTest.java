@@ -62,8 +62,7 @@ public class MRTaskFactoryTest {
   @Test
   public void test() throws Exception {
 
-    File inputSuperPath = Files.createTempDir();
-    inputSuperPath.deleteOnExit();
+    File inputSuperPath = extracted();
     File outputSuperPath = Files.createTempDir();
     outputSuperPath.deleteOnExit();
 
@@ -105,6 +104,12 @@ public class MRTaskFactoryTest {
     Assert.assertEquals((int) counts.get("word1"), 1);
     Assert.assertEquals((int) counts.get("word2"), 2);
   }
+
+private File extracted() {
+	File inputSuperPath = Files.createTempDir();
+    inputSuperPath.deleteOnExit();
+	return inputSuperPath;
+}
 
   private Map<String, Integer> parseCounts(File file) throws IOException {
     Map<String, Integer> counts = Maps.newHashMap();
