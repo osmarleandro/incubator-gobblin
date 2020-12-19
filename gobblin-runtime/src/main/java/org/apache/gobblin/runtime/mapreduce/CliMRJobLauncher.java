@@ -69,14 +69,18 @@ public class CliMRJobLauncher extends Configured implements ApplicationLauncher,
       start();
       launchJob(null);
     } finally {
-      try {
+      extracted();
+    }
+    return 0;
+  }
+
+private void extracted() throws ApplicationException, IOException {
+	try {
         stop();
       } finally {
         close();
       }
-    }
-    return 0;
-  }
+}
 
   @Override
   public void start() throws ApplicationException {
