@@ -70,17 +70,7 @@ public class MockedKafkaJobMonitor extends KafkaJobMonitor {
   }
 
   private static MutableJobCatalog createMockCatalog(final Map<URI, JobSpec> jobSpecs) {
-    MutableJobCatalog jobCatalog = Mockito.mock(MutableJobCatalog.class);
-
-    Mockito.doAnswer(new Answer<Void>() {
-      @Override
-      public Void answer(InvocationOnMock invocation)
-          throws Throwable {
-        JobSpec jobSpec = (JobSpec) invocation.getArguments()[0];
-        jobSpecs.put(jobSpec.getUri(), jobSpec);
-        return null;
-      }
-    }).when(jobCatalog).put(Mockito.any(JobSpec.class));
+    MutableJobCatalog jobCatalog = extracted(jobSpecs);
 
     Mockito.doAnswer(new Answer<Void>() {
       @Override
@@ -94,6 +84,21 @@ public class MockedKafkaJobMonitor extends KafkaJobMonitor {
 
     return jobCatalog;
   }
+
+private static MutableJobCatalog extracted(final Map<URI, JobSpec> jobSpecs) {
+	MutableJobCatalog jobCatalog = Mockito.mock(MutableJobCatalog.class);
+
+    Mockito.doAnswer(new Answer<Void>() {
+      @Override
+      public Void answer(InvocationOnMock invocation)
+          throws Throwable {
+        JobSpec jobSpec = (JobSpec) invocation.getArguments()[0];
+        jobSpecs.put(jobSpec.getUri(), jobSpec);
+        return null;
+      }
+    }).when(jobCatalog).put(Mockito.any(JobSpec.class));
+	return jobCatalog;
+}
 
 
   @Override
