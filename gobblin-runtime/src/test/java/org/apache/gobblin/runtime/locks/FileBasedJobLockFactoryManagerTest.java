@@ -17,6 +17,8 @@
 package org.apache.gobblin.runtime.locks;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.hadoop.fs.LocalFileSystem;
 import org.slf4j.Logger;
@@ -55,7 +57,17 @@ public class FileBasedJobLockFactoryManagerTest {
 
   @Test
   public void testGetJobLockFactory() throws Exception {
-    final Logger log = LoggerFactory.getLogger("FileBasedJobLockFactoryManagerTest.testGetJobLockFactory");
+    FileBasedJobLockFactory factory2 = extracted();
+    Assert.assertTrue(factory2.getFs() instanceof LocalFileSystem);
+    Assert.assertTrue(factory2.getFs().exists(factory2.getLockFileDir()));
+
+    // Lock dir should not be removed on close
+    factory2.close();
+    Assert.assertTrue(factory2.getFs().exists(factory2.getLockFileDir()));
+  }
+
+private FileBasedJobLockFactory extracted() throws IOException, TimeoutException, JobLockException {
+	final Logger log = LoggerFactory.getLogger("FileBasedJobLockFactoryManagerTest.testGetJobLockFactory");
     FileBasedJobLockFactoryManager mgr = new FileBasedJobLockFactoryManager();
 
     // Create an instance with default configs
@@ -84,12 +96,7 @@ public class FileBasedJobLockFactoryManagerTest {
 
     FileBasedJobLockFactory factory2 = mgr.getJobLockFactory(sysConfig2, Optional.of(log));
     Assert.assertEquals(factory2.getLockFileDir().toString(), lockDir.getAbsolutePath());
-    Assert.assertTrue(factory2.getFs() instanceof LocalFileSystem);
-    Assert.assertTrue(factory2.getFs().exists(factory2.getLockFileDir()));
-
-    // Lock dir should not be removed on close
-    factory2.close();
-    Assert.assertTrue(factory2.getFs().exists(factory2.getLockFileDir()));
-  }
+	return factory2;
+}
 
 }
