@@ -80,8 +80,7 @@ public class StaticJobTemplateTest {
 
   @Test
   public void testMultipleTemplates() throws Exception {
-    Map<String, String> confMap = Maps.newHashMap();
-    confMap.put("key", "value");
+    Map<String, String> confMap = extracted();
 
     InheritingJobTemplateTest.TestTemplate
         template1 = new InheritingJobTemplateTest.TestTemplate(new URI("template1"), Lists.<JobTemplate>newArrayList(), ImmutableMap.of("key1", "value1"),
@@ -100,6 +99,12 @@ public class StaticJobTemplateTest {
     Assert.assertEquals(resolved.getString("key1"), "value1");
     Assert.assertEquals(resolved.getString("key2"), "value2");
   }
+
+private Map<String, String> extracted() {
+	Map<String, String> confMap = Maps.newHashMap();
+    confMap.put("key", "value");
+	return confMap;
+}
 
   @Test
   public void testSecure() throws Exception {
