@@ -537,10 +537,14 @@ public class JobContext implements Closeable {
         JobCommitPolicy.getCommitPolicy(state.getProperties()) == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS;
     boolean publishDataAtJobLevel = state.getPropAsBoolean(ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL,
         ConfigurationKeys.DEFAULT_PUBLISH_DATA_AT_JOB_LEVEL);
-    boolean jobDataPublisherSpecified =
+    return extracted(state, jobCommitPolicyIsFull, publishDataAtJobLevel);
+  }
+
+private static boolean extracted(State state, boolean jobCommitPolicyIsFull, boolean publishDataAtJobLevel) {
+	boolean jobDataPublisherSpecified =
         !Strings.isNullOrEmpty(state.getProp(ConfigurationKeys.JOB_DATA_PUBLISHER_TYPE));
     return jobCommitPolicyIsFull || publishDataAtJobLevel || jobDataPublisherSpecified;
-  }
+}
 
   @Override
   public String toString() {
