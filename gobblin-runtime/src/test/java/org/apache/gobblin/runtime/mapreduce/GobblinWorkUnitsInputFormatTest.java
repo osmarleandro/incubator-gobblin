@@ -160,17 +160,22 @@ public class GobblinWorkUnitsInputFormatTest {
 
   private void verifyPaths(List<InputSplit> splits, FileStatus[] statuses) {
     Set<String> splitPaths = Sets.newHashSet();
-    for (InputSplit split : splits) {
-      splitPaths.addAll(((GobblinWorkUnitsInputFormat.GobblinSplit) split).getPaths());
-    }
-
-    Set<String> statusPaths = Sets.newHashSet();
+    Set<String> statusPaths = extracted(splits, splitPaths);
     for (FileStatus status : statuses) {
       statusPaths.add(status.getPath().toString());
     }
 
     Assert.assertEquals(splitPaths, statusPaths);
   }
+
+private Set<String> extracted(List<InputSplit> splits, Set<String> splitPaths) {
+	for (InputSplit split : splits) {
+      splitPaths.addAll(((GobblinWorkUnitsInputFormat.GobblinSplit) split).getPaths());
+    }
+
+    Set<String> statusPaths = Sets.newHashSet();
+	return statusPaths;
+}
 
   private FileStatus[] createFileStatuses(int howMany, Path basePath) {
     FileStatus[] statuses = new FileStatus[howMany];
