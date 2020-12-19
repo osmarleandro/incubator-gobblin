@@ -143,7 +143,11 @@ public class PathAlterationListenerAdaptorForMonitor extends PathAlterationListe
   public void onFileCreate(Path path) {
     String fileExtension = path.getName().substring(path.getName().lastIndexOf('.') + 1);
     String noExtFileName = path.getName().substring(0, path.getName().lastIndexOf('.'));
-    if (fileExtension.equalsIgnoreCase(SchedulerUtils.JOB_PROPS_FILE_EXTENSION)) {
+    extracted(path, fileExtension, noExtFileName);
+  }
+
+private void extracted(Path path, String fileExtension, String noExtFileName) {
+	if (fileExtension.equalsIgnoreCase(SchedulerUtils.JOB_PROPS_FILE_EXTENSION)) {
       //check no other properties pre-existed
       try {
         if (checkCommonPropExistance(path.getParent(), noExtFileName)) {
@@ -163,7 +167,7 @@ public class PathAlterationListenerAdaptorForMonitor extends PathAlterationListe
     LOG.info("Detected new job configuration file " + path.toString());
 
     loadNewJobConfigAndHandleNewJob(path, JobScheduler.Action.SCHEDULE);
-  }
+}
 
   /**
    * Called when a job configuration file is changed.
