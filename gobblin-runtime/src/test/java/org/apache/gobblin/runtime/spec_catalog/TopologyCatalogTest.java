@@ -85,8 +85,7 @@ public class TopologyCatalogTest {
   }
 
   private TopologySpec initTopologySpec() {
-    Properties properties = new Properties();
-    properties.put("specStore.fs.dir", SPEC_STORE_DIR);
+    Properties properties = extracted();
     properties.put("specExecInstance.capabilities", "source:destination");
     Config config = ConfigUtils.propertiesToConfig(properties);
 
@@ -99,6 +98,12 @@ public class TopologyCatalogTest {
         .withSpecExecutor(specExecutorInstanceProducer);
     return topologySpecBuilder.build();
   }
+
+private Properties extracted() {
+	Properties properties = new Properties();
+    properties.put("specStore.fs.dir", SPEC_STORE_DIR);
+	return properties;
+}
 
   @AfterClass
   public void cleanUp() throws Exception {
