@@ -31,7 +31,12 @@ public class TestJobCatalogListenersList {
     JobCatalogListenersList ll = new JobCatalogListenersList();
 
     JobSpec js1_1 = JobSpec.builder("test:job1").build();
-    JobSpec js1_2 = JobSpec.builder("test:job1").withVersion("2").build();
+    extracted(ll, js1_1);
+
+  }
+
+private void extracted(JobCatalogListenersList ll, JobSpec js1_1) {
+	JobSpec js1_2 = JobSpec.builder("test:job1").withVersion("2").build();
     JobSpec js2 = JobSpec.builder("test:job2").build();
 
     JobCatalogListener l1 = Mockito.mock(JobCatalogListener.class);
@@ -69,7 +74,6 @@ public class TestJobCatalogListenersList {
     Mockito.verify(l3).onDeleteJob(Mockito.eq(js2.getUri()), Mockito.eq(js2.getVersion()));
 
     Mockito.verifyNoMoreInteractions(l1, l2, l3);
-
-  }
+}
 
 }
