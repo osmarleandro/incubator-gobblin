@@ -177,8 +177,7 @@ public class FSSpecStore extends InstrumentedSpecStore {
 
   @Override
   public boolean deleteSpec(URI specUri, String version) throws IOException {
-    Preconditions.checkArgument(null != specUri, "Spec URI should not be null");
-    Preconditions.checkArgument(null != version, "Version should not be null");
+    extracted(specUri, version);
 
     try {
       log.info(String.format("Deleting Spec with URI: %s in FSSpecStore: %s", specUri, this.fsSpecStoreDirPath));
@@ -219,8 +218,7 @@ public class FSSpecStore extends InstrumentedSpecStore {
 
   @Override
   public Spec getSpec(URI specUri, String version) throws IOException, SpecNotFoundException {
-    Preconditions.checkArgument(null != specUri, "Spec URI should not be null");
-    Preconditions.checkArgument(null != version, "Version should not be null");
+    extracted(specUri, version);
 
     Path specPath = getPathForURI(this.fsSpecStoreDirPath, specUri, version);
 
@@ -230,6 +228,11 @@ public class FSSpecStore extends InstrumentedSpecStore {
 
     return readSpecFromFile(specPath);
   }
+
+private void extracted(URI specUri, String version) {
+	Preconditions.checkArgument(null != specUri, "Spec URI should not be null");
+    Preconditions.checkArgument(null != version, "Version should not be null");
+}
 
   @Override
   public Collection<Spec> getSpecsImpl() throws IOException {
