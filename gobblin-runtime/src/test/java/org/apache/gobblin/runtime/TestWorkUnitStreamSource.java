@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.junit.Assert;
 import org.testng.annotations.Test;
@@ -56,7 +57,18 @@ public class TestWorkUnitStreamSource {
   @Test
   public void test() throws Exception {
 
-    String eventBusId = UUID.randomUUID().toString();
+    MyListener listener = extracted();
+
+    SetMultimap<String, Integer> eventsSeen = listener.getEventsSeenMap();
+    Set<Integer> expected = Sets.newHashSet(0, 1, 2, 3, 4);
+    Assert.assertEquals(eventsSeen.get(EventBusPublishingTaskFactory.RUN_EVENT), expected);
+    Assert.assertEquals(eventsSeen.get(EventBusPublishingTaskFactory.COMMIT_EVENT), expected);
+    Assert.assertEquals(eventsSeen.get(EventBusPublishingTaskFactory.PUBLISH_EVENT), expected);
+
+  }
+
+private MyListener extracted() throws TimeoutException, InterruptedException {
+	String eventBusId = UUID.randomUUID().toString();
     MyListener listener = new MyListener();
 
     EventBus eventBus = TestingEventBuses.getEventBus(eventBusId);
@@ -87,14 +99,8 @@ public class TestWorkUnitStreamSource {
 
     JobExecutionResult result = driver.get(5, TimeUnit.SECONDS);
     Assert.assertTrue(result.isSuccessful());
-
-    SetMultimap<String, Integer> eventsSeen = listener.getEventsSeenMap();
-    Set<Integer> expected = Sets.newHashSet(0, 1, 2, 3, 4);
-    Assert.assertEquals(eventsSeen.get(EventBusPublishingTaskFactory.RUN_EVENT), expected);
-    Assert.assertEquals(eventsSeen.get(EventBusPublishingTaskFactory.COMMIT_EVENT), expected);
-    Assert.assertEquals(eventsSeen.get(EventBusPublishingTaskFactory.PUBLISH_EVENT), expected);
-
-  }
+	return listener;
+}
 
   public static class MyListener extends EventBusPublishingTaskFactory.EventListener {
     private Semaphore iteratorReady = new Semaphore(0);
