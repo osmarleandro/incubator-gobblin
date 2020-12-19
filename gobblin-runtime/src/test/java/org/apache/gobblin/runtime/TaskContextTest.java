@@ -17,6 +17,7 @@
 
 package org.apache.gobblin.runtime;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.Properties;
 
@@ -60,15 +61,20 @@ public class TaskContextTest {
   @BeforeClass
   public void setUp()
       throws Exception {
-    WorkUnit workUnit = WorkUnit.createEmpty();
-    Properties properties = new Properties();
-    properties.load(new StringReader(TEST_JOB_CONFIG));
-    workUnit.addAll(properties);
+    WorkUnit workUnit = extracted();
     workUnit.setProp(ConfigurationKeys.JOB_ID_KEY, JobLauncherUtils.newJobId("GobblinTest1"));
     workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,
         JobLauncherUtils.newTaskId(workUnit.getProp(ConfigurationKeys.JOB_ID_KEY), 0));
     this.taskContext = new TaskContext(new WorkUnitState(workUnit));
   }
+
+private WorkUnit extracted() throws IOException {
+	WorkUnit workUnit = WorkUnit.createEmpty();
+    Properties properties = new Properties();
+    properties.load(new StringReader(TEST_JOB_CONFIG));
+    workUnit.addAll(properties);
+	return workUnit;
+}
 
   @Test
   public void testOtherMethods() {
