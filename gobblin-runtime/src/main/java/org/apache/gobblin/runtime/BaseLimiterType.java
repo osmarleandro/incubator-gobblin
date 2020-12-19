@@ -67,12 +67,16 @@ public enum BaseLimiterType {
     if (name.equalsIgnoreCase(TIME_BASED.name)) {
       return TIME_BASED;
     }
-    if (name.equalsIgnoreCase(COUNT_BASED.name)) {
+    return extracted(name);
+  }
+
+private static BaseLimiterType extracted(String name) {
+	if (name.equalsIgnoreCase(COUNT_BASED.name)) {
       return COUNT_BASED;
     }
     if (name.equalsIgnoreCase(POOL_BASED.name)) {
       return POOL_BASED;
     }
     throw new IllegalArgumentException("No Limiter implementation available for name: " + name);
-  }
+}
 }
