@@ -539,10 +539,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
         // Adding destJarFile into HDFS until it exists and the size of file on targetPath matches the one on local path.
         while (!this.fs.exists(destJarFile) || fs.getFileStatus(destJarFile).getLen() != status.getLen()) {
           try {
-            if (this.fs.exists(destJarFile) && fs.getFileStatus(destJarFile).getLen() != status.getLen()) {
-              Thread.sleep(WAITING_TIME_ON_IMCOMPLETE_UPLOAD);
-              throw new IOException("Waiting for file to complete on uploading ... ");
-            }
+            extracted(status, destJarFile);
             // Set the first parameter as false for not deleting sourceFile
             // Set the second parameter as false for not overwriting existing file on the target, by default it is true.
             // If the file is preExisted but overwrite flag set to false, then an IOException if thrown.
@@ -566,6 +563,13 @@ public class MRJobLauncher extends AbstractJobLauncher {
       }
     }
   }
+
+private void extracted(FileStatus status, Path destJarFile) throws IOException, InterruptedException {
+	if (this.fs.exists(destJarFile) && fs.getFileStatus(destJarFile).getLen() != status.getLen()) {
+	  Thread.sleep(WAITING_TIME_ON_IMCOMPLETE_UPLOAD);
+	  throw new IOException("Waiting for file to complete on uploading ... ");
+	}
+}
 
   /**
    * Calculate the target filePath of the jar file to be copied on HDFS,
