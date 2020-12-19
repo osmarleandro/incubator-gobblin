@@ -333,16 +333,7 @@ public class MysqlSpecStore extends InstrumentedSpecStore {
       String propertyFilter = flowSpecSearchObject.getPropertyFilter();
       Splitter commaSplitter = Splitter.on(",").trimResults().omitEmptyStrings();
       for (String property : commaSplitter.splitToList(propertyFilter)) {
-        if (property.contains("=")) {
-          String[] keyValue = property.split("=");
-          if (keyValue.length != 2) {
-            log.error("Incorrect flow config search query");
-            continue;
-          }
-          conditions.add("spec_json->'$.configAsProperties.\"" + keyValue[0] + "\"' like " + "'%" + keyValue[1] + "%'");
-        } else {
-          conditions.add("spec_json->'$.configAsProperties.\"" + property + "\"' is not null");
-        }
+        extracted(conditions, property);
       }
     }
 
@@ -352,6 +343,19 @@ public class MysqlSpecStore extends InstrumentedSpecStore {
 
     return baseStatement + String.join(" AND ", conditions);
   }
+
+private static void extracted(List<String> conditions, String property) {
+	if (property.contains("=")) {
+	  String[] keyValue = property.split("=");
+	  if (keyValue.length != 2) {
+	    log.error("Incorrect flow config search query");
+	    return;
+	  }
+	  conditions.add("spec_json->'$.configAsProperties.\"" + keyValue[0] + "\"' like " + "'%" + keyValue[1] + "%'");
+	} else {
+	  conditions.add("spec_json->'$.configAsProperties.\"" + property + "\"' is not null");
+	}
+}
 
   private static void setGetPreparedStatement(PreparedStatement statement, FlowSpecSearchObject flowSpecSearchObject)
       throws SQLException {
