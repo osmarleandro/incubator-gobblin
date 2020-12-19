@@ -42,12 +42,17 @@ public class FsSpecProducerTest {
   @BeforeMethod
   public void setUp()
       throws IOException {
-    File tmpDir = Files.createTempDir();
-    Config config = ConfigFactory.empty().withValue(FsSpecConsumer.SPEC_PATH_KEY, ConfigValueFactory.fromAnyRef(
-        tmpDir.getAbsolutePath()));
+    Config config = extracted();
     this._fsSpecProducer = new FsSpecProducer(config);
     this._fsSpecConsumer = new FsSpecConsumer(config);
   }
+
+private Config extracted() {
+	File tmpDir = Files.createTempDir();
+    Config config = ConfigFactory.empty().withValue(FsSpecConsumer.SPEC_PATH_KEY, ConfigValueFactory.fromAnyRef(
+        tmpDir.getAbsolutePath()));
+	return config;
+}
 
   private JobSpec createTestJobSpec() throws URISyntaxException {
     JobSpec jobSpec = JobSpec.builder("testJob").withConfig(ConfigFactory.empty().
