@@ -72,13 +72,18 @@ public class MultiConverter extends Converter<Object, Object, Object, Object> {
 
     Object schema = inputSchema;
     for (Converter converter : this.converters) {
-      // Apply the converter and remember the output schema of this converter
-      schema = converter.convertSchema(schema, workUnit);
-      this.convertedSchemaMap.put(converter, schema);
+      schema = extracted(workUnit, schema, converter);
     }
 
     return schema;
   }
+
+private Object extracted(WorkUnitState workUnit, Object schema, Converter converter) throws SchemaConversionException {
+	// Apply the converter and remember the output schema of this converter
+      schema = converter.convertSchema(schema, workUnit);
+      this.convertedSchemaMap.put(converter, schema);
+	return schema;
+}
 
   @Override
   public Iterable<Object> convertRecord(Object outputSchema, final Object inputRecord, final WorkUnitState workUnit)
