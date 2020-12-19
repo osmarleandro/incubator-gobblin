@@ -987,8 +987,7 @@ public class Task implements TaskIFace {
   }
 
   protected void submitTaskCommittedEvent() {
-    MetricContext taskMetricContext = TaskMetrics.get(this.taskState).getMetricContext();
-    EventSubmitter eventSubmitter = new EventSubmitter.Builder(taskMetricContext, "gobblin.runtime.task").build();
+    EventSubmitter eventSubmitter = extracted();
     Map<String, String> metadataMap = Maps.newHashMap();
     metadataMap.putAll(this.taskEventMetadataGenerator.getMetadata(this.taskState, TaskEvent.TASK_COMMITTED_EVENT_NAME));
     metadataMap.putAll(ImmutableMap
@@ -996,6 +995,12 @@ public class Task implements TaskIFace {
             this.taskState.getTaskAttemptId().or("")));
     eventSubmitter.submit(TaskEvent.TASK_COMMITTED_EVENT_NAME, metadataMap);
   }
+
+private EventSubmitter extracted() {
+	MetricContext taskMetricContext = TaskMetrics.get(this.taskState).getMetricContext();
+    EventSubmitter eventSubmitter = new EventSubmitter.Builder(taskMetricContext, "gobblin.runtime.task").build();
+	return eventSubmitter;
+}
 
   /**
    * @return true if the current {@link Task} is safe to have duplicate attempts; false, otherwise.
