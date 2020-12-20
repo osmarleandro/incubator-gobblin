@@ -18,6 +18,8 @@ package org.apache.gobblin.crypto;
 
 import java.util.Map;
 
+import org.apache.gobblin.codec.StreamCodec;
+
 
 /**
  * Represents a factory object that can build CredentialStores based on a set of config.
@@ -31,4 +33,13 @@ public interface CredentialStoreProvider {
    * return null.
    */
   CredentialStore buildCredentialStore(Map<String, Object> parameters);
+
+/**
+   * Return a StreamEncryptor for the given parameters. The algorithm type to use will be extracted
+   * from the parameters object.
+   * @param parameters Configured parameters for algorithm.
+   * @return A StreamCodec for the requested algorithm
+   * @throws IllegalArgumentException If the given algorithm/parameter pair cannot be built
+   */
+StreamCodec buildStreamEncryptor(Map<String, Object> parameters);
 }

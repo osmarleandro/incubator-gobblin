@@ -54,4 +54,10 @@ public class TestEncryptionProvider implements CredentialStoreProvider, Encrypti
         return null;
     }
   }
+
+@Override
+public StreamCodec buildStreamEncryptor(Map<String, Object> parameters) {
+	// TODO Auto-generated method stub
+	return null;
+}
 }
