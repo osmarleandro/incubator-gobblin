@@ -123,18 +123,14 @@ public class MysqlDatasetStateStore extends MysqlStateStore<JobState.DatasetStat
     LOGGER.info("Persisting " + tableName + " to the job state store");
 
     put(jobName, tableName, datasetState);
-    createAlias(jobName, tableName, getAliasName(datasetUrn));
+    createAlias(jobName, tableName, Strings.isNullOrEmpty(datasetUrn) ? CURRENT_DATASET_STATE_FILE_SUFFIX + DATASET_STATE_STORE_TABLE_SUFFIX
+	: datasetUrn + "-" + CURRENT_DATASET_STATE_FILE_SUFFIX + DATASET_STATE_STORE_TABLE_SUFFIX);
   }
 
   @Override
   public void persistDatasetURNs(String storeName, Collection<String> datasetUrns)
       throws IOException {
     //do nothing for now
-  }
-
-  private static String getAliasName(String datasetUrn) {
-    return Strings.isNullOrEmpty(datasetUrn) ? CURRENT_DATASET_STATE_FILE_SUFFIX + DATASET_STATE_STORE_TABLE_SUFFIX
-        : datasetUrn + "-" + CURRENT_DATASET_STATE_FILE_SUFFIX + DATASET_STATE_STORE_TABLE_SUFFIX;
   }
 
   @Override
