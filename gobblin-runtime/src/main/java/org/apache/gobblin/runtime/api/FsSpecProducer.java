@@ -89,7 +89,27 @@ public class FsSpecProducer implements SpecProducer<Spec> {
     if (spec instanceof JobSpec) {
       try {
         AvroJobSpec avroJobSpec = convertToAvroJobSpec((JobSpec) spec, verb);
-        writeAvroJobSpec(avroJobSpec);
+        DatumWriter<AvroJobSpec> datumWriter = new SpecificDatumWriter<>(AvroJobSpec.SCHEMA$);
+		DataFileWriter<AvroJobSpec> dataFileWriter = new DataFileWriter<>(datumWriter);
+		
+		Path jobSpecPath = new Path(this.specConsumerPath, avroJobSpec.getUri());
+		
+		//Write the new JobSpec to a temporary path first.
+		Path tmpDir = new Path(this.specConsumerPath, "_tmp");
+		if (!fs.exists(tmpDir)) {
+		  fs.mkdirs(tmpDir);
+		}
+		
+		Path tmpJobSpecPath = new Path(tmpDir, avroJobSpec.getUri());
+		
+		OutputStream out = fs.create(tmpJobSpecPath);
+		
+		dataFileWriter.create(AvroJobSpec.SCHEMA$, out);
+		dataFileWriter.append(avroJobSpec);
+		dataFileWriter.close();
+		
+		//Rename the JobSpec from temporary to final location.
+		HadoopUtils.renamePath(fs, tmpJobSpecPath, jobSpecPath, true);
         return new CompletedFuture<>(Boolean.TRUE, null);
       } catch (IOException e) {
         log.error("Exception encountered when adding Spec {}", spec);
@@ -109,7 +129,27 @@ public class FsSpecProducer implements SpecProducer<Spec> {
         .setMetadata(ImmutableMap.of(VERB_KEY, SpecExecutor.Verb.DELETE.name()))
         .setProperties(Maps.fromProperties(headers)).build();
     try {
-      writeAvroJobSpec(avroJobSpec);
+      DatumWriter<AvroJobSpec> datumWriter = new SpecificDatumWriter<>(AvroJobSpec.SCHEMA$);
+	DataFileWriter<AvroJobSpec> dataFileWriter = new DataFileWriter<>(datumWriter);
+	
+	Path jobSpecPath = new Path(this.specConsumerPath, avroJobSpec.getUri());
+	
+	//Write the new JobSpec to a temporary path first.
+	Path tmpDir = new Path(this.specConsumerPath, "_tmp");
+	if (!fs.exists(tmpDir)) {
+	  fs.mkdirs(tmpDir);
+	}
+	
+	Path tmpJobSpecPath = new Path(tmpDir, avroJobSpec.getUri());
+	
+	OutputStream out = fs.create(tmpJobSpecPath);
+	
+	dataFileWriter.create(AvroJobSpec.SCHEMA$, out);
+	dataFileWriter.append(avroJobSpec);
+	dataFileWriter.close();
+	
+	//Rename the JobSpec from temporary to final location.
+	HadoopUtils.renamePath(fs, tmpJobSpecPath, jobSpecPath, true);
       return new CompletedFuture<>(Boolean.TRUE, null);
     } catch (IOException e) {
       log.error("Exception encountered when writing DELETE spec");
@@ -131,30 +171,6 @@ public class FsSpecProducer implements SpecProducer<Spec> {
         setDescription(jobSpec.getDescription()).
         setVersion(jobSpec.getVersion()).
         setMetadata(ImmutableMap.of(VERB_KEY, verb.name())).build();
-  }
-
-  private void writeAvroJobSpec(AvroJobSpec jobSpec) throws IOException {
-    DatumWriter<AvroJobSpec> datumWriter = new SpecificDatumWriter<>(AvroJobSpec.SCHEMA$);
-    DataFileWriter<AvroJobSpec> dataFileWriter = new DataFileWriter<>(datumWriter);
-
-    Path jobSpecPath = new Path(this.specConsumerPath, jobSpec.getUri());
-
-    //Write the new JobSpec to a temporary path first.
-    Path tmpDir = new Path(this.specConsumerPath, "_tmp");
-    if (!fs.exists(tmpDir)) {
-      fs.mkdirs(tmpDir);
-    }
-
-    Path tmpJobSpecPath = new Path(tmpDir, jobSpec.getUri());
-
-    OutputStream out = fs.create(tmpJobSpecPath);
-
-    dataFileWriter.create(AvroJobSpec.SCHEMA$, out);
-    dataFileWriter.append(jobSpec);
-    dataFileWriter.close();
-
-    //Rename the JobSpec from temporary to final location.
-    HadoopUtils.renamePath(fs, tmpJobSpecPath, jobSpecPath, true);
   }
 
 }
