@@ -44,10 +44,6 @@ public class ForkThrowableHolder {
     return Optional.fromNullable(throwables.get(forkIdx));
   }
 
-  public boolean isEmpty() {
-    return throwables.isEmpty();
-  }
-
   public ForkException getAggregatedException (List<Integer> failedForkIds, String taskId) {
     StringBuffer stringBuffer = new StringBuffer();
     stringBuffer.append("Fork branches " + failedForkIds + " failed for task " + taskId + "\n");
