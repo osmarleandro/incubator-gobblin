@@ -425,7 +425,20 @@ public class GobblinMultiTaskAttempt {
       } catch (Throwable e) {
         if (e instanceof OutOfMemoryError) {
           log.error("Encountering memory error in task creation/execution stage, please investigate memory usage:", e);
-          printMemoryUsage();
+          MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+		MemoryUsage heapMemory = memoryBean.getHeapMemoryUsage();
+		MemoryUsage nonHeapMemory = memoryBean.getNonHeapMemoryUsage();
+		String format = "%-15s%-15s%-15s%-15s";
+		
+		this.log.info("Heap Memory");
+		this.log.info(String.format(format, "init", "used", "Committed", "max"));
+		this.log.info(String
+		    .format(format, heapMemory.getInit(), heapMemory.getUsed(), heapMemory.getCommitted(), heapMemory.getMax()));
+		
+		this.log.info("Non-heap Memory");
+		this.log.info(String.format(format, "init", "used", "Committed", "max"));
+		this.log.info(String.format(format, nonHeapMemory.getInit(), nonHeapMemory.getUsed(), nonHeapMemory.getCommitted(),
+		    nonHeapMemory.getMax()));
         }
 
         if (task == null) {
@@ -456,23 +469,6 @@ public class GobblinMultiTaskAttempt {
     eventSubmitterBuilder.build().submit(JobEvent.TASKS_SUBMITTED, "tasksCount", Long.toString(countDownLatch.getRegisteredParties()));
 
     return new Pair<>(tasks, areAllTasksSubmitted);
-  }
-
-  private void printMemoryUsage() {
-    MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
-    MemoryUsage heapMemory = memoryBean.getHeapMemoryUsage();
-    MemoryUsage nonHeapMemory = memoryBean.getNonHeapMemoryUsage();
-    String format = "%-15s%-15s%-15s%-15s";
-
-    this.log.info("Heap Memory");
-    this.log.info(String.format(format, "init", "used", "Committed", "max"));
-    this.log.info(String
-        .format(format, heapMemory.getInit(), heapMemory.getUsed(), heapMemory.getCommitted(), heapMemory.getMax()));
-
-    this.log.info("Non-heap Memory");
-    this.log.info(String.format(format, "init", "used", "Committed", "max"));
-    this.log.info(String.format(format, nonHeapMemory.getInit(), nonHeapMemory.getUsed(), nonHeapMemory.getCommitted(),
-        nonHeapMemory.getMax()));
   }
 
   private Task createTaskRunnable(WorkUnitState workUnitState, CountDownLatch countDownLatch) {
