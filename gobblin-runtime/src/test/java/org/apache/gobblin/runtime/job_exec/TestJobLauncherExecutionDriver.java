@@ -35,6 +35,7 @@ import org.apache.gobblin.runtime.JobLauncherFactory;
 import org.apache.gobblin.runtime.api.JobExecution;
 import org.apache.gobblin.runtime.api.JobExecutionMonitor;
 import org.apache.gobblin.runtime.api.JobSpec;
+import org.apache.gobblin.runtime.api.JobSpec.Builder;
 import org.apache.gobblin.runtime.local.LocalJobLauncher;
 import org.apache.gobblin.runtime.mapreduce.MRJobLauncher;
 import org.apache.gobblin.util.test.TestingSource;
@@ -64,7 +65,7 @@ public class TestJobLauncherExecutionDriver {
                      ConfigValueFactory.fromAnyRef(TestingSource.class.getName()))
           .withValue(ConfigurationKeys.JOB_LOCK_ENABLED_KEY, ConfigValueFactory.fromAnyRef(false));
 
-      JobSpec jobSpec1 = JobSpec.builder().withConfig(jobConf1).build();
+      JobSpec jobSpec1 = new Builder().withConfig(jobConf1).build();
 
       JobLauncherExecutionDriver.Launcher launcher =
           new JobLauncherExecutionDriver.Launcher()
@@ -100,7 +101,7 @@ public class TestJobLauncherExecutionDriver {
                      ConfigValueFactory.fromAnyRef(TestingSource.class.getName()))
           .withValue(ConfigurationKeys.JOB_LOCK_ENABLED_KEY, ConfigValueFactory.fromAnyRef(false));
 
-      JobSpec jobSpec2 = JobSpec.builder().withConfig(jobConf2).build();
+      JobSpec jobSpec2 = new Builder().withConfig(jobConf2).build();
       jled = null;
       monitor = launcher
           .withJobLauncherType(JobLauncherFactory.JobLauncherType.MAPREDUCE)

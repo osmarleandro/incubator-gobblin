@@ -39,6 +39,7 @@ import com.typesafe.config.ConfigFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.gobblin.runtime.api.JobSpec;
+import org.apache.gobblin.runtime.api.JobSpec.Builder;
 import org.apache.gobblin.runtime.api.SpecExecutor;
 import org.apache.gobblin.runtime.api.TopologySpec;
 import org.apache.gobblin.service.ExecutionStatus;
@@ -88,7 +89,7 @@ public class JobExecutionPlanListDeserializer implements JsonDeserializer<List<J
       Config jobConfig = ConfigFactory.parseString(config);
       JobSpec jobSpec;
       try {
-        JobSpec.Builder builder = (uri == null) ? JobSpec.builder() : JobSpec.builder(uri);
+        JobSpec.Builder builder = (uri == null) ? new Builder() : JobSpec.builder(uri);
         builder = (templateURI == null) ? builder : builder.withTemplate(new URI(templateURI));
         builder = (version == null) ? builder : builder.withVersion(version);
         builder = (description == null) ? builder : builder.withDescription(description);

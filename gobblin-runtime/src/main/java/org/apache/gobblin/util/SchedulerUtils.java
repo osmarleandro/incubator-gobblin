@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.gobblin.runtime.api.JobSpec;
+import org.apache.gobblin.runtime.api.JobSpec.Builder;
 import org.apache.gobblin.runtime.job_spec.JobSpecResolver;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -172,7 +173,7 @@ public class SchedulerUtils {
 
   private static Properties resolveTemplate(Properties jobProps, JobSpecResolver resolver) throws IOException {
     try {
-      JobSpec.Builder jobSpecBuilder = JobSpec.builder().withConfig(ConfigUtils.propertiesToConfig(jobProps));
+      JobSpec.Builder jobSpecBuilder = new Builder().withConfig(ConfigUtils.propertiesToConfig(jobProps));
       if (jobProps.containsKey(ConfigurationKeys.JOB_TEMPLATE_PATH)) {
         JobTemplate jobTemplate = ResourceBasedJobTemplate
             .forResourcePath(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH),

@@ -49,6 +49,7 @@ import org.apache.gobblin.runtime.api.JobExecutionDriver;
 import org.apache.gobblin.runtime.api.JobExecutionResult;
 import org.apache.gobblin.runtime.api.JobLifecycleListener;
 import org.apache.gobblin.runtime.api.JobSpec;
+import org.apache.gobblin.runtime.api.JobSpec.Builder;
 import org.apache.gobblin.runtime.instance.StandardGobblinInstanceDriver;
 import org.apache.gobblin.runtime.instance.StandardGobblinInstanceLauncher;
 import org.apache.gobblin.runtime.std.DefaultJobLifecycleListenerImpl;
@@ -76,7 +77,7 @@ public class JobBrokerInjectionTest {
     instanceLauncher.startAsync();
     instanceLauncher.awaitRunning(5, TimeUnit.SECONDS);
 
-    JobSpec js1 = JobSpec.builder()
+    JobSpec js1 = new Builder()
         .withConfig(ConfigFactory.parseResources("brokerTest/SimpleHelloWorldJob.jobconf"))
         .build();
 

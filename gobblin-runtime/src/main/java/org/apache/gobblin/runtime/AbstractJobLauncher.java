@@ -71,6 +71,7 @@ import org.apache.gobblin.metrics.event.EventSubmitter;
 import org.apache.gobblin.metrics.event.JobEvent;
 import org.apache.gobblin.metrics.event.TimingEvent;
 import org.apache.gobblin.runtime.api.JobSpec;
+import org.apache.gobblin.runtime.api.JobSpec.Builder;
 import org.apache.gobblin.runtime.api.JobTemplate;
 import org.apache.gobblin.runtime.api.MultiEventMetadataGenerator;
 import org.apache.gobblin.runtime.api.SpecNotFoundException;
@@ -245,13 +246,13 @@ public abstract class AbstractJobLauncher implements JobLauncher {
     JobSpec jobSpec = null;
     if (jobProps.containsKey(GOBBLIN_JOB_TEMPLATE_KEY)) {
       URI templateUri = new URI(jobProps.getProperty(GOBBLIN_JOB_TEMPLATE_KEY));
-      jobSpec = JobSpec.builder().withConfig(config).withTemplate(templateUri).build();
+      jobSpec = new Builder().withConfig(config).withTemplate(templateUri).build();
     } else if (jobProps.containsKey(GOBBLIN_JOB_MULTI_TEMPLATE_KEY)) {
       List<URI> templatesURIs = new ArrayList<>();
       for (String uri : jobProps.getProperty(GOBBLIN_JOB_MULTI_TEMPLATE_KEY).split(",")) {
         templatesURIs.add(new URI(uri));
       }
-      jobSpec = JobSpec.builder().withConfig(config).withResourceTemplates(templatesURIs).build();
+      jobSpec = new Builder().withConfig(config).withResourceTemplates(templatesURIs).build();
     }
     if (jobSpec != null ) {
       jobProps.putAll(ConfigUtils.configToProperties(resolver.resolveJobSpec(jobSpec).getConfig()));

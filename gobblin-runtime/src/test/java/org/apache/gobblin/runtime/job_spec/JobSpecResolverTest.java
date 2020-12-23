@@ -21,6 +21,7 @@ import java.net.URI;
 
 import org.apache.gobblin.runtime.api.JobCatalogWithTemplates;
 import org.apache.gobblin.runtime.api.JobSpec;
+import org.apache.gobblin.runtime.api.JobSpec.Builder;
 import org.apache.gobblin.runtime.api.JobTemplate;
 import org.apache.gobblin.runtime.api.SecureJobTemplate;
 import org.mockito.Mockito;
@@ -49,7 +50,7 @@ public class JobSpecResolverTest {
 		Mockito.when(catalog.getTemplate(Mockito.eq(URI.create("my://template")))).thenReturn(jobTemplate);
 
 		JobSpecResolver resolver = JobSpecResolver.builder(sysConfig).jobCatalog(catalog).build();
-		JobSpec jobSpec = JobSpec.builder()
+		JobSpec jobSpec = new Builder()
 				.withConfig(ConfigFactory.parseMap(ImmutableMap.of("key", "value")))
 				.withTemplate(URI.create("my://template")).build();
 		ResolvedJobSpec resolvedJobSpec = resolver.resolveJobSpec(jobSpec);
@@ -81,12 +82,12 @@ public class JobSpecResolverTest {
 				// This resolution action should block any resolution that does not use a secure template
 				.jobResolutionAction(new SecureTemplateEnforcer()).build();
 
-		JobSpec jobSpec = JobSpec.builder()
+		JobSpec jobSpec = new Builder()
 				.withConfig(ConfigFactory.parseMap(ImmutableMap.of("key", "value")))
 				.withTemplate(URI.create("my://template.insecure")).build();
 		Assert.expectThrows(JobTemplate.TemplateException.class, () -> resolver.resolveJobSpec(jobSpec));
 
-		JobSpec jobSpec2 = JobSpec.builder()
+		JobSpec jobSpec2 = new Builder()
 				.withConfig(ConfigFactory.parseMap(ImmutableMap.of("key", "value")))
 				.withTemplate(URI.create("my://template.secure")).build();
 		ResolvedJobSpec resolvedJobSpec = resolver.resolveJobSpec(jobSpec2);

@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.gobblin.annotation.Alpha;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.runtime.api.JobSpec;
+import org.apache.gobblin.runtime.api.JobSpec.Builder;
 import org.apache.gobblin.runtime.api.JobTemplate;
 import org.apache.gobblin.runtime.api.SpecNotFoundException;
 import org.apache.gobblin.runtime.job_spec.JobSpecResolver;
@@ -173,7 +174,7 @@ public class StaticFlowTemplate implements FlowTemplate {
     Config outputDescriptorConfig = outputDescriptor.getRawConfig().atPath(DatasetDescriptorConfigKeys.FLOW_EDGE_OUTPUT_DATASET_DESCRIPTOR_PREFIX);
     userConfig = userConfig.withFallback(inputDescriptorConfig).withFallback(outputDescriptorConfig);
 
-    JobSpec.Builder jobSpecBuilder = JobSpec.builder().withConfig(userConfig);
+    JobSpec.Builder jobSpecBuilder = new Builder().withConfig(userConfig);
 
     for (JobTemplate template: this.jobTemplates) {
       this.jobSpecResolver.resolveJobSpec(jobSpecBuilder.withTemplate(template).build());
@@ -189,7 +190,7 @@ public class StaticFlowTemplate implements FlowTemplate {
     userConfig = userConfig.withFallback(inputDescriptorConfig).withFallback(outputDescriptorConfig);
 
     List<Config> resolvedJobConfigs = new ArrayList<>();
-    JobSpec.Builder jobSpecBuilder = JobSpec.builder().withConfig(userConfig);
+    JobSpec.Builder jobSpecBuilder = new Builder().withConfig(userConfig);
     for (JobTemplate jobTemplate: getJobTemplates()) {
       ResolvedJobSpec resolvedJobSpec = this.jobSpecResolver.resolveJobSpec(jobSpecBuilder.withTemplate(jobTemplate).build());
       Config resolvedJobConfig = resolvedJobSpec.getConfig().withValue(

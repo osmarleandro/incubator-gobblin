@@ -37,6 +37,7 @@ import org.apache.gobblin.runtime.api.JobExecutionMonitor;
 import org.apache.gobblin.runtime.api.JobExecutionResult;
 import org.apache.gobblin.runtime.api.JobLifecycleListener;
 import org.apache.gobblin.runtime.api.JobSpec;
+import org.apache.gobblin.runtime.api.JobSpec.Builder;
 import org.apache.gobblin.runtime.instance.DefaultGobblinInstanceDriverImpl.JobSpecRunnable;
 import org.apache.gobblin.runtime.job_exec.JobLauncherExecutionDriver;
 import org.apache.gobblin.runtime.job_spec.ResolvedJobSpec;
@@ -65,7 +66,7 @@ public class TestStandardGobblinInstanceLauncher {
     instanceLauncher.startAsync();
     instanceLauncher.awaitRunning(5, TimeUnit.SECONDS);
 
-    JobSpec js1 = JobSpec.builder()
+    JobSpec js1 = new Builder()
         .withConfig(ConfigFactory.parseResources("gobblin/runtime/instance/SimpleHelloWorldJob.jobconf"))
         .build();
     GobblinInstanceDriver instance = instanceLauncher.getDriver();
@@ -132,7 +133,7 @@ public class TestStandardGobblinInstanceLauncher {
     instanceLauncher.startAsync();
     instanceLauncher.awaitRunning(5, TimeUnit.SECONDS);
 
-    JobSpec js1 = JobSpec.builder()
+    JobSpec js1 = new Builder()
         .withConfig(ConfigFactory.parseResources("gobblin/runtime/instance/SimpleHelloWorldJob.jobconf"))
         .build();
     final StandardGobblinInstanceDriver instance =
@@ -180,7 +181,7 @@ public class TestStandardGobblinInstanceLauncher {
     instanceLauncher.startAsync();
     instanceLauncher.awaitRunning(5, TimeUnit.SECONDS);
 
-    JobSpec js1 = JobSpec.builder()
+    JobSpec js1 = new Builder()
         .withConfig(ConfigFactory.parseResources("gobblin/runtime/instance/SimpleHelloWorldJob.jobconf"))
         .build();
 
@@ -237,7 +238,7 @@ public class TestStandardGobblinInstanceLauncher {
     instanceLauncher.startAsync();
     instanceLauncher.awaitRunning(5, TimeUnit.SECONDS);
 
-    JobSpec js1 = JobSpec.builder()
+    JobSpec js1 = new Builder()
         .withConfig(ConfigFactory.parseMap(ImmutableMap.of("numHellos", "5")))
         .withTemplate(new URI("resource:///gobblin/runtime/instance/SimpleHelloWorldJob.template"))
         .build();
