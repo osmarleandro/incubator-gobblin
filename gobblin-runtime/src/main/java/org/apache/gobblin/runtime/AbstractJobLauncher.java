@@ -423,7 +423,17 @@ public abstract class AbstractJobLauncher implements JobLauncher {
           this.eventSubmitter.submit(JobEvent.WORK_UNITS_MISSING);
           jobState.setState(JobState.RunningState.FAILED);
           String errMsg = "Failed to get work units for job " + jobId;
-          this.jobContext.getJobState().setJobFailureMessage(errMsg);
+		JobState r = this.jobContext.getJobState();
+          String previousMessages = r.getProp(ConfigurationKeys.JOB_FAILURE_EXCEPTION_KEY);
+		String aggregatedMessages;
+		
+		if (org.apache.commons.lang3.StringUtils.isEmpty(previousMessages)) {
+		  aggregatedMessages = errMsg;
+		} else {
+		  aggregatedMessages = errMsg + ", " + previousMessages;
+		}
+		
+		r.setProp(EventMetadataUtils.JOB_FAILURE_MESSAGE_KEY, aggregatedMessages);
           this.jobContext.getJobState().setProp(NUM_WORKUNITS, 0);
           throw new JobException(errMsg);
         }

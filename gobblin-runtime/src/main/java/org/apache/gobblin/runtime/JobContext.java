@@ -45,6 +45,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.typesafe.config.Config;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.gobblin.broker.gobblin_scopes.GobblinScopeTypes;
 import org.apache.gobblin.broker.gobblin_scopes.JobScopeInstance;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
@@ -477,7 +478,17 @@ public class JobContext implements Closeable {
       if (!IteratorExecutor.verifyAllSuccessful(result)) {
         this.jobState.setState(JobState.RunningState.FAILED);
         String errMsg = "Failed to commit dataset state for some dataset(s) of job " + this.jobId;
-        this.jobState.setJobFailureMessage(errMsg);
+		JobState r = this.jobState;
+        String previousMessages = r.getProp(ConfigurationKeys.JOB_FAILURE_EXCEPTION_KEY);
+		String aggregatedMessages;
+		
+		if (StringUtils.isEmpty(previousMessages)) {
+		  aggregatedMessages = errMsg;
+		} else {
+		  aggregatedMessages = errMsg + ", " + previousMessages;
+		}
+		
+		r.setProp(EventMetadataUtils.JOB_FAILURE_MESSAGE_KEY, aggregatedMessages);
         throw new IOException(errMsg);
       }
     } catch (InterruptedException exc) {
