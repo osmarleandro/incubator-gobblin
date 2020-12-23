@@ -342,15 +342,6 @@ public class TaskState extends WorkUnitState implements TaskProgress {
     return super.equals(other) && this.jobId.equals(other.jobId) && this.taskId.equals(other.taskId);
   }
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + this.jobId.hashCode();
-    result = prime * result + this.taskId.hashCode();
-    return result;
-  }
-
   /**
    * Convert this {@link TaskState} to a json document.
    *
