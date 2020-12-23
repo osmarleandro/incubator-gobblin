@@ -53,26 +53,4 @@ public enum BaseLimiterType {
   public String toString() {
     return this.name;
   }
-
-  /**
-   * Get a {@link BaseLimiterType} for the given name.
-   *
-   * @param name the given name
-   * @return a {@link BaseLimiterType} for the given name
-   */
-  public static BaseLimiterType forName(String name) {
-    if (name.equalsIgnoreCase(RATE_BASED.name)) {
-      return RATE_BASED;
-    }
-    if (name.equalsIgnoreCase(TIME_BASED.name)) {
-      return TIME_BASED;
-    }
-    if (name.equalsIgnoreCase(COUNT_BASED.name)) {
-      return COUNT_BASED;
-    }
-    if (name.equalsIgnoreCase(POOL_BASED.name)) {
-      return POOL_BASED;
-    }
-    throw new IllegalArgumentException("No Limiter implementation available for name: " + name);
-  }
 }
