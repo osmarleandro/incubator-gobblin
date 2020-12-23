@@ -546,35 +546,30 @@ public class JobState extends SourceState implements JobProgress {
     this.state = RunningState.valueOf(text.toString());
     this.taskCount = in.readInt();
     int numTaskStates = in.readInt();
-    getTaskStateWithCommonAndSpecWuProps(numTaskStates, in);
-    super.readFields(in);
-  }
-
-  private void getTaskStateWithCommonAndSpecWuProps(int numTaskStates, DataInput in)
-      throws IOException {
     Properties commonWuProps = new Properties();
-
-    for (int i = 0; i < numTaskStates; i++) {
-      TaskState taskState = new TaskState();
-      taskState.readFields(in);
-      if (i == 0) {
-        commonWuProps.putAll(taskState.getWorkunit().getProperties());
-      } else {
-        Properties newCommonWuProps = new Properties();
-        newCommonWuProps
-            .putAll(Maps.difference(commonWuProps, taskState.getWorkunit().getProperties()).entriesInCommon());
-        commonWuProps = newCommonWuProps;
-      }
-
-      this.taskStates.put(taskState.getTaskId().intern(), taskState);
-    }
-    ImmutableProperties immutableCommonProperties = new ImmutableProperties(commonWuProps);
-    for (TaskState taskState : this.taskStates.values()) {
-      Properties newSpecProps = new Properties();
-      newSpecProps.putAll(
-          Maps.difference(immutableCommonProperties, taskState.getWorkunit().getProperties()).entriesOnlyOnRight());
-      taskState.setWuProperties(immutableCommonProperties, newSpecProps);
-    }
+	
+	for (int i = 0; i < numTaskStates; i++) {
+	  TaskState taskState = new TaskState();
+	  taskState.readFields(in);
+	  if (i == 0) {
+	    commonWuProps.putAll(taskState.getWorkunit().getProperties());
+	  } else {
+	    Properties newCommonWuProps = new Properties();
+	    newCommonWuProps
+	        .putAll(Maps.difference(commonWuProps, taskState.getWorkunit().getProperties()).entriesInCommon());
+	    commonWuProps = newCommonWuProps;
+	  }
+	
+	  this.taskStates.put(taskState.getTaskId().intern(), taskState);
+	}
+	ImmutableProperties immutableCommonProperties = new ImmutableProperties(commonWuProps);
+	for (TaskState taskState : this.taskStates.values()) {
+	  Properties newSpecProps = new Properties();
+	  newSpecProps.putAll(
+	      Maps.difference(immutableCommonProperties, taskState.getWorkunit().getProperties()).entriesOnlyOnRight());
+	  taskState.setWuProperties(immutableCommonProperties, newSpecProps);
+	}
+    super.readFields(in);
   }
 
   @Override
