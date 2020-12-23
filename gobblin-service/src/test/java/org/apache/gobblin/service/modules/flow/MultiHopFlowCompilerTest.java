@@ -219,7 +219,8 @@ public class MultiHopFlowCompilerTest {
     }
 
     FlowSpec.Builder flowSpecBuilder = null;
-    flowSpecBuilder = FlowSpec.builder(new Path("/tmp/flowSpecCatalog").toUri())
+	URI flowSpecUri = new Path("/tmp/flowSpecCatalog").toUri();
+    flowSpecBuilder = new FlowSpec.Builder(flowSpecUri)
         .withConfig(flowConfig)
         .withDescription("dummy description")
         .withVersion(FlowSpec.Builder.DEFAULT_VERSION);

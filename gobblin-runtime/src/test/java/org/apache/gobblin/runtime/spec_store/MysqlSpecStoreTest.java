@@ -83,7 +83,7 @@ public class MysqlSpecStoreTest {
     this.specStore = new MysqlSpecStore(config, new TestSpecSerDe());
     this.oldSpecStore = new OldSpecStore(config, new TestSpecSerDe());
 
-    flowSpec1 = FlowSpec.builder(this.uri1)
+    flowSpec1 = new FlowSpec.Builder(this.uri1)
         .withConfig(ConfigBuilder.create()
             .addPrimitive("key", "value")
             .addPrimitive("key3", "value3")
@@ -95,7 +95,7 @@ public class MysqlSpecStoreTest {
         .withDescription("Test flow spec")
         .withVersion("Test version")
         .build();
-    flowSpec2 = FlowSpec.builder(this.uri2)
+    flowSpec2 = new FlowSpec.Builder(this.uri2)
         .withConfig(ConfigBuilder.create().addPrimitive("converter", "value1,value2,value3")
             .addPrimitive("key3", "value3")
             .addPrimitive(FLOW_SOURCE_IDENTIFIER_KEY, "source")
@@ -105,7 +105,7 @@ public class MysqlSpecStoreTest {
         .withDescription("Test flow spec 2")
         .withVersion("Test version 2")
         .build();
-    flowSpec3 = FlowSpec.builder(this.uri3)
+    flowSpec3 = new FlowSpec.Builder(this.uri3)
         .withConfig(ConfigBuilder.create().addPrimitive("key3", "value3")
             .addPrimitive(FLOW_SOURCE_IDENTIFIER_KEY, "source")
             .addPrimitive(FLOW_DESTINATION_IDENTIFIER_KEY, "destination")
@@ -115,7 +115,7 @@ public class MysqlSpecStoreTest {
         .withVersion("Test version 3")
         .build();
 
-    flowSpec4 = FlowSpec.builder(this.uri4)
+    flowSpec4 = new FlowSpec.Builder(this.uri4)
         .withConfig(ConfigBuilder.create().addPrimitive("key4", "value4")
             .addPrimitive(FLOW_SOURCE_IDENTIFIER_KEY, "source")
             .addPrimitive(FLOW_DESTINATION_IDENTIFIER_KEY, "destination")
@@ -205,7 +205,7 @@ public class MysqlSpecStoreTest {
 
     //Creating and inserting flowspecs with tags
     URI uri5 = URI.create("flowspec5");
-    FlowSpec flowSpec5 = FlowSpec.builder(uri5)
+    FlowSpec flowSpec5 = new FlowSpec.Builder(uri5)
         .withConfig(ConfigBuilder.create()
             .addPrimitive(FLOW_SOURCE_IDENTIFIER_KEY, "source")
             .addPrimitive(FLOW_DESTINATION_IDENTIFIER_KEY, "destination")
@@ -217,7 +217,7 @@ public class MysqlSpecStoreTest {
         .build();
 
     URI uri6 = URI.create("flowspec6");
-    FlowSpec flowSpec6 = FlowSpec.builder(uri6)
+    FlowSpec flowSpec6 = new FlowSpec.Builder(uri6)
         .withConfig(ConfigBuilder.create()
             .addPrimitive(FLOW_SOURCE_IDENTIFIER_KEY, "source")
             .addPrimitive(FLOW_DESTINATION_IDENTIFIER_KEY, "destination")

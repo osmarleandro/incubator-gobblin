@@ -92,10 +92,6 @@ public class FlowSpec implements Configurable, Spec {
   /** List of exceptions that occurred during compilation of this FlowSpec **/
   final Set<String> compilationErrors = new HashSet<>();
 
-  public static FlowSpec.Builder builder(URI flowSpecUri) {
-    return new FlowSpec.Builder(flowSpecUri);
-  }
-
   public static FlowSpec.Builder builder(String flowSpecUri) {
     return new FlowSpec.Builder(flowSpecUri);
   }

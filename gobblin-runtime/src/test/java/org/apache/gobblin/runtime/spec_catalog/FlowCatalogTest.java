@@ -99,7 +99,7 @@ public class FlowCatalogTest {
     SpecExecutor specExecutorInstanceProducer = new InMemorySpecExecutor(config);
 
     FlowSpec.Builder flowSpecBuilder = null;
-    flowSpecBuilder = FlowSpec.builder(uri)
+    flowSpecBuilder = new FlowSpec.Builder(uri)
         .withConfig(config)
         .withDescription(SPEC_DESCRIPTION)
         .withVersion(SPEC_VERSION)

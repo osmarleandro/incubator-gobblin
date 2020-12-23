@@ -141,8 +141,9 @@ public class OrchestratorTest {
 
     FlowSpec.Builder flowSpecBuilder = null;
     try {
-      flowSpecBuilder = FlowSpec.builder(computeTopologySpecURI(SPEC_STORE_PARENT_DIR,
-          FLOW_SPEC_GROUP_DIR))
+      URI flowSpecUri = computeTopologySpecURI(SPEC_STORE_PARENT_DIR,
+		      FLOW_SPEC_GROUP_DIR);
+	flowSpecBuilder = new FlowSpec.Builder(flowSpecUri)
           .withConfig(config)
           .withDescription(SPEC_DESCRIPTION)
           .withVersion(SPEC_VERSION)

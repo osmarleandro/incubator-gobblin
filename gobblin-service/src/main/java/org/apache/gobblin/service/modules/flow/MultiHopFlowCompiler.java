@@ -19,6 +19,7 @@ package org.apache.gobblin.service.modules.flow;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -293,7 +294,8 @@ public class MultiHopFlowCompiler extends BaseFlowToJobSpecCompiler {
   }
 
   private static FlowSpec copyFlowSpecWithNewConfig(FlowSpec flowSpec, Config newConfig) {
-    FlowSpec.Builder builder = FlowSpec.builder(flowSpec.getUri()).withVersion(flowSpec.getVersion())
+    URI flowSpecUri = flowSpec.getUri();
+	FlowSpec.Builder builder = new FlowSpec.Builder(flowSpecUri).withVersion(flowSpec.getVersion())
         .withDescription(flowSpec.getDescription()).withConfig(newConfig);
 
     if (flowSpec.getTemplateURIs().isPresent()) {

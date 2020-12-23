@@ -140,8 +140,9 @@ public class IdentityFlowToJobSpecCompilerTest {
 
     FlowSpec.Builder flowSpecBuilder = null;
     try {
-      flowSpecBuilder = FlowSpec.builder(computeTopologySpecURI(SPEC_STORE_PARENT_DIR,
-          FLOW_SPEC_STORE_DIR))
+      URI flowSpecUri = computeTopologySpecURI(SPEC_STORE_PARENT_DIR,
+		      FLOW_SPEC_STORE_DIR);
+	flowSpecBuilder = new FlowSpec.Builder(flowSpecUri)
           .withConfig(config)
           .withDescription("dummy description")
           .withVersion(SPEC_VERSION)
