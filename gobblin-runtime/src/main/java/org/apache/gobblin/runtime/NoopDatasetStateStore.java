@@ -75,11 +75,6 @@ public class NoopDatasetStateStore extends FsDatasetStateStore {
   public void persistDatasetState(String datasetUrn, JobState.DatasetState datasetState) throws IOException {}
 
   @Override
-  public boolean create(String storeName) throws IOException {
-    return true;
-  }
-
-  @Override
   public boolean create(String storeName, String tableName) throws IOException {
     return true;
   }
