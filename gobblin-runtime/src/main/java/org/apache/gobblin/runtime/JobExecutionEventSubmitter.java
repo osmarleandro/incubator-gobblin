@@ -95,24 +95,17 @@ public class JobExecutionEventSubmitter {
 
     // Submit event for each TaskState
     for (TaskState taskState : jobState.getTaskStates()) {
-      submitTaskStateEvent(taskState, jobMetadata);
+      ImmutableMap.Builder<String, String> taskMetadataBuilder = new ImmutableMap.Builder<>();
+	
+	taskMetadataBuilder.putAll(jobMetadata);
+	taskMetadataBuilder.put(METADATA_TASK_ID, taskState.getTaskId());
+	taskMetadataBuilder.put(METADATA_TASK_START_TIME, Long.toString(taskState.getStartTime()));
+	taskMetadataBuilder.put(METADATA_TASK_END_TIME, Long.toString(taskState.getEndTime()));
+	taskMetadataBuilder.put(METADATA_TASK_WORKING_STATE, taskState.getWorkingState().toString());
+	taskMetadataBuilder.put(METADATA_TASK_FAILURE_CONTEXT, taskState.getTaskFailureException().or(UNKNOWN_VALUE));
+	taskMetadataBuilder.put(EventSubmitter.EVENT_TYPE, TASK_STATE);
+	
+	this.eventSubmitter.submit(TASK_STATE, taskMetadataBuilder.build());
     }
-  }
-
-  /**
-   * Submits an event for a given {@link TaskState}. It will include all metadata specified in the jobMetadata parameter.
-   */
-  private void submitTaskStateEvent(TaskState taskState, Map<String, String> jobMetadata) {
-    ImmutableMap.Builder<String, String> taskMetadataBuilder = new ImmutableMap.Builder<>();
-
-    taskMetadataBuilder.putAll(jobMetadata);
-    taskMetadataBuilder.put(METADATA_TASK_ID, taskState.getTaskId());
-    taskMetadataBuilder.put(METADATA_TASK_START_TIME, Long.toString(taskState.getStartTime()));
-    taskMetadataBuilder.put(METADATA_TASK_END_TIME, Long.toString(taskState.getEndTime()));
-    taskMetadataBuilder.put(METADATA_TASK_WORKING_STATE, taskState.getWorkingState().toString());
-    taskMetadataBuilder.put(METADATA_TASK_FAILURE_CONTEXT, taskState.getTaskFailureException().or(UNKNOWN_VALUE));
-    taskMetadataBuilder.put(EventSubmitter.EVENT_TYPE, TASK_STATE);
-
-    this.eventSubmitter.submit(TASK_STATE, taskMetadataBuilder.build());
   }
 }
