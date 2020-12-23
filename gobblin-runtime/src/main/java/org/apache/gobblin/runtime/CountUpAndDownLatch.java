@@ -81,9 +81,4 @@ class CountUpAndDownLatch extends CountDownLatch {
   public long getRegisteredParties() {
     return this.phaser.getRegisteredParties();
   }
-
-  @Override
-  public String toString() {
-    return "Unarrived parties: " + this.phaser.getUnarrivedParties();
-  }
 }
