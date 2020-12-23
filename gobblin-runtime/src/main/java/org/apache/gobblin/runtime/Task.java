@@ -771,11 +771,6 @@ public class Task implements TaskIFace {
     this.taskState.setProp(ConfigurationKeys.TASK_RETRIES_KEY, this.retryCount.get());
   }
 
-  @Override
-  public String toString() {
-    return this.taskId;
-  }
-
   /**
    * Process a (possibly converted) record.
    */
