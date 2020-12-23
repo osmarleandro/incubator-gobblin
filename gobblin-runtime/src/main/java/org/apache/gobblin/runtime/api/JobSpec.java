@@ -377,14 +377,4 @@ public class JobSpec implements Configurable, Spec {
     stream.writeObject(templateURI.isPresent() ? templateURI.get() : null);
     stream.writeObject(configAsProperties);
   }
-
-  private void readObject(java.io.ObjectInputStream stream)
-      throws IOException, ClassNotFoundException {
-    uri = (URI) stream.readObject();
-    version = (String) stream.readObject();
-    description = (String) stream.readObject();
-    templateURI = Optional.fromNullable((URI) stream.readObject());
-    configAsProperties = (Properties) stream.readObject();
-    config = ConfigUtils.propertiesToConfig(configAsProperties);
-  }
 }
