@@ -699,19 +699,6 @@ public abstract class AbstractJobLauncher implements JobLauncher {
   }
 
   /**
-   * Get a {@link JobLock} to be used for the job.
-   *
-   * @param properties the job properties
-   * @param jobLockEventListener the listener for lock events.
-   * @return {@link JobLock} to be used for the job
-   * @throws JobLockException throw when the {@link JobLock} fails to initialize
-   */
-  protected JobLock getJobLock(Properties properties, JobLockEventListener jobLockEventListener)
-      throws JobLockException {
-    return LegacyJobLockFactoryManager.getJobLock(properties, jobLockEventListener);
-  }
-
-  /**
    * Execute the job cancellation.
    * The implementation should not throw any exceptions because that will kill the `Cancellation Executor` thread
    * and will create a deadlock.
@@ -807,12 +794,13 @@ public abstract class AbstractJobLauncher implements JobLauncher {
   private boolean tryLockJob(Properties properties) {
     try {
       if (Boolean.valueOf(properties.getProperty(ConfigurationKeys.JOB_LOCK_ENABLED_KEY, Boolean.TRUE.toString()))) {
-        this.jobLockOptional = Optional.of(getJobLock(properties, new JobLockEventListener() {
+        JobLockEventListener jobLockEventListener = new JobLockEventListener() {
           @Override
           public void onLost() {
             executeCancellation();
           }
-        }));
+        };
+		this.jobLockOptional = Optional.of(LegacyJobLockFactoryManager.getJobLock(properties, jobLockEventListener));
       }
       return !this.jobLockOptional.isPresent() || this.jobLockOptional.get().tryLock();
     } catch (JobLockException ioe) {
