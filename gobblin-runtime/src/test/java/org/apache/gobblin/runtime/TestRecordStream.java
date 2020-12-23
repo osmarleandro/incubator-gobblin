@@ -47,6 +47,7 @@ import org.apache.gobblin.publisher.TaskPublisher;
 import org.apache.gobblin.qualitychecker.row.RowLevelPolicyChecker;
 import org.apache.gobblin.qualitychecker.task.TaskLevelPolicyCheckResults;
 import org.apache.gobblin.qualitychecker.task.TaskLevelPolicyChecker;
+import org.apache.gobblin.qualitychecker.task.TaskLevelPolicyCheckerBuilderFactory;
 import org.apache.gobblin.records.ControlMessageHandler;
 import org.apache.gobblin.records.FlushControlMessageHandler;
 import org.apache.gobblin.records.RecordStreamProcessor;
@@ -269,7 +270,9 @@ public class TestRecordStream {
     when(mockTaskContext.getForkOperator()).thenReturn(new IdentityForkOperator());
     when(mockTaskContext.getTaskState()).thenReturn(taskState);
     when(mockTaskContext.getConverters()).thenReturn(Lists.newArrayList(converter));
-    when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class), anyInt()))
+	TaskState taskState1 = any(TaskState.class);
+	int index = anyInt();
+    when(TaskLevelPolicyCheckerBuilderFactory.newPolicyCheckerBuilder(taskState1, index).build())
         .thenReturn(mock(TaskLevelPolicyChecker.class));
     when(mockTaskContext.getRowLevelPolicyChecker()).
         thenReturn(new RowLevelPolicyChecker(Lists.newArrayList(), "ss", FileSystem.getLocal(new Configuration())));
@@ -329,7 +332,9 @@ public class TestRecordStream {
     when(mockTaskContext.getTaskState()).thenReturn(taskState);
     when(mockTaskContext.getConverters()).thenReturn(converters);
     when(mockTaskContext.getRecordStreamProcessors()).thenReturn(recordStreamProcessors);
-    when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class), anyInt()))
+	TaskState taskState1 = any(TaskState.class);
+	int index = anyInt();
+    when(TaskLevelPolicyCheckerBuilderFactory.newPolicyCheckerBuilder(taskState1, index).build())
         .thenReturn(mock(TaskLevelPolicyChecker.class));
     when(mockTaskContext.getRowLevelPolicyChecker()).
         thenReturn(new RowLevelPolicyChecker(Lists.newArrayList(), "ss", FileSystem.getLocal(new Configuration())));

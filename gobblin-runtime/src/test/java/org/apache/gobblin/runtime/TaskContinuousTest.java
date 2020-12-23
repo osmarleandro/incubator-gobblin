@@ -51,6 +51,7 @@ import org.apache.gobblin.publisher.TaskPublisher;
 import org.apache.gobblin.qualitychecker.row.RowLevelPolicyChecker;
 import org.apache.gobblin.qualitychecker.task.TaskLevelPolicyCheckResults;
 import org.apache.gobblin.qualitychecker.task.TaskLevelPolicyChecker;
+import org.apache.gobblin.qualitychecker.task.TaskLevelPolicyCheckerBuilderFactory;
 import org.apache.gobblin.source.extractor.CheckpointableWatermark;
 import org.apache.gobblin.source.extractor.DataRecordException;
 import org.apache.gobblin.source.extractor.DefaultCheckpointableWatermark;
@@ -364,7 +365,9 @@ public class TaskContinuousTest {
         .thenReturn(mockTaskPublisher);
     when(mockTaskContext.getRowLevelPolicyChecker()).thenReturn(mockRowLevelPolicyChecker);
     when(mockTaskContext.getRowLevelPolicyChecker(anyInt())).thenReturn(mockRowLevelPolicyChecker);
-    when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class), anyInt())).thenReturn(mock(TaskLevelPolicyChecker.class));
+	TaskState taskState1 = any(TaskState.class);
+	int index = anyInt();
+    when(TaskLevelPolicyCheckerBuilderFactory.newPolicyCheckerBuilder(taskState1, index).build()).thenReturn(mock(TaskLevelPolicyChecker.class));
     when(mockTaskContext.getDataWriterBuilder(anyInt(), anyInt())).thenReturn(new TestStreamingDataWriterBuilder(recordCollector,
         errorAtCount));
     return mockTaskContext;

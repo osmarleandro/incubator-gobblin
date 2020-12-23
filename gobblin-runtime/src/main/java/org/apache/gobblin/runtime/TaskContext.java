@@ -331,19 +331,6 @@ public class TaskContext {
   }
 
   /**
-   * Get a post-fork {@link TaskLevelPolicyChecker} for executing task-level
-   * {@link org.apache.gobblin.qualitychecker.task.TaskLevelPolicy} in the given branch.
-   *
-   * @param taskState {@link TaskState} of a {@link Task}
-   * @param index branch index
-   * @return a {@link TaskLevelPolicyChecker}
-   * @throws Exception
-   */
-  public TaskLevelPolicyChecker getTaskLevelPolicyChecker(TaskState taskState, int index) throws Exception {
-    return TaskLevelPolicyCheckerBuilderFactory.newPolicyCheckerBuilder(taskState, index).build();
-  }
-
-  /**
    * Get a post-fork {@link TaskPublisher} for publishing data in the given branch.
    *
    * @param taskState {@link TaskState} of a {@link Task}

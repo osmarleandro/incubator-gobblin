@@ -46,6 +46,7 @@ import org.apache.gobblin.publisher.TaskPublisher;
 import org.apache.gobblin.qualitychecker.row.RowLevelPolicyCheckResults;
 import org.apache.gobblin.qualitychecker.row.RowLevelPolicyChecker;
 import org.apache.gobblin.qualitychecker.task.TaskLevelPolicyCheckResults;
+import org.apache.gobblin.qualitychecker.task.TaskLevelPolicyCheckerBuilderFactory;
 import org.apache.gobblin.records.RecordStreamConsumer;
 import org.apache.gobblin.records.RecordStreamProcessor;
 import org.apache.gobblin.records.RecordStreamWithMetadata;
@@ -600,8 +601,10 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
 
     try {
       // Do task-level quality checking
-      TaskLevelPolicyCheckResults taskResults =
-          this.taskContext.getTaskLevelPolicyChecker(this.forkTaskState, this.branches > 1 ? this.index : -1)
+      int index1 = this.branches > 1 ? this.index : -1;
+		TaskContext r = this.taskContext;
+	TaskLevelPolicyCheckResults taskResults =
+          TaskLevelPolicyCheckerBuilderFactory.newPolicyCheckerBuilder(this.forkTaskState, index1).build()
               .executePolicies();
       TaskPublisher publisher = this.taskContext.getTaskPublisher(this.forkTaskState, taskResults);
       switch (publisher.canPublish()) {
