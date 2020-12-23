@@ -58,6 +58,7 @@ import org.apache.gobblin.rest.Metric;
 import org.apache.gobblin.rest.MetricArray;
 import org.apache.gobblin.rest.MetricTypeEnum;
 import org.apache.gobblin.rest.TaskExecutionInfoArray;
+import org.apache.gobblin.runtime.JobState.DatasetState;
 import org.apache.gobblin.runtime.api.MonitoredObject;
 import org.apache.gobblin.runtime.util.JobMetrics;
 import org.apache.gobblin.runtime.util.MetricGroup;
@@ -466,28 +467,30 @@ public class JobState extends SourceState implements JobProgress {
     Map<String, DatasetState> datasetStatesByUrns = Maps.newHashMap();
 
     for (TaskState taskState : this.taskStates.values()) {
-      String datasetUrn = createDatasetUrn(datasetStatesByUrns, taskState);
+      String datasetUrn1 = taskState.getProp(ConfigurationKeys.DATASET_URN_KEY, ConfigurationKeys.DEFAULT_DATASET_URN);
+		if (!datasetStatesByUrns.containsKey(datasetUrn1)) {
+		  DatasetState datasetState = newDatasetState(false);
+		  datasetState.setDatasetUrn(datasetUrn1);
+		  datasetStatesByUrns.put(datasetUrn1, datasetState);
+		}
+	String datasetUrn = datasetUrn1;
 
       datasetStatesByUrns.get(datasetUrn).incrementTaskCount();
       datasetStatesByUrns.get(datasetUrn).addTaskState(taskState);
     }
 
     for (TaskState taskState : this.skippedTaskStates.values()) {
-      String datasetUrn = createDatasetUrn(datasetStatesByUrns, taskState);
+      String datasetUrn1 = taskState.getProp(ConfigurationKeys.DATASET_URN_KEY, ConfigurationKeys.DEFAULT_DATASET_URN);
+		if (!datasetStatesByUrns.containsKey(datasetUrn1)) {
+		  DatasetState datasetState = newDatasetState(false);
+		  datasetState.setDatasetUrn(datasetUrn1);
+		  datasetStatesByUrns.put(datasetUrn1, datasetState);
+		}
+	String datasetUrn = datasetUrn1;
       datasetStatesByUrns.get(datasetUrn).addSkippedTaskState(taskState);
     }
 
     return ImmutableMap.copyOf(datasetStatesByUrns);
-  }
-
-  private String createDatasetUrn(Map<String, DatasetState> datasetStatesByUrns, TaskState taskState) {
-    String datasetUrn = taskState.getProp(ConfigurationKeys.DATASET_URN_KEY, ConfigurationKeys.DEFAULT_DATASET_URN);
-    if (!datasetStatesByUrns.containsKey(datasetUrn)) {
-      DatasetState datasetState = newDatasetState(false);
-      datasetState.setDatasetUrn(datasetUrn);
-      datasetStatesByUrns.put(datasetUrn, datasetState);
-    }
-    return datasetUrn;
   }
 
   /**
