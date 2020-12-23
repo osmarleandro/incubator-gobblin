@@ -196,7 +196,10 @@ public abstract class AbstractJobLauncher implements JobLauncher {
 
     try {
       if (instanceBroker == null) {
-        instanceBroker = createDefaultInstanceBroker(jobProps);
+        LOG.warn("Creating a job specific {}. Objects will only be shared at the job level.",
+		SharedResourcesBroker.class.getSimpleName());
+		instanceBroker = SharedResourcesBrokerFactory.createDefaultTopLevelBroker(ConfigFactory.parseProperties(jobProps),
+		GobblinScopeTypes.GLOBAL.defaultScopeInstance());
       }
 
       this.jobContext = new JobContext(this.jobProps, LOG, instanceBroker);
@@ -256,13 +259,6 @@ public abstract class AbstractJobLauncher implements JobLauncher {
     if (jobSpec != null ) {
       jobProps.putAll(ConfigUtils.configToProperties(resolver.resolveJobSpec(jobSpec).getConfig()));
     }
-  }
-
-  private static SharedResourcesBroker<GobblinScopeTypes> createDefaultInstanceBroker(Properties jobProps) {
-    LOG.warn("Creating a job specific {}. Objects will only be shared at the job level.",
-        SharedResourcesBroker.class.getSimpleName());
-    return SharedResourcesBrokerFactory.createDefaultTopLevelBroker(ConfigFactory.parseProperties(jobProps),
-        GobblinScopeTypes.GLOBAL.defaultScopeInstance());
   }
 
   /**
