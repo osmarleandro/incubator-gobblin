@@ -277,12 +277,6 @@ public class FsDatasetStateStore extends FsStateStore<JobState.DatasetState> imp
     return states;
   }
 
-  @Override
-  public List<JobState.DatasetState> getAll(String storeName)
-      throws IOException {
-    return super.getAll(storeName);
-  }
-
   /**
    * Get a {@link Map} from dataset URNs to the latest {@link JobState.DatasetState}s.
    *
