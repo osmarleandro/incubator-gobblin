@@ -330,7 +330,15 @@ public class JobContext implements Closeable {
       this.jobState.setProp(ConfigurationKeys.TASK_DATA_ROOT_DIR_KEY, taskDataRootDirWithJobId);
 
       setTaskStagingDir();
-      setTaskOutputDir();
+      if (this.jobState.contains(ConfigurationKeys.WRITER_OUTPUT_DIR)) {
+	  LOG.warn(String.format("Property %s is deprecated. No need to use it if %s is specified.",
+	      ConfigurationKeys.WRITER_OUTPUT_DIR, ConfigurationKeys.TASK_DATA_ROOT_DIR_KEY));
+	} else {
+	  String workingDir = this.jobState.getProp(ConfigurationKeys.TASK_DATA_ROOT_DIR_KEY);
+	  this.jobState.setProp(ConfigurationKeys.WRITER_OUTPUT_DIR, new Path(workingDir, TASK_OUTPUT_DIR_NAME).toString());
+	  LOG.info(String
+	      .format("Writer Output Directory is set to %s.", this.jobState.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR)));
+	}
     } else {
       LOG.warn("Property " + ConfigurationKeys.TASK_DATA_ROOT_DIR_KEY + " is missing.");
     }
@@ -352,24 +360,6 @@ public class JobContext implements Closeable {
           .setProp(ConfigurationKeys.WRITER_STAGING_DIR, new Path(workingDir, TASK_STAGING_DIR_NAME).toString());
       LOG.info(String.format("Writer Staging Directory is set to %s.",
           this.jobState.getProp(ConfigurationKeys.WRITER_STAGING_DIR)));
-    }
-  }
-
-  /**
-   * If {@link ConfigurationKeys#WRITER_OUTPUT_DIR} (which is deprecated) is specified, use its value.
-   *
-   * Otherwise, if {@link ConfigurationKeys#TASK_DATA_ROOT_DIR_KEY} is specified, use its value
-   * plus {@link #TASK_OUTPUT_DIR_NAME}.
-   */
-  private void setTaskOutputDir() {
-    if (this.jobState.contains(ConfigurationKeys.WRITER_OUTPUT_DIR)) {
-      LOG.warn(String.format("Property %s is deprecated. No need to use it if %s is specified.",
-          ConfigurationKeys.WRITER_OUTPUT_DIR, ConfigurationKeys.TASK_DATA_ROOT_DIR_KEY));
-    } else {
-      String workingDir = this.jobState.getProp(ConfigurationKeys.TASK_DATA_ROOT_DIR_KEY);
-      this.jobState.setProp(ConfigurationKeys.WRITER_OUTPUT_DIR, new Path(workingDir, TASK_OUTPUT_DIR_NAME).toString());
-      LOG.info(String
-          .format("Writer Output Directory is set to %s.", this.jobState.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR)));
     }
   }
 
