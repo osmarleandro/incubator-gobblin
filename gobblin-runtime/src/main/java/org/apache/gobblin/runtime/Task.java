@@ -295,11 +295,6 @@ public class Task implements TaskIFace {
     }
   }
 
-  protected boolean areSingleBranchTasksSynchronous(TaskContext taskContext) {
-    return BooleanUtils.toBoolean(taskContext.getTaskState()
-            .getProp(TaskConfigurationKeys.TASK_IS_SINGLE_BRANCH_SYNCHRONOUS, TaskConfigurationKeys.DEFAULT_TASK_IS_SINGLE_BRANCH_SYNCHRONOUS));
-  }
-
   protected boolean isStreamingTask() {
     return this.taskMode.equals(ExecutionModel.STREAMING);
   }
@@ -437,7 +432,8 @@ public class Task implements TaskIFace {
 
     RowLevelPolicyCheckResults rowResults = new RowLevelPolicyCheckResults();
 
-    if (!areSingleBranchTasksSynchronous(this.taskContext) || branches > 1) {
+    if (!BooleanUtils.toBoolean(this.taskContext.getTaskState()
+	.getProp(TaskConfigurationKeys.TASK_IS_SINGLE_BRANCH_SYNCHRONOUS, TaskConfigurationKeys.DEFAULT_TASK_IS_SINGLE_BRANCH_SYNCHRONOUS)) || branches > 1) {
       // Create one fork for each forked branch
       for (int i = 0; i < branches; i++) {
         if (forkedSchemas.get(i)) {

@@ -28,6 +28,7 @@ import com.google.common.base.Optional;
 import com.google.common.io.Closer;
 import com.google.common.util.concurrent.Futures;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.converter.Converter;
 import org.apache.gobblin.fork.ForkOperator;
@@ -132,8 +133,10 @@ public class StreamModelTaskRunner {
     stream = this.rowChecker.processStream(stream, this.taskState);
 
     Forker.ForkedStream<?, ?> forkedStreams = new Forker().forkStream(stream, forkOperator, this.taskState);
+	Task r1 = this.task;
 
-    boolean isForkAsync = !this.task.areSingleBranchTasksSynchronous(this.taskContext) || forkedStreams.getForkedStreams().size() > 1;
+    boolean isForkAsync = !BooleanUtils.toBoolean(this.taskContext.getTaskState()
+	.getProp(TaskConfigurationKeys.TASK_IS_SINGLE_BRANCH_SYNCHRONOUS, TaskConfigurationKeys.DEFAULT_TASK_IS_SINGLE_BRANCH_SYNCHRONOUS)) || forkedStreams.getForkedStreams().size() > 1;
     int bufferSize =
         this.taskState.getPropAsInt(ConfigurationKeys.FORK_RECORD_QUEUE_CAPACITY_KEY, ConfigurationKeys.DEFAULT_FORK_RECORD_QUEUE_CAPACITY);
 
