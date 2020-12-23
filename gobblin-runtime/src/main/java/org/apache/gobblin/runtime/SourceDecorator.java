@@ -116,9 +116,4 @@ public class SourceDecorator<S, D> implements WorkUnitStreamSource<S, D>, Decora
   public Object getDecoratedObject() {
     return this.source;
   }
-
-  @Override
-  public boolean isEarlyStopped() {
-    return this.source.isEarlyStopped();
-  }
 }
