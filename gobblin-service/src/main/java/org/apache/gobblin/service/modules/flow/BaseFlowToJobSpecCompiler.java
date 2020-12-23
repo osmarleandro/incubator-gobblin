@@ -152,7 +152,7 @@ public abstract class BaseFlowToJobSpecCompiler implements SpecCompiler {
   @Override
   public synchronized AddSpecResponse onAddSpec(Spec addedSpec) {
     TopologySpec spec = (TopologySpec) addedSpec;
-    log.info ("Loading topology {}", spec.toLongString());
+    log.info ("Loading topology {}", spec.getUri().toString() + "/" + spec.getVersion() + "[" + spec.getDescription() + "]");
     for (Map.Entry entry: spec.getConfigAsProperties().entrySet()) {
       log.info ("topo: {} --> {}", entry.getKey(), entry.getValue());
     }
