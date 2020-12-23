@@ -114,21 +114,6 @@ public class JobLauncherFactory {
    * @param launcherTypeValue the type of the launcher; either a {@link JobLauncherType} value or
    *        the name of the class that extends {@link AbstractJobLauncher} and has a constructor
    *        that has a single Properties parameter..
-   * @return the JobLauncher instance
-   * @throws RuntimeException if the instantiation fails
-   */
-  public static JobLauncher newJobLauncher(Properties sysProps, Properties jobProps,
-      String launcherTypeValue, SharedResourcesBroker<GobblinScopeTypes> instanceBroker) {
-    return newJobLauncher(sysProps, jobProps, launcherTypeValue, instanceBroker, ImmutableList.of());
-  }
-
-  /**
-   * Creates a new instance for a JobLauncher with a given type
-   * @param sysProps          the system/environment properties
-   * @param jobProps          the job properties
-   * @param launcherTypeValue the type of the launcher; either a {@link JobLauncherType} value or
-   *        the name of the class that extends {@link AbstractJobLauncher} and has a constructor
-   *        that has a single Properties parameter..
    * @param metadataTags additional metadata to be added to timing events
    * @return the JobLauncher instance
    * @throws RuntimeException if the instantiation fails

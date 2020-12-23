@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.io.Closer;
 import com.google.common.util.concurrent.ExecutionList;
 import com.typesafe.config.ConfigFactory;
@@ -170,8 +171,10 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
   private static JobLauncher createLauncher(Configurable _sysConfig, JobSpec _jobSpec, Logger _log,
       Optional<String> jobLauncherType, SharedResourcesBroker<GobblinScopeTypes> instanceBroker) {
     if (jobLauncherType.isPresent()) {
-      return JobLauncherFactory.newJobLauncher(_sysConfig.getConfigAsProperties(),
-             _jobSpec.getConfigAsProperties(), jobLauncherType.get(), instanceBroker);
+      Properties sysProps = _sysConfig.getConfigAsProperties();
+		Properties jobProps = _jobSpec.getConfigAsProperties();
+		String launcherTypeValue = jobLauncherType.get();
+	return JobLauncherFactory.newJobLauncher(sysProps, jobProps, launcherTypeValue, instanceBroker, ImmutableList.of());
     }
     else {
       _log.info("Creating auto jobLauncher for " + _jobSpec);
