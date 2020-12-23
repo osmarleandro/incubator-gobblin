@@ -57,11 +57,6 @@ public class NoopDatasetStateStore extends FsDatasetStateStore {
   }
 
   @Override
-  public List<JobState.DatasetState> getAll(String storeName, String tableName) throws IOException {
-    return Lists.newArrayList();
-  }
-
-  @Override
   public List<JobState.DatasetState> getAll(String storeName) throws IOException {
     return Lists.newArrayList();
   }
