@@ -40,6 +40,7 @@ import com.google.common.io.Closer;
 import com.google.common.base.Optional;
 
 import org.apache.gobblin.configuration.ConfigurationKeys;
+import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ParallelRunner;
 import org.apache.gobblin.metastore.FsStateStore;
@@ -214,7 +215,9 @@ public class TaskStateCollectorService extends AbstractScheduledService {
       } catch (Throwable t) {
         if (isJobProceedOnCollectorServiceFailure) {
           log.error("Failed to commit dataset while job proceeds", t);
-          SafeDatasetCommit.setTaskFailureException(taskStateQueue, t);
+          for (WorkUnitState taskState1 : taskStateQueue) {
+		  ((TaskState) taskState1).setTaskFailureException(t);
+		}
         } else {
           throw new RuntimeException("Hive Registration as the TaskStateCollectorServiceHandler failed.", t);
         }

@@ -258,7 +258,9 @@ final class SafeDatasetCommit implements Callable<Void> {
       publisher.publish(taskStates);
     } catch (Throwable t) {
       log.error("Failed to commit dataset", t);
-      setTaskFailureException(taskStates, t);
+      for (WorkUnitState taskState : taskStates) {
+	  ((TaskState) taskState).setTaskFailureException(t);
+	}
     }
   }
 
@@ -363,7 +365,10 @@ final class SafeDatasetCommit implements Callable<Void> {
       return publisher.getCommitSequenceBuilder();
     } catch (Throwable t) {
       log.error("Failed to generate commit sequence", t);
-      setTaskFailureException(datasetState.getTaskStates(), t);
+	Collection<? extends WorkUnitState> taskStates1 = datasetState.getTaskStates();
+      for (WorkUnitState taskState : taskStates1) {
+	  ((TaskState) taskState).setTaskFailureException(t);
+	}
       throw Throwables.propagate(t);
     }
   }
@@ -410,18 +415,6 @@ final class SafeDatasetCommit implements Callable<Void> {
       throws IOException {
     log.info("Persisting dataset state for dataset " + datasetUrn);
     this.jobContext.getDatasetStateStore().persistDatasetState(datasetUrn, datasetState);
-  }
-
-  /**
-   * Sets the {@link ConfigurationKeys#TASK_FAILURE_EXCEPTION_KEY} for each given {@link TaskState} to the given
-   * {@link Throwable}.
-   *
-   * Make this method public as this exception catching routine can be reusable in other occasions as well.
-   */
-  public static void setTaskFailureException(Collection<? extends WorkUnitState> taskStates, Throwable t) {
-    for (WorkUnitState taskState : taskStates) {
-      ((TaskState) taskState).setTaskFailureException(t);
-    }
   }
 
   private static Optional<CommitStep> buildDatasetStateCommitStep(String datasetUrn,
