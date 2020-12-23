@@ -46,6 +46,7 @@ import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.runtime.api.FsSpecConsumer;
 import org.apache.gobblin.runtime.api.FsSpecProducer;
 import org.apache.gobblin.runtime.api.JobSpec;
+import org.apache.gobblin.runtime.api.JobSpec.Builder;
 import org.apache.gobblin.runtime.api.JobSpecNotFoundException;
 import org.apache.gobblin.runtime.api.MutableJobCatalog;
 import org.apache.gobblin.runtime.api.SpecExecutor;
@@ -112,8 +113,9 @@ public class FsJobConfigurationManagerTest {
 
   private void addJobSpec(String jobSpecName, String version, String verb)
       throws URISyntaxException, IOException {
-    JobSpec jobSpec =
-        JobSpec.builder(new URI(Files.getNameWithoutExtension(jobSpecName)))
+    URI jobSpecUri = new URI(Files.getNameWithoutExtension(jobSpecName));
+	JobSpec jobSpec =
+        new Builder(jobSpecUri)
             .withConfig(ConfigFactory.empty())
             .withTemplate(new URI("FS:///"))
             .withVersion(version)

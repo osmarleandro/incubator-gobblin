@@ -81,10 +81,6 @@ public class JobSpec implements Configurable, Spec {
   public static final String VERB_KEY = "Verb";
   private static final String IN_MEMORY_TEMPLATE_URI = "inmemory";
 
-  public static Builder builder(URI jobSpecUri) {
-    return new Builder(jobSpecUri);
-  }
-
   public static Builder builder(String jobSpecUri) {
     return new Builder(jobSpecUri);
   }

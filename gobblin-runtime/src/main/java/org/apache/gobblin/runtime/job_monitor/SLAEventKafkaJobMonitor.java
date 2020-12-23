@@ -42,6 +42,7 @@ import org.apache.gobblin.metrics.reporter.util.NoopSchemaVersionWriter;
 import org.apache.gobblin.metrics.reporter.util.SchemaVersionWriter;
 import org.apache.gobblin.runtime.api.GobblinInstanceDriver;
 import org.apache.gobblin.runtime.api.JobSpec;
+import org.apache.gobblin.runtime.api.JobSpec.Builder;
 import org.apache.gobblin.runtime.api.JobSpecMonitor;
 import org.apache.gobblin.runtime.api.JobSpecMonitorFactory;
 import org.apache.gobblin.runtime.api.MutableJobCatalog;
@@ -190,7 +191,7 @@ public class SLAEventKafkaJobMonitor extends KafkaAvroJobMonitor<GobblinTracking
     }
     Config jobConfig = ConfigFactory.parseMap(jobConfigMap);
 
-    JobSpec jobSpec = JobSpec.builder(jobSpecURI).withTemplate(this.template).withConfig(jobConfig).build();
+    JobSpec jobSpec = new Builder(jobSpecURI).withTemplate(this.template).withConfig(jobConfig).build();
 
     return Lists.newArrayList(Either.<JobSpec, URI>left(jobSpec));
   }

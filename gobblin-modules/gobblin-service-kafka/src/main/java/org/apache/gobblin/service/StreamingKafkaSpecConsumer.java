@@ -47,6 +47,7 @@ import org.apache.gobblin.instrumented.Instrumented;
 import org.apache.gobblin.instrumented.StandardMetricsBridge;
 import org.apache.gobblin.metrics.MetricContext;
 import org.apache.gobblin.runtime.api.JobSpec;
+import org.apache.gobblin.runtime.api.JobSpec.Builder;
 import org.apache.gobblin.runtime.api.MutableJobCatalog;
 import org.apache.gobblin.runtime.api.Spec;
 import org.apache.gobblin.runtime.api.SpecConsumer;
@@ -167,7 +168,7 @@ public class StreamingKafkaSpecConsumer extends AbstractIdleService implements S
     @Override public void onDeleteJob(URI deletedJobURI, String deletedJobVersion) {
       super.onDeleteJob(deletedJobURI, deletedJobVersion);
       try {
-        JobSpec.Builder jobSpecBuilder = JobSpec.builder(deletedJobURI);
+        JobSpec.Builder jobSpecBuilder = new Builder(deletedJobURI);
 
         Properties props = new Properties();
         jobSpecBuilder.withVersion(deletedJobVersion).withConfigAsProperties(props);
@@ -183,7 +184,7 @@ public class StreamingKafkaSpecConsumer extends AbstractIdleService implements S
     public void onCancelJob(URI cancelledJobURI) {
       super.onCancelJob(cancelledJobURI);
       try {
-        JobSpec.Builder jobSpecBuilder = JobSpec.builder(cancelledJobURI);
+        JobSpec.Builder jobSpecBuilder = new Builder(cancelledJobURI);
         jobSpecBuilder.withConfigAsProperties(new Properties());
         _jobSpecQueue.put(new ImmutablePair<>(SpecExecutor.Verb.CANCEL, jobSpecBuilder.build()));
       } catch (InterruptedException e) {

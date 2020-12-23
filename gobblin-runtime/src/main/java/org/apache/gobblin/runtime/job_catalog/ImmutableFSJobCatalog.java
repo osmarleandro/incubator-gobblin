@@ -49,6 +49,7 @@ import org.apache.gobblin.metrics.MetricContext;
 import org.apache.gobblin.runtime.api.GobblinInstanceEnvironment;
 import org.apache.gobblin.runtime.api.JobCatalog;
 import org.apache.gobblin.runtime.api.JobSpec;
+import org.apache.gobblin.runtime.api.JobSpec.Builder;
 import org.apache.gobblin.runtime.api.JobSpecNotFoundException;
 import org.apache.gobblin.util.PathUtils;
 import org.apache.gobblin.util.PullFileLoader;
@@ -343,7 +344,7 @@ public class ImmutableFSJobCatalog extends JobCatalogBase implements JobCatalog 
 
       Config filteredConfig = rawConfig.withoutPath(FS_CATALOG_KEY_PREFIX);
       // The builder has null-checker. Leave the checking there.
-      JobSpec.Builder builder = JobSpec.builder(jobConfigURI).withConfig(filteredConfig)
+      JobSpec.Builder builder = new Builder(jobConfigURI).withConfig(filteredConfig)
           .withDescription(description)
           .withVersion(version);
 

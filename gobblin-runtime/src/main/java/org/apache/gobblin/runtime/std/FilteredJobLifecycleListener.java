@@ -25,6 +25,7 @@ import org.apache.gobblin.runtime.api.JobExecutionDriver;
 import org.apache.gobblin.runtime.api.JobExecutionState;
 import org.apache.gobblin.runtime.api.JobLifecycleListener;
 import org.apache.gobblin.runtime.api.JobSpec;
+import org.apache.gobblin.runtime.api.JobSpec.Builder;
 import org.apache.gobblin.runtime.api.JobSpecSchedule;
 
 import lombok.AllArgsConstructor;
@@ -52,7 +53,7 @@ public class FilteredJobLifecycleListener implements JobLifecycleListener {
    *  NOTE: For this callback only conditions on the URI and version will be used.
    * */
   @Override public void onDeleteJob(URI deletedJobURI, String deletedJobVersion) {
-    JobSpec fakeJobSpec = JobSpec.builder(deletedJobURI).withVersion(deletedJobVersion).build();
+    JobSpec fakeJobSpec = new Builder(deletedJobURI).withVersion(deletedJobVersion).build();
     if (this.filter.apply(fakeJobSpec)) {
       this.delegate.onDeleteJob(deletedJobURI, deletedJobVersion);
     }

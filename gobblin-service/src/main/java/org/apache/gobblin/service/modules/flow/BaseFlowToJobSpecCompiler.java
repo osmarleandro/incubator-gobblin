@@ -47,6 +47,7 @@ import org.apache.gobblin.metrics.MetricContext;
 import org.apache.gobblin.metrics.Tag;
 import org.apache.gobblin.runtime.api.FlowSpec;
 import org.apache.gobblin.runtime.api.JobSpec;
+import org.apache.gobblin.runtime.api.JobSpec.Builder;
 import org.apache.gobblin.runtime.api.JobTemplate;
 import org.apache.gobblin.runtime.api.Spec;
 import org.apache.gobblin.runtime.api.SpecNotFoundException;
@@ -218,7 +219,8 @@ public abstract class BaseFlowToJobSpecCompiler implements SpecCompiler {
    */
   protected JobSpec jobSpecGenerator(FlowSpec flowSpec) {
     JobSpec jobSpec;
-    JobSpec.Builder jobSpecBuilder = JobSpec.builder(jobSpecURIGenerator(flowSpec))
+	URI jobSpecUri = jobSpecURIGenerator(flowSpec);
+    JobSpec.Builder jobSpecBuilder = new Builder(jobSpecUri)
         .withConfig(flowSpec.getConfig())
         .withDescription(flowSpec.getDescription())
         .withVersion(flowSpec.getVersion());
