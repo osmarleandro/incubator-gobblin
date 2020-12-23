@@ -32,7 +32,7 @@ import org.mockito.Mockito;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
+import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.metrics.event.EventSubmitter;
 import org.apache.gobblin.rest.LauncherTypeEnum;
@@ -55,7 +55,7 @@ public class JobExecutionEventSubmitterTest {
     JobState mockJobState = mock(JobState.class, Mockito.RETURNS_SMART_NULLS);
     when(mockJobState.getState()).thenReturn(JobState.RunningState.SUCCESSFUL);
     when(mockJobState.getLauncherType()).thenReturn(LauncherTypeEnum.$UNKNOWN);
-    when(mockJobState.getTrackingURL()).thenReturn(Optional.<String> absent());
+    when(Optional.fromNullable(mockJobState.getProp(ConfigurationKeys.JOB_TRACKING_URL_KEY))).thenReturn(Optional.<String> absent());
 
     TaskState mockTaskState1 = createMockTaskState();
     TaskState mockTaskState2 = createMockTaskState();

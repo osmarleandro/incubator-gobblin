@@ -31,8 +31,10 @@ import static org.apache.gobblin.metrics.event.TaskEvent.*;
 
 import java.util.Map;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
+import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.metrics.event.EventSubmitter;
 
 import lombok.AllArgsConstructor;
@@ -76,7 +78,7 @@ public class JobExecutionEventSubmitter {
     jobMetadataBuilder.put(METADATA_JOB_LAUNCHED_TASKS, Integer.toString(jobState.getTaskCount()));
     jobMetadataBuilder.put(METADATA_JOB_COMPLETED_TASKS, Integer.toString(jobState.getCompletedTasks()));
     jobMetadataBuilder.put(METADATA_JOB_LAUNCHER_TYPE, jobState.getLauncherType().toString());
-    jobMetadataBuilder.put(METADATA_JOB_TRACKING_URL, jobState.getTrackingURL().or(UNKNOWN_VALUE));
+    jobMetadataBuilder.put(METADATA_JOB_TRACKING_URL, Optional.fromNullable(jobState.getProp(ConfigurationKeys.JOB_TRACKING_URL_KEY)).or(UNKNOWN_VALUE));
     jobMetadataBuilder.put(EventSubmitter.EVENT_TYPE, JOB_STATE);
 
     this.eventSubmitter.submit(JOB_STATE, jobMetadataBuilder.build());
@@ -90,7 +92,7 @@ public class JobExecutionEventSubmitter {
     ImmutableMap.Builder<String, String> jobMetadataBuilder = new ImmutableMap.Builder<>();
     jobMetadataBuilder.put(METADATA_JOB_ID, jobState.getJobId());
     jobMetadataBuilder.put(METADATA_JOB_NAME, jobState.getJobName());
-    jobMetadataBuilder.put(METADATA_JOB_TRACKING_URL, jobState.getTrackingURL().or(UNKNOWN_VALUE));
+    jobMetadataBuilder.put(METADATA_JOB_TRACKING_URL, Optional.fromNullable(jobState.getProp(ConfigurationKeys.JOB_TRACKING_URL_KEY)).or(UNKNOWN_VALUE));
     Map<String, String> jobMetadata = jobMetadataBuilder.build();
 
     // Submit event for each TaskState

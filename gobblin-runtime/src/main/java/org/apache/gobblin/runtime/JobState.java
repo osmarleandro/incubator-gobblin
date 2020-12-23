@@ -523,13 +523,6 @@ public class JobState extends SourceState implements JobProgress {
     this.setProp(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY, jobLauncherType.name());
   }
 
-  /**
-   * Get the tracking URL for this {@link JobState}.
-   */
-  public Optional<String> getTrackingURL() {
-    return Optional.fromNullable(this.getProp(ConfigurationKeys.JOB_TRACKING_URL_KEY));
-  }
-
   @Override
   public void readFields(DataInput in)
       throws IOException {
@@ -715,8 +708,8 @@ public class JobState extends SourceState implements JobProgress {
     jobExecutionInfo.setLaunchedTasks(this.taskCount);
     jobExecutionInfo.setCompletedTasks(this.getCompletedTasks());
     jobExecutionInfo.setLauncherType(getLauncherType());
-    if (getTrackingURL().isPresent()) {
-      jobExecutionInfo.setTrackingUrl(getTrackingURL().get());
+    if (Optional.fromNullable(this.getProp(ConfigurationKeys.JOB_TRACKING_URL_KEY)).isPresent()) {
+      jobExecutionInfo.setTrackingUrl(Optional.fromNullable(this.getProp(ConfigurationKeys.JOB_TRACKING_URL_KEY)).get());
     }
 
     // Add task execution information
