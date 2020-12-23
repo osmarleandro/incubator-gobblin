@@ -28,6 +28,7 @@ import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
@@ -420,7 +421,8 @@ public class GobblinMultiTaskAttempt {
         countDownLatch.countUp();
         task = createTaskWithRetry(workUnitState, countDownLatch);
         this.taskStateTracker.registerNewTask(task);
-        task.setTaskFuture(this.taskExecutor.submit(task));
+		Future<?> taskFuture = this.taskExecutor.submit(task);
+        task.taskFuture = taskFuture;
         tasks.add(task);
       } catch (Throwable e) {
         if (e instanceof OutOfMemoryError) {

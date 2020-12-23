@@ -1021,10 +1021,6 @@ public class Task implements TaskIFace {
     return true;
   }
 
-  public synchronized void setTaskFuture(Future<?> taskFuture) {
-    this.taskFuture = taskFuture;
-  }
-
   @VisibleForTesting
   boolean hasTaskFuture() {
     return this.taskFuture != null;
