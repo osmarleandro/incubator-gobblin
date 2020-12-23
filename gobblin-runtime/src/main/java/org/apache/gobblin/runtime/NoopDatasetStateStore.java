@@ -67,11 +67,6 @@ public class NoopDatasetStateStore extends FsDatasetStateStore {
   }
 
   @Override
-  public Map<String, JobState.DatasetState> getLatestDatasetStatesByUrns(String jobName) throws IOException {
-    return Maps.newHashMap();
-  }
-
-  @Override
   public void persistDatasetState(String datasetUrn, JobState.DatasetState datasetState) throws IOException {}
 
   @Override
