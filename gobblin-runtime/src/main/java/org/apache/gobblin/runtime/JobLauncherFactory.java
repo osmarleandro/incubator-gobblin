@@ -65,26 +65,8 @@ public class JobLauncherFactory {
    * @return newly created {@link JobLauncher}
    */
   public static @Nonnull JobLauncher newJobLauncher(Properties sysProps, Properties jobProps) throws Exception {
-    return newJobLauncher(sysProps, jobProps, null);
+    return newJobLauncher(sysProps, jobProps, null, ImmutableList.of());
   }
-
-  /**
-   * Create a new {@link JobLauncher}.
-   *
-   * <p>
-   *   This method will never return a {@code null}.
-   * </p>
-   *
-   * @param sysProps system configuration properties
-   * @param jobProps job configuration properties
-   * @param instanceBroker
-   * @return newly created {@link JobLauncher}
-   */
-  public static @Nonnull JobLauncher newJobLauncher(Properties sysProps, Properties jobProps,
-      SharedResourcesBroker<GobblinScopeTypes> instanceBroker) throws Exception {
-    return newJobLauncher(sysProps, jobProps, instanceBroker, ImmutableList.of());
-  }
-
 
   /**
    * Create a new {@link JobLauncher}.
