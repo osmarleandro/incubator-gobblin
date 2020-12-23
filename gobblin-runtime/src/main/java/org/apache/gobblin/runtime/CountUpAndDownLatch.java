@@ -42,12 +42,6 @@ class CountUpAndDownLatch extends CountDownLatch {
   }
 
   @Override
-  public void await() throws InterruptedException {
-    int phase = getPhase();
-    this.phaser.awaitAdvance(phase);
-  }
-
-  @Override
   public boolean await(long timeout, TimeUnit unit) throws InterruptedException {
     try {
       int phase = getPhase();
