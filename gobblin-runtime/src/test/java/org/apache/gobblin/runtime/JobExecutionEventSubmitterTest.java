@@ -25,6 +25,7 @@ import static org.mockito.Mockito.verify;
 
 import java.util.Map;
 
+import com.google.common.base.Enums;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
@@ -32,7 +33,7 @@ import org.mockito.Mockito;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
+import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.metrics.event.EventSubmitter;
 import org.apache.gobblin.rest.LauncherTypeEnum;
@@ -54,7 +55,9 @@ public class JobExecutionEventSubmitterTest {
   public void testSubmitJobExecutionEvents() {
     JobState mockJobState = mock(JobState.class, Mockito.RETURNS_SMART_NULLS);
     when(mockJobState.getState()).thenReturn(JobState.RunningState.SUCCESSFUL);
-    when(mockJobState.getLauncherType()).thenReturn(LauncherTypeEnum.$UNKNOWN);
+    when(Enums.getIfPresent(LauncherTypeEnum.class,
+	mockJobState.getProp(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY, JobLauncherFactory.JobLauncherType.LOCAL.name()))
+	.or(LauncherTypeEnum.LOCAL)).thenReturn(LauncherTypeEnum.$UNKNOWN);
     when(mockJobState.getTrackingURL()).thenReturn(Optional.<String> absent());
 
     TaskState mockTaskState1 = createMockTaskState();
