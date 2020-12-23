@@ -25,8 +25,10 @@ import org.apache.gobblin.configuration.CombinedWorkUnitAndDatasetState;
 import org.apache.gobblin.configuration.CombinedWorkUnitAndDatasetStateFunctional;
 import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.metastore.DatasetStateStore;
+import org.apache.gobblin.runtime.JobState.DatasetState;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 
@@ -57,13 +59,23 @@ public class CombinedWorkUnitAndDatasetStateGenerator implements CombinedWorkUni
     List<WorkUnitState> workUnitStates = new ArrayList<>();
     if (Strings.isNullOrEmpty(datasetUrn)) {
       datasetStateMap = this.datasetStateStore.getLatestDatasetStatesByUrns(this.jobName);
-      workUnitStates = JobState.workUnitStatesFromDatasetStates(datasetStateMap.values());
+	Iterable<DatasetState> datasetStates = datasetStateMap.values();
+	ImmutableList.Builder<WorkUnitState> taskStateBuilder = ImmutableList.builder();
+	for (JobState datasetState : datasetStates) {
+	  taskStateBuilder.addAll(datasetState.getTaskStatesAsWorkUnitStates());
+	}
+      workUnitStates = taskStateBuilder.build();
     } else {
       JobState.DatasetState datasetState =
           (JobState.DatasetState) this.datasetStateStore.getLatestDatasetState(this.jobName, datasetUrn);
       if (datasetState != null) {
         datasetStateMap = ImmutableMap.of(datasetUrn, datasetState);
-        workUnitStates = JobState.workUnitStatesFromDatasetStates(Arrays.asList(datasetState));
+		Iterable<DatasetState> datasetStates = Arrays.asList(datasetState);
+		ImmutableList.Builder<WorkUnitState> taskStateBuilder = ImmutableList.builder();
+		for (JobState datasetState1 : datasetStates) {
+		  taskStateBuilder.addAll(datasetState1.getTaskStatesAsWorkUnitStates());
+		}
+        workUnitStates = taskStateBuilder.build();
       }
     }
     return new CombinedWorkUnitAndDatasetState(workUnitStates, datasetStateMap);
