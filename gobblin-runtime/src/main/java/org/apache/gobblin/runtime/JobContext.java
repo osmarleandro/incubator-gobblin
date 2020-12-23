@@ -541,10 +541,4 @@ public class JobContext implements Closeable {
         !Strings.isNullOrEmpty(state.getProp(ConfigurationKeys.JOB_DATA_PUBLISHER_TYPE));
     return jobCommitPolicyIsFull || publishDataAtJobLevel || jobDataPublisherSpecified;
   }
-
-  @Override
-  public String toString() {
-    return Objects.toStringHelper(JobContext.class.getSimpleName()).add("jobName", getJobName())
-        .add("jobId", getJobId()).add("jobState", getJobState()).toString();
-  }
 }
