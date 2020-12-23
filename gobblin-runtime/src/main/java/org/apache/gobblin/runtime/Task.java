@@ -797,8 +797,14 @@ public class Task implements TaskIFace {
           .format("Number of forked data records [%d] is not equal to number of branches [%d]", forkedRecords.size(),
               branches));
     }
+	int inBranches = 0;
+	for (Boolean bool : forkedRecords) {
+	  if (bool && ++inBranches > 1) {
+	    break;
+	  }
+	}
 
-    boolean needToCopy = inMultipleBranches(forkedRecords);
+    boolean needToCopy = inBranches > 1;
     // we only have to copy a record if it needs to go into multiple forks
     if (needToCopy && !(CopyHelper.isCopyable(convertedRecord))) {
       throw new CopyNotSupportedException(convertedRecord.getClass().getName() + " is not copyable");
