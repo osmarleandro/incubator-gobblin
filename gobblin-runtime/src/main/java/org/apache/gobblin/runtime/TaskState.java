@@ -225,17 +225,6 @@ public class TaskState extends WorkUnitState implements TaskProgress {
   }
 
   /**
-   * If not already present, set the {@link ConfigurationKeys#TASK_FAILURE_EXCEPTION_KEY} to a {@link String}
-   * representation of the given {@link Throwable}.
-   */
-  public void setTaskFailureException(Throwable taskFailureException) {
-    if (!this.contains(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)) {
-      this.setProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY,
-          Throwables.getStackTraceAsString(taskFailureException));
-    }
-  }
-
-  /**
    * Return whether the task has completed running or not.
    *
    * @return {@code true} if the task has completed or {@code false} otherwise

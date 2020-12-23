@@ -420,7 +420,11 @@ final class SafeDatasetCommit implements Callable<Void> {
    */
   public static void setTaskFailureException(Collection<? extends WorkUnitState> taskStates, Throwable t) {
     for (WorkUnitState taskState : taskStates) {
-      ((TaskState) taskState).setTaskFailureException(t);
+      TaskState r = ((TaskState) taskState);
+	if (!r.contains(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)) {
+	  r.setProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY,
+	      Throwables.getStackTraceAsString(t));
+	}
     }
   }
 

@@ -625,10 +625,18 @@ public class Task implements TaskIFace {
     } catch (ClassCastException e) {
       LOG.error(String.format("To publish data in task, the publisher class must extend %s",
           SingleTaskDataPublisher.class.getSimpleName()), e);
-      this.taskState.setTaskFailureException(e);
+	TaskState r = this.taskState;
+      if (!r.contains(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)) {
+	  r.setProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY,
+	      Throwables.getStackTraceAsString(e));
+	}
       throw closer.rethrow(e);
     } catch (Throwable t) {
-      this.taskState.setTaskFailureException(t);
+      TaskState r = this.taskState;
+	if (!r.contains(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)) {
+	  r.setProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY,
+	      Throwables.getStackTraceAsString(t));
+	}
       throw closer.rethrow(t);
     } finally {
       closer.close();
