@@ -110,10 +110,6 @@ public class TopologySpec implements Configurable, Spec {
     return new TopologySpec.Builder(topologySpecUri);
   }
 
-  public static TopologySpec.Builder builder() {
-    return new TopologySpec.Builder();
-  }
-
   /** Creates a builder for the TopologySpec based on values in a topology properties config. */
   public static TopologySpec.Builder builder(URI catalogURI, Properties topologyProps) {
     String name = topologyProps.getProperty(ConfigurationKeys.TOPOLOGY_NAME_KEY);
