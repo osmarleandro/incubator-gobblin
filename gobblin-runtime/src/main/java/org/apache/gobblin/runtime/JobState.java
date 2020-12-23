@@ -382,11 +382,6 @@ public class JobState extends SourceState implements JobProgress {
     this.skippedTaskStates.put(taskState.getTaskId(), taskState);
   }
 
-  public void removeTaskState(TaskState taskState) {
-    this.taskStates.remove(taskState.getTaskId());
-    this.taskCount--;
-  }
-
   /**
    * Filter the task states corresponding to the skipped work units and add it to the skippedTaskStates
    */
@@ -398,7 +393,8 @@ public class JobState extends SourceState implements JobProgress {
       }
     }
     for (TaskState taskState : skippedTaskStates) {
-      removeTaskState(taskState);
+      this.taskStates.remove(taskState.getTaskId());
+	this.taskCount--;
       addSkippedTaskState(taskState);
     }
   }
