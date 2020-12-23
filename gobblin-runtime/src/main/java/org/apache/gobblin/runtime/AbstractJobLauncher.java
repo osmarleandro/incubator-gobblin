@@ -942,9 +942,6 @@ public abstract class AbstractJobLauncher implements JobLauncher {
 
 
 
-  private static String getJobIdPrefix(String jobId) {
-    return jobId.substring(0, jobId.lastIndexOf(Id.Job.SEPARATOR) + 1);
-  }
   /**
    * Cleanup the job's task staging data. This is not doing anything in case job succeeds
    * and data is successfully committed because the staging data has already been moved
