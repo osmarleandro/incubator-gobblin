@@ -228,7 +228,8 @@ public class GobblinMultiTaskAttempt {
 
     try {
       List<Either<Void, ExecutionException>> executionResults =
-          new IteratorExecutor<>(callableIterator, this.getTaskCommitThreadPoolSize(),
+          new IteratorExecutor<>(callableIterator, Integer.parseInt(this.jobState.getProp(ConfigurationKeys.TASK_EXECUTOR_THREADPOOL_SIZE_KEY,
+		Integer.toString(ConfigurationKeys.DEFAULT_TASK_EXECUTOR_THREADPOOL_SIZE))),
               ExecutorsUtils.newDaemonThreadFactory(Optional.of(log), Optional.of("Task-committing-pool-%d")))
               .executeAndGetResults();
       IteratorExecutor.logFailures(executionResults, log, 10);
@@ -330,11 +331,6 @@ public class GobblinMultiTaskAttempt {
     }
     log.info("All tasks are safe for speculative execution.");
     return true;
-  }
-
-  private final int getTaskCommitThreadPoolSize() {
-    return Integer.parseInt(this.jobState.getProp(ConfigurationKeys.TASK_EXECUTOR_THREADPOOL_SIZE_KEY,
-        Integer.toString(ConfigurationKeys.DEFAULT_TASK_EXECUTOR_THREADPOOL_SIZE)));
   }
 
   public void addCleanupCommitStep(CommitStep commitStep) {
