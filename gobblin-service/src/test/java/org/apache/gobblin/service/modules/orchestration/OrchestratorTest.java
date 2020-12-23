@@ -121,9 +121,10 @@ public class OrchestratorTest {
     Config config = ConfigUtils.propertiesToConfig(properties);
 
     SpecExecutor specExecutorInstance = new InMemorySpecExecutor(config);
+	URI topologySpecUri = computeTopologySpecURI(SPEC_STORE_PARENT_DIR,
+        TOPOLOGY_SPEC_STORE_DIR);
 
-    TopologySpec.Builder topologySpecBuilder = TopologySpec.builder(computeTopologySpecURI(SPEC_STORE_PARENT_DIR,
-        TOPOLOGY_SPEC_STORE_DIR))
+    TopologySpec.Builder topologySpecBuilder = new TopologySpec.Builder(topologySpecUri)
         .withConfig(config)
         .withDescription(SPEC_DESCRIPTION)
         .withVersion(SPEC_VERSION)

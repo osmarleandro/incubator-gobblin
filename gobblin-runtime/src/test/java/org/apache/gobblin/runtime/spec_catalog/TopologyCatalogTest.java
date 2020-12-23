@@ -91,8 +91,9 @@ public class TopologyCatalogTest {
     Config config = ConfigUtils.propertiesToConfig(properties);
 
     SpecExecutor specExecutorInstanceProducer = new InMemorySpecExecutor(config);
+	URI topologySpecUri = computeTopologySpecURI();
 
-    TopologySpec.Builder topologySpecBuilder = TopologySpec.builder(computeTopologySpecURI())
+    TopologySpec.Builder topologySpecBuilder = new TopologySpec.Builder(topologySpecUri)
         .withConfig(config)
         .withDescription(SPEC_DESCRIPTION)
         .withVersion(SPEC_VERSION)

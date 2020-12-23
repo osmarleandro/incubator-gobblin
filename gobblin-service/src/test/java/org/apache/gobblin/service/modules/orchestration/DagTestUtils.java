@@ -58,7 +58,8 @@ public class DagTestUtils {
 
     Config specExecConfig = ConfigUtils.propertiesToConfig(properties);
     SpecExecutor specExecutorInstanceProducer = new InMemorySpecExecutor(specExecConfig);
-    TopologySpec.Builder topologySpecBuilder = TopologySpec.builder(new Path(specStoreDir).toUri())
+	URI topologySpecUri = new Path(specStoreDir).toUri();
+    TopologySpec.Builder topologySpecBuilder = new TopologySpec.Builder(topologySpecUri)
         .withConfig(specExecConfig)
         .withDescription("test")
         .withVersion("1")

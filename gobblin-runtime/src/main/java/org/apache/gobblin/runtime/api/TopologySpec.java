@@ -102,10 +102,6 @@ public class TopologySpec implements Configurable, Spec {
     return specExecutorInstance;
   }
 
-  public static TopologySpec.Builder builder(URI topologySpecUri) {
-    return new TopologySpec.Builder(topologySpecUri);
-  }
-
   public static TopologySpec.Builder builder(String topologySpecUri) {
     return new TopologySpec.Builder(topologySpecUri);
   }

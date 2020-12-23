@@ -183,8 +183,7 @@ public class MultiHopFlowCompilerTest {
       Class specExecutorClass = Class.forName(topologyConfig.getString(ServiceConfigKeys.SPEC_EXECUTOR_KEY));
       SpecExecutor specExecutor = (SpecExecutor) GobblinConstructorUtils.invokeLongestConstructor(specExecutorClass, topologyConfig);
 
-      TopologySpec.Builder topologySpecBuilder = TopologySpec
-          .builder(topologySpecUri)
+      TopologySpec.Builder topologySpecBuilder = new TopologySpec.Builder(topologySpecUri)
           .withConfig(topologyConfig)
           .withDescription("")
           .withVersion("1")
