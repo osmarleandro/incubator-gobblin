@@ -93,9 +93,6 @@ public class NoopDatasetStateStore extends FsDatasetStateStore {
   public void put(String storeName, String tableName, JobState.DatasetState state) throws IOException {}
 
   @Override
-  public void putAll(String storeName, String tableName, Collection<JobState.DatasetState> states) throws IOException {}
-
-  @Override
   public void createAlias(String storeName, String original, String alias) throws IOException {}
 
   @Override
