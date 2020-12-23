@@ -388,9 +388,13 @@ public class FsDatasetStateStore extends FsStateStore<JobState.DatasetState> imp
         : datasetStatestoreName + "-" + sanitizeJobId(jobId) + DATASET_STATE_STORE_TABLE_SUFFIX;
     LOGGER.info("Persisting " + tableName + " to the job state store");
     put(jobName, tableName, datasetState);
-    createAlias(jobName, tableName, getAliasName(datasetStatestoreName));
+    createAlias(jobName, tableName, Strings.isNullOrEmpty(datasetStatestoreName) ? CURRENT_DATASET_STATE_FILE_SUFFIX
+	+ DATASET_STATE_STORE_TABLE_SUFFIX
+	: datasetStatestoreName + "-" + CURRENT_DATASET_STATE_FILE_SUFFIX + DATASET_STATE_STORE_TABLE_SUFFIX);
 
-    Path originalDatasetUrnPath = new Path(new Path(this.storeRootDir, jobName), getAliasName(datasetUrn));
+    Path originalDatasetUrnPath = new Path(new Path(this.storeRootDir, jobName), Strings.isNullOrEmpty(datasetUrn) ? CURRENT_DATASET_STATE_FILE_SUFFIX
+	+ DATASET_STATE_STORE_TABLE_SUFFIX
+	: datasetUrn + "-" + CURRENT_DATASET_STATE_FILE_SUFFIX + DATASET_STATE_STORE_TABLE_SUFFIX);
     // This should only happen for the first time.
     if (!Strings.isNullOrEmpty(datasetUrn) && !datasetStatestoreName.equals(datasetUrn) && this.fs
         .exists(originalDatasetUrnPath)) {
@@ -414,12 +418,6 @@ public class FsDatasetStateStore extends FsStateStore<JobState.DatasetState> imp
     } catch (ExecutionException e) {
       throw new IOException("Failed to persist datasetUrns.", e);
     }
-  }
-
-  private static String getAliasName(String datasetStatestoreName) {
-    return Strings.isNullOrEmpty(datasetStatestoreName) ? CURRENT_DATASET_STATE_FILE_SUFFIX
-        + DATASET_STATE_STORE_TABLE_SUFFIX
-        : datasetStatestoreName + "-" + CURRENT_DATASET_STATE_FILE_SUFFIX + DATASET_STATE_STORE_TABLE_SUFFIX;
   }
 
   @Override
