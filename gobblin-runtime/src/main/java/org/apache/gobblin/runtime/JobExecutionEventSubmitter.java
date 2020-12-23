@@ -58,28 +58,21 @@ public class JobExecutionEventSubmitter {
    * @param jobState is the {@link JobState} to emit events for
    */
   public void submitJobExecutionEvents(JobState jobState) {
-    submitJobStateEvent(jobState);
-    submitTaskStateEvents(jobState);
-  }
-
-  /**
-   * Submits an event for the given {@link JobState}.
-   */
-  private void submitJobStateEvent(JobState jobState) {
     ImmutableMap.Builder<String, String> jobMetadataBuilder = new ImmutableMap.Builder<>();
-
-    jobMetadataBuilder.put(METADATA_JOB_ID, jobState.getJobId());
-    jobMetadataBuilder.put(METADATA_JOB_NAME, jobState.getJobName());
-    jobMetadataBuilder.put(METADATA_JOB_START_TIME, Long.toString(jobState.getStartTime()));
-    jobMetadataBuilder.put(METADATA_JOB_END_TIME, Long.toString(jobState.getEndTime()));
-    jobMetadataBuilder.put(METADATA_JOB_STATE, jobState.getState().toString());
-    jobMetadataBuilder.put(METADATA_JOB_LAUNCHED_TASKS, Integer.toString(jobState.getTaskCount()));
-    jobMetadataBuilder.put(METADATA_JOB_COMPLETED_TASKS, Integer.toString(jobState.getCompletedTasks()));
-    jobMetadataBuilder.put(METADATA_JOB_LAUNCHER_TYPE, jobState.getLauncherType().toString());
-    jobMetadataBuilder.put(METADATA_JOB_TRACKING_URL, jobState.getTrackingURL().or(UNKNOWN_VALUE));
-    jobMetadataBuilder.put(EventSubmitter.EVENT_TYPE, JOB_STATE);
-
-    this.eventSubmitter.submit(JOB_STATE, jobMetadataBuilder.build());
+	
+	jobMetadataBuilder.put(METADATA_JOB_ID, jobState.getJobId());
+	jobMetadataBuilder.put(METADATA_JOB_NAME, jobState.getJobName());
+	jobMetadataBuilder.put(METADATA_JOB_START_TIME, Long.toString(jobState.getStartTime()));
+	jobMetadataBuilder.put(METADATA_JOB_END_TIME, Long.toString(jobState.getEndTime()));
+	jobMetadataBuilder.put(METADATA_JOB_STATE, jobState.getState().toString());
+	jobMetadataBuilder.put(METADATA_JOB_LAUNCHED_TASKS, Integer.toString(jobState.getTaskCount()));
+	jobMetadataBuilder.put(METADATA_JOB_COMPLETED_TASKS, Integer.toString(jobState.getCompletedTasks()));
+	jobMetadataBuilder.put(METADATA_JOB_LAUNCHER_TYPE, jobState.getLauncherType().toString());
+	jobMetadataBuilder.put(METADATA_JOB_TRACKING_URL, jobState.getTrackingURL().or(UNKNOWN_VALUE));
+	jobMetadataBuilder.put(EventSubmitter.EVENT_TYPE, JOB_STATE);
+	
+	this.eventSubmitter.submit(JOB_STATE, jobMetadataBuilder.build());
+    submitTaskStateEvents(jobState);
   }
 
   /**
