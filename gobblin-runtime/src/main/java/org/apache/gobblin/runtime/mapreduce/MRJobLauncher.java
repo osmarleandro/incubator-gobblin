@@ -466,7 +466,8 @@ public class MRJobLauncher extends AbstractJobLauncher {
 
     // Set speculative execution
 
-    this.job.setSpeculativeExecution(isSpeculativeExecutionEnabled(this.jobProps));
+    this.job.setSpeculativeExecution(Boolean.valueOf(
+	this.jobProps.getProperty(JobContext.MAP_SPECULATIVE, ConfigurationKeys.DEFAULT_ENABLE_MR_SPECULATIVE_EXECUTION)));
 
     this.job.getConfiguration().set("mapreduce.job.user.classpath.first", "true");
 
@@ -490,11 +491,6 @@ public class MRJobLauncher extends AbstractJobLauncher {
     this.job.getConfiguration().set(GOBBLIN_JOB_INTERRUPT_PATH_KEY, this.interruptPath.toString());
 
     mrJobSetupTimer.stop();
-  }
-
-  static boolean isSpeculativeExecutionEnabled(Properties props) {
-    return Boolean.valueOf(
-        props.getProperty(JobContext.MAP_SPECULATIVE, ConfigurationKeys.DEFAULT_ENABLE_MR_SPECULATIVE_EXECUTION));
   }
 
   static boolean isCustomizedProgressReportEnabled(Properties properties) {
@@ -743,7 +739,9 @@ public class MRJobLauncher extends AbstractJobLauncher {
       try (Closer closer = Closer.create()) {
         // Default for customizedProgressEnabled is false.
         this.customizedProgressEnabled = isCustomizedProgressReportEnabled(gobblinJobState.getProperties());
-        this.isSpeculativeEnabled = isSpeculativeExecutionEnabled(gobblinJobState.getProperties());
+		Properties props = gobblinJobState.getProperties();
+        this.isSpeculativeEnabled = Boolean.valueOf(
+		props.getProperty(JobContext.MAP_SPECULATIVE, ConfigurationKeys.DEFAULT_ENABLE_MR_SPECULATIVE_EXECUTION));
 
         String factoryClassName = gobblinJobState.getProperties().getProperty(
             CUSTOMIZED_PROGRESSER_FACTORY_CLASS, DEFAULT_CUSTOMIZED_PROGRESSER_FACTORY_CLASS);
