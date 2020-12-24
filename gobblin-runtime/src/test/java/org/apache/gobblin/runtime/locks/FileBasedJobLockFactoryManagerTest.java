@@ -67,7 +67,7 @@ public class FileBasedJobLockFactoryManagerTest {
 
     JobSpec js1 = JobSpec.builder("gobblin-test:job1").build();
     FileBasedJobLock lock11 = factory1.getJobLock(js1);
-    Assert.assertTrue(lock11.getLockFile().getName().startsWith(FileBasedJobLockFactory.getJobName(js1)));
+    Assert.assertTrue(lock11.getLockFile().getName().startsWith(js1.getUri().toString().replaceAll("[/.:]", "_")));
     Assert.assertTrue(lock11.tryLock());
     lock11.unlock();
 

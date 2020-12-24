@@ -217,13 +217,8 @@ public class FileBasedJobLockFactory implements JobLockFactory<FileBasedJobLock>
 
   @Override
   public FileBasedJobLock getJobLock(JobSpec jobSpec) throws TimeoutException {
-    String jobName = getJobName(jobSpec);
+    String jobName = jobSpec.getUri().toString().replaceAll("[/.:]", "_");
     return new FileBasedJobLock(jobName, this);
-  }
-
-  @VisibleForTesting
-  static String getJobName(JobSpec jobSpec) {
-    return jobSpec.getUri().toString().replaceAll("[/.:]", "_");
   }
 
   @VisibleForTesting
