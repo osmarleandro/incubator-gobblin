@@ -99,7 +99,7 @@ public class GitConfigMonitor extends GitMonitoringService {
       try {
         Config flowConfig = loadConfigFileWithFlowNameOverrides(configFilePath);
 
-        this.flowCatalog.put(FlowSpec.builder()
+        this.flowCatalog.put(new FlowSpec.Builder()
             .withConfig(flowConfig)
             .withVersion(SPEC_VERSION)
             .withDescription(SPEC_DESCRIPTION)
@@ -127,7 +127,7 @@ public class GitConfigMonitor extends GitMonitoringService {
           .addPrimitive(ConfigurationKeys.FLOW_NAME_KEY, flowName)
           .build();
 
-      FlowSpec spec = FlowSpec.builder()
+      FlowSpec spec = new FlowSpec.Builder()
           .withConfig(dummyConfig)
           .withVersion(SPEC_VERSION)
           .withDescription(SPEC_DESCRIPTION)

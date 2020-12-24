@@ -100,10 +100,6 @@ public class FlowSpec implements Configurable, Spec {
     return new FlowSpec.Builder(flowSpecUri);
   }
 
-  public static FlowSpec.Builder builder() {
-    return new FlowSpec.Builder();
-  }
-
   /** Creates a builder for the FlowSpec based on values in a flow properties config. */
   public static FlowSpec.Builder builder(URI catalogURI, Properties flowProps) {
     String name = flowProps.getProperty(ConfigurationKeys.FLOW_NAME_KEY);

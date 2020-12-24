@@ -116,7 +116,7 @@ public class GobblinServiceJobSchedulerTest {
     properties.setProperty(ConfigurationKeys.JOB_GROUP_KEY, TEST_GROUP_NAME);
     properties.setProperty(ConfigurationKeys.JOB_NAME_KEY, TEST_FLOW_NAME);
     Config config = ConfigFactory.parseProperties(properties);
-    FlowSpec spec = FlowSpec.builder().withTemplate(new URI(TEST_TEMPLATE_URI)).withVersion("version")
+    FlowSpec spec = new FlowSpec.Builder().withTemplate(new URI(TEST_TEMPLATE_URI)).withVersion("version")
         .withConfigAsProperties(properties).withConfig(config).build();
     FlowSpec modifiedSpec = (FlowSpec) GobblinServiceJobScheduler.disableFlowRunImmediatelyOnStart(spec);
     for (URI templateURI : modifiedSpec.getTemplateURIs().get()) {

@@ -268,7 +268,7 @@ public class FlowConfigResourceLocalHandler implements FlowConfigsResourceHandle
 
     try {
       URI templateURI = new URI(flowConfig.getTemplateUris());
-      return FlowSpec.builder().withConfig(configWithFallback).withTemplate(templateURI).build();
+      return new FlowSpec.Builder().withConfig(configWithFallback).withTemplate(templateURI).build();
     } catch (URISyntaxException e) {
       throw new FlowConfigLoggedException(HttpStatus.S_400_BAD_REQUEST, "bad URI " + flowConfig.getTemplateUris(), e);
     }
