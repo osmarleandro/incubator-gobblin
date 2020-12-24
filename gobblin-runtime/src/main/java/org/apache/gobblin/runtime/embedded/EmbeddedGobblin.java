@@ -383,15 +383,6 @@ public class EmbeddedGobblin {
   }
 
   /**
-   * Enable metrics. Does not start any reporters.
-   */
-  public EmbeddedGobblin enableMetrics() {
-    this.usePlugin(new GobblinMetricsPlugin.Factory());
-    this.sysConfig(ConfigurationKeys.METRICS_ENABLED_KEY, Boolean.toString(true));
-    return this;
-  }
-
-  /**
    * This is the base {@link Config} used for the job, containing all default configurations. Subclasses can override
    * default configurations (for example setting a particular {@link org.apache.gobblin.runtime.JobLauncherFactory.JobLauncherType}.
    */
