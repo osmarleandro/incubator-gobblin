@@ -407,51 +407,45 @@ public class MRJobLauncher extends AbstractJobLauncher {
   }
 
   /**
-   * Add dependent jars and files.
-   */
-  private void addDependencies(Configuration conf) throws IOException {
-    TimingEvent distributedCacheSetupTimer =
-        this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.MR_DISTRIBUTED_CACHE_SETUP);
-
-    Path jarFileDir = this.jarsDir;
-
-    // Add framework jars to the classpath for the mappers/reducer
-    if (this.jobProps.containsKey(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY)) {
-      addJars(jarFileDir, this.jobProps.getProperty(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY), conf);
-    }
-
-    // Add job-specific jars to the classpath for the mappers
-    if (this.jobProps.containsKey(ConfigurationKeys.JOB_JAR_FILES_KEY)) {
-      addJars(jarFileDir, this.jobProps.getProperty(ConfigurationKeys.JOB_JAR_FILES_KEY), conf);
-    }
-
-    // Add other files (if any) the job depends on to DistributedCache
-    if (this.jobProps.containsKey(ConfigurationKeys.JOB_LOCAL_FILES_KEY)) {
-      addLocalFiles(new Path(this.mrJobDir, FILES_DIR_NAME),
-          this.jobProps.getProperty(ConfigurationKeys.JOB_LOCAL_FILES_KEY), conf);
-    }
-
-    // Add files (if any) already on HDFS that the job depends on to DistributedCache
-    if (this.jobProps.containsKey(ConfigurationKeys.JOB_HDFS_FILES_KEY)) {
-      addHDFSFiles(this.jobProps.getProperty(ConfigurationKeys.JOB_HDFS_FILES_KEY), conf);
-    }
-
-    // Add job-specific jars existing in HDFS to the classpath for the mappers
-    if (this.jobProps.containsKey(ConfigurationKeys.JOB_JAR_HDFS_FILES_KEY)) {
-      addHdfsJars(this.jobProps.getProperty(ConfigurationKeys.JOB_JAR_HDFS_FILES_KEY), conf);
-    }
-
-    distributedCacheSetupTimer.stop();
-  }
-
-  /**
    * Prepare the Hadoop MR job, including configuring the job and setting up the input/output paths.
    */
   private void prepareHadoopJob(List<WorkUnit> workUnits) throws IOException {
     TimingEvent mrJobSetupTimer = this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.MR_JOB_SETUP);
+	Configuration conf1 = this.job.getConfiguration();
 
     // Add dependent jars/files
-    addDependencies(this.job.getConfiguration());
+    TimingEvent distributedCacheSetupTimer =
+	    this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.MR_DISTRIBUTED_CACHE_SETUP);
+	
+	Path jarFileDir = this.jarsDir;
+	
+	// Add framework jars to the classpath for the mappers/reducer
+	if (this.jobProps.containsKey(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY)) {
+	  addJars(jarFileDir, this.jobProps.getProperty(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY), conf1);
+	}
+	
+	// Add job-specific jars to the classpath for the mappers
+	if (this.jobProps.containsKey(ConfigurationKeys.JOB_JAR_FILES_KEY)) {
+	  addJars(jarFileDir, this.jobProps.getProperty(ConfigurationKeys.JOB_JAR_FILES_KEY), conf1);
+	}
+	
+	// Add other files (if any) the job depends on to DistributedCache
+	if (this.jobProps.containsKey(ConfigurationKeys.JOB_LOCAL_FILES_KEY)) {
+	  addLocalFiles(new Path(this.mrJobDir, FILES_DIR_NAME),
+	      this.jobProps.getProperty(ConfigurationKeys.JOB_LOCAL_FILES_KEY), conf1);
+	}
+	
+	// Add files (if any) already on HDFS that the job depends on to DistributedCache
+	if (this.jobProps.containsKey(ConfigurationKeys.JOB_HDFS_FILES_KEY)) {
+	  addHDFSFiles(this.jobProps.getProperty(ConfigurationKeys.JOB_HDFS_FILES_KEY), conf1);
+	}
+	
+	// Add job-specific jars existing in HDFS to the classpath for the mappers
+	if (this.jobProps.containsKey(ConfigurationKeys.JOB_JAR_HDFS_FILES_KEY)) {
+	  addHdfsJars(this.jobProps.getProperty(ConfigurationKeys.JOB_JAR_HDFS_FILES_KEY), conf1);
+	}
+	
+	distributedCacheSetupTimer.stop();
 
     this.job.setJarByClass(MRJobLauncher.class);
     this.job.setMapperClass(TaskRunner.class);
