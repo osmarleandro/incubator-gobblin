@@ -88,13 +88,6 @@ public abstract class KafkaAvroJobMonitor<T> extends KafkaJobMonitor {
   }
 
   @Override
-  protected List<Tag<?>> getTagsForMetrics() {
-    List<Tag<?>> tags = super.getTagsForMetrics();
-    tags.add(new Tag<>(RuntimeMetrics.SCHEMA, this.schema.getName()));
-    return tags;
-  }
-
-  @Override
   protected void createMetrics() {
     super.createMetrics();
     this.messageParseFailures = this.getMetricContext().meter(
