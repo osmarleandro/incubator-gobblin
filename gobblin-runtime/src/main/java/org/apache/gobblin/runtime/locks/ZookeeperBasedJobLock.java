@@ -180,7 +180,7 @@ public class ZookeeperBasedJobLock implements ListenableJobLock {
                       getMilliseconds(properties, SESSION_TIMEOUT_SECONDS, SESSION_TIMEOUT_SECONDS_DEFAULT))
               .retryPolicy(new ExponentialBackoffRetry(
                       getMilliseconds(properties, RETRY_BACKOFF_SECONDS, RETRY_BACKOFF_SECONDS_DEFAULT),
-                      getInt(properties, MAX_RETRY_COUNT, MAX_RETRY_COUNT_DEFAULT)))
+                      Integer.parseInt(properties.getProperty(MAX_RETRY_COUNT, Integer.toString(MAX_RETRY_COUNT_DEFAULT)))))
               .build();
 
       newCuratorFramework.getConnectionStateListenable().addListener(new ConnectionStateListener() {
@@ -216,7 +216,7 @@ public class ZookeeperBasedJobLock implements ListenableJobLock {
       newCuratorFramework.start();
       try {
         if (!newCuratorFramework.blockUntilConnected(
-                getInt(properties, CONNECTION_TIMEOUT_SECONDS, CONNECTION_TIMEOUT_SECONDS_DEFAULT),
+                Integer.parseInt(properties.getProperty(CONNECTION_TIMEOUT_SECONDS, Integer.toString(CONNECTION_TIMEOUT_SECONDS_DEFAULT))),
                 TimeUnit.SECONDS)) {
           throw new RuntimeException("Time out while waiting to connect to zookeeper");
         }
@@ -235,16 +235,12 @@ public class ZookeeperBasedJobLock implements ListenableJobLock {
     }
   }
 
-  private static int getInt(Properties properties, String key, int defaultValue) {
-    return Integer.parseInt(properties.getProperty(key, Integer.toString(defaultValue)));
-  }
-
   private static long getLong(Properties properties, String key, long defaultValue) {
     return Long.parseLong(properties.getProperty(key, Long.toString(defaultValue)));
   }
 
   private static int getMilliseconds(Properties properties, String key, int defaultValue) {
-    return getInt(properties, key, defaultValue) * 1000;
+    return Integer.parseInt(properties.getProperty(key, Integer.toString(defaultValue))) * 1000;
   }
 
   private static class CuratorFrameworkShutdownHook extends Thread {
