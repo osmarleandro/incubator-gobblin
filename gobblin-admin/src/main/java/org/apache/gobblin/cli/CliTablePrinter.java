@@ -81,8 +81,18 @@ public class CliTablePrinter {
     this.indentation = indentation;
     this.delimiterWidth = delimiterWidth;
     this.data = data;
+	List<Integer> widths = getColumnMaxWidths();
+	StringBuilder rowFormat1 = new StringBuilder(spaces(this.indentation));
+	for (int i=0; i< widths.size(); i++) {
+	  rowFormat1.append("%");
+	  rowFormat1.append(this.flags != null ? this.flags.get(i) : "");
+	  rowFormat1.append(widths.get(i).toString());
+	  rowFormat1.append("s");
+	  rowFormat1.append(spaces(this.delimiterWidth));
+	}
+	rowFormat1.append("\n");
 
-    this.rowFormat = getRowFormat(getColumnMaxWidths());
+    this.rowFormat = rowFormat1.toString();
   }
 
   /**
@@ -168,26 +178,6 @@ public class CliTablePrinter {
     }
 
     return Ints.asList(widths);
-  }
-
-  /**
-   * Generates a simple row format string given a set of widths
-   *
-   * @param widths A list of widths for each column in the table
-   * @return A row format for each row in the table
-   */
-  private String getRowFormat(List<Integer> widths) {
-    StringBuilder rowFormat = new StringBuilder(spaces(this.indentation));
-    for (int i=0; i< widths.size(); i++) {
-      rowFormat.append("%");
-      rowFormat.append(this.flags != null ? this.flags.get(i) : "");
-      rowFormat.append(widths.get(i).toString());
-      rowFormat.append("s");
-      rowFormat.append(spaces(this.delimiterWidth));
-    }
-    rowFormat.append("\n");
-
-    return rowFormat.toString();
   }
 
   private static String spaces(int numSpaces) {
