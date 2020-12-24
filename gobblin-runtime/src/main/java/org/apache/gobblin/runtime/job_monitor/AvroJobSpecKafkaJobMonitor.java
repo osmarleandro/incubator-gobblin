@@ -100,11 +100,6 @@ public class AvroJobSpecKafkaJobMonitor extends KafkaAvroJobMonitor<AvroJobSpec>
     super(topic, catalog, limitedScopeConfig, AvroJobSpec.SCHEMA$, versionWriter);
   }
 
-  @Override
-  protected void createMetrics() {
-    super.createMetrics();
-  }
-
   /**
    * Creates a {@link JobSpec} or {@link URI} from the {@link AvroJobSpec} record.
    * @param record the record as an {@link AvroJobSpec}
