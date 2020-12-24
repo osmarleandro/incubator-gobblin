@@ -228,7 +228,9 @@ public abstract class HighLevelConsumer<K,V> extends AbstractIdleService {
     try {
       Iterator<KafkaConsumerRecord> itr = gobblinKafkaConsumerClient.consume();
       if(!enableAutoCommit) {
-        commitOffsets();
+        if(shouldCommitOffsets()) {
+		  copyAndCommit();
+		}
       }
       while (itr.hasNext()) {
         KafkaConsumerRecord record = itr.next();
@@ -247,15 +249,6 @@ public abstract class HighLevelConsumer<K,V> extends AbstractIdleService {
   private void processQueues() {
     for(BlockingQueue queue : queues) {
       queueExecutor.execute(new QueueProcessor(queue));
-    }
-  }
-
-  /**
-   * Commits offsets to kafka
-   */
-  private void commitOffsets() {
-    if(shouldCommitOffsets()) {
-      copyAndCommit();
     }
   }
 
