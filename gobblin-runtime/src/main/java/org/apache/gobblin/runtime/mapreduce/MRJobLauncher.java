@@ -433,7 +433,17 @@ public class MRJobLauncher extends AbstractJobLauncher {
 
     // Add files (if any) already on HDFS that the job depends on to DistributedCache
     if (this.jobProps.containsKey(ConfigurationKeys.JOB_HDFS_FILES_KEY)) {
-      addHDFSFiles(this.jobProps.getProperty(ConfigurationKeys.JOB_HDFS_FILES_KEY), conf);
+      String jobFileList = this.jobProps.getProperty(ConfigurationKeys.JOB_HDFS_FILES_KEY);
+	DistributedCache.createSymlink(conf);
+	jobFileList = PasswordManager.getInstance(this.jobProps).readPassword(jobFileList);
+	for (String jobFile : SPLITTER.split(jobFileList)) {
+	  Path srcJobFile = new Path(jobFile);
+	  // Create a URI that is in the form path#symlink
+	  URI srcFileUri = URI.create(srcJobFile.toUri().getPath() + "#" + srcJobFile.getName());
+	  LOG.info(String.format("Adding %s to DistributedCache", srcFileUri));
+	  // Finally add the file to DistributedCache with a symlink named after the file name
+	  DistributedCache.addCacheFile(srcFileUri, conf);
+	}
     }
 
     // Add job-specific jars existing in HDFS to the classpath for the mappers
@@ -595,23 +605,6 @@ public class MRJobLauncher extends AbstractJobLauncher {
       LOG.info(String.format("Adding %s to DistributedCache", destFileUri));
       // Finally add the file to DistributedCache with a symlink named after the file name
       DistributedCache.addCacheFile(destFileUri, conf);
-    }
-  }
-
-  /**
-   * Add non-jar files already on HDFS that the job depends on to DistributedCache.
-   */
-  @SuppressWarnings("deprecation")
-  private void addHDFSFiles(String jobFileList, Configuration conf) {
-    DistributedCache.createSymlink(conf);
-    jobFileList = PasswordManager.getInstance(this.jobProps).readPassword(jobFileList);
-    for (String jobFile : SPLITTER.split(jobFileList)) {
-      Path srcJobFile = new Path(jobFile);
-      // Create a URI that is in the form path#symlink
-      URI srcFileUri = URI.create(srcJobFile.toUri().getPath() + "#" + srcJobFile.getName());
-      LOG.info(String.format("Adding %s to DistributedCache", srcFileUri));
-      // Finally add the file to DistributedCache with a symlink named after the file name
-      DistributedCache.addCacheFile(srcFileUri, conf);
     }
   }
 
