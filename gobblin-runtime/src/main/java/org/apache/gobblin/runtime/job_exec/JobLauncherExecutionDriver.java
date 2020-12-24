@@ -194,11 +194,6 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
     return _jobState;
   }
 
-  protected void startAsync() throws JobException {
-    _log.info("Starting " + getClass().getSimpleName());
-    ExecutorsUtils.newThreadFactory(Optional.of(_log), Optional.of("job-launcher-execution-driver")).newThread(this).start();
-  }
-
   @Override
   protected void done() {
     _executionList.execute();
