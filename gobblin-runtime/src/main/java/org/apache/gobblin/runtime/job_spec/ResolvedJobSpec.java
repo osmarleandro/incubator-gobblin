@@ -98,11 +98,4 @@ public class ResolvedJobSpec extends JobSpec {
     return other instanceof  ResolvedJobSpec && super.equals(other) &&
         this.originalJobSpec.equals(((ResolvedJobSpec) other).originalJobSpec);
   }
-
-  @Override
-  public int hashCode() {
-    int result = super.hashCode();
-    result = 31 * result + originalJobSpec.hashCode();
-    return result;
-  }
 }
