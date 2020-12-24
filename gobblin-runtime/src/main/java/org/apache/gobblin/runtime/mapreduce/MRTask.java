@@ -99,7 +99,6 @@ public class MRTask extends BaseAbstractTask {
         log.info("No MR job created. Skipping.");
         this.workingState = WorkUnitState.WorkingState.SUCCESSFUL;
         this.eventSubmitter.submit(Events.MR_JOB_SKIPPED);
-        onSkippedMRJob();
         return;
       }
 
@@ -146,13 +145,6 @@ public class MRTask extends BaseAbstractTask {
       }
     }
     return job;
-  }
-
-  /**
-   * Called when a job is skipped (because {@link #createJob()} returned null).
-   */
-  protected void onSkippedMRJob() {
-    // do nothing
   }
 
 }
