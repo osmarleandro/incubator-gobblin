@@ -77,11 +77,6 @@ public class AsynchronousFork extends Fork {
   }
 
   @Override
-  public Optional<BoundedBlockingRecordQueue<Object>.QueueStats> queueStats() {
-    return this.recordQueue.stats();
-  }
-
-  @Override
   protected void processRecords() throws IOException, DataConversionException {
     while (processRecord()) { }
   }
