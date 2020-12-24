@@ -64,12 +64,6 @@ public class SynchronousFork extends Fork {
   }
 
   @Override
-  public void markParentTaskDone() {
-    super.markParentTaskDone();
-    this.autoResetEvent.set();
-  }
-
-  @Override
   public Optional<BoundedBlockingRecordQueue<Object>.QueueStats> queueStats() {
     return Optional.absent();
   }
