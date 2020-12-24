@@ -49,10 +49,6 @@ public class JobCatalogListenersList implements JobCatalogListener, JobCatalogLi
     _disp = new CallbacksDispatcher<JobCatalogListener>(Optional.<ExecutorService>absent(), log);
   }
 
-  public Logger getLog() {
-    return _disp.getLog();
-  }
-
   public synchronized List<JobCatalogListener> getListeners() {
     return _disp.getListeners();
   }
@@ -73,7 +69,7 @@ public class JobCatalogListenersList implements JobCatalogListener, JobCatalogLi
     try {
       _disp.execCallbacks(new AddJobCallback(addedJob));
     } catch (InterruptedException e) {
-      getLog().warn("onAddJob interrupted.");
+      _disp.getLog().warn("onAddJob interrupted.");
     }
   }
 
@@ -84,7 +80,7 @@ public class JobCatalogListenersList implements JobCatalogListener, JobCatalogLi
     try {
       _disp.execCallbacks(new DeleteJobCallback(deletedJobURI, deletedJobVersion));
     } catch (InterruptedException e) {
-      getLog().warn("onDeleteJob interrupted.");
+      _disp.getLog().warn("onDeleteJob interrupted.");
     }
   }
 
@@ -94,7 +90,7 @@ public class JobCatalogListenersList implements JobCatalogListener, JobCatalogLi
     try {
       _disp.execCallbacks(new UpdateJobCallback(updatedJob));
     } catch (InterruptedException e) {
-      getLog().warn("onUpdateJob interrupted.");
+      _disp.getLog().warn("onUpdateJob interrupted.");
     }
   }
 
@@ -105,7 +101,7 @@ public class JobCatalogListenersList implements JobCatalogListener, JobCatalogLi
     try {
       _disp.execCallbacks(new CancelJobCallback(cancelledJobURI));
     } catch (InterruptedException e) {
-      getLog().warn("onCancelJob interrupted.");
+      _disp.getLog().warn("onCancelJob interrupted.");
     }
   }
 
@@ -120,7 +116,7 @@ public class JobCatalogListenersList implements JobCatalogListener, JobCatalogLi
     try {
       _disp.execCallbacks(callback, listener);
     } catch (InterruptedException e) {
-      getLog().warn("callback interrupted: "+ callback);
+      _disp.getLog().warn("callback interrupted: "+ callback);
     }
   }
 
