@@ -263,17 +263,6 @@ public class EmbeddedGobblin {
   }
 
   /**
-   * Override a Gobblin system configuration. Format "<key>:<value>"
-   */
-  public EmbeddedGobblin sysConfig(String keyValue) {
-    List<String> split = KEY_VALUE_SPLITTER.splitToList(keyValue);
-    if (split.size() != 2) {
-      throw new RuntimeException("Cannot parse " + keyValue + ". Expected <key>:<value>.");
-    }
-    return sysConfig(split.get(0), split.get(1));
-  }
-
-  /**
    * Provide a job file.
    */
   public EmbeddedGobblin jobFile(String pathStr) {
