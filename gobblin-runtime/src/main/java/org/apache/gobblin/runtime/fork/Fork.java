@@ -432,11 +432,6 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
   }
 
   @Override
-  public String toString() {
-    return "Fork: TaskId = \"" + this.taskId + "\" Index: \"" + this.index + "\" State: \"" + this.forkState + "\"";
-  }
-
-  @Override
   public void close()
       throws IOException {
     // Tell this fork that the parent task is done. This is a second chance call if the parent
