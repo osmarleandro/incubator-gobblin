@@ -370,10 +370,6 @@ public class FlowSpec implements Configurable, Spec {
     return ConfigUtils.getBoolean(getConfig(), ConfigurationKeys.FLOW_EXPLAIN_KEY, false);
   }
 
-  public boolean isScheduled() {
-    return getConfig().hasPath(ConfigurationKeys.JOB_SCHEDULE_KEY);
-  }
-
   @Slf4j
   public static class Utils {
     private final static String URI_SCHEME = "gobblin-flow";
