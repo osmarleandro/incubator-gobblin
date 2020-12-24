@@ -37,9 +37,4 @@ public class JobExecutionEventSubmitterListener extends AbstractJobListener {
   public void onJobCompletion(JobContext jobContext) {
     this.jobExecutionEventSubmitter.submitJobExecutionEvents(jobContext.getJobState());
   }
-
-  @Override
-  public void onJobCancellation(JobContext jobContext) {
-    this.jobExecutionEventSubmitter.submitJobExecutionEvents(jobContext.getJobState());
-  }
 }
