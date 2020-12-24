@@ -126,7 +126,10 @@ public abstract class HighLevelConsumer<K,V> extends AbstractIdleService {
     this.gobblinKafkaConsumerClient.subscribe(this.topic, new GobblinConsumerRebalanceListener() {
       @Override
       public void onPartitionsRevoked(Collection<KafkaPartition> partitions) {
-        copyAndCommit();
+        Map<KafkaPartition, Long> copy = new HashMap<>(partitionOffsetsToCommit);
+		recordsProcessed.set(0);
+		lastCommitTime = System.currentTimeMillis();
+		commitOffsets(copy);
         partitionOffsetsToCommit.clear();
       }
 
@@ -255,20 +258,16 @@ public abstract class HighLevelConsumer<K,V> extends AbstractIdleService {
    */
   private void commitOffsets() {
     if(shouldCommitOffsets()) {
-      copyAndCommit();
+      Map<KafkaPartition, Long> copy = new HashMap<>(partitionOffsetsToCommit);
+	recordsProcessed.set(0);
+	lastCommitTime = System.currentTimeMillis();
+	commitOffsets(copy);
     }
   }
 
   @VisibleForTesting
   protected void commitOffsets(Map<KafkaPartition, Long> partitionOffsets) {
     this.gobblinKafkaConsumerClient.commitOffsetsAsync(partitionOffsets);
-  }
-
-  private void copyAndCommit() {
-    Map<KafkaPartition, Long> copy = new HashMap<>(partitionOffsetsToCommit);
-    recordsProcessed.set(0);
-    lastCommitTime = System.currentTimeMillis();
-    commitOffsets(copy);
   }
 
   private boolean shouldCommitOffsets() {
