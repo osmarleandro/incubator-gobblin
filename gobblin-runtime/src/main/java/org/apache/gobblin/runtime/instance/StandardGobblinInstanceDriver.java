@@ -470,8 +470,4 @@ public class StandardGobblinInstanceDriver extends DefaultGobblinInstanceDriverI
       return this;
     }
   }
-
-  public List<GobblinInstancePlugin> getPlugins() {
-    return _plugins;
-  }
 }
