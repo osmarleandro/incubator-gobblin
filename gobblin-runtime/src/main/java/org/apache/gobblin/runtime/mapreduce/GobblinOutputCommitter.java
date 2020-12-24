@@ -154,13 +154,6 @@ public class GobblinOutputCommitter extends OutputCommitter {
   }
 
   /**
-   * Replicates the default behavior of the {@link OutputCommitter} used by
-   * {@link org.apache.hadoop.mapreduce.lib.output.NullOutputFormat}.
-   */
-  @Override
-  public void recoverTask(TaskAttemptContext taskContext) throws IOException {}
-
-  /**
    * Cleanup the Hadoop MR working directory.
    */
   private static void cleanUpWorkingDirectory(Path mrJobDir, FileSystem fs) throws IOException {
