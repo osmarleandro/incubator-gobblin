@@ -55,7 +55,7 @@ public class AdminWebServer extends AbstractIdleService {
 
     this.restServerUri = restServerUri;
     int port = getPort(properties);
-    this.serverUri = URI.create(String.format("http://%s:%d", getHost(properties), port));
+    this.serverUri = URI.create(String.format("http://%s:%d", properties.getProperty(ConfigurationKeys.ADMIN_SERVER_HOST_KEY, ConfigurationKeys.DEFAULT_ADMIN_SERVER_HOST), port));
     this.hideJobsWithoutTasksByDefault = properties.getProperty(
             ConfigurationKeys.ADMIN_SERVER_HIDE_JOBS_WITHOUT_TASKS_BY_DEFAULT_KEY,
             ConfigurationKeys.DEFAULT_ADMIN_SERVER_HIDE_JOBS_WITHOUT_TASKS_BY_DEFAULT);
@@ -116,10 +116,6 @@ public class AdminWebServer extends AbstractIdleService {
   private static int getPort(Properties properties) {
     return Integer.parseInt(
         properties.getProperty(ConfigurationKeys.ADMIN_SERVER_PORT_KEY, ConfigurationKeys.DEFAULT_ADMIN_SERVER_PORT));
-  }
-
-  private static String getHost(Properties properties) {
-    return properties.getProperty(ConfigurationKeys.ADMIN_SERVER_HOST_KEY, ConfigurationKeys.DEFAULT_ADMIN_SERVER_HOST);
   }
 
   private static long getRefreshInterval(Properties properties) {
