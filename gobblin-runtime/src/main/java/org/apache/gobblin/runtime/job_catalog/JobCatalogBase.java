@@ -100,17 +100,13 @@ public abstract class JobCatalogBase extends AbstractIdleService implements JobC
   }
 
   protected void notifyAllListeners() {
-    Collection<JobSpec> jobSpecs = getJobsWithTimeUpdate();
+    long startTime = System.currentTimeMillis();
+	Collection<JobSpec> jobSpecs1 = getJobs();
+	this.metrics.updateGetJobTime(startTime);
+	Collection<JobSpec> jobSpecs = jobSpecs1;
     for (JobSpec jobSpec : jobSpecs) {
       this.listeners.onAddJob(jobSpec);
     }
-  }
-
-  private Collection<JobSpec> getJobsWithTimeUpdate() {
-    long startTime = System.currentTimeMillis();
-    Collection<JobSpec> jobSpecs = getJobs();
-    this.metrics.updateGetJobTime(startTime);
-    return jobSpecs;
   }
 
   private Iterator<JobSpec> getJobSpecsWithTimeUpdate() {
