@@ -161,7 +161,7 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
     // Build writer eagerly if configured, or if streaming is enabled
     boolean useEagerWriterInitialization = this.taskState
         .getPropAsBoolean(ConfigurationKeys.WRITER_EAGER_INITIALIZATION_KEY,
-            ConfigurationKeys.DEFAULT_WRITER_EAGER_INITIALIZATION) || isStreamingMode();
+            ConfigurationKeys.DEFAULT_WRITER_EAGER_INITIALIZATION) || this.executionModel.equals(ExecutionModel.STREAMING);
     if (useEagerWriterInitialization) {
       buildWriterIfNotPresent();
     }
@@ -177,10 +177,6 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
       this.closer.register(forkMetrics.getMetricContext());
       Instrumented.setMetricContextName(this.taskState, forkMetrics.getMetricContext().getName());
     }
-  }
-
-  private boolean isStreamingMode() {
-    return this.executionModel.equals(ExecutionModel.STREAMING);
   }
 
   @SuppressWarnings(value = "RV_RETURN_VALUE_IGNORED",
@@ -500,7 +496,7 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
         return;
       }
     } else {
-      if (isStreamingMode()) {
+      if (this.executionModel.equals(ExecutionModel.STREAMING)) {
         // Unpack the record from its container
         RecordEnvelope recordEnvelope = (RecordEnvelope) record;
         // Convert the record, check its data quality, and finally write it out if quality checking passes.
