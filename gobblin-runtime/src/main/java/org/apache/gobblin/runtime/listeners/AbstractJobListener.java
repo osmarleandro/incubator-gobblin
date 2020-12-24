@@ -75,8 +75,4 @@ public abstract class AbstractJobListener implements JobListener {
       _log.get().info("jobFailure: " + jobContext);
     }
   }
-
-  protected Optional<Logger> getLog() {
-    return _log;
-  }
 }
