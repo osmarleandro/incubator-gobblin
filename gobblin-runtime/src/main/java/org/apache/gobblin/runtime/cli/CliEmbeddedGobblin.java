@@ -104,13 +104,9 @@ public class CliEmbeddedGobblin implements CliApplication {
     }
   }
 
-  private List<Alias> getAllAliases() {
-    ClassAliasResolver<EmbeddedGobblinCliFactory> resolver = new ClassAliasResolver<>(EmbeddedGobblinCliFactory.class);
-    return resolver.getAliasObjects();
-  }
-
   private void listQuickApps() {
-    List<Alias> aliases = getAllAliases();
+    ClassAliasResolver<EmbeddedGobblinCliFactory> resolver = new ClassAliasResolver<>(EmbeddedGobblinCliFactory.class);
+	List<Alias> aliases = resolver.getAliasObjects();
     System.out.println("Usage: gobblin cli run <quick-app-name> [OPTIONS]");
     System.out.println("Available quick apps:");
     for (Alias thisAlias : aliases) {
