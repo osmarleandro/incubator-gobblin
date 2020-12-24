@@ -175,11 +175,11 @@ public class ZookeeperBasedJobLock implements ListenableJobLock {
       CuratorFramework newCuratorFramework = CuratorFrameworkFactory.builder()
               .connectString(properties.getProperty(CONNECTION_STRING, CONNECTION_STRING_DEFAULT))
               .connectionTimeoutMs(
-                      getMilliseconds(properties, CONNECTION_TIMEOUT_SECONDS, CONNECTION_TIMEOUT_SECONDS_DEFAULT))
+                      getInt(properties, CONNECTION_TIMEOUT_SECONDS, CONNECTION_TIMEOUT_SECONDS_DEFAULT) * 1000)
               .sessionTimeoutMs(
-                      getMilliseconds(properties, SESSION_TIMEOUT_SECONDS, SESSION_TIMEOUT_SECONDS_DEFAULT))
+                      getInt(properties, SESSION_TIMEOUT_SECONDS, SESSION_TIMEOUT_SECONDS_DEFAULT) * 1000)
               .retryPolicy(new ExponentialBackoffRetry(
-                      getMilliseconds(properties, RETRY_BACKOFF_SECONDS, RETRY_BACKOFF_SECONDS_DEFAULT),
+                      getInt(properties, RETRY_BACKOFF_SECONDS, RETRY_BACKOFF_SECONDS_DEFAULT) * 1000,
                       getInt(properties, MAX_RETRY_COUNT, MAX_RETRY_COUNT_DEFAULT)))
               .build();
 
@@ -241,10 +241,6 @@ public class ZookeeperBasedJobLock implements ListenableJobLock {
 
   private static long getLong(Properties properties, String key, long defaultValue) {
     return Long.parseLong(properties.getProperty(key, Long.toString(defaultValue)));
-  }
-
-  private static int getMilliseconds(Properties properties, String key, int defaultValue) {
-    return getInt(properties, key, defaultValue) * 1000;
   }
 
   private static class CuratorFrameworkShutdownHook extends Thread {
