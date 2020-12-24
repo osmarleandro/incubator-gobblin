@@ -68,10 +68,6 @@ public class GobblinWorkUnitsInputFormat extends InputFormat<LongWritable, Text>
     job.getConfiguration().setInt(MAX_MAPPERS, maxMappers);
   }
 
-  public static int getMaxMapper(Configuration conf) {
-    return conf.getInt(MAX_MAPPERS, Integer.MAX_VALUE);
-  }
-
   @Override
   public List<InputSplit> getSplits(JobContext context)
       throws IOException, InterruptedException {
@@ -96,8 +92,9 @@ public class GobblinWorkUnitsInputFormat extends InputFormat<LongWritable, Text>
         allPaths.add(input.getPath().toString());
       }
     }
+	Configuration conf = context.getConfiguration();
 
-    int maxMappers = getMaxMapper(context.getConfiguration());
+    int maxMappers = conf.getInt(MAX_MAPPERS, Integer.MAX_VALUE);
     int numTasksPerMapper =
         allPaths.size() % maxMappers == 0 ? allPaths.size() / maxMappers : allPaths.size() / maxMappers + 1;
 
