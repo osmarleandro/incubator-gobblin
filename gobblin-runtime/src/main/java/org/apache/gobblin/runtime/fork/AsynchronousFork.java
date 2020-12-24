@@ -86,11 +86,6 @@ public class AsynchronousFork extends Fork {
     while (processRecord()) { }
   }
 
-  @Override
-  protected boolean putRecordImpl(Object record) throws InterruptedException {
-    return this.recordQueue.put(record);
-  }
-
   boolean processRecord() throws IOException, DataConversionException {
     try {
       Object record = this.recordQueue.get();
