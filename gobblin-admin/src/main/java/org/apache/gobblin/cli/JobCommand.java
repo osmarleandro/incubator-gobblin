@@ -94,7 +94,26 @@ public class JobCommand implements CliApplication {
 
     @Override
     public void run(String[] args) throws Exception {
-        this.options = createCommandLineOptions();
+        Options options1 = new Options();
+		
+		OptionGroup actionGroup = new OptionGroup();
+		actionGroup.addOption(new Option("h", HELP_OPT, false, "Shows the help message."));
+		actionGroup.addOption(new Option("d", DETAILS_OPT, false, "Show details about a job/task."));
+		actionGroup.addOption(new Option("l", LIST_OPT, false, "List jobs/tasks."));
+		actionGroup.addOption(new Option("p", PROPS_OPT, false, "Fetch properties with the query."));
+		actionGroup.setRequired(true);
+		options1.addOptionGroup(actionGroup);
+		
+		OptionGroup idGroup = new OptionGroup();
+		idGroup.addOption(new Option("j", NAME_OPT, true, "Find job(s) matching given job name."));
+		idGroup.addOption(new Option("i", ID_OPT, true, "Find the job/task with the given id."));
+		options1.addOptionGroup(idGroup);
+		
+		options1.addOption("n", true, "Limit the number of results returned. (default:" + DEFAULT_RESULTS_LIMIT + ")");
+		options1.addOption("r", RECENT_OPT, false, "List the most recent jobs (instead of a list of unique jobs)");
+		options1.addOption("H", ADMIN_SERVER, true, "hostname of admin server");
+		options1.addOption("P", ADMIN_PORT, true, "port of admin server");
+		this.options = options1;
         DefaultParser parser = new DefaultParser();
         AdminClient adminClient = null;
 
@@ -183,30 +202,6 @@ public class JobCommand implements CliApplication {
                 throw new CommandException("Error talking to adminServer: " + e.getMessage());
             }
         }
-    }
-
-    private Options createCommandLineOptions() {
-        Options options = new Options();
-
-        OptionGroup actionGroup = new OptionGroup();
-        actionGroup.addOption(new Option("h", HELP_OPT, false, "Shows the help message."));
-        actionGroup.addOption(new Option("d", DETAILS_OPT, false, "Show details about a job/task."));
-        actionGroup.addOption(new Option("l", LIST_OPT, false, "List jobs/tasks."));
-        actionGroup.addOption(new Option("p", PROPS_OPT, false, "Fetch properties with the query."));
-        actionGroup.setRequired(true);
-        options.addOptionGroup(actionGroup);
-
-        OptionGroup idGroup = new OptionGroup();
-        idGroup.addOption(new Option("j", NAME_OPT, true, "Find job(s) matching given job name."));
-        idGroup.addOption(new Option("i", ID_OPT, true, "Find the job/task with the given id."));
-        options.addOptionGroup(idGroup);
-
-        options.addOption("n", true, "Limit the number of results returned. (default:" + DEFAULT_RESULTS_LIMIT + ")");
-        options.addOption("r", RECENT_OPT, false, "List the most recent jobs (instead of a list of unique jobs)");
-        options.addOption("H", ADMIN_SERVER, true, "hostname of admin server");
-        options.addOption("P", ADMIN_PORT, true, "port of admin server");
-
-        return options;
     }
 
     private int parseResultsLimit(CommandLine parsedOpts) {
