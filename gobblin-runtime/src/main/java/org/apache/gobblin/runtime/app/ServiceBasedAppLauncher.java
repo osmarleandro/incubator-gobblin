@@ -110,7 +110,25 @@ public class ServiceBasedAppLauncher implements ApplicationLauncher {
     addJMXReportingService();
 
     // Add any additional Services specified via configuration keys
-    addServicesFromProperties(properties);
+    if (properties.containsKey(APP_ADDITIONAL_SERVICES)) {
+	  for (String serviceClassName : new State(properties).getPropAsSet(APP_ADDITIONAL_SERVICES)) {
+	    Class<?> serviceClass = Class.forName(serviceClassName);
+	    if (Service.class.isAssignableFrom(serviceClass)) {
+	      Service service;
+	      Constructor<?> constructor =
+	          ConstructorUtils.getMatchingAccessibleConstructor(serviceClass, Properties.class);
+	      if (constructor != null) {
+	        service = (Service) constructor.newInstance(properties);
+	      } else {
+	        service = (Service) serviceClass.newInstance();
+	      }
+	      addService(service);
+	    } else {
+	      throw new IllegalArgumentException(String.format("Class %s specified by %s does not implement %s",
+	          serviceClassName, APP_ADDITIONAL_SERVICES, Service.class.getSimpleName()));
+	    }
+	  }
+	}
 
     // Add a shutdown hook that interrupts the main thread
     addInterruptedShutdownHook();
@@ -258,29 +276,6 @@ public class ServiceBasedAppLauncher implements ApplicationLauncher {
 
   private void addJMXReportingService() {
     addService(new JMXReportingService());
-  }
-
-  private void addServicesFromProperties(Properties properties)
-      throws IllegalAccessException, InstantiationException, ClassNotFoundException, InvocationTargetException {
-    if (properties.containsKey(APP_ADDITIONAL_SERVICES)) {
-      for (String serviceClassName : new State(properties).getPropAsSet(APP_ADDITIONAL_SERVICES)) {
-        Class<?> serviceClass = Class.forName(serviceClassName);
-        if (Service.class.isAssignableFrom(serviceClass)) {
-          Service service;
-          Constructor<?> constructor =
-              ConstructorUtils.getMatchingAccessibleConstructor(serviceClass, Properties.class);
-          if (constructor != null) {
-            service = (Service) constructor.newInstance(properties);
-          } else {
-            service = (Service) serviceClass.newInstance();
-          }
-          addService(service);
-        } else {
-          throw new IllegalArgumentException(String.format("Class %s specified by %s does not implement %s",
-              serviceClassName, APP_ADDITIONAL_SERVICES, Service.class.getSimpleName()));
-        }
-      }
-    }
   }
 
   private void addInterruptedShutdownHook() {
