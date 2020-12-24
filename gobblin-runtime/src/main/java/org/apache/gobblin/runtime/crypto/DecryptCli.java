@@ -67,7 +67,10 @@ public class DecryptCli implements CliApplication {
         cli = parser.parse(options, Arrays.copyOfRange(args, 1, args.length));
       } catch (ParseException pe) {
         System.out.println("Command line parse exception: " + pe.getMessage());
-        printUsage(options);
+        HelpFormatter formatter = new HelpFormatter();
+		
+		String usage = "decryption utilities ";
+		formatter.printHelp(usage, options);
         return;
       }
 
@@ -89,14 +92,6 @@ public class DecryptCli implements CliApplication {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  private void printUsage(Options options) {
-
-    HelpFormatter formatter = new HelpFormatter();
-
-    String usage = "decryption utilities ";
-    formatter.printHelp(usage, options);
   }
 
   private static String getPasswordFromConsole() {
