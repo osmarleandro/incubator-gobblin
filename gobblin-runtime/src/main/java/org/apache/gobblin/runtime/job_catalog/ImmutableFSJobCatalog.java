@@ -138,16 +138,6 @@ public class ImmutableFSJobCatalog extends JobCatalogBase implements JobCatalog 
   }
 
   @Override
-  protected void startUp()
-      throws IOException {
-    super.startUp();
-
-    if (this.pathAlterationDetector != null) {
-      this.pathAlterationDetector.start();
-    }
-  }
-
-  @Override
   protected void shutDown()
       throws IOException {
     try {
