@@ -41,31 +41,39 @@ public class StaticJobCatalog extends JobCatalogBase {
   private final Map<URI, JobSpec> jobs;
 
   public StaticJobCatalog(Collection<JobSpec> jobSpecs) {
-    this.jobs = parseJobs(jobSpecs);
+    ImmutableMap.Builder<URI, JobSpec> mapBuilder = ImmutableMap.builder();
+	for (JobSpec jobSpec : jobSpecs) {
+	  mapBuilder.put(jobSpec.getUri(), jobSpec);
+	}
+	this.jobs = mapBuilder.build();
   }
 
   public StaticJobCatalog(Optional<Logger> log, Collection<JobSpec> jobSpecs) {
     super(log);
-    this.jobs = parseJobs(jobSpecs);
+	ImmutableMap.Builder<URI, JobSpec> mapBuilder = ImmutableMap.builder();
+	for (JobSpec jobSpec : jobSpecs) {
+	  mapBuilder.put(jobSpec.getUri(), jobSpec);
+	}
+    this.jobs = mapBuilder.build();
   }
 
   public StaticJobCatalog(GobblinInstanceEnvironment env, Collection<JobSpec> jobSpecs) {
     super(env);
-    this.jobs = parseJobs(jobSpecs);
+	ImmutableMap.Builder<URI, JobSpec> mapBuilder = ImmutableMap.builder();
+	for (JobSpec jobSpec : jobSpecs) {
+	  mapBuilder.put(jobSpec.getUri(), jobSpec);
+	}
+    this.jobs = mapBuilder.build();
   }
 
   public StaticJobCatalog(Optional<Logger> log, Optional<MetricContext> parentMetricContext,
       boolean instrumentationEnabled, Collection<JobSpec> jobSpecs) {
     super(log, parentMetricContext, instrumentationEnabled);
-    this.jobs = parseJobs(jobSpecs);
-  }
-
-  private Map<URI, JobSpec> parseJobs(Collection<JobSpec> jobSpecs) {
-    ImmutableMap.Builder<URI, JobSpec> mapBuilder = ImmutableMap.builder();
-    for (JobSpec jobSpec : jobSpecs) {
-      mapBuilder.put(jobSpec.getUri(), jobSpec);
-    }
-    return mapBuilder.build();
+	ImmutableMap.Builder<URI, JobSpec> mapBuilder = ImmutableMap.builder();
+	for (JobSpec jobSpec : jobSpecs) {
+	  mapBuilder.put(jobSpec.getUri(), jobSpec);
+	}
+    this.jobs = mapBuilder.build();
   }
 
   @edu.umd.cs.findbugs.annotations.SuppressWarnings(
