@@ -117,13 +117,9 @@ public class FileBasedJobLockFactory implements JobLockFactory<FileBasedJobLock>
   }
 
   protected static void createLockDir(FileSystem fs, Path dirName) throws IOException {
-    if (!fs.mkdirs(dirName, getDefaultDirPermissions())) {
+    if (!fs.mkdirs(dirName, new FsPermission(FsAction.ALL, FsAction.READ_EXECUTE, FsAction.NONE))) {
       throw new RuntimeException("Unable to create job lock directory: " + dirName);
     }
-  }
-
-  protected static FsPermission getDefaultDirPermissions() {
-    return new FsPermission(FsAction.ALL, FsAction.READ_EXECUTE, FsAction.NONE);
   }
 
   Path getLockFile(String jobName) {
