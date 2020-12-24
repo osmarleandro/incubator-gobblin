@@ -91,7 +91,12 @@ public class AdminClient {
 
     query.setLimit(resultsLimit);
 
-    return executeQuery(query);
+    JobExecutionQueryResult result = this.client.get(query);
+	
+	if (result != null && result.hasJobExecutions()) {
+	  return result.getJobExecutions();
+	}
+	return Collections.emptyList();
   }
 
   /**
@@ -108,7 +113,12 @@ public class AdminClient {
     query.setIncludeTaskExecutions(false);
     query.setLimit(resultsLimit);
 
-    return executeQuery(query);
+    JobExecutionQueryResult result = this.client.get(query);
+	
+	if (result != null && result.hasJobExecutions()) {
+	  return result.getJobExecutions();
+	}
+	return Collections.emptyList();
   }
 
   /**
