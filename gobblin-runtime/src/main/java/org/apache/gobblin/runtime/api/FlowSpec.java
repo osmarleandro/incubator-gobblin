@@ -128,10 +128,6 @@ public class FlowSpec implements Configurable, Spec {
     return getUri().toString() + "/" + getVersion();
   }
 
-  public String toLongString() {
-    return getUri().toString() + "/" + getVersion() + "[" + getDescription() + "]";
-  }
-
   @Override
   public String toString() {
     return toShortString();
