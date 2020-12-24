@@ -86,12 +86,6 @@ public class FSJobCatalog extends ImmutableFSJobCatalog implements MutableJobCat
     this.mutableMetrics = (MutableStandardMetrics)metrics;
   }
 
-  @Override
-  protected JobCatalog.StandardMetrics createStandardMetrics(Optional<Config> sysConfig) {
-    log.info("create standard metrics {} for {}", MutableStandardMetrics.class.getName(), this.getClass().getName());
-    return new MutableStandardMetrics(this, sysConfig);
-  }
-
   /**
    * The expose of observer is used for testing purpose, so that
    * the checkAndNotify method can be revoked manually, instead of waiting for
