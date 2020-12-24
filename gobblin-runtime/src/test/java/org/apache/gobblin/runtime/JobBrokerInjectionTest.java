@@ -51,6 +51,7 @@ import org.apache.gobblin.runtime.api.JobLifecycleListener;
 import org.apache.gobblin.runtime.api.JobSpec;
 import org.apache.gobblin.runtime.instance.StandardGobblinInstanceDriver;
 import org.apache.gobblin.runtime.instance.StandardGobblinInstanceLauncher;
+import org.apache.gobblin.runtime.instance.StandardGobblinInstanceLauncher.Builder;
 import org.apache.gobblin.runtime.std.DefaultJobLifecycleListenerImpl;
 import org.apache.gobblin.runtime.std.FilteredJobLifecycleListener;
 import org.apache.gobblin.runtime.std.JobSpecFilter;
@@ -68,7 +69,7 @@ public class JobBrokerInjectionTest {
   @Test
   public void testBrokerIsAcquiredAndShared() throws Exception {
     StandardGobblinInstanceLauncher.Builder instanceLauncherBuilder =
-        StandardGobblinInstanceLauncher.builder()
+        new Builder()
             .withInstanceName("testSubmitToJobCatalog");
     instanceLauncherBuilder.driver();
     StandardGobblinInstanceLauncher instanceLauncher =

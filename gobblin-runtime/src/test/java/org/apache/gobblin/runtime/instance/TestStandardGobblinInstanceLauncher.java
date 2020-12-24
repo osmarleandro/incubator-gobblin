@@ -38,6 +38,7 @@ import org.apache.gobblin.runtime.api.JobExecutionResult;
 import org.apache.gobblin.runtime.api.JobLifecycleListener;
 import org.apache.gobblin.runtime.api.JobSpec;
 import org.apache.gobblin.runtime.instance.DefaultGobblinInstanceDriverImpl.JobSpecRunnable;
+import org.apache.gobblin.runtime.instance.StandardGobblinInstanceLauncher.Builder;
 import org.apache.gobblin.runtime.job_exec.JobLauncherExecutionDriver;
 import org.apache.gobblin.runtime.job_spec.ResolvedJobSpec;
 import org.apache.gobblin.runtime.std.DefaultJobLifecycleListenerImpl;
@@ -57,7 +58,7 @@ public class TestStandardGobblinInstanceLauncher {
   /** Test running of a job when submitted directly to the execution driver*/
   public void testDirectToExecutionDriver() throws Exception {
     StandardGobblinInstanceLauncher.Builder instanceLauncherBuilder =
-        StandardGobblinInstanceLauncher.builder()
+        new Builder()
         .withInstanceName("testDirectToExecutionDriver");
     instanceLauncherBuilder.driver();
     StandardGobblinInstanceLauncher instanceLauncher =
@@ -124,7 +125,7 @@ public class TestStandardGobblinInstanceLauncher {
   /** Test running of a job when submitted directly to the scheduler */
   public void testDirectToScheduler() throws Exception {
     StandardGobblinInstanceLauncher.Builder instanceLauncherBuilder =
-        StandardGobblinInstanceLauncher.builder()
+        new Builder()
         .withInstanceName("testDirectToScheduler");
     instanceLauncherBuilder.driver();
     StandardGobblinInstanceLauncher instanceLauncher =
@@ -172,7 +173,7 @@ public class TestStandardGobblinInstanceLauncher {
   /** Test running of a job using the standard path of submitting to the job catalog */
   public void testSubmitToJobCatalog() throws Exception {
     StandardGobblinInstanceLauncher.Builder instanceLauncherBuilder =
-        StandardGobblinInstanceLauncher.builder()
+        new Builder()
         .withInstanceName("testSubmitToJobCatalog");
     instanceLauncherBuilder.driver();
     StandardGobblinInstanceLauncher instanceLauncher =
@@ -229,7 +230,7 @@ public class TestStandardGobblinInstanceLauncher {
   @Test
   public void testSubmitWithTemplate() throws Exception {
     StandardGobblinInstanceLauncher.Builder instanceLauncherBuilder =
-        StandardGobblinInstanceLauncher.builder()
+        new Builder()
             .withInstanceName("testSubmitWithTemplate");
     instanceLauncherBuilder.driver();
     StandardGobblinInstanceLauncher instanceLauncher =

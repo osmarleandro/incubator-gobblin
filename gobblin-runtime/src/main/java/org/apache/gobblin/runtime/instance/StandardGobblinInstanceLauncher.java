@@ -115,10 +115,6 @@ public class StandardGobblinInstanceLauncher extends AbstractIdleService
     _driver.shutDown();
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
   public static class Builder implements GobblinInstanceEnvironment {
     final static AtomicInteger INSTANCE_COUNT = new AtomicInteger(1);
 
