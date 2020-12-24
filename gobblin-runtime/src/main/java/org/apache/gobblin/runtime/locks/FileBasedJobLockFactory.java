@@ -194,14 +194,6 @@ public class FileBasedJobLockFactory implements JobLockFactory<FileBasedJobLock>
     }
   }
 
-  public static Config getConfigForProperties(Properties properties) {
-    return ConfigFactory.parseMap(ImmutableMap.<String, Object>builder()
-       .put(FS_URI_CONFIG, properties.getProperty(ConfigurationKeys.FS_URI_KEY, ConfigurationKeys.LOCAL_FS_URI))
-       .put(LOCK_DIR_CONFIG, properties.getProperty(FileBasedJobLock.JOB_LOCK_DIR))
-       .build());
-  }
-
-
   public static FileBasedJobLockFactory createForProperties(Properties properties)
          throws JobLockException {
     try {
