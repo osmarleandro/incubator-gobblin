@@ -236,7 +236,9 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
   }
 
   private void onStart() throws IOException {
-    compareAndSetForkState(ForkState.PENDING, ForkState.RUNNING);
+    ForkState expectedState = ForkState.PENDING;
+	ForkState newState = ForkState.RUNNING;
+	this.forkState.compareAndSet(expectedState, newState);
   }
 
   private void onEachRecord() throws IOException {
@@ -245,7 +247,9 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
 
   @Override
   public void run() {
-    compareAndSetForkState(ForkState.PENDING, ForkState.RUNNING);
+    ForkState expectedState = ForkState.PENDING;
+	ForkState newState = ForkState.RUNNING;
+	this.forkState.compareAndSet(expectedState, newState);
     try {
       processRecords();
 
@@ -256,8 +260,10 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
         ConfigurationKeys.FORK_CLOSE_WRITER_ON_COMPLETION, ConfigurationKeys.DEFAULT_FORK_CLOSE_WRITER_ON_COMPLETION)) {
         this.writer.get().close();
       }
+	ForkState expectedState1 = ForkState.RUNNING;
+	ForkState newState1 = ForkState.SUCCEEDED;
 
-      compareAndSetForkState(ForkState.RUNNING, ForkState.SUCCEEDED);
+      this.forkState.compareAndSet(expectedState1, newState1);
     } catch (Throwable t) {
       // Set throwable to holder first because AsynchronousFork::putRecord can pull the throwable when it detects ForkState.FAILED status.
       ForkThrowableHolder holder = Task.getForkThrowableHolder(this.broker);
@@ -651,18 +657,10 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
 
   /**
    * Compare and set the state of this {@link Fork} to a new state if and only if the current state
-   * is equal to the expected state.
-   */
-  private boolean compareAndSetForkState(ForkState expectedState, ForkState newState) {
-    return this.forkState.compareAndSet(expectedState, newState);
-  }
-
-  /**
-   * Compare and set the state of this {@link Fork} to a new state if and only if the current state
    * is equal to the expected state. Throw an exception if the state did not match.
    */
   private void verifyAndSetForkState(ForkState expectedState, ForkState newState) {
-    if (!compareAndSetForkState(expectedState, newState)) {
+    if (!this.forkState.compareAndSet(expectedState, newState)) {
       throw new IllegalStateException(String
           .format("Expected fork state %s; actual fork state %s", expectedState.name(), this.forkState.get().name()));
     }
