@@ -106,7 +106,9 @@ public class ServiceBasedAppLauncher implements ApplicationLauncher {
 
     // Add core Services needed for any application
     addJobExecutionServerAndAdminUI(properties);
-    addMetricsService(properties);
+    if (GobblinMetrics.isEnabled(properties)) {
+	  addService(new MetricsReportingService(properties, this.appId));
+	}
     addJMXReportingService();
 
     // Add any additional Services specified via configuration keys
@@ -247,12 +249,6 @@ public class ServiceBasedAppLauncher implements ApplicationLauncher {
     catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
       throw new RuntimeException("Unable to instantiate the AdminWebServer factory. " +
            "Have you included the module in the gobblin distribution? :" + e, e);
-    }
-  }
-
-  private void addMetricsService(Properties properties) {
-    if (GobblinMetrics.isEnabled(properties)) {
-      addService(new MetricsReportingService(properties, this.appId));
     }
   }
 
