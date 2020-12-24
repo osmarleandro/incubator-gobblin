@@ -191,13 +191,6 @@ public class EmbeddedGobblin {
   }
 
   /**
-   * Specify that the input jar should be added to workers' classpath on distributed mode.
-   */
-  public EmbeddedGobblin distributeJar(String jarPath) {
-    return distributeJarWithPriority(jarPath, 0);
-  }
-
-  /**
    * Specify that the input jar should be added to workers' classpath on distributed mode. Jars with lower priority value
    * will appear first in the classpath. Default priority is 0.
    */
