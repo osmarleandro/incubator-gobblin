@@ -329,10 +329,25 @@ public class MRJobLauncher extends AbstractJobLauncher {
       if (this.fsm.getCurrentState().getStateType().equals(StateType.CANCELLED)) {
         return;
       }
+	GobblinMetrics metrics = JobMetrics.get(jobName, this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY));
 
       // Create a metrics set for this job run from the Hadoop counters.
       // The metrics set is to be persisted to the metrics store later.
-      countersToMetrics(JobMetrics.get(jobName, this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY)));
+      Optional<Counters> counters = Optional.fromNullable(this.job.getCounters());
+	
+	if (counters.isPresent()) {
+	  // Write job-level counters
+	  CounterGroup jobCounterGroup = counters.get().getGroup(MetricGroup.JOB.name());
+	  for (Counter jobCounter : jobCounterGroup) {
+	    metrics.getCounter(jobCounter.getName()).inc(jobCounter.getValue());
+	  }
+	
+	  // Write task-level counters
+	  CounterGroup taskCounterGroup = counters.get().getGroup(MetricGroup.TASK.name());
+	  for (Counter taskCounter : taskCounterGroup) {
+	    metrics.getCounter(taskCounter.getName()).inc(taskCounter.getValue());
+	  }
+	}
     } catch (Throwable t) {
       throw new RuntimeException("The MR job cannot be submitted due to:", t);
     } finally {
@@ -673,28 +688,6 @@ public class MRJobLauncher extends AbstractJobLauncher {
       }
     } catch (IOException ioe) {
       LOG.error("Failed to delete working directory " + this.mrJobDir);
-    }
-  }
-
-  /**
-   * Create a {@link org.apache.gobblin.metrics.GobblinMetrics} instance for this job run from the Hadoop counters.
-   */
-  @VisibleForTesting
-  void countersToMetrics(GobblinMetrics metrics) throws IOException {
-    Optional<Counters> counters = Optional.fromNullable(this.job.getCounters());
-
-    if (counters.isPresent()) {
-      // Write job-level counters
-      CounterGroup jobCounterGroup = counters.get().getGroup(MetricGroup.JOB.name());
-      for (Counter jobCounter : jobCounterGroup) {
-        metrics.getCounter(jobCounter.getName()).inc(jobCounter.getValue());
-      }
-
-      // Write task-level counters
-      CounterGroup taskCounterGroup = counters.get().getGroup(MetricGroup.TASK.name());
-      for (Counter taskCounter : taskCounterGroup) {
-        metrics.getCounter(taskCounter.getName()).inc(taskCounter.getValue());
-      }
     }
   }
 
