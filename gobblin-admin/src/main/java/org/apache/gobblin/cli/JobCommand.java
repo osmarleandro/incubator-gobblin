@@ -88,7 +88,12 @@ public class JobCommand implements CliApplication {
             }
         }
 
-        printHelpAndExit("Unknown subcommand", false);
+        System.out.println("Unknown subcommand");
+		if (false) {
+		    HelpFormatter hf = new HelpFormatter();
+		    hf.printHelp("gobblin-admin.sh jobs [options]", this.options);
+		}
+		System.exit(1);
         throw new IllegalStateException("unreached...");
     }
 
@@ -109,17 +114,34 @@ public class JobCommand implements CliApplication {
                     port = Integer.parseInt(parsedOpts.getOptionValue(ADMIN_PORT));
                 }
             } catch (NumberFormatException e) {
-                printHelpAndExit("The port must be a valid integer.", false);
+                System.out.println("The port must be a valid integer.");
+				if (false) {
+				    HelpFormatter hf = new HelpFormatter();
+				    hf.printHelp("gobblin-admin.sh jobs [options]", this.options);
+				}
+				System.exit(1);
             }
 
             adminClient = new AdminClient(host, port);
             try {
                 getAction(parsedOpts).execute(parsedOpts, adminClient, resultLimit);
             } catch (CommandException e) {
-                printHelpAndExit(e.getMessage(), false);
+                String errorMsg = e.getMessage();
+				System.out.println(errorMsg);
+				if (false) {
+				    HelpFormatter hf = new HelpFormatter();
+				    hf.printHelp("gobblin-admin.sh jobs [options]", this.options);
+				}
+				System.exit(1);
             }
         } catch (ParseException e) {
-            printHelpAndExit("Failed to parse jobs arguments: " + e.getMessage(), true);
+            String errorMsg = "Failed to parse jobs arguments: " + e.getMessage();
+			System.out.println(errorMsg);
+			if (true) {
+			    HelpFormatter hf = new HelpFormatter();
+			    hf.printHelp("gobblin-admin.sh jobs [options]", this.options);
+			}
+			System.exit(1);
         } finally {
             if (adminClient != null) adminClient.close();
         }
@@ -214,23 +236,16 @@ public class JobCommand implements CliApplication {
             try {
                 return Integer.parseInt(parsedOpts.getOptionValue("n"));
             } catch (NumberFormatException e) {
-                printHelpAndExit("Could not parse integer value for option n.", false);
+                System.out.println("Could not parse integer value for option n.");
+				if (false) {
+				    HelpFormatter hf = new HelpFormatter();
+				    hf.printHelp("gobblin-admin.sh jobs [options]", this.options);
+				}
+				System.exit(1);
                 return 0;
             }
         } else {
             return DEFAULT_RESULTS_LIMIT;
         }
-    }
-
-    /**
-     * Print help and exit with the specified code.
-     */
-    private void printHelpAndExit(String errorMsg, boolean printHelp) {
-        System.out.println(errorMsg);
-        if (printHelp) {
-            HelpFormatter hf = new HelpFormatter();
-            hf.printHelp("gobblin-admin.sh jobs [options]", this.options);
-        }
-        System.exit(1);
     }
 }
