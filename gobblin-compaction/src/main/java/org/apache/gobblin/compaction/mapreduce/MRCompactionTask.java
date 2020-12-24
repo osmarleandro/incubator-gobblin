@@ -25,6 +25,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormatCounter;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -67,7 +68,7 @@ public class MRCompactionTask extends MRTask {
             createSuite(taskContext.getTaskState());
     this.dataset = this.suite.load(taskContext.getTaskState());
     this.eventSubmitter = new EventSubmitter.Builder(this.metricContext, MRCompactor.COMPACTION_TRACKING_EVENTS_NAMESPACE)
-        .addMetadata(additionalEventMetadata()).build();
+        .addMetadata(Maps.newHashMap()).build();
   }
 
   /**

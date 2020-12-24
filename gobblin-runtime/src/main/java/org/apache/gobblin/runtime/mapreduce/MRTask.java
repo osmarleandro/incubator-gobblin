@@ -70,7 +70,7 @@ public class MRTask extends BaseAbstractTask {
     super(taskContext);
     this.taskContext = taskContext;
     this.eventSubmitter = new EventSubmitter.Builder(this.metricContext, "gobblin.MRTask")
-        .addMetadata(additionalEventMetadata()).build();
+        .addMetadata(Maps.newHashMap()).build();
   }
 
   public void onMRTaskComplete (boolean isSuccess, Throwable t) throws RuntimeException {
@@ -127,10 +127,6 @@ public class MRTask extends BaseAbstractTask {
       this.eventSubmitter.submit(Events.MR_JOB_FAILED, Events.FAILURE_CONTEXT, t.getMessage());
       this.onMRTaskComplete (false, t);
     }
-  }
-
-  protected Map<String, String> additionalEventMetadata() {
-    return Maps.newHashMap();
   }
 
   /**
