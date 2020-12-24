@@ -366,14 +366,6 @@ public class EmbeddedGobblin {
   }
 
   /**
-   * Enable dumping jstack when error happens.
-   */
-  public EmbeddedGobblin setDumpJStackOnTimeout(boolean dumpJStackOnTimeout) {
-    this.dumpJStackOnTimeout = dumpJStackOnTimeout;
-    return this;
-  }
-
-  /**
    * Enable state store.
    */
   public EmbeddedGobblin useStateStore(String rootDir) {
