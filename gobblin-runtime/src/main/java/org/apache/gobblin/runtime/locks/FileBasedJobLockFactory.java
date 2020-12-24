@@ -88,15 +88,11 @@ public class FileBasedJobLockFactory implements JobLockFactory<FileBasedJobLock>
          throws IOException {
     FileSystem fs = factoryConfig.hasPath(FS_URI_CONFIG) ?
             FileSystem.get(URI.create(factoryConfig.getString(FS_URI_CONFIG)), hadoopConf) :
-            getDefaultFileSystem(hadoopConf);
+            FileSystem.getLocal(hadoopConf);
     String lockFilesDir =  factoryConfig.hasPath(LOCK_DIR_CONFIG) ?
            factoryConfig.getString(LOCK_DIR_CONFIG) :
            getDefaultLockDir(fs, log);
     return new FileBasedJobLockFactory(fs, lockFilesDir, log);
-  }
-
-  public static FileSystem getDefaultFileSystem(Configuration hadoopConf) throws IOException {
-    return FileSystem.getLocal(hadoopConf);
   }
 
   public static String getDefaultLockDir(FileSystem fs, Optional<Logger> log) {
