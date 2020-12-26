@@ -79,7 +79,7 @@ public class AdminClient {
    * @param lookupType Query type
    * @return List of all jobs (limited by results limit)
    */
-  public List<JobExecutionInfo> queryAllJobs(QueryListType lookupType, int resultsLimit)
+  public List<JobExecutionInfo> queryAllJobs_RENAMED(QueryListType lookupType, int resultsLimit)
       throws RemoteInvocationException {
     JobExecutionQuery query = new JobExecutionQuery();
     query.setIdType(QueryIdTypeEnum.LIST_TYPE);
