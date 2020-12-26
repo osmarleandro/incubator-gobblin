@@ -70,14 +70,14 @@ public class AdminWebServer extends AbstractIdleService {
 
     HandlerCollection handlerCollection = new HandlerCollection();
 
-    handlerCollection.addHandler(buildSettingsHandler());
+    handlerCollection.addHandler(buildSettingsHandler_RENAMED());
     handlerCollection.addHandler(buildStaticResourceHandler());
 
     this.server.setHandler(handlerCollection);
     this.server.start();
   }
 
-  private Handler buildSettingsHandler() {
+  private Handler buildSettingsHandler_RENAMED() {
     final String responseTemplate = "var Gobblin = window.Gobblin || {};" + "Gobblin.settings = {restServerUrl:\"%s\", hideJobsWithoutTasksByDefault:%s, refreshInterval:%s}";
 
     return new AbstractHandler() {
