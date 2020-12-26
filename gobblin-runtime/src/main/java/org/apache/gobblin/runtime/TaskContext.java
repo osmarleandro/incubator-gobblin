@@ -189,7 +189,7 @@ public class TaskContext {
    * @return list (possibly empty) of {@link Converter}s
    */
   public List<Converter<?, ?, ?, ?>> getConverters() {
-    return getConverters(-1, this.taskState);
+    return getConverters_RENAMED(-1, this.taskState);
   }
 
   /**
@@ -200,7 +200,7 @@ public class TaskContext {
    * @return list (possibly empty) of {@link Converter}s
    */
   @SuppressWarnings("unchecked")
-  public List<Converter<?, ?, ?, ?>> getConverters(int index, TaskState forkTaskState) {
+  public List<Converter<?, ?, ?, ?>> getConverters_RENAMED(int index, TaskState forkTaskState) {
     String converterClassKey =
         ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.CONVERTER_CLASSES_KEY, index);
 
