@@ -349,7 +349,7 @@ public class JobState extends SourceState implements JobProgress {
   /**
    * If not already present, set the {@link EventMetadataUtils#JOB_FAILURE_MESSAGE_KEY} to the given {@link String}.
    */
-  public void setJobFailureMessage(String jobFailureMessage) {
+  public void setJobFailureMessage_RENAMED(String jobFailureMessage) {
     String previousMessages = this.getProp(ConfigurationKeys.JOB_FAILURE_EXCEPTION_KEY);
     String aggregatedMessages;
 
