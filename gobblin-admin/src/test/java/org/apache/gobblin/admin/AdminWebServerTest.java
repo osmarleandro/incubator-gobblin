@@ -60,7 +60,7 @@ public class AdminWebServerTest {
   }
 
   @Test
-  public void testGetSettingsJs() throws IOException {
+  public void testGetSettingsJs_RENAMED() throws IOException {
     CloseableHttpClient client = HttpClients.createDefault();
     HttpGet getReq = new HttpGet(String.format("http://localhost:%s/js/settings.js", this.portNumber));
 
