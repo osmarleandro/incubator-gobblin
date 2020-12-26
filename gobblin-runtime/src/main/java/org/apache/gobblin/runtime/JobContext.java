@@ -513,7 +513,7 @@ public class JobContext implements Closeable {
   }
 
   @SuppressWarnings("unchecked")
-  public static Optional<Class<? extends DataPublisher>> getJobDataPublisherClass(State state)
+  public static Optional<Class<? extends DataPublisher>> getJobDataPublisherClass_RENAMED(State state)
       throws ReflectiveOperationException {
     if (!Strings.isNullOrEmpty(state.getProp(ConfigurationKeys.JOB_DATA_PUBLISHER_TYPE))) {
       return Optional.<Class<? extends DataPublisher>>of(

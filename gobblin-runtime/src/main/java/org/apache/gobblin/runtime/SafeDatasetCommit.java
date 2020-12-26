@@ -90,7 +90,7 @@ final class SafeDatasetCommit implements Callable<Void> {
     finalizeDatasetStateBeforeCommit(this.datasetState);
     Class<? extends DataPublisher> dataPublisherClass;
     try (Closer closer = Closer.create()) {
-      dataPublisherClass = JobContext.getJobDataPublisherClass(this.jobContext.getJobState())
+      dataPublisherClass = JobContext.getJobDataPublisherClass_RENAMED(this.jobContext.getJobState())
           .or((Class<? extends DataPublisher>) Class.forName(ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
       if (!canCommitDataset(datasetState)) {
         log.warn(String
