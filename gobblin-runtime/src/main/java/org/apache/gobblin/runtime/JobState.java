@@ -466,21 +466,21 @@ public class JobState extends SourceState implements JobProgress {
     Map<String, DatasetState> datasetStatesByUrns = Maps.newHashMap();
 
     for (TaskState taskState : this.taskStates.values()) {
-      String datasetUrn = createDatasetUrn(datasetStatesByUrns, taskState);
+      String datasetUrn = createDatasetUrn_RENAMED(datasetStatesByUrns, taskState);
 
       datasetStatesByUrns.get(datasetUrn).incrementTaskCount();
       datasetStatesByUrns.get(datasetUrn).addTaskState(taskState);
     }
 
     for (TaskState taskState : this.skippedTaskStates.values()) {
-      String datasetUrn = createDatasetUrn(datasetStatesByUrns, taskState);
+      String datasetUrn = createDatasetUrn_RENAMED(datasetStatesByUrns, taskState);
       datasetStatesByUrns.get(datasetUrn).addSkippedTaskState(taskState);
     }
 
     return ImmutableMap.copyOf(datasetStatesByUrns);
   }
 
-  private String createDatasetUrn(Map<String, DatasetState> datasetStatesByUrns, TaskState taskState) {
+  private String createDatasetUrn_RENAMED(Map<String, DatasetState> datasetStatesByUrns, TaskState taskState) {
     String datasetUrn = taskState.getProp(ConfigurationKeys.DATASET_URN_KEY, ConfigurationKeys.DEFAULT_DATASET_URN);
     if (!datasetStatesByUrns.containsKey(datasetUrn)) {
       DatasetState datasetState = newDatasetState(false);
