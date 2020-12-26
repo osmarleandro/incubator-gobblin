@@ -258,7 +258,7 @@ final class SafeDatasetCommit implements Callable<Void> {
       publisher.publish(taskStates);
     } catch (Throwable t) {
       log.error("Failed to commit dataset", t);
-      setTaskFailureException(taskStates, t);
+      setTaskFailureException_RENAMED(taskStates, t);
     }
   }
 
@@ -363,7 +363,7 @@ final class SafeDatasetCommit implements Callable<Void> {
       return publisher.getCommitSequenceBuilder();
     } catch (Throwable t) {
       log.error("Failed to generate commit sequence", t);
-      setTaskFailureException(datasetState.getTaskStates(), t);
+      setTaskFailureException_RENAMED(datasetState.getTaskStates(), t);
       throw Throwables.propagate(t);
     }
   }
@@ -418,7 +418,7 @@ final class SafeDatasetCommit implements Callable<Void> {
    *
    * Make this method public as this exception catching routine can be reusable in other occasions as well.
    */
-  public static void setTaskFailureException(Collection<? extends WorkUnitState> taskStates, Throwable t) {
+  public static void setTaskFailureException_RENAMED(Collection<? extends WorkUnitState> taskStates, Throwable t) {
     for (WorkUnitState taskState : taskStates) {
       ((TaskState) taskState).setTaskFailureException(t);
     }

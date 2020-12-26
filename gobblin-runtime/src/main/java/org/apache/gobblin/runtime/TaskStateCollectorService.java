@@ -214,7 +214,7 @@ public class TaskStateCollectorService extends AbstractScheduledService {
       } catch (Throwable t) {
         if (isJobProceedOnCollectorServiceFailure) {
           log.error("Failed to commit dataset while job proceeds", t);
-          SafeDatasetCommit.setTaskFailureException(taskStateQueue, t);
+          SafeDatasetCommit.setTaskFailureException_RENAMED(taskStateQueue, t);
         } else {
           throw new RuntimeException("Hive Registration as the TaskStateCollectorServiceHandler failed.", t);
         }
