@@ -412,7 +412,7 @@ public class JobContext implements Closeable {
 
   @Subscribe
   public void handleNewTaskCompletionEvent(NewTaskCompletionEvent newOutputTaskStateEvent) {
-    LOG.info("{} more tasks of job {} have completed", newOutputTaskStateEvent.getTaskStates().size(), this.jobId);
+    LOG.info("{} more tasks of job {} have completed", newOutputTaskStateEvent.getTaskStates_RENAMED().size(), this.jobId);
     // Update the job execution history store upon new task completion
     storeJobExecutionInfo();
   }

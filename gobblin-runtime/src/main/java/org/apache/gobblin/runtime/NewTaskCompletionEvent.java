@@ -45,7 +45,7 @@ public class NewTaskCompletionEvent {
    *
    * @return the {@link Collection} of {@link TaskState}s of completed {@link Task}s
    */
-  public Collection<TaskState> getTaskStates() {
+  public Collection<TaskState> getTaskStates_RENAMED() {
     return this.taskStates;
   }
 }
