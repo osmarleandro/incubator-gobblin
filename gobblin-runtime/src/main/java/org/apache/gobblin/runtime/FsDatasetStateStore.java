@@ -436,7 +436,7 @@ public class FsDatasetStateStore extends FsStateStore<JobState.DatasetState> imp
 
     Stream<FileStatus> tables = stores.flatMap(this::lsStream);
 
-    return tables.map(this::parseMetadataFromPath).filter(predicate::apply).collect(Collectors.toList());
+    return tables.map(this::parseMetadataFromPath_RENAMED).filter(predicate::apply).collect(Collectors.toList());
   }
 
   private Stream<FileStatus> lsStream(Path path) {
@@ -448,7 +448,7 @@ public class FsDatasetStateStore extends FsStateStore<JobState.DatasetState> imp
     }
   }
 
-  private FsDatasetStateStoreEntryManager parseMetadataFromPath(FileStatus status) {
+  private FsDatasetStateStoreEntryManager parseMetadataFromPath_RENAMED(FileStatus status) {
     return new FsDatasetStateStoreEntryManager(status, this);
   }
 }
