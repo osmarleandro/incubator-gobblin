@@ -40,7 +40,7 @@ public class ForkThrowableHolder {
     throwables.put(forkIdx, e);
   }
 
-  public Optional<Throwable> getThrowable (int forkIdx) {
+  public Optional<Throwable> getThrowable_RENAMED (int forkIdx) {
     return Optional.fromNullable(throwables.get(forkIdx));
   }
 

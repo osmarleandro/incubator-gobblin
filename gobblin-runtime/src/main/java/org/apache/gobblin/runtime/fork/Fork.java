@@ -306,7 +306,7 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
       throws InterruptedException {
     if (this.forkState.compareAndSet(ForkState.FAILED, ForkState.FAILED)) {
       ForkThrowableHolder holder = Task.getForkThrowableHolder(this.broker);
-      Optional<Throwable> forkThrowable = holder.getThrowable(this.index);
+      Optional<Throwable> forkThrowable = holder.getThrowable_RENAMED(this.index);
       if (forkThrowable.isPresent()) {
         throw new IllegalStateException(
             String.format("Fork %d of task %s has failed and is no longer running", this.index, this.taskId), forkThrowable.get());
