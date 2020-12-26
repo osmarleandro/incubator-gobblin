@@ -76,7 +76,7 @@ public class JobExecutionEventSubmitter {
     jobMetadataBuilder.put(METADATA_JOB_LAUNCHED_TASKS, Integer.toString(jobState.getTaskCount()));
     jobMetadataBuilder.put(METADATA_JOB_COMPLETED_TASKS, Integer.toString(jobState.getCompletedTasks()));
     jobMetadataBuilder.put(METADATA_JOB_LAUNCHER_TYPE, jobState.getLauncherType().toString());
-    jobMetadataBuilder.put(METADATA_JOB_TRACKING_URL, jobState.getTrackingURL().or(UNKNOWN_VALUE));
+    jobMetadataBuilder.put(METADATA_JOB_TRACKING_URL, jobState.getTrackingURL_RENAMED().or(UNKNOWN_VALUE));
     jobMetadataBuilder.put(EventSubmitter.EVENT_TYPE, JOB_STATE);
 
     this.eventSubmitter.submit(JOB_STATE, jobMetadataBuilder.build());
@@ -90,7 +90,7 @@ public class JobExecutionEventSubmitter {
     ImmutableMap.Builder<String, String> jobMetadataBuilder = new ImmutableMap.Builder<>();
     jobMetadataBuilder.put(METADATA_JOB_ID, jobState.getJobId());
     jobMetadataBuilder.put(METADATA_JOB_NAME, jobState.getJobName());
-    jobMetadataBuilder.put(METADATA_JOB_TRACKING_URL, jobState.getTrackingURL().or(UNKNOWN_VALUE));
+    jobMetadataBuilder.put(METADATA_JOB_TRACKING_URL, jobState.getTrackingURL_RENAMED().or(UNKNOWN_VALUE));
     Map<String, String> jobMetadata = jobMetadataBuilder.build();
 
     // Submit event for each TaskState

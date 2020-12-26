@@ -526,7 +526,7 @@ public class JobState extends SourceState implements JobProgress {
   /**
    * Get the tracking URL for this {@link JobState}.
    */
-  public Optional<String> getTrackingURL() {
+  public Optional<String> getTrackingURL_RENAMED() {
     return Optional.fromNullable(this.getProp(ConfigurationKeys.JOB_TRACKING_URL_KEY));
   }
 
@@ -715,8 +715,8 @@ public class JobState extends SourceState implements JobProgress {
     jobExecutionInfo.setLaunchedTasks(this.taskCount);
     jobExecutionInfo.setCompletedTasks(this.getCompletedTasks());
     jobExecutionInfo.setLauncherType(getLauncherType());
-    if (getTrackingURL().isPresent()) {
-      jobExecutionInfo.setTrackingUrl(getTrackingURL().get());
+    if (getTrackingURL_RENAMED().isPresent()) {
+      jobExecutionInfo.setTrackingUrl(getTrackingURL_RENAMED().get());
     }
 
     // Add task execution information
