@@ -161,7 +161,7 @@ final class SafeDatasetCommit implements Callable<Void> {
               log.warn(String.format(
                   "Gobblin is set up to parallelize publishing, however the publisher %s is not thread-safe. "
                       + "Falling back to serial publishing.", publisher.getClass().getName()));
-              safeCommitDataset(entry.getValue(), publisher);
+              safeCommitDataset_RENAMED(entry.getValue(), publisher);
             } else {
               commitDataset(entry.getValue(), publisher);
             }
@@ -243,7 +243,7 @@ final class SafeDatasetCommit implements Callable<Void> {
    * Synchronized version of {@link #commitDataset(Collection, DataPublisher)} used when publisher is not
    * thread safe.
    */
-  private void safeCommitDataset(Collection<TaskState> taskStates, DataPublisher publisher) {
+  private void safeCommitDataset_RENAMED(Collection<TaskState> taskStates, DataPublisher publisher) {
     synchronized (GLOBAL_LOCK) {
       commitDataset(taskStates, publisher);
     }
