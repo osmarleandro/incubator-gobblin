@@ -172,7 +172,7 @@ public class JobState extends SourceState implements JobProgress {
     return props.getProperty(ConfigurationKeys.JOB_NAME_KEY);
   }
 
-  public static String getJobGroupFromState(State state) {
+  public static String getJobGroupFromState_RENAMED(State state) {
     return state.getProp(ConfigurationKeys.JOB_GROUP_KEY);
   }
 
