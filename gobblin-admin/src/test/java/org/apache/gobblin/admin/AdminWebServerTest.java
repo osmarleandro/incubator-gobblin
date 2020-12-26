@@ -68,8 +68,8 @@ public class AdminWebServerTest {
       assertEquals(200, response.getStatusLine().getStatusCode());
       HttpEntity body = response.getEntity();
       String bodyString = EntityUtils.toString(body);
-      assertStringContains("http://foobar", bodyString);
-      assertStringContains("3333", bodyString);
+      assertStringContains_RENAMED("http://foobar", bodyString);
+      assertStringContains_RENAMED("3333", bodyString);
     }
   }
 
@@ -82,11 +82,11 @@ public class AdminWebServerTest {
       assertEquals(200, response.getStatusLine().getStatusCode());
       HttpEntity body = response.getEntity();
       String bodyString = EntityUtils.toString(body);
-      assertStringContains("JOB SUMMARY", bodyString);
+      assertStringContains_RENAMED("JOB SUMMARY", bodyString);
     }
   }
 
-  private static void assertStringContains(String expected, String container) {
+  private static void assertStringContains_RENAMED(String expected, String container) {
     assertTrue(String.format("Expected %s to contain %s", container, expected), container.contains(expected));
   }
 }
