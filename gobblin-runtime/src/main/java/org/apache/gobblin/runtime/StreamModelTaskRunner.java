@@ -74,7 +74,7 @@ public class StreamModelTaskRunner {
   private final Optional<WatermarkStorage> watermarkStorage;
   private final Map<Optional<Fork>, Optional<Future<?>>> forks;
 
-  protected void run() throws Exception {
+  protected void run_RENAMED() throws Exception {
     long maxWaitInMinute = taskState.getPropAsLong(ConfigurationKeys.FORK_MAX_WAIT_MININUTES, ConfigurationKeys.DEFAULT_FORK_MAX_WAIT_MININUTES);
 
     // Get the fork operator. By default IdentityForkOperator is used with a single branch.

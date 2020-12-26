@@ -362,7 +362,7 @@ public class Task implements TaskIFace {
       } else {
         new StreamModelTaskRunner(this, this.taskState, this.closer, this.taskContext, this.extractor,
             this.converter, this.recordStreamProcessors, this.rowChecker, this.taskExecutor, this.taskMode, this.shutdownRequested,
-            this.watermarkTracker, this.watermarkManager, this.watermarkStorage, this.forks).run();
+            this.watermarkTracker, this.watermarkManager, this.watermarkStorage, this.forks).run_RENAMED();
       }
 
       LOG.info("Extracted " + this.recordsPulled + " data records");
