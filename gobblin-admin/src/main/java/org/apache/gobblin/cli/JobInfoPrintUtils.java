@@ -168,7 +168,7 @@ public class JobInfoPrintUtils {
      * Print information about one specific job.
      * @param jobExecutionInfoOptional Job info to print
      */
-    public static void printJob(Optional<JobExecutionInfo> jobExecutionInfoOptional) {
+    public static void printJob_RENAMED(Optional<JobExecutionInfo> jobExecutionInfoOptional) {
         if (!jobExecutionInfoOptional.isPresent()) {
             System.err.println("Job id not found.");
             return;
