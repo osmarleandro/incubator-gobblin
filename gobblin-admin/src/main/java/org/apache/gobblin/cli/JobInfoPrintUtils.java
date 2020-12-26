@@ -68,7 +68,7 @@ public class JobInfoPrintUtils {
      * Print a table describing a bunch of individual job executions.
      * @param jobExecutionInfos Job execution status to print
      */
-    public static void printJobRuns(List<JobExecutionInfo> jobExecutionInfos) {
+    public static void printJobRuns_RENAMED(List<JobExecutionInfo> jobExecutionInfos) {
         if (jobExecutionInfos == null) {
             System.err.println("No job executions found.");
             System.exit(1);
