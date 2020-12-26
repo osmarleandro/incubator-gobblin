@@ -392,7 +392,7 @@ public class JobContext implements Closeable {
    *
    * @return a {@link Map} from dataset URNs to {@link JobState.DatasetState}s representing the dataset states
    */
-  Map<String, JobState.DatasetState> getDatasetStatesByUrns() {
+  Map<String, JobState.DatasetState> getDatasetStatesByUrns_RENAMED() {
     return ImmutableMap.copyOf(this.datasetStatesByUrns.or(Maps.<String, JobState.DatasetState>newHashMap()));
   }
 
