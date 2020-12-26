@@ -76,7 +76,7 @@ public class TaskContextTest {
     Assert.assertEquals(this.taskContext.getStatusReportingInterval(),
         ConfigurationKeys.DEFAULT_TASK_STATUS_REPORT_INTERVAL_IN_MS);
     Assert.assertEquals(this.taskContext.getDestinationType(1, 0), Destination.DestinationType.HDFS);
-    Assert.assertEquals(this.taskContext.getWriterOutputFormat(1, 0), WriterOutputFormat.AVRO);
+    Assert.assertEquals(this.taskContext.getWriterOutputFormat_RENAMED(1, 0), WriterOutputFormat.AVRO);
     Assert.assertTrue(this.taskContext.getConverters().isEmpty());
   }
 }

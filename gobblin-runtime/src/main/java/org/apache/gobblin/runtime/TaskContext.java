@@ -171,7 +171,7 @@ public class TaskContext {
    * @param index branch index
    * @return output format of the writer
    */
-  public WriterOutputFormat getWriterOutputFormat(int branches, int index) {
+  public WriterOutputFormat getWriterOutputFormat_RENAMED(int branches, int index) {
     String writerOutputFormatValue = this.taskState.getProp(
         ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_FORMAT_KEY, branches, index),
         WriterOutputFormat.OTHER.name());
