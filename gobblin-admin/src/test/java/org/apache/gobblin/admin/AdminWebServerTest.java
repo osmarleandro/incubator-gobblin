@@ -74,7 +74,7 @@ public class AdminWebServerTest {
   }
 
   @Test
-  public void testGetIndex() throws IOException {
+  public void testGetIndex_RENAMED() throws IOException {
     CloseableHttpClient client = HttpClients.createDefault();
     HttpGet getReq = new HttpGet(String.format("http://localhost:%s/", this.portNumber));
 
