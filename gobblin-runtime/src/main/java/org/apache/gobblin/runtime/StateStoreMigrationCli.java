@@ -85,16 +85,16 @@ public class StateStoreMigrationCli implements CliApplication {
       List<String> jobNames = srcDatasetStateStore.getStoreNames(Predicates.alwaysTrue());
 
       for (String jobName : jobNames) {
-        migrateStateForJob(srcDatasetStateStore, dstDatasetStateStore, jobName, command.deleteSourceStateStore);
+        migrateStateForJob_RENAMED(srcDatasetStateStore, dstDatasetStateStore, jobName, command.deleteSourceStateStore);
       }
     } else {
       Preconditions.checkNotNull(config.getString(JOB_NAME_KEY));
-      migrateStateForJob(srcDatasetStateStore, dstDatasetStateStore, config.getString(JOB_NAME_KEY),
+      migrateStateForJob_RENAMED(srcDatasetStateStore, dstDatasetStateStore, config.getString(JOB_NAME_KEY),
           command.deleteSourceStateStore);
     }
   }
 
-  private static void migrateStateForJob(DatasetStateStore srcDatasetStateStore, DatasetStateStore dstDatasetStateStore,
+  private static void migrateStateForJob_RENAMED(DatasetStateStore srcDatasetStateStore, DatasetStateStore dstDatasetStateStore,
       String jobName, boolean deleteFromSource) throws IOException {
     Map<String, JobState.DatasetState> map = srcDatasetStateStore.getLatestDatasetStatesByUrns(jobName);
     for (Map.Entry<String, JobState.DatasetState> entry : map.entrySet()) {
