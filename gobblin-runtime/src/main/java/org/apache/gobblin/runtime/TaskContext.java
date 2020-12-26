@@ -339,7 +339,7 @@ public class TaskContext {
    * @return a {@link TaskLevelPolicyChecker}
    * @throws Exception
    */
-  public TaskLevelPolicyChecker getTaskLevelPolicyChecker(TaskState taskState, int index) throws Exception {
+  public TaskLevelPolicyChecker getTaskLevelPolicyChecker_RENAMED(TaskState taskState, int index) throws Exception {
     return TaskLevelPolicyCheckerBuilderFactory.newPolicyCheckerBuilder(taskState, index).build();
   }
 

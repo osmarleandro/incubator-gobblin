@@ -115,7 +115,7 @@ public class TaskTest {
     when(mockTaskContext.getExtractor()).thenReturn(new FailOnceExtractor());
     when(mockTaskContext.getForkOperator()).thenReturn(new IdentityForkOperator());
     when(mockTaskContext.getTaskState()).thenReturn(taskState);
-    when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class), anyInt()))
+    when(mockTaskContext.getTaskLevelPolicyChecker_RENAMED(any(TaskState.class), anyInt()))
         .thenReturn(mock(TaskLevelPolicyChecker.class));
     when(mockTaskContext.getRowLevelPolicyChecker()).
         thenReturn(new RowLevelPolicyChecker(Lists.newArrayList(), "ss", FileSystem.getLocal(new Configuration())));
@@ -177,7 +177,7 @@ public class TaskTest {
         .thenReturn(mockTaskPublisher);
     when(mockTaskContext.getRowLevelPolicyChecker()).thenReturn(mockRowLevelPolicyChecker);
     when(mockTaskContext.getRowLevelPolicyChecker(anyInt())).thenReturn(mockRowLevelPolicyChecker);
-    when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class), anyInt())).thenReturn(mock(TaskLevelPolicyChecker.class));
+    when(mockTaskContext.getTaskLevelPolicyChecker_RENAMED(any(TaskState.class), anyInt())).thenReturn(mock(TaskLevelPolicyChecker.class));
     for (int i =0; i < numForks; ++i) {
       when(mockTaskContext.getDataWriterBuilder(numForks, i)).thenReturn(new RecordCollectingWriterBuilder(writerCollectors.get(i)));
     }
