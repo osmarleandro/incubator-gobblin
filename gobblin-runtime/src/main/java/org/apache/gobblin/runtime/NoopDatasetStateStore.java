@@ -44,7 +44,7 @@ public class NoopDatasetStateStore extends FsDatasetStateStore {
     public DatasetStateStore<JobState.DatasetState> createStateStore(Config config) {
       // dummy root dir for noop state store
       Config config2 = config.withValue(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY, ConfigValueFactory.fromAnyRef(""));
-      return FsDatasetStateStore.createStateStore(config2, NoopDatasetStateStore.class.getName());
+      return FsDatasetStateStore.createStateStore_RENAMED(config2, NoopDatasetStateStore.class.getName());
     }
   }
 

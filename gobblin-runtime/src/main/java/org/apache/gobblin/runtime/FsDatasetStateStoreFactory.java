@@ -26,7 +26,7 @@ public class FsDatasetStateStoreFactory implements DatasetStateStore.Factory {
   @Override
   public DatasetStateStore<JobState.DatasetState> createStateStore(Config config) {
     try {
-      return FsDatasetStateStore.createStateStore(config, FsDatasetStateStore.class.getName());
+      return FsDatasetStateStore.createStateStore_RENAMED(config, FsDatasetStateStore.class.getName());
     } catch (Exception e) {
       throw new RuntimeException("Failed to create FsDatasetStateStore with factory", e);
     }

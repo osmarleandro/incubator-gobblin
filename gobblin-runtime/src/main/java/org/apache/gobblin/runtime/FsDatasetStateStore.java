@@ -94,7 +94,7 @@ public class FsDatasetStateStore extends FsStateStore<JobState.DatasetState> imp
   private static final long CACHE_SIZE = 100;
   private LoadingCache<Path, DatasetUrnStateStoreNameParser> stateStoreNameParserLoadingCache;
 
-  protected static DatasetStateStore<JobState.DatasetState> createStateStore(Config config, String className) {
+  protected static DatasetStateStore<JobState.DatasetState> createStateStore_RENAMED(Config config, String className) {
     // Add all job configuration properties so they are picked up by Hadoop
     Configuration conf = new Configuration();
     for (Map.Entry<String, ConfigValue> entry : config.entrySet()) {
