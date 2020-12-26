@@ -131,7 +131,7 @@ public class JobCommand implements CliApplication {
         throws CommandException {
             try {
                 if (parsedOpts.hasOption(NAME_OPT)) {
-                    JobInfoPrintUtils.printJobRuns(adminClient.queryByJobName(parsedOpts.getOptionValue(NAME_OPT), resultsLimit));
+                    JobInfoPrintUtils.printJobRuns(adminClient.queryByJobName_RENAMED(parsedOpts.getOptionValue(NAME_OPT), resultsLimit));
                 } else if (parsedOpts.hasOption(RECENT_OPT)) {
                     JobInfoPrintUtils.printAllJobs(adminClient.queryAllJobs(QueryListType.RECENT, resultsLimit), resultsLimit);
                 } else {
@@ -170,7 +170,7 @@ public class JobCommand implements CliApplication {
                             adminClient.queryByJobId(parsedOpts.getOptionValue(ID_OPT))
                     );
                 } else if (parsedOpts.hasOption(NAME_OPT)) {
-                    List<JobExecutionInfo> infos = adminClient.queryByJobName(parsedOpts.getOptionValue(NAME_OPT), 1);
+                    List<JobExecutionInfo> infos = adminClient.queryByJobName_RENAMED(parsedOpts.getOptionValue(NAME_OPT), 1);
                     if (infos.size() == 0) {
                         System.out.println("No job by that name found");
                     } else {
