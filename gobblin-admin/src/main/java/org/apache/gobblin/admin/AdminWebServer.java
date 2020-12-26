@@ -71,7 +71,7 @@ public class AdminWebServer extends AbstractIdleService {
     HandlerCollection handlerCollection = new HandlerCollection();
 
     handlerCollection.addHandler(buildSettingsHandler());
-    handlerCollection.addHandler(buildStaticResourceHandler());
+    handlerCollection.addHandler(buildStaticResourceHandler_RENAMED());
 
     this.server.setHandler(handlerCollection);
     this.server.start();
@@ -95,7 +95,7 @@ public class AdminWebServer extends AbstractIdleService {
     };
   }
 
-  private ResourceHandler buildStaticResourceHandler() {
+  private ResourceHandler buildStaticResourceHandler_RENAMED() {
     ResourceHandler staticResourceHandler = new ResourceHandler();
     staticResourceHandler.setDirectoriesListed(true);
     staticResourceHandler.setWelcomeFiles(new String[] { "index.html" });
