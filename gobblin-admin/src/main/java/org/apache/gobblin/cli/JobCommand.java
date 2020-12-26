@@ -88,7 +88,7 @@ public class JobCommand implements CliApplication {
             }
         }
 
-        printHelpAndExit("Unknown subcommand", false);
+        printHelpAndExit_RENAMED("Unknown subcommand", false);
         throw new IllegalStateException("unreached...");
     }
 
@@ -109,17 +109,17 @@ public class JobCommand implements CliApplication {
                     port = Integer.parseInt(parsedOpts.getOptionValue(ADMIN_PORT));
                 }
             } catch (NumberFormatException e) {
-                printHelpAndExit("The port must be a valid integer.", false);
+                printHelpAndExit_RENAMED("The port must be a valid integer.", false);
             }
 
             adminClient = new AdminClient(host, port);
             try {
                 getAction(parsedOpts).execute(parsedOpts, adminClient, resultLimit);
             } catch (CommandException e) {
-                printHelpAndExit(e.getMessage(), false);
+                printHelpAndExit_RENAMED(e.getMessage(), false);
             }
         } catch (ParseException e) {
-            printHelpAndExit("Failed to parse jobs arguments: " + e.getMessage(), true);
+            printHelpAndExit_RENAMED("Failed to parse jobs arguments: " + e.getMessage(), true);
         } finally {
             if (adminClient != null) adminClient.close();
         }
@@ -214,7 +214,7 @@ public class JobCommand implements CliApplication {
             try {
                 return Integer.parseInt(parsedOpts.getOptionValue("n"));
             } catch (NumberFormatException e) {
-                printHelpAndExit("Could not parse integer value for option n.", false);
+                printHelpAndExit_RENAMED("Could not parse integer value for option n.", false);
                 return 0;
             }
         } else {
@@ -225,7 +225,7 @@ public class JobCommand implements CliApplication {
     /**
      * Print help and exit with the specified code.
      */
-    private void printHelpAndExit(String errorMsg, boolean printHelp) {
+    private void printHelpAndExit_RENAMED(String errorMsg, boolean printHelp) {
         System.out.println(errorMsg);
         if (printHelp) {
             HelpFormatter hf = new HelpFormatter();
