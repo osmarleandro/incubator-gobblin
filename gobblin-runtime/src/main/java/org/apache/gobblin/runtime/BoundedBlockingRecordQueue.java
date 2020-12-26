@@ -124,7 +124,7 @@ public class BoundedBlockingRecordQueue<T> {
    * @param <T> record type
    * @return a new {@link BoundedBlockingRecordQueue.Builder}
    */
-  public static <T> Builder<T> newBuilder() {
+  public static <T> Builder<T> newBuilder_RENAMED() {
     return new Builder<>();
   }
 

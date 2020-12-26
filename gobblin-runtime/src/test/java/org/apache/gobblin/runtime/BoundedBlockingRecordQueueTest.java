@@ -45,7 +45,7 @@ public class BoundedBlockingRecordQueueTest {
 
   @BeforeClass
   public void setUp() {
-    this.boundedBlockingRecordQueue = BoundedBlockingRecordQueue.<Integer> newBuilder().hasCapacity(2).useTimeout(1000)
+    this.boundedBlockingRecordQueue = BoundedBlockingRecordQueue.<Integer> newBuilder_RENAMED().hasCapacity(2).useTimeout(1000)
         .useTimeoutTimeUnit(TimeUnit.MILLISECONDS).collectStats().build();
   }
 

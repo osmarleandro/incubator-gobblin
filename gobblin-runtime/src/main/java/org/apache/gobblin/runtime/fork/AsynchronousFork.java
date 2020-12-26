@@ -62,7 +62,7 @@ public class AsynchronousFork extends Fork {
     super(taskContext, schema, branches, index, executionModel);
     TaskState taskState = taskContext.getTaskState();
 
-    this.recordQueue = BoundedBlockingRecordQueue.newBuilder()
+    this.recordQueue = BoundedBlockingRecordQueue.newBuilder_RENAMED()
             .hasCapacity(taskState.getPropAsInt(
                     ConfigurationKeys.FORK_RECORD_QUEUE_CAPACITY_KEY,
                     ConfigurationKeys.DEFAULT_FORK_RECORD_QUEUE_CAPACITY))
