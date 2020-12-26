@@ -382,7 +382,7 @@ public class JobState extends SourceState implements JobProgress {
     this.skippedTaskStates.put(taskState.getTaskId(), taskState);
   }
 
-  public void removeTaskState(TaskState taskState) {
+  public void removeTaskState_RENAMED(TaskState taskState) {
     this.taskStates.remove(taskState.getTaskId());
     this.taskCount--;
   }
@@ -398,7 +398,7 @@ public class JobState extends SourceState implements JobProgress {
       }
     }
     for (TaskState taskState : skippedTaskStates) {
-      removeTaskState(taskState);
+      removeTaskState_RENAMED(taskState);
       addSkippedTaskState(taskState);
     }
   }
