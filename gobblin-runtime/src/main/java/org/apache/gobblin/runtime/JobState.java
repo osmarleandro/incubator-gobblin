@@ -510,7 +510,7 @@ public class JobState extends SourceState implements JobProgress {
   /**
    * Get the {@link LauncherTypeEnum} for this {@link JobState}.
    */
-  public LauncherTypeEnum getLauncherType() {
+  public LauncherTypeEnum getLauncherType_RENAMED() {
     return Enums.getIfPresent(LauncherTypeEnum.class,
         this.getProp(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY, JobLauncherFactory.JobLauncherType.LOCAL.name()))
         .or(LauncherTypeEnum.LOCAL);
@@ -714,7 +714,7 @@ public class JobState extends SourceState implements JobProgress {
     jobExecutionInfo.setState(JobStateEnum.valueOf(this.state.name()));
     jobExecutionInfo.setLaunchedTasks(this.taskCount);
     jobExecutionInfo.setCompletedTasks(this.getCompletedTasks());
-    jobExecutionInfo.setLauncherType(getLauncherType());
+    jobExecutionInfo.setLauncherType(getLauncherType_RENAMED());
     if (getTrackingURL().isPresent()) {
       jobExecutionInfo.setTrackingUrl(getTrackingURL().get());
     }

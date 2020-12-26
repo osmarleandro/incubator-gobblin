@@ -54,7 +54,7 @@ public class JobExecutionEventSubmitterTest {
   public void testSubmitJobExecutionEvents() {
     JobState mockJobState = mock(JobState.class, Mockito.RETURNS_SMART_NULLS);
     when(mockJobState.getState()).thenReturn(JobState.RunningState.SUCCESSFUL);
-    when(mockJobState.getLauncherType()).thenReturn(LauncherTypeEnum.$UNKNOWN);
+    when(mockJobState.getLauncherType_RENAMED()).thenReturn(LauncherTypeEnum.$UNKNOWN);
     when(mockJobState.getTrackingURL()).thenReturn(Optional.<String> absent());
 
     TaskState mockTaskState1 = createMockTaskState();
