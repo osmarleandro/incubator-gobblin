@@ -121,7 +121,7 @@ final class SafeDatasetCommit implements Callable<Void> {
         log.info(String.format("Committing dataset %s of job %s with commit policy %s and state %s", this.datasetUrn,
             this.jobContext.getJobId(), this.jobContext.getJobCommitPolicy(), this.datasetState.getState()));
 
-        ListMultimap<TaskFactoryWrapper, TaskState> taskStatesByFactory = groupByTaskFactory(this.datasetState);
+        ListMultimap<TaskFactoryWrapper, TaskState> taskStatesByFactory = groupByTaskFactory_RENAMED(this.datasetState);
 
         for (Map.Entry<TaskFactoryWrapper, Collection<TaskState>> entry : taskStatesByFactory.asMap().entrySet()) {
           TaskFactory taskFactory = entry.getKey().getTaskFactory();
@@ -262,7 +262,7 @@ final class SafeDatasetCommit implements Callable<Void> {
     }
   }
 
-  private ListMultimap<TaskFactoryWrapper, TaskState> groupByTaskFactory(JobState.DatasetState datasetState) {
+  private ListMultimap<TaskFactoryWrapper, TaskState> groupByTaskFactory_RENAMED(JobState.DatasetState datasetState) {
     ListMultimap<TaskFactoryWrapper, TaskState> groupsMap = ArrayListMultimap.create();
     for (TaskState taskState : datasetState.getTaskStates()) {
       groupsMap.put(new TaskFactoryWrapper(TaskUtils.getTaskFactory(taskState).orNull()), taskState);
