@@ -508,7 +508,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
     Path jobStateFilePath = new Path(mrJobDir, JOB_STATE_FILE_NAME);
     // Write the job state with an empty task set (work units are read by the mapper from a different file)
     try (DataOutputStream dataOutputStream = new DataOutputStream(fs.create(jobStateFilePath))) {
-      jobState.write(dataOutputStream, false,
+      jobState.write_RENAMED(dataOutputStream, false,
           conf.getBoolean(SERIALIZE_PREVIOUS_WORKUNIT_STATES_KEY, DEFAULT_SERIALIZE_PREVIOUS_WORKUNIT_STATES));
     }
 

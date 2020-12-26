@@ -580,10 +580,10 @@ public class JobState extends SourceState implements JobProgress {
   @Override
   public void write(DataOutput out)
       throws IOException {
-    write(out, true, true);
+    write_RENAMED(out, true, true);
   }
 
-  public void write(DataOutput out, boolean writeTasks, boolean writePreviousWorkUnitStates)
+  public void write_RENAMED(DataOutput out, boolean writeTasks, boolean writePreviousWorkUnitStates)
       throws IOException {
     Text text = new Text();
     text.set(this.jobName);
