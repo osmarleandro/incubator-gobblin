@@ -270,7 +270,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
    *
    * @return {@link JobContext} of the job
    */
-  JobContext getJobContext() {
+  JobContext getJobContext_RENAMED() {
     return this.jobContext;
   }
 

@@ -73,7 +73,7 @@ public class JobLauncherTestHelper {
     try {
       JobLauncher jobLauncher = closer.register(JobLauncherFactory.newJobLauncher(this.launcherProps, jobProps));
       jobLauncher.launchJob(null);
-      jobContext = ((AbstractJobLauncher) jobLauncher).getJobContext();
+      jobContext = ((AbstractJobLauncher) jobLauncher).getJobContext_RENAMED();
     } finally {
       closer.close();
     }

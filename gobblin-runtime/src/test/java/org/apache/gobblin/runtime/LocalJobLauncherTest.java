@@ -149,7 +149,7 @@ public class LocalJobLauncherTest {
     Closer closer = Closer.create();
     try {
       JobLauncher jobLauncher = closer.register(JobLauncherFactory.newJobLauncher(this.launcherProps, jobProps));
-      return ((AbstractJobLauncher) jobLauncher).getJobContext();
+      return ((AbstractJobLauncher) jobLauncher).getJobContext_RENAMED();
     } finally {
       closer.close();
     }
