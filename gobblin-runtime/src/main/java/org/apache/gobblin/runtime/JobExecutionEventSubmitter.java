@@ -57,7 +57,7 @@ public class JobExecutionEventSubmitter {
    *
    * @param jobState is the {@link JobState} to emit events for
    */
-  public void submitJobExecutionEvents(JobState jobState) {
+  public void submitJobExecutionEvents_RENAMED(JobState jobState) {
     submitJobStateEvent(jobState);
     submitTaskStateEvents(jobState);
   }
