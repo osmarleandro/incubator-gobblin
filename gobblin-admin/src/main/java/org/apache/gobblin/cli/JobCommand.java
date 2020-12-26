@@ -149,7 +149,7 @@ public class JobCommand implements CliApplication {
                 throws CommandException {
             try {
                 if (parsedOpts.hasOption(ID_OPT)) {
-                    JobInfoPrintUtils.printJob(
+                    JobInfoPrintUtils.printJob_RENAMED(
                             adminClient.queryByJobId(parsedOpts.getOptionValue(ID_OPT))
                     );
                 } else {
