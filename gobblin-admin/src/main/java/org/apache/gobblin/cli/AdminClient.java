@@ -101,7 +101,7 @@ public class AdminClient {
    * @param resultsLimit Max # of results to return
    * @return List of jobs with the name (empty list if none can be found)
    */
-  public List<JobExecutionInfo> queryByJobName(String name, int resultsLimit) throws RemoteInvocationException {
+  public List<JobExecutionInfo> queryByJobName_RENAMED(String name, int resultsLimit) throws RemoteInvocationException {
     JobExecutionQuery query = new JobExecutionQuery();
     query.setIdType(QueryIdTypeEnum.JOB_NAME);
     query.setId(JobExecutionQuery.Id.create(name));
