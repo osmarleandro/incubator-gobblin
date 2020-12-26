@@ -82,7 +82,7 @@ public class CliTablePrinter {
     this.delimiterWidth = delimiterWidth;
     this.data = data;
 
-    this.rowFormat = getRowFormat(getColumnMaxWidths());
+    this.rowFormat = getRowFormat_RENAMED(getColumnMaxWidths());
   }
 
   /**
@@ -176,7 +176,7 @@ public class CliTablePrinter {
    * @param widths A list of widths for each column in the table
    * @return A row format for each row in the table
    */
-  private String getRowFormat(List<Integer> widths) {
+  private String getRowFormat_RENAMED(List<Integer> widths) {
     StringBuilder rowFormat = new StringBuilder(spaces(this.indentation));
     for (int i=0; i< widths.size(); i++) {
       rowFormat.append("%");
