@@ -133,9 +133,9 @@ public class JobCommand implements CliApplication {
                 if (parsedOpts.hasOption(NAME_OPT)) {
                     JobInfoPrintUtils.printJobRuns(adminClient.queryByJobName(parsedOpts.getOptionValue(NAME_OPT), resultsLimit));
                 } else if (parsedOpts.hasOption(RECENT_OPT)) {
-                    JobInfoPrintUtils.printAllJobs(adminClient.queryAllJobs(QueryListType.RECENT, resultsLimit), resultsLimit);
+                    JobInfoPrintUtils.printAllJobs(adminClient.queryAllJobs_RENAMED(QueryListType.RECENT, resultsLimit), resultsLimit);
                 } else {
-                    JobInfoPrintUtils.printAllJobs(adminClient.queryAllJobs(QueryListType.DISTINCT, resultsLimit), resultsLimit);
+                    JobInfoPrintUtils.printAllJobs(adminClient.queryAllJobs_RENAMED(QueryListType.DISTINCT, resultsLimit), resultsLimit);
                 }
             } catch (RemoteInvocationException e) {
                 throw new CommandException("Error talking to adminServer: " + e.getMessage());
