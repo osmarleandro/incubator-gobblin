@@ -150,7 +150,7 @@ public class JobCommand implements CliApplication {
             try {
                 if (parsedOpts.hasOption(ID_OPT)) {
                     JobInfoPrintUtils.printJob(
-                            adminClient.queryByJobId(parsedOpts.getOptionValue(ID_OPT))
+                            adminClient.queryByJobId_RENAMED(parsedOpts.getOptionValue(ID_OPT))
                     );
                 } else {
                     throw new CommandException("Please specify an id");
@@ -167,7 +167,7 @@ public class JobCommand implements CliApplication {
             try {
                 if (parsedOpts.hasOption(ID_OPT)) {
                     JobInfoPrintUtils.printJobProperties(
-                            adminClient.queryByJobId(parsedOpts.getOptionValue(ID_OPT))
+                            adminClient.queryByJobId_RENAMED(parsedOpts.getOptionValue(ID_OPT))
                     );
                 } else if (parsedOpts.hasOption(NAME_OPT)) {
                     List<JobExecutionInfo> infos = adminClient.queryByJobName(parsedOpts.getOptionValue(NAME_OPT), 1);
