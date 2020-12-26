@@ -50,7 +50,7 @@ public class JobInfoPrintUtils {
      * @param jobInfo A job execution info to extract from
      * @return "RUN_ONCE", the Quartz schedule string, or "UNKNOWN" if there were no job properties
      */
-    public static String extractJobSchedule(JobExecutionInfo jobInfo) {
+    public static String extractJobSchedule_RENAMED(JobExecutionInfo jobInfo) {
         if (jobInfo.hasJobProperties() && jobInfo.getJobProperties().size() > 0) {
             StringMap props = jobInfo.getJobProperties();
 
@@ -82,7 +82,7 @@ public class JobInfoPrintUtils {
             List<String> entry = new ArrayList<>();
             entry.add(jobInfo.getJobId());
             entry.add(jobInfo.getState().toString());
-            entry.add(extractJobSchedule(jobInfo));
+            entry.add(extractJobSchedule_RENAMED(jobInfo));
             entry.add(jobInfo.getCompletedTasks().toString());
             entry.add(jobInfo.getLaunchedTasks().toString());
             entry.add(dateTimeFormatter.print(jobInfo.getStartTime()));
@@ -122,7 +122,7 @@ public class JobInfoPrintUtils {
             entry.add(dateTimeFormatter.print(jobInfo.getStartTime()));
             entry.add(dateTimeFormatter.print(jobInfo.getEndTime()));
 
-            entry.add(extractJobSchedule(jobInfo));
+            entry.add(extractJobSchedule_RENAMED(jobInfo));
 
             // Add metrics
             MetricArray metrics = jobInfo.getMetrics();
