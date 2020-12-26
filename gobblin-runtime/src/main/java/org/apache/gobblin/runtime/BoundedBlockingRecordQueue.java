@@ -107,7 +107,7 @@ public class BoundedBlockingRecordQueue<T> {
    * @return a {@link QueueStats} object wrapped in an {@link com.google.common.base.Optional},
    *         which means it may be absent if collecting of queue statistics is not enabled.
    */
-  public Optional<QueueStats> stats() {
+  public Optional<QueueStats> stats_RENAMED() {
     return this.queueStats;
   }
 

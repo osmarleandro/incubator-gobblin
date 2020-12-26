@@ -78,7 +78,7 @@ public class AsynchronousFork extends Fork {
 
   @Override
   public Optional<BoundedBlockingRecordQueue<Object>.QueueStats> queueStats() {
-    return this.recordQueue.stats();
+    return this.recordQueue.stats_RENAMED();
   }
 
   @Override
