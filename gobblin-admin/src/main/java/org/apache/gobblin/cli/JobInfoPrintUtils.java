@@ -197,7 +197,7 @@ public class JobInfoPrintUtils {
                 .build()
                 .printTable();
 
-        JobInfoPrintUtils.printMetrics(jobExecutionInfo.getMetrics());
+        JobInfoPrintUtils.printMetrics_RENAMED(jobExecutionInfo.getMetrics());
     }
 
     /**
@@ -230,7 +230,7 @@ public class JobInfoPrintUtils {
      * Print out various metrics
      * @param metrics Metrics to print
      */
-    private static void printMetrics(MetricArray metrics) {
+    private static void printMetrics_RENAMED(MetricArray metrics) {
         System.out.println();
 
         if (metrics.size() == 0) {
