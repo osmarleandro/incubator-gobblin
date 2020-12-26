@@ -130,7 +130,7 @@ final class SafeDatasetCommit implements Callable<Void> {
             if (taskFactory != null) {
               throw new RuntimeException("Custom task factories do not support exactly once delivery semantics.");
             }
-            generateCommitSequenceBuilder(this.datasetState, entry.getValue());
+            generateCommitSequenceBuilder_RENAMED(this.datasetState, entry.getValue());
           } else {
             DataPublisher publisher;
 
@@ -351,7 +351,7 @@ final class SafeDatasetCommit implements Callable<Void> {
   }
 
   @SuppressWarnings("unchecked")
-  private Optional<CommitSequence.Builder> generateCommitSequenceBuilder(JobState.DatasetState datasetState,
+  private Optional<CommitSequence.Builder> generateCommitSequenceBuilder_RENAMED(JobState.DatasetState datasetState,
       Collection<TaskState> taskStates) {
     try (Closer closer = Closer.create()) {
       Class<? extends CommitSequencePublisher> dataPublisherClass = (Class<? extends CommitSequencePublisher>) Class
