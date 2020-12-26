@@ -131,7 +131,7 @@ public class JobCommand implements CliApplication {
         throws CommandException {
             try {
                 if (parsedOpts.hasOption(NAME_OPT)) {
-                    JobInfoPrintUtils.printJobRuns(adminClient.queryByJobName(parsedOpts.getOptionValue(NAME_OPT), resultsLimit));
+                    JobInfoPrintUtils.printJobRuns_RENAMED(adminClient.queryByJobName(parsedOpts.getOptionValue(NAME_OPT), resultsLimit));
                 } else if (parsedOpts.hasOption(RECENT_OPT)) {
                     JobInfoPrintUtils.printAllJobs(adminClient.queryAllJobs(QueryListType.RECENT, resultsLimit), resultsLimit);
                 } else {
