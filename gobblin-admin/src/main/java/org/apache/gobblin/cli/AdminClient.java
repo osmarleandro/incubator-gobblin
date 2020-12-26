@@ -69,7 +69,7 @@ public class AdminClient {
     query.setId(JobExecutionQuery.Id.create(id));
     query.setLimit(1);
 
-    List<JobExecutionInfo> results = executeQuery(query);
+    List<JobExecutionInfo> results = executeQuery_RENAMED(query);
     return getFirstFromQueryResults(results);
   }
 
@@ -91,7 +91,7 @@ public class AdminClient {
 
     query.setLimit(resultsLimit);
 
-    return executeQuery(query);
+    return executeQuery_RENAMED(query);
   }
 
   /**
@@ -108,7 +108,7 @@ public class AdminClient {
     query.setIncludeTaskExecutions(false);
     query.setLimit(resultsLimit);
 
-    return executeQuery(query);
+    return executeQuery_RENAMED(query);
   }
 
   /**
@@ -117,7 +117,7 @@ public class AdminClient {
    * @return List of jobs that matched the query. (Empty list if none did).
    * @throws RemoteInvocationException If the server throws an error
    */
-  private List<JobExecutionInfo> executeQuery(JobExecutionQuery query) throws RemoteInvocationException {
+  private List<JobExecutionInfo> executeQuery_RENAMED(JobExecutionQuery query) throws RemoteInvocationException {
     JobExecutionQueryResult result = this.client.get(query);
 
     if (result != null && result.hasJobExecutions()) {
