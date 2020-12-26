@@ -326,7 +326,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
         } catch (IOException ioe) {
           LOG.error("Could not close job context.", ioe);
         }
-        notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_CANCEL, new JobListenerAction() {
+        notifyListeners_RENAMED(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_CANCEL, new JobListenerAction() {
           @Override
           public void apply(JobListener jobListener, JobContext jobContext)
               throws Exception {
@@ -381,7 +381,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
 
       try (Closer closer = Closer.create()) {
         closer.register(this.jobContext);
-        notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_PREPARE, new JobListenerAction() {
+        notifyListeners_RENAMED(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_PREPARE, new JobListenerAction() {
           @Override
           public void apply(JobListener jobListener, JobContext jobContext)
               throws Exception {
@@ -458,7 +458,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
         try {
           LOG.info("Starting job " + jobId);
 
-          notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_START, new JobListenerAction() {
+          notifyListeners_RENAMED(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_START, new JobListenerAction() {
             @Override
             public void apply(JobListener jobListener, JobContext jobContext)
                 throws Exception {
@@ -543,7 +543,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
           launchJobTimer.stop(this.multiEventMetadataGenerator.getMetadata(this.jobContext, EventName.FULL_JOB_EXECUTION));
           if (isWorkUnitsEmpty) {
             //If no WorkUnits are created, first send the JobCompleteTimer event.
-            notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_COMPLETE, new JobListenerAction() {
+            notifyListeners_RENAMED(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_COMPLETE, new JobListenerAction() {
               @Override
               public void apply(JobListener jobListener, JobContext jobContext)
                   throws Exception {
@@ -551,7 +551,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
               }
             });
             //Next, send the JobSucceededTimer event.
-            notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_SUCCEEDED, new JobListenerAction() {
+            notifyListeners_RENAMED(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_SUCCEEDED, new JobListenerAction() {
               @Override
               public void apply(JobListener jobListener, JobContext jobContext)
                   throws Exception {
@@ -569,7 +569,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
             }
           }
 
-          notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_COMPLETE, new JobListenerAction() {
+          notifyListeners_RENAMED(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_COMPLETE, new JobListenerAction() {
             @Override
             public void apply(JobListener jobListener, JobContext jobContext)
                 throws Exception {
@@ -578,7 +578,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
           });
 
           if (jobState.getState() == JobState.RunningState.FAILED) {
-            notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_FAILED, new JobListenerAction() {
+            notifyListeners_RENAMED(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_FAILED, new JobListenerAction() {
               @Override
               public void apply(JobListener jobListener, JobContext jobContext)
                   throws Exception {
@@ -587,7 +587,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
             });
             throw new JobException(String.format("Job %s failed", jobId));
           } else {
-            notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_SUCCEEDED, new JobListenerAction() {
+            notifyListeners_RENAMED(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_SUCCEEDED, new JobListenerAction() {
               @Override
               public void apply(JobListener jobListener, JobContext jobContext)
                   throws Exception {
@@ -1021,7 +1021,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
     }
   }
 
-  private void notifyListeners(JobContext jobContext, JobListener jobListener, String timerEventName,
+  private void notifyListeners_RENAMED(JobContext jobContext, JobListener jobListener, String timerEventName,
       JobListenerAction action)
       throws JobException {
     TimingEvent timer = this.eventSubmitter.getTimingEvent(timerEventName);
