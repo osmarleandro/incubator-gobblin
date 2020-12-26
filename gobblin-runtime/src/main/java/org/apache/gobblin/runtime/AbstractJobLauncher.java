@@ -706,7 +706,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
    * @return {@link JobLock} to be used for the job
    * @throws JobLockException throw when the {@link JobLock} fails to initialize
    */
-  protected JobLock getJobLock(Properties properties, JobLockEventListener jobLockEventListener)
+  protected JobLock getJobLock_RENAMED(Properties properties, JobLockEventListener jobLockEventListener)
       throws JobLockException {
     return LegacyJobLockFactoryManager.getJobLock(properties, jobLockEventListener);
   }
@@ -807,7 +807,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
   private boolean tryLockJob(Properties properties) {
     try {
       if (Boolean.valueOf(properties.getProperty(ConfigurationKeys.JOB_LOCK_ENABLED_KEY, Boolean.TRUE.toString()))) {
-        this.jobLockOptional = Optional.of(getJobLock(properties, new JobLockEventListener() {
+        this.jobLockOptional = Optional.of(getJobLock_RENAMED(properties, new JobLockEventListener() {
           @Override
           public void onLost() {
             executeCancellation();
