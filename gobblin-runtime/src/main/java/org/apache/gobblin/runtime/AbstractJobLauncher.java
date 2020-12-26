@@ -189,7 +189,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
     this.jobProps.putAll(jobProps);
     resolveGobblinJobTemplateIfNecessary(this.jobProps);
 
-    if (!tryLockJob(this.jobProps)) {
+    if (!tryLockJob_RENAMED(this.jobProps)) {
       throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",
           this.jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY)));
     }
@@ -804,7 +804,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
    *
    * @param properties the job properties
    */
-  private boolean tryLockJob(Properties properties) {
+  private boolean tryLockJob_RENAMED(Properties properties) {
     try {
       if (Boolean.valueOf(properties.getProperty(ConfigurationKeys.JOB_LOCK_ENABLED_KEY, Boolean.TRUE.toString()))) {
         this.jobLockOptional = Optional.of(getJobLock(properties, new JobLockEventListener() {
