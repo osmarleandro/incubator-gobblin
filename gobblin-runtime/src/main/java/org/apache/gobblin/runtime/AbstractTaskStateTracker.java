@@ -88,7 +88,7 @@ public abstract class AbstractTaskStateTracker extends AbstractIdleService imple
    */
   protected ScheduledFuture<?> scheduleTaskMetricsUpdater(Runnable taskMetricsUpdater, Task task) {
     return this.taskMetricsUpdaterExecutor.scheduleAtFixedRate(taskMetricsUpdater,
-        task.getTaskContext().getStatusReportingInterval(), task.getTaskContext().getStatusReportingInterval(),
+        task.getTaskContext().getStatusReportingInterval_RENAMED(), task.getTaskContext().getStatusReportingInterval_RENAMED(),
         TimeUnit.MILLISECONDS);
   }
 

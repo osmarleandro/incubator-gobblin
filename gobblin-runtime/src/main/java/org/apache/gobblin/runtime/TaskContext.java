@@ -146,7 +146,7 @@ public class TaskContext {
    *
    * @return interval for status reporting
    */
-  public long getStatusReportingInterval() {
+  public long getStatusReportingInterval_RENAMED() {
     return this.taskState.getPropAsLong(ConfigurationKeys.TASK_STATUS_REPORT_INTERVAL_IN_MS_KEY,
         ConfigurationKeys.DEFAULT_TASK_STATUS_REPORT_INTERVAL_IN_MS);
   }

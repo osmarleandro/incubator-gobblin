@@ -73,7 +73,7 @@ public class TaskContextTest {
   @Test
   public void testOtherMethods() {
     Assert.assertTrue(this.taskContext.getSource() instanceof TestSource);
-    Assert.assertEquals(this.taskContext.getStatusReportingInterval(),
+    Assert.assertEquals(this.taskContext.getStatusReportingInterval_RENAMED(),
         ConfigurationKeys.DEFAULT_TASK_STATUS_REPORT_INTERVAL_IN_MS);
     Assert.assertEquals(this.taskContext.getDestinationType(1, 0), Destination.DestinationType.HDFS);
     Assert.assertEquals(this.taskContext.getWriterOutputFormat(1, 0), WriterOutputFormat.AVRO);
