@@ -434,7 +434,7 @@ public class JobContext implements Closeable {
   /**
    * Commit the job on a per-dataset basis.
    */
-  void commit()
+  void commit_RENAMED()
       throws IOException {
     commit(false);
   }

@@ -88,7 +88,7 @@ public class JobContextTest {
       @Override
       public void run() {
         try {
-          jobContext.commit();
+          jobContext.commit_RENAMED();
         } catch (IOException ioe) {
           throw new RuntimeException(ioe);
         }
@@ -144,7 +144,7 @@ public class JobContextTest {
       @Override
       public void run() {
         try {
-          jobContext.commit();
+          jobContext.commit_RENAMED();
         } catch (IOException ioe) {
           throw new RuntimeException(ioe);
         }
@@ -200,7 +200,7 @@ public class JobContextTest {
       @Override
       public void run() {
         try {
-          jobContext.commit();
+          jobContext.commit_RENAMED();
         } catch (IOException ioe) {
           throw new RuntimeException(ioe);
         }

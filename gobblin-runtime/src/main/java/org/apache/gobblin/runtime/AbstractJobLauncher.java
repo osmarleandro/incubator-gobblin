@@ -519,7 +519,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
 
           TimingEvent jobCommitTimer = this.eventSubmitter.getTimingEvent(TimingEvent.LauncherTimings.JOB_COMMIT);
           this.jobContext.finalizeJobStateBeforeCommit();
-          this.jobContext.commit();
+          this.jobContext.commit_RENAMED();
           postProcessJobState(jobState);
           jobCommitTimer.stop(this.multiEventMetadataGenerator.getMetadata(this.jobContext, EventName.JOB_COMMIT));
         } finally {
