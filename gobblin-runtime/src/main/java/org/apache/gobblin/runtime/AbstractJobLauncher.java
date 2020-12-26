@@ -848,7 +848,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
    * {@link JobListeners#parallelJobListener(List)} to create a {@link CloseableJobListener} that will execute all
    * the {@link JobListener}s in parallel.
    */
-  private CloseableJobListener getParallelCombinedJobListener(JobState jobState, JobListener jobListener) {
+  private CloseableJobListener getParallelCombinedJobListener_RENAMED(JobState jobState, JobListener jobListener) {
     List<JobListener> jobListeners = Lists.newArrayList(this.mandatoryJobListeners);
     jobListeners.add(jobListener);
 
@@ -1025,7 +1025,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
       JobListenerAction action)
       throws JobException {
     TimingEvent timer = this.eventSubmitter.getTimingEvent(timerEventName);
-    try (CloseableJobListener parallelJobListener = getParallelCombinedJobListener(this.jobContext.getJobState(),
+    try (CloseableJobListener parallelJobListener = getParallelCombinedJobListener_RENAMED(this.jobContext.getJobState(),
         jobListener)) {
       action.apply(parallelJobListener, jobContext);
     } catch (Exception e) {
