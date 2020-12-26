@@ -213,7 +213,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
             }
           });
 
-      this.eventSubmitter = buildEventSubmitter(metadataTags);
+      this.eventSubmitter = buildEventSubmitter_RENAMED(metadataTags);
 
       // Add all custom tags to the JobState so that tags are added to any new TaskState created
       GobblinMetrics.addCustomTagToState(this.jobContext.getJobState(), metadataTags);
@@ -881,7 +881,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
   /**
    * Build the {@link EventSubmitter} for this class.
    */
-  private EventSubmitter buildEventSubmitter(List<? extends Tag<?>> tags) {
+  private EventSubmitter buildEventSubmitter_RENAMED(List<? extends Tag<?>> tags) {
     return new EventSubmitter.Builder(this.runtimeMetricContext, "gobblin.runtime")
         .addMetadata(Tag.toMap(Tag.tagValuesToString(tags))).build();
   }
