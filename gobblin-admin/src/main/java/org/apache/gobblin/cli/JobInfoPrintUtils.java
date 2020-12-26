@@ -97,7 +97,7 @@ public class JobInfoPrintUtils {
                 .flags(flags)
                 .delimiterWidth(2)
                 .build()
-                .printTable();
+                .printTable_RENAMED();
     }
 
     /**
@@ -157,7 +157,7 @@ public class JobInfoPrintUtils {
                 .flags(flags)
                 .delimiterWidth(2)
                 .build()
-                .printTable();
+                .printTable_RENAMED();
 
         if (jobExecutionInfos.size() == resultsLimit) {
             System.out.println("\nWARNING: There may be more jobs (# of results is equal to the limit)");
@@ -195,7 +195,7 @@ public class JobInfoPrintUtils {
                 .flags(flags)
                 .delimiterWidth(2)
                 .build()
-                .printTable();
+                .printTable_RENAMED();
 
         JobInfoPrintUtils.printMetrics(jobExecutionInfo.getMetrics());
     }
@@ -223,7 +223,7 @@ public class JobInfoPrintUtils {
                 .flags(flags)
                 .delimiterWidth(2)
                 .build()
-                .printTable();
+                .printTable_RENAMED();
     }
 
     /**
@@ -250,7 +250,7 @@ public class JobInfoPrintUtils {
                 .flags(flags)
                 .delimiterWidth(2)
                 .build()
-                .printTable();
+                .printTable_RENAMED();
     }
 
 }
