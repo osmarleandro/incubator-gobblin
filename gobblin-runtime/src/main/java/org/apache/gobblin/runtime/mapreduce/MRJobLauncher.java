@@ -259,7 +259,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
     // One of the most common user mistakes is mis-configuring the FileSystem scheme (e.g. file versus hdfs)
     log.info("Configured fs:{}", fs);
     log.debug("Configuration: {}", conf);
-    startCancellationExecutor();
+    startCancellationExecutor_RENAMED();
   }
 
   @Override

@@ -280,14 +280,14 @@ public abstract class AbstractJobLauncher implements JobLauncher {
    * <p>
    *   This implementation relies on two conditional variables: one for the condition that a cancellation
    *   is requested, and the other for the condition that the cancellation is executed. Upon entrance, the
-   *   method notifies the cancellation executor started by {@link #startCancellationExecutor()} on the
+   *   method notifies the cancellation executor started by {@link #startCancellationExecutor_RENAMED()} on the
    *   first conditional variable to indicate that a cancellation has been requested so the executor is
    *   unblocked. Then it waits on the second conditional variable for the cancellation to be executed.
    * </p>
    *
    * <p>
    *   The actual execution of the cancellation is handled by the cancellation executor started by the
-   *   method {@link #startCancellationExecutor()} that uses the {@link #executeCancellation()} method
+   *   method {@link #startCancellationExecutor_RENAMED()} that uses the {@link #executeCancellation()} method
    *   to execute the cancellation.
    * </p>
    *
@@ -731,7 +731,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
    *   {@link JobState.RunningState#CANCELLED}.
    * </p>
    */
-  protected void startCancellationExecutor() {
+  protected void startCancellationExecutor_RENAMED() {
     this.cancellationExecutor.execute(new Runnable() {
       @Override
       public void run() {

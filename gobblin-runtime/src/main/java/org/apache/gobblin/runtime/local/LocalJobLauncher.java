@@ -98,7 +98,7 @@ public class LocalJobLauncher extends AbstractJobLauncher {
     // Start all dependent services
     this.serviceManager.startAsync().awaitHealthy(5, TimeUnit.SECONDS);
 
-    startCancellationExecutor();
+    startCancellationExecutor_RENAMED();
 
     jobLocalSetupTimer.stop();
   }

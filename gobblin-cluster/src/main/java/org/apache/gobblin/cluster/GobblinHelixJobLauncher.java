@@ -180,7 +180,7 @@ public class GobblinHelixJobLauncher extends AbstractJobLauncher {
         this.outputTaskStateDir);
 
     this.helixMetrics = helixMetrics;
-    startCancellationExecutor();
+    startCancellationExecutor_RENAMED();
   }
 
   @Override
