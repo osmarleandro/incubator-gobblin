@@ -420,7 +420,7 @@ public class GobblinMultiTaskAttempt {
         countDownLatch.countUp();
         task = createTaskWithRetry(workUnitState, countDownLatch);
         this.taskStateTracker.registerNewTask(task);
-        task.setTaskFuture(this.taskExecutor.submit(task));
+        task.setTaskFuture(this.taskExecutor.submit_RENAMED(task));
         tasks.add(task);
       } catch (Throwable e) {
         if (e instanceof OutOfMemoryError) {

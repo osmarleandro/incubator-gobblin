@@ -255,7 +255,7 @@ public class TaskExecutor extends AbstractIdleService {
    * @param task {@link Task} to be submitted
    * @return a {@link java.util.concurrent.Future} for the submitted {@link Task}
    */
-  public Future<?> submit(Task task) {
+  public Future<?> submit_RENAMED(Task task) {
     LOG.info(String.format("Submitting task %s", task.getTaskId()));
     return this.taskExecutor.submit(new TrackingTask(task));
   }
