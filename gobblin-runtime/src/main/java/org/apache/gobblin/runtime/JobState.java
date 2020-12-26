@@ -546,11 +546,11 @@ public class JobState extends SourceState implements JobProgress {
     this.state = RunningState.valueOf(text.toString());
     this.taskCount = in.readInt();
     int numTaskStates = in.readInt();
-    getTaskStateWithCommonAndSpecWuProps(numTaskStates, in);
+    getTaskStateWithCommonAndSpecWuProps_RENAMED(numTaskStates, in);
     super.readFields(in);
   }
 
-  private void getTaskStateWithCommonAndSpecWuProps(int numTaskStates, DataInput in)
+  private void getTaskStateWithCommonAndSpecWuProps_RENAMED(int numTaskStates, DataInput in)
       throws IOException {
     Properties commonWuProps = new Properties();
 
