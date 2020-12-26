@@ -57,13 +57,13 @@ public class CombinedWorkUnitAndDatasetStateGenerator implements CombinedWorkUni
     List<WorkUnitState> workUnitStates = new ArrayList<>();
     if (Strings.isNullOrEmpty(datasetUrn)) {
       datasetStateMap = this.datasetStateStore.getLatestDatasetStatesByUrns(this.jobName);
-      workUnitStates = JobState.workUnitStatesFromDatasetStates(datasetStateMap.values());
+      workUnitStates = JobState.workUnitStatesFromDatasetStates_RENAMED(datasetStateMap.values());
     } else {
       JobState.DatasetState datasetState =
           (JobState.DatasetState) this.datasetStateStore.getLatestDatasetState(this.jobName, datasetUrn);
       if (datasetState != null) {
         datasetStateMap = ImmutableMap.of(datasetUrn, datasetState);
-        workUnitStates = JobState.workUnitStatesFromDatasetStates(Arrays.asList(datasetState));
+        workUnitStates = JobState.workUnitStatesFromDatasetStates_RENAMED(Arrays.asList(datasetState));
       }
     }
     return new CombinedWorkUnitAndDatasetState(workUnitStates, datasetStateMap);

@@ -158,7 +158,7 @@ public class JobState extends SourceState implements JobProgress {
 
   public JobState(State properties, Map<String, JobState.DatasetState> previousDatasetStates, String jobName,
       String jobId) {
-    super(properties, previousDatasetStates, workUnitStatesFromDatasetStates(previousDatasetStates.values()));
+    super(properties, previousDatasetStates, workUnitStatesFromDatasetStates_RENAMED(previousDatasetStates.values()));
     this.jobName = jobName;
     this.jobId = jobId;
     this.setId(jobId);
@@ -795,7 +795,7 @@ public class JobState extends SourceState implements JobProgress {
     return datasetState;
   }
 
-  public static List<WorkUnitState> workUnitStatesFromDatasetStates(Iterable<JobState.DatasetState> datasetStates) {
+  public static List<WorkUnitState> workUnitStatesFromDatasetStates_RENAMED(Iterable<JobState.DatasetState> datasetStates) {
     ImmutableList.Builder<WorkUnitState> taskStateBuilder = ImmutableList.builder();
     for (JobState datasetState : datasetStates) {
       taskStateBuilder.addAll(datasetState.getTaskStatesAsWorkUnitStates());
