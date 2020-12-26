@@ -126,7 +126,7 @@ public class TaskStateCollectorService extends AbstractScheduledService {
 
   @Override
   protected void runOneIteration() throws Exception {
-    collectOutputTaskStates();
+    collectOutputTaskStates_RENAMED();
   }
 
   @Override
@@ -163,7 +163,7 @@ public class TaskStateCollectorService extends AbstractScheduledService {
    *
    * @throws IOException if it fails to collect the output {@link TaskState}s
    */
-  private void collectOutputTaskStates() throws IOException {
+  private void collectOutputTaskStates_RENAMED() throws IOException {
     List<String> taskStateNames = taskStateStore.getTableNames(outputTaskStateDir.getName(), new Predicate<String>() {
       @Override
       public boolean apply(String input) {
