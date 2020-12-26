@@ -204,7 +204,7 @@ public class JobInfoPrintUtils {
      * Print properties of a specific job
      * @param jobExecutionInfoOptional
      */
-    public static void printJobProperties(Optional<JobExecutionInfo> jobExecutionInfoOptional) {
+    public static void printJobProperties_RENAMED(Optional<JobExecutionInfo> jobExecutionInfoOptional) {
         if (!jobExecutionInfoOptional.isPresent()) {
             System.err.println("Job not found.");
             return;
