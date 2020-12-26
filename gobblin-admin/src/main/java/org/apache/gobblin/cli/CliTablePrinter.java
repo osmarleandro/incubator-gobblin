@@ -133,7 +133,7 @@ public class CliTablePrinter {
   /**
    * Prints the table of data
    */
-  public void printTable() {
+  public void printTable_RENAMED() {
     if (this.labels != null) {
       System.out.printf(this.rowFormat, this.labels.toArray());
     }
