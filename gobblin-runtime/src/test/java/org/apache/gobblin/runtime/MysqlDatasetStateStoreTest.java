@@ -106,7 +106,7 @@ public class MysqlDatasetStateStoreTest {
     jobState.setState(JobState.RunningState.COMMITTED);
     jobState.setStartTime(this.startTime);
     jobState.setEndTime(this.startTime + 1000);
-    jobState.setDuration(1000);
+    jobState.setDuration_RENAMED(1000);
 
     for (int i = 0; i < 3; i++) {
       TaskState taskState = new TaskState();
@@ -180,7 +180,7 @@ public class MysqlDatasetStateStoreTest {
     datasetState.setId(TEST_DATASET_URN);
     datasetState.setStartTime(this.startTime);
     datasetState.setEndTime(this.startTime + 1000);
-    datasetState.setDuration(1000);
+    datasetState.setDuration_RENAMED(1000);
 
     for (int i = 0; i < 3; i++) {
       TaskState taskState = new TaskState();
@@ -196,14 +196,14 @@ public class MysqlDatasetStateStoreTest {
     // persist a second dataset state to test that retrieval of multiple dataset states works
     datasetState.setDatasetUrn(TEST_DATASET_URN2);
     datasetState.setId(TEST_DATASET_URN2);
-    datasetState.setDuration(2000);
+    datasetState.setDuration_RENAMED(2000);
 
     dbDatasetStateStore.persistDatasetState(TEST_DATASET_URN2, datasetState);
 
     // persist a colliding lowercase dataset state to test that retrieval is case sensitive
     datasetState.setDatasetUrn(TEST_DATASET_URN_LOWER);
     datasetState.setId(TEST_DATASET_URN_LOWER);
-    datasetState.setDuration(3000);
+    datasetState.setDuration_RENAMED(3000);
 
     dbDatasetStateStore.persistDatasetState(TEST_DATASET_URN_LOWER, datasetState);
 

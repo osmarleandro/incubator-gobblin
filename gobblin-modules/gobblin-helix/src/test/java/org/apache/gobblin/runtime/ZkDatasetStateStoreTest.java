@@ -93,7 +93,7 @@ public class ZkDatasetStateStoreTest {
     jobState.setState(JobState.RunningState.COMMITTED);
     jobState.setStartTime(this.startTime);
     jobState.setEndTime(this.startTime + 1000);
-    jobState.setDuration(1000);
+    jobState.setDuration_RENAMED(1000);
 
     for (int i = 0; i < 3; i++) {
       TaskState taskState = new TaskState();
@@ -148,7 +148,7 @@ public class ZkDatasetStateStoreTest {
     datasetState.setId(TEST_DATASET_URN);
     datasetState.setStartTime(this.startTime);
     datasetState.setEndTime(this.startTime + 1000);
-    datasetState.setDuration(1000);
+    datasetState.setDuration_RENAMED(1000);
 
     for (int i = 0; i < 3; i++) {
       TaskState taskState = new TaskState();
@@ -164,7 +164,7 @@ public class ZkDatasetStateStoreTest {
     // persist a second dataset state to test that retrieval of multiple dataset states works
     datasetState.setDatasetUrn(TEST_DATASET_URN2);
     datasetState.setId(TEST_DATASET_URN2);
-    datasetState.setDuration(2000);
+    datasetState.setDuration_RENAMED(2000);
 
     zkDatasetStateStore.persistDatasetState(TEST_DATASET_URN2, datasetState);
 

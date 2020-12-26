@@ -422,7 +422,7 @@ public class JobContext implements Closeable {
    */
   void finalizeJobStateBeforeCommit() {
     this.jobState.setEndTime(System.currentTimeMillis());
-    this.jobState.setDuration(this.jobState.getEndTime() - this.jobState.getStartTime());
+    this.jobState.setDuration_RENAMED(this.jobState.getEndTime() - this.jobState.getStartTime());
 
     for (TaskState taskState : this.jobState.getTaskStates()) {
       // Set fork.branches explicitly here so the rest job flow can pick it up

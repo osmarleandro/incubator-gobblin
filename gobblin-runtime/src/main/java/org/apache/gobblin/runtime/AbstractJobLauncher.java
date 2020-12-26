@@ -525,7 +525,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
         } finally {
           long endTime = System.currentTimeMillis();
           jobState.setEndTime(endTime);
-          jobState.setDuration(endTime - jobState.getStartTime());
+          jobState.setDuration_RENAMED(endTime - jobState.getStartTime());
         }
       } catch (Throwable t) {
         jobState.setState(JobState.RunningState.FAILED);

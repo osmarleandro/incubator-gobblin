@@ -288,7 +288,7 @@ public class JobState extends SourceState implements JobProgress {
    *
    * @param duration job duration in milliseconds
    */
-  public void setDuration(long duration) {
+  public void setDuration_RENAMED(long duration) {
     this.duration = duration;
   }
 
@@ -785,7 +785,7 @@ public class JobState extends SourceState implements JobProgress {
     DatasetState datasetState = new DatasetState(this.jobName, this.jobId);
     datasetState.setStartTime(this.startTime);
     datasetState.setEndTime(this.endTime);
-    datasetState.setDuration(this.duration);
+    datasetState.setDuration_RENAMED(this.duration);
     if (fullCopy) {
       datasetState.setState(this.state);
       datasetState.setTaskCount(this.taskCount);

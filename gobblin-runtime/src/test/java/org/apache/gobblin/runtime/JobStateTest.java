@@ -65,7 +65,7 @@ public class JobStateTest {
     this.startTime = System.currentTimeMillis();
     this.jobState.setStartTime(this.startTime);
     this.jobState.setEndTime(this.startTime + 1000);
-    this.jobState.setDuration(1000);
+    this.jobState.setDuration_RENAMED(1000);
     this.jobState.setState(JobState.RunningState.COMMITTED);
     this.jobState.setTaskCount(3);
     this.jobState.setProp("foo", "bar");

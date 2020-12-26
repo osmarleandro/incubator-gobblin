@@ -493,7 +493,7 @@ public class LoopingDatasetFinderSourceTest {
       datasetState.setId(datasetUrn);
       datasetState.setStartTime(this.startTime);
       datasetState.setEndTime(this.startTime + 1000);
-      datasetState.setDuration(1000);
+      datasetState.setDuration_RENAMED(1000);
 
       TaskState taskState = new TaskState();
       taskState.setJobId(TEST_JOB_ID);
