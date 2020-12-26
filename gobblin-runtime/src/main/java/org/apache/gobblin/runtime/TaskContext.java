@@ -238,7 +238,7 @@ public class TaskContext {
    * @return list (possibly empty) of {@link RecordStreamProcessor}s
    */
   public List<RecordStreamProcessor<?, ?, ?, ?>> getRecordStreamProcessors() {
-    return getRecordStreamProcessors(-1, this.taskState);
+    return getRecordStreamProcessors_RENAMED(-1, this.taskState);
   }
 
   /**
@@ -249,7 +249,7 @@ public class TaskContext {
    * @return list (possibly empty) of {@link RecordStreamProcessor}s
    */
   @SuppressWarnings("unchecked")
-  public List<RecordStreamProcessor<?, ?, ?, ?>> getRecordStreamProcessors(int index, TaskState forkTaskState) {
+  public List<RecordStreamProcessor<?, ?, ?, ?>> getRecordStreamProcessors_RENAMED(int index, TaskState forkTaskState) {
     String streamProcessorClassKey =
         ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.RECORD_STREAM_PROCESSOR_CLASSES_KEY, index);
 
