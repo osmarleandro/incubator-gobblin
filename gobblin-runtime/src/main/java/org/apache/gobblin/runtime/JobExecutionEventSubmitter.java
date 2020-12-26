@@ -59,7 +59,7 @@ public class JobExecutionEventSubmitter {
    */
   public void submitJobExecutionEvents(JobState jobState) {
     submitJobStateEvent(jobState);
-    submitTaskStateEvents(jobState);
+    submitTaskStateEvents_RENAMED(jobState);
   }
 
   /**
@@ -85,7 +85,7 @@ public class JobExecutionEventSubmitter {
   /**
    * Submits an event for each {@link TaskState} in the given {@link JobState}.
    */
-  private void submitTaskStateEvents(JobState jobState) {
+  private void submitTaskStateEvents_RENAMED(JobState jobState) {
     // Build Job Metadata applicable for TaskStates
     ImmutableMap.Builder<String, String> jobMetadataBuilder = new ImmutableMap.Builder<>();
     jobMetadataBuilder.put(METADATA_JOB_ID, jobState.getJobId());
