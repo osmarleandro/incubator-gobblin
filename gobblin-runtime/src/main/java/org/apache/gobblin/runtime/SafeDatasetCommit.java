@@ -179,7 +179,7 @@ final class SafeDatasetCommit implements Callable<Void> {
       throw new RuntimeException(throwable);
     } finally {
       try {
-        finalizeDatasetState(datasetState, datasetUrn);
+        finalizeDatasetState_RENAMED(datasetState, datasetUrn);
         maySubmitFailureEvent(datasetState);
         maySubmitLineageEvent(datasetState);
         if (commitSequenceBuilder.isPresent()) {
@@ -381,7 +381,7 @@ final class SafeDatasetCommit implements Callable<Void> {
     }
   }
 
-  private void finalizeDatasetState(JobState.DatasetState datasetState, String datasetUrn) {
+  private void finalizeDatasetState_RENAMED(JobState.DatasetState datasetState, String datasetUrn) {
     for (TaskState taskState : datasetState.getTaskStates()) {
       // Backoff the actual high watermark to the low watermark for each task that has not been committed
       if (taskState.getWorkingState() != WorkUnitState.WorkingState.COMMITTED) {
