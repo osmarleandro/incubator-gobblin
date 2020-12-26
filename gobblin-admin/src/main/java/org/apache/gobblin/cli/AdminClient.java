@@ -49,7 +49,7 @@ public class AdminClient {
   /**
    * Close connections to the REST server
    */
-  public void close() {
+  public void close_RENAMED() {
     try {
       this.closer.close();
     } catch (IOException e) {
