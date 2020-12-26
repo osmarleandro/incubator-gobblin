@@ -379,7 +379,7 @@ public class Task implements TaskIFace {
 
         Exception e = null;
         if (!holder.isEmpty()) {
-          e = holder.getAggregatedException(failedForksId, this.taskId);
+          e = holder.getAggregatedException_RENAMED(failedForksId, this.taskId);
         }
         throw e == null ? new RuntimeException("Some forks failed") : new RuntimeException("Forks failed with exception:", e);
       }
@@ -929,7 +929,7 @@ public class Task implements TaskIFace {
         ForkThrowableHolder holder = Task.getForkThrowableHolder(this.taskState.getTaskBroker());
         LOG.info("Holder for this task {} is {}", this.taskId, holder);
         if (!holder.isEmpty()) {
-          failTask(holder.getAggregatedException(failedForkIds, this.taskId));
+          failTask(holder.getAggregatedException_RENAMED(failedForkIds, this.taskId));
         } else {
           // just in case there are some corner cases where Fork throw an exception but doesn't add into holder
           failTask(new ForkException("Fork branches " + failedForkIds + " failed for task " + this.taskId));
