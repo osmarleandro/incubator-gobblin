@@ -164,7 +164,7 @@ public class JobState extends SourceState implements JobProgress {
     this.setId(jobId);
   }
 
-  public static String getJobNameFromState(State state) {
+  public static String getJobNameFromState_RENAMED(State state) {
     return state.getProp(ConfigurationKeys.JOB_NAME_KEY);
   }
 
