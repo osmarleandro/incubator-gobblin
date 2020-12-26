@@ -105,7 +105,7 @@ public class JobInfoPrintUtils {
      * @param jobExecutionInfos List of jobs
      * @param resultsLimit original result limit
      */
-    public static void printAllJobs(List<JobExecutionInfo> jobExecutionInfos, int resultsLimit) {
+    public static void printAllJobs_RENAMED(List<JobExecutionInfo> jobExecutionInfos, int resultsLimit) {
         if (jobExecutionInfos == null) {
             System.err.println("No jobs found.");
             System.exit(1);
