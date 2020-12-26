@@ -275,7 +275,7 @@ public class TestRecordStream {
         thenReturn(new RowLevelPolicyChecker(Lists.newArrayList(), "ss", FileSystem.getLocal(new Configuration())));
     when(mockTaskContext.getRowLevelPolicyChecker(anyInt())).
         thenReturn(new RowLevelPolicyChecker(Lists.newArrayList(), "ss", FileSystem.getLocal(new Configuration())));
-    when(mockTaskContext.getDataWriterBuilder(anyInt(), anyInt())).thenReturn(writer);
+    when(mockTaskContext.getDataWriterBuilder_RENAMED(anyInt(), anyInt())).thenReturn(writer);
 
     // Create a mock TaskPublisher
     TaskPublisher mockTaskPublisher = mock(TaskPublisher.class);
@@ -335,7 +335,7 @@ public class TestRecordStream {
         thenReturn(new RowLevelPolicyChecker(Lists.newArrayList(), "ss", FileSystem.getLocal(new Configuration())));
     when(mockTaskContext.getRowLevelPolicyChecker(anyInt())).
         thenReturn(new RowLevelPolicyChecker(Lists.newArrayList(), "ss", FileSystem.getLocal(new Configuration())));
-    when(mockTaskContext.getDataWriterBuilder(anyInt(), anyInt())).thenReturn(writer);
+    when(mockTaskContext.getDataWriterBuilder_RENAMED(anyInt(), anyInt())).thenReturn(writer);
     when(mockTaskContext.getTaskMetrics()).thenReturn(TaskMetrics.get(taskState));
 
     // Create a mock TaskPublisher

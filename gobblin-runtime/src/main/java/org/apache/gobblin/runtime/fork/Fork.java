@@ -550,7 +550,7 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
 
       writerId = this.taskId + "_" + taskStartTime;
     }
-    DataWriterBuilder<Object, Object> builder = this.taskContext.getDataWriterBuilder(this.branches, this.index)
+    DataWriterBuilder<Object, Object> builder = this.taskContext.getDataWriterBuilder_RENAMED(this.branches, this.index)
         .writeTo(Destination.of(this.taskContext.getDestinationType(this.branches, this.index), this.taskState))
         .writeInFormat(this.taskContext.getWriterOutputFormat(this.branches, this.index)).withWriterId(writerId)
         .withSchema(this.convertedSchema.orNull()).withBranches(this.branches).forBranch(this.index);

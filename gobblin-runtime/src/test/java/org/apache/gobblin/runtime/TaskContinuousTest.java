@@ -365,7 +365,7 @@ public class TaskContinuousTest {
     when(mockTaskContext.getRowLevelPolicyChecker()).thenReturn(mockRowLevelPolicyChecker);
     when(mockTaskContext.getRowLevelPolicyChecker(anyInt())).thenReturn(mockRowLevelPolicyChecker);
     when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class), anyInt())).thenReturn(mock(TaskLevelPolicyChecker.class));
-    when(mockTaskContext.getDataWriterBuilder(anyInt(), anyInt())).thenReturn(new TestStreamingDataWriterBuilder(recordCollector,
+    when(mockTaskContext.getDataWriterBuilder_RENAMED(anyInt(), anyInt())).thenReturn(new TestStreamingDataWriterBuilder(recordCollector,
         errorAtCount));
     return mockTaskContext;
   }

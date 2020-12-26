@@ -179,7 +179,7 @@ public class TaskTest {
     when(mockTaskContext.getRowLevelPolicyChecker(anyInt())).thenReturn(mockRowLevelPolicyChecker);
     when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class), anyInt())).thenReturn(mock(TaskLevelPolicyChecker.class));
     for (int i =0; i < numForks; ++i) {
-      when(mockTaskContext.getDataWriterBuilder(numForks, i)).thenReturn(new RecordCollectingWriterBuilder(writerCollectors.get(i)));
+      when(mockTaskContext.getDataWriterBuilder_RENAMED(numForks, i)).thenReturn(new RecordCollectingWriterBuilder(writerCollectors.get(i)));
     }
     return mockTaskContext;
   }
@@ -356,7 +356,7 @@ public class TaskTest {
     task.run();
     task.commit();
 
-    DataWriterBuilder writerBuilder = mockTaskContext.getDataWriterBuilder(numForks, 0);
+    DataWriterBuilder writerBuilder = mockTaskContext.getDataWriterBuilder_RENAMED(numForks, 0);
 
     // writer id should have the expected name with the timestamp
     Assert.assertEquals(writerBuilder.getWriterId(), "testTimestampInFilename_12345_0");

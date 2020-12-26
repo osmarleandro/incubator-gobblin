@@ -361,7 +361,7 @@ public class TaskContext {
    * @param index branch index
    * @return a {@link DataWriterBuilder}
    */
-  public DataWriterBuilder getDataWriterBuilder(int branches, int index) {
+  public DataWriterBuilder getDataWriterBuilder_RENAMED(int branches, int index) {
     String writerBuilderPropertyName = ForkOperatorUtils
         .getPropertyNameForBranch(ConfigurationKeys.WRITER_BUILDER_CLASS, branches, index);
     log.debug("Using property {} to get a writer builder for branches:{}, index:{}", writerBuilderPropertyName,
