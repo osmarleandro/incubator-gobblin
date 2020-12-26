@@ -628,7 +628,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
    * @deprecated Use {@link #postProcessJobState(JobState)}
    */
   @Deprecated
-  protected void postProcessTaskStates(@SuppressWarnings("unused") List<TaskState> taskStates) {
+  protected void postProcessTaskStates_RENAMED(@SuppressWarnings("unused") List<TaskState> taskStates) {
     // Do nothing
   }
 
@@ -637,7 +637,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
    * associated {@link TaskState}s, e.g., aggregate task-level metrics into job-level metrics.
    */
   protected void postProcessJobState(JobState jobState) {
-    postProcessTaskStates(jobState.getTaskStates());
+    postProcessTaskStates_RENAMED(jobState.getTaskStates());
   }
 
   @Override
