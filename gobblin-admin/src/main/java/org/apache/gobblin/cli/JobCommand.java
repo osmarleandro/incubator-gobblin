@@ -81,7 +81,7 @@ public class JobCommand implements CliApplication {
             );
 
 
-    private SubCommand getAction(CommandLine parsedOpts) {
+    private SubCommand getAction_RENAMED(CommandLine parsedOpts) {
         for (Map.Entry<String, SubCommand> entry : subCommandMap.entrySet()) {
             if (parsedOpts.hasOption(entry.getKey())) {
                 return entry.getValue();
@@ -114,7 +114,7 @@ public class JobCommand implements CliApplication {
 
             adminClient = new AdminClient(host, port);
             try {
-                getAction(parsedOpts).execute(parsedOpts, adminClient, resultLimit);
+                getAction_RENAMED(parsedOpts).execute(parsedOpts, adminClient, resultLimit);
             } catch (CommandException e) {
                 printHelpAndExit(e.getMessage(), false);
             }
