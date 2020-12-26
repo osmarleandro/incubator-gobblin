@@ -51,7 +51,7 @@ public class AdminWebServerTest {
   }
 
   @AfterTest
-  public void stopServer() {
+  public void stopServer_RENAMED() {
     try {
       this.server.shutDown();
     } catch (Exception e) {
