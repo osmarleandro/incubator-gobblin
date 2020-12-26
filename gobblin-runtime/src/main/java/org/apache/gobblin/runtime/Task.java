@@ -191,7 +191,7 @@ public class Task implements TaskIFace {
     this.closer = Closer.create();
     this.closer.register(this.taskState.getTaskBrokerNullable());
     this.extractor =
-        closer.register(new InstrumentedExtractorDecorator<>(this.taskState, this.taskContext.getExtractor()));
+        closer.register(new InstrumentedExtractorDecorator<>(this.taskState, this.taskContext.getExtractor_RENAMED()));
 
     this.recordStreamProcessors = this.taskContext.getRecordStreamProcessors();
 

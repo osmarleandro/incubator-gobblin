@@ -355,7 +355,7 @@ public class TaskContinuousTest {
     // Create a mock TaskContext
     TaskContext mockTaskContext = mock(TaskContext.class);
     when(mockTaskContext.getTaskMetrics()).thenReturn(TaskMetrics.get(taskState));
-    when(mockTaskContext.getExtractor()).thenReturn(mockExtractor);
+    when(mockTaskContext.getExtractor_RENAMED()).thenReturn(mockExtractor);
     when(mockTaskContext.getRawSourceExtractor()).thenReturn(mockExtractor);
     when(mockTaskContext.getWatermarkStorage()).thenReturn(mockWatermarkStorage);
     when(mockTaskContext.getForkOperator()).thenReturn(new IdentityForkOperator());

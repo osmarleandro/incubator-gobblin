@@ -265,7 +265,7 @@ public class TestRecordStream {
     taskState.setProp(ConfigurationKeys.TASK_SYNCHRONOUS_EXECUTION_MODEL_KEY, false);
     // Create a mock TaskContext
     TaskContext mockTaskContext = mock(TaskContext.class);
-    when(mockTaskContext.getExtractor()).thenReturn(extractor);
+    when(mockTaskContext.getExtractor_RENAMED()).thenReturn(extractor);
     when(mockTaskContext.getForkOperator()).thenReturn(new IdentityForkOperator());
     when(mockTaskContext.getTaskState()).thenReturn(taskState);
     when(mockTaskContext.getConverters()).thenReturn(Lists.newArrayList(converter));
@@ -324,7 +324,7 @@ public class TestRecordStream {
     taskState.setProp(ConfigurationKeys.TASK_SYNCHRONOUS_EXECUTION_MODEL_KEY, false);
     // Create a mock TaskContext
     TaskContext mockTaskContext = mock(TaskContext.class);
-    when(mockTaskContext.getExtractor()).thenReturn(extractor);
+    when(mockTaskContext.getExtractor_RENAMED()).thenReturn(extractor);
     when(mockTaskContext.getForkOperator()).thenReturn(new IdentityForkOperator());
     when(mockTaskContext.getTaskState()).thenReturn(taskState);
     when(mockTaskContext.getConverters()).thenReturn(converters);

@@ -112,7 +112,7 @@ public class TaskTest {
     // Create a mock TaskContext
     TaskContext mockTaskContext = mock(TaskContext.class);
     when(mockTaskContext.getTaskMetrics()).thenReturn(TaskMetrics.get(taskState));
-    when(mockTaskContext.getExtractor()).thenReturn(new FailOnceExtractor());
+    when(mockTaskContext.getExtractor_RENAMED()).thenReturn(new FailOnceExtractor());
     when(mockTaskContext.getForkOperator()).thenReturn(new IdentityForkOperator());
     when(mockTaskContext.getTaskState()).thenReturn(taskState);
     when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class), anyInt()))
@@ -169,7 +169,7 @@ public class TaskTest {
 
     // Create a mock TaskContext
     TaskContext mockTaskContext = mock(TaskContext.class);
-    when(mockTaskContext.getExtractor()).thenReturn(mockExtractor);
+    when(mockTaskContext.getExtractor_RENAMED()).thenReturn(mockExtractor);
     when(mockTaskContext.getRawSourceExtractor()).thenReturn(mockExtractor);
     when(mockTaskContext.getForkOperator()).thenReturn(mockForkOperator);
     when(mockTaskContext.getTaskState()).thenReturn(taskState);

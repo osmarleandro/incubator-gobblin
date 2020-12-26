@@ -115,7 +115,7 @@ public class TaskContext {
    *
    * @return a {@link Extractor} instance
    */
-  public Extractor getExtractor() {
+  public Extractor getExtractor_RENAMED() {
     try {
       this.rawSourceExtractor = getSource().getExtractor(this.taskState);
       boolean throttlingEnabled = this.taskState.getPropAsBoolean(ConfigurationKeys.EXTRACT_LIMIT_ENABLED_KEY,
