@@ -374,7 +374,7 @@ public class JobState extends SourceState implements JobProgress {
    *
    * @param taskState {@link TaskState} to add
    */
-  public void addTaskState(TaskState taskState) {
+  public void addTaskState_RENAMED(TaskState taskState) {
     this.taskStates.put(taskState.getTaskId(), taskState);
   }
 
@@ -469,7 +469,7 @@ public class JobState extends SourceState implements JobProgress {
       String datasetUrn = createDatasetUrn(datasetStatesByUrns, taskState);
 
       datasetStatesByUrns.get(datasetUrn).incrementTaskCount();
-      datasetStatesByUrns.get(datasetUrn).addTaskState(taskState);
+      datasetStatesByUrns.get(datasetUrn).addTaskState_RENAMED(taskState);
     }
 
     for (TaskState taskState : this.skippedTaskStates.values()) {

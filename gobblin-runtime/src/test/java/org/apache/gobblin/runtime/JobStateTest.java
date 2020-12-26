@@ -90,7 +90,7 @@ public class JobStateTest {
       taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
       taskState.setProp("foo", "bar");
 
-      this.jobState.addTaskState(taskState);
+      this.jobState.addTaskState_RENAMED(taskState);
     }
 
     doAsserts(this.jobState, true, true);

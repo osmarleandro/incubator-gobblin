@@ -114,7 +114,7 @@ public class MysqlDatasetStateStoreTest {
       taskState.setTaskId(TEST_TASK_ID_PREFIX + i);
       taskState.setId(TEST_TASK_ID_PREFIX + i);
       taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-      jobState.addTaskState(taskState);
+      jobState.addTaskState_RENAMED(taskState);
     }
 
     dbJobStateStore.put(TEST_JOB_NAME,
@@ -188,7 +188,7 @@ public class MysqlDatasetStateStoreTest {
       taskState.setTaskId(TEST_TASK_ID_PREFIX + i);
       taskState.setId(TEST_TASK_ID_PREFIX + i);
       taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-      datasetState.addTaskState(taskState);
+      datasetState.addTaskState_RENAMED(taskState);
     }
 
     dbDatasetStateStore.persistDatasetState(TEST_DATASET_URN, datasetState);

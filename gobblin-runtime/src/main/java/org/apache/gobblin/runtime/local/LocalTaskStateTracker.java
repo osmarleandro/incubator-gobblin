@@ -119,7 +119,7 @@ public class LocalTaskStateTracker extends AbstractTaskStateTracker {
 
     // Add the TaskState of the completed task to the JobState so when the control
     // returns to the launcher, it sees the TaskStates of all completed tasks.
-    this.jobState.addTaskState(task.getTaskState());
+    this.jobState.addTaskState_RENAMED(task.getTaskState());
 
     // Notify the listeners for the completion of the task
     this.eventBus.post(new NewTaskCompletionEvent(ImmutableList.of(task.getTaskState())));
