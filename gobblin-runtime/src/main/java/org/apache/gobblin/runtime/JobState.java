@@ -699,7 +699,7 @@ public class JobState extends SourceState implements JobProgress {
    *
    * @return a {@link JobExecutionInfo} instance
    */
-  public JobExecutionInfo toJobExecutionInfo() {
+  public JobExecutionInfo toJobExecutionInfo_RENAMED() {
     JobExecutionInfo jobExecutionInfo = new JobExecutionInfo();
 
     jobExecutionInfo.setJobName(this.jobName);

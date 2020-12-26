@@ -182,7 +182,7 @@ public class JobStateTest {
 
   @Test(dependsOnMethods = {"testSetAndGet"})
   public void testToJobExecutionInfo() {
-    JobExecutionInfo jobExecutionInfo = this.jobState.toJobExecutionInfo();
+    JobExecutionInfo jobExecutionInfo = this.jobState.toJobExecutionInfo_RENAMED();
     Assert.assertEquals(jobExecutionInfo.getJobName(), "TestJob");
     Assert.assertEquals(jobExecutionInfo.getJobId(), "TestJob-1");
     Assert.assertEquals(jobExecutionInfo.getStartTime().longValue(), this.startTime);

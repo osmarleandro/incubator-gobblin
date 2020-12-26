@@ -403,7 +403,7 @@ public class JobContext implements Closeable {
     if (this.jobHistoryStoreOptional.isPresent()) {
       try {
         this.logger.info("Writing job execution information to the job history store");
-        this.jobHistoryStoreOptional.get().put(this.jobState.toJobExecutionInfo());
+        this.jobHistoryStoreOptional.get().put(this.jobState.toJobExecutionInfo_RENAMED());
       } catch (IOException ioe) {
         this.logger.error("Failed to write job execution information to the job history store: " + ioe, ioe);
       }
