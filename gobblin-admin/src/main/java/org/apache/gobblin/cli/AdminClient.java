@@ -63,7 +63,7 @@ public class AdminClient {
    * @param id                Id of the job to retrieve
    * @return JobExecutionInfo representing the job
    */
-  public Optional<JobExecutionInfo> queryByJobId(String id) throws RemoteInvocationException {
+  public Optional<JobExecutionInfo> queryByJobId_RENAMED(String id) throws RemoteInvocationException {
     JobExecutionQuery query = new JobExecutionQuery();
     query.setIdType(QueryIdTypeEnum.JOB_ID);
     query.setId(JobExecutionQuery.Id.create(id));
