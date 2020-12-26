@@ -315,7 +315,7 @@ public class TaskContext {
    *
    * @return a {@link RowLevelPolicyChecker}
    */
-  public RowLevelPolicyChecker getRowLevelPolicyChecker() throws Exception {
+  public RowLevelPolicyChecker getRowLevelPolicyChecker_RENAMED() throws Exception {
     return getRowLevelPolicyChecker(-1);
   }
 

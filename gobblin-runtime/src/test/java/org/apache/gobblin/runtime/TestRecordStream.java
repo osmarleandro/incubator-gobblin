@@ -271,7 +271,7 @@ public class TestRecordStream {
     when(mockTaskContext.getConverters()).thenReturn(Lists.newArrayList(converter));
     when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class), anyInt()))
         .thenReturn(mock(TaskLevelPolicyChecker.class));
-    when(mockTaskContext.getRowLevelPolicyChecker()).
+    when(mockTaskContext.getRowLevelPolicyChecker_RENAMED()).
         thenReturn(new RowLevelPolicyChecker(Lists.newArrayList(), "ss", FileSystem.getLocal(new Configuration())));
     when(mockTaskContext.getRowLevelPolicyChecker(anyInt())).
         thenReturn(new RowLevelPolicyChecker(Lists.newArrayList(), "ss", FileSystem.getLocal(new Configuration())));
@@ -331,7 +331,7 @@ public class TestRecordStream {
     when(mockTaskContext.getRecordStreamProcessors()).thenReturn(recordStreamProcessors);
     when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class), anyInt()))
         .thenReturn(mock(TaskLevelPolicyChecker.class));
-    when(mockTaskContext.getRowLevelPolicyChecker()).
+    when(mockTaskContext.getRowLevelPolicyChecker_RENAMED()).
         thenReturn(new RowLevelPolicyChecker(Lists.newArrayList(), "ss", FileSystem.getLocal(new Configuration())));
     when(mockTaskContext.getRowLevelPolicyChecker(anyInt())).
         thenReturn(new RowLevelPolicyChecker(Lists.newArrayList(), "ss", FileSystem.getLocal(new Configuration())));

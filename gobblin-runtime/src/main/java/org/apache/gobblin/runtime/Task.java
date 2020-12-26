@@ -220,7 +220,7 @@ public class Task implements TaskIFace {
     }
 
     try {
-      this.rowChecker = closer.register(this.taskContext.getRowLevelPolicyChecker());
+      this.rowChecker = closer.register(this.taskContext.getRowLevelPolicyChecker_RENAMED());
     } catch (Exception e) {
       try {
         closer.close();
