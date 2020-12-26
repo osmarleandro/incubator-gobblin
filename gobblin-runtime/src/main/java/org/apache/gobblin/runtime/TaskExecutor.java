@@ -302,7 +302,7 @@ public class TaskExecutor extends AbstractIdleService {
     task.incrementRetryCount();
   }
 
-  public MetricSet getTaskExecutorQueueMetricSet() {
+  public MetricSet getTaskExecutorQueueMetricSet_RENAMED() {
     return this.metricSet;
   }
 

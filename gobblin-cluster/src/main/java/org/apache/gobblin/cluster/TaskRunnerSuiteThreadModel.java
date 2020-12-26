@@ -92,7 +92,7 @@ class TaskRunnerSuiteThreadModel extends TaskRunnerSuiteBase {
     services.add(taskFactory.getTaskExecutor());
     services.add(taskStateTracker);
     services.add(new JMXReportingService(
-        ImmutableMap.of("task.executor", taskFactory.getTaskExecutor().getTaskExecutorQueueMetricSet())));
+        ImmutableMap.of("task.executor", taskFactory.getTaskExecutor().getTaskExecutorQueueMetricSet_RENAMED())));
 
     return taskFactory;
   }
