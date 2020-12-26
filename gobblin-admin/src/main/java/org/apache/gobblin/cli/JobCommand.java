@@ -100,7 +100,7 @@ public class JobCommand implements CliApplication {
 
         try {
             CommandLine parsedOpts = parser.parse(options, args);
-            int resultLimit = parseResultsLimit(parsedOpts);
+            int resultLimit = parseResultsLimit_RENAMED(parsedOpts);
             String host = parsedOpts.hasOption(ADMIN_SERVER) ?
                 parsedOpts.getOptionValue(ADMIN_SERVER) : DEFAULT_ADMIN_SERVER;
             int port = DEFAULT_ADMIN_PORT;
@@ -209,7 +209,7 @@ public class JobCommand implements CliApplication {
         return options;
     }
 
-    private int parseResultsLimit(CommandLine parsedOpts) {
+    private int parseResultsLimit_RENAMED(CommandLine parsedOpts) {
         if (parsedOpts.hasOption("n")) {
             try {
                 return Integer.parseInt(parsedOpts.getOptionValue("n"));
