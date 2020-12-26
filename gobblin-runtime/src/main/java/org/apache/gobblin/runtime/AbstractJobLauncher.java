@@ -973,7 +973,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
     }
 
     if (this.jobContext.shouldCleanupStagingDataPerTask()) {
-      cleanupStagingDataPerTask(jobState);
+      cleanupStagingDataPerTask_RENAMED(jobState);
     } else {
       cleanupStagingDataForEntireJob(jobState);
     }
@@ -993,7 +993,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
         .get().exists(jobState.getJobName());
   }
 
-  private static void cleanupStagingDataPerTask(JobState jobState) {
+  private static void cleanupStagingDataPerTask_RENAMED(JobState jobState) {
     Closer closer = Closer.create();
     Map<String, ParallelRunner> parallelRunners = Maps.newHashMap();
     try {
