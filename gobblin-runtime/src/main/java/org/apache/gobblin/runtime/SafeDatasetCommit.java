@@ -87,7 +87,7 @@ final class SafeDatasetCommit implements Callable<Void> {
     }
     metricContext = Instrumented.getMetricContext(datasetState, SafeDatasetCommit.class);
 
-    finalizeDatasetStateBeforeCommit(this.datasetState);
+    finalizeDatasetStateBeforeCommit_RENAMED(this.datasetState);
     Class<? extends DataPublisher> dataPublisherClass;
     try (Closer closer = Closer.create()) {
       dataPublisherClass = JobContext.getJobDataPublisherClass(this.jobContext.getJobState())
@@ -309,7 +309,7 @@ final class SafeDatasetCommit implements Callable<Void> {
    *
    * This method is thread-safe.
    */
-  private void finalizeDatasetStateBeforeCommit(JobState.DatasetState datasetState) {
+  private void finalizeDatasetStateBeforeCommit_RENAMED(JobState.DatasetState datasetState) {
     for (TaskState taskState : datasetState.getTaskStates()) {
       if (taskState.getWorkingState() != WorkUnitState.WorkingState.SUCCESSFUL
           && this.jobContext.getJobCommitPolicy() == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS) {
