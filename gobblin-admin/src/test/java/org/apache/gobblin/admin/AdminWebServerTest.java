@@ -38,7 +38,7 @@ public class AdminWebServerTest {
   private final String portNumber = "54320";
 
   @BeforeTest
-  public void startServer() {
+  public void startServer_RENAMED() {
     Properties properties = new Properties();
     properties.put(ConfigurationKeys.ADMIN_SERVER_PORT_KEY, this.portNumber);
     this.server = new AdminWebServer(properties, URI.create("http://foobar:3333"));
