@@ -187,7 +187,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
     // Make a copy for both the system and job configuration properties and resolve the job-template if any.
     this.jobProps = new Properties();
     this.jobProps.putAll(jobProps);
-    resolveGobblinJobTemplateIfNecessary(this.jobProps);
+    resolveGobblinJobTemplateIfNecessary_RENAMED(this.jobProps);
 
     if (!tryLockJob(this.jobProps)) {
       throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",
@@ -237,7 +237,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
    *
    * @param jobProps Gobblin Job-level properties.
    */
-  public static void resolveGobblinJobTemplateIfNecessary(Properties jobProps) throws IOException, URISyntaxException,
+  public static void resolveGobblinJobTemplateIfNecessary_RENAMED(Properties jobProps) throws IOException, URISyntaxException,
                                                                                       SpecNotFoundException,
                                                                                       JobTemplate.TemplateException {
     Config config = ConfigUtils.propertiesToConfig(jobProps);

@@ -76,7 +76,7 @@ import org.apache.gobblin.util.PropertiesUtils;
 import org.apache.gobblin.util.TimeRangeChecker;
 import org.apache.gobblin.util.hadoop.TokenUtils;
 
-import static org.apache.gobblin.runtime.AbstractJobLauncher.resolveGobblinJobTemplateIfNecessary;
+import static org.apache.gobblin.runtime.AbstractJobLauncher.resolveGobblinJobTemplateIfNecessary_RENAMED;
 import static org.apache.hadoop.security.UserGroupInformation.HADOOP_TOKEN_FILE_LOCATION;
 
 
@@ -188,7 +188,7 @@ public class AzkabanJobLauncher extends AbstractJob implements ApplicationLaunch
     }
 
     Properties jobProps = this.props;
-    resolveGobblinJobTemplateIfNecessary(jobProps);
+    resolveGobblinJobTemplateIfNecessary_RENAMED(jobProps);
     GobblinMetrics.addCustomTagsToProperties(jobProps, tags);
 
     // If the job launcher type is not specified in the job configuration,
