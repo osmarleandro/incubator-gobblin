@@ -70,7 +70,7 @@ public class AdminClient {
     query.setLimit(1);
 
     List<JobExecutionInfo> results = executeQuery(query);
-    return getFirstFromQueryResults(results);
+    return getFirstFromQueryResults_RENAMED(results);
   }
 
   /**
@@ -126,7 +126,7 @@ public class AdminClient {
     return Collections.emptyList();
   }
 
-  private static Optional<JobExecutionInfo> getFirstFromQueryResults(List<JobExecutionInfo> results) {
+  private static Optional<JobExecutionInfo> getFirstFromQueryResults_RENAMED(List<JobExecutionInfo> results) {
     if (results == null || results.size() == 0) {
       return Optional.absent();
     }
