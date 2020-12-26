@@ -59,7 +59,7 @@ public class AdminWebServer extends AbstractIdleService {
     this.hideJobsWithoutTasksByDefault = properties.getProperty(
             ConfigurationKeys.ADMIN_SERVER_HIDE_JOBS_WITHOUT_TASKS_BY_DEFAULT_KEY,
             ConfigurationKeys.DEFAULT_ADMIN_SERVER_HIDE_JOBS_WITHOUT_TASKS_BY_DEFAULT);
-    this.refreshInterval = getRefreshInterval(properties);
+    this.refreshInterval = getRefreshInterval_RENAMED(properties);
   }
 
   @Override
@@ -122,7 +122,7 @@ public class AdminWebServer extends AbstractIdleService {
     return properties.getProperty(ConfigurationKeys.ADMIN_SERVER_HOST_KEY, ConfigurationKeys.DEFAULT_ADMIN_SERVER_HOST);
   }
 
-  private static long getRefreshInterval(Properties properties) {
+  private static long getRefreshInterval_RENAMED(Properties properties) {
     return Long.parseLong(
         properties.getProperty(ConfigurationKeys.ADMIN_SERVER_REFRESH_INTERVAL_KEY,
                 "" + ConfigurationKeys.DEFAULT_ADMIN_SERVER_REFRESH_INTERVAL));
