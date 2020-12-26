@@ -408,7 +408,7 @@ public class JobState extends SourceState implements JobProgress {
    *
    * @param taskStates collection of {@link TaskState}s to add
    */
-  public void addTaskStates(Collection<TaskState> taskStates) {
+  public void addTaskStates_RENAMED(Collection<TaskState> taskStates) {
     for (TaskState taskState : taskStates) {
       this.taskStates.put(taskState.getTaskId(), taskState);
     }
@@ -789,7 +789,7 @@ public class JobState extends SourceState implements JobProgress {
     if (fullCopy) {
       datasetState.setState(this.state);
       datasetState.setTaskCount(this.taskCount);
-      datasetState.addTaskStates(this.taskStates.values());
+      datasetState.addTaskStates_RENAMED(this.taskStates.values());
       datasetState.addSkippedTaskStates(this.skippedTaskStates.values());
     }
     return datasetState;
