@@ -106,7 +106,7 @@ final class SafeDatasetCommit implements Callable<Void> {
           this.jobContext.getJobId(), roe);
       throw new RuntimeException(roe);
     } finally {
-      maySubmitFailureEvent(datasetState);
+      maySubmitFailureEvent_RENAMED(datasetState);
     }
 
     if (this.isJobCancelled) {
@@ -180,7 +180,7 @@ final class SafeDatasetCommit implements Callable<Void> {
     } finally {
       try {
         finalizeDatasetState(datasetState, datasetUrn);
-        maySubmitFailureEvent(datasetState);
+        maySubmitFailureEvent_RENAMED(datasetState);
         maySubmitLineageEvent(datasetState);
         if (commitSequenceBuilder.isPresent()) {
           buildAndExecuteCommitSequence(commitSequenceBuilder.get(), datasetState, datasetUrn);
@@ -199,7 +199,7 @@ final class SafeDatasetCommit implements Callable<Void> {
     return null;
   }
 
-  private void maySubmitFailureEvent(JobState.DatasetState datasetState) {
+  private void maySubmitFailureEvent_RENAMED(JobState.DatasetState datasetState) {
     if (datasetState.getState() == JobState.RunningState.FAILED) {
       FailureEventBuilder failureEvent = new FailureEventBuilder(FAILED_DATASET_EVENT);
       failureEvent.addMetadata(DATASET_STATE, datasetState.toString());
