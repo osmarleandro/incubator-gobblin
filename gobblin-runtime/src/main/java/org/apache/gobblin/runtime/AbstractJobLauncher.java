@@ -524,7 +524,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
           jobCommitTimer.stop(this.multiEventMetadataGenerator.getMetadata(this.jobContext, EventName.JOB_COMMIT));
         } finally {
           long endTime = System.currentTimeMillis();
-          jobState.setEndTime(endTime);
+          jobState.setEndTime_RENAMED(endTime);
           jobState.setDuration(endTime - jobState.getStartTime());
         }
       } catch (Throwable t) {

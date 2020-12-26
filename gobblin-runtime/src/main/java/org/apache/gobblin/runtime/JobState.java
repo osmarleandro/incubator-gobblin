@@ -270,7 +270,7 @@ public class JobState extends SourceState implements JobProgress {
    *
    * @param endTime job end time
    */
-  public void setEndTime(long endTime) {
+  public void setEndTime_RENAMED(long endTime) {
     this.endTime = endTime;
   }
 
@@ -784,7 +784,7 @@ public class JobState extends SourceState implements JobProgress {
   public DatasetState newDatasetState(boolean fullCopy) {
     DatasetState datasetState = new DatasetState(this.jobName, this.jobId);
     datasetState.setStartTime(this.startTime);
-    datasetState.setEndTime(this.endTime);
+    datasetState.setEndTime_RENAMED(this.endTime);
     datasetState.setDuration(this.duration);
     if (fullCopy) {
       datasetState.setState(this.state);

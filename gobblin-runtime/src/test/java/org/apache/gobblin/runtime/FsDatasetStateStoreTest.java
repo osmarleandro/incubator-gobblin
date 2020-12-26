@@ -80,7 +80,7 @@ public class FsDatasetStateStoreTest {
     jobState.setProp("foo", "bar");
     jobState.setState(JobState.RunningState.COMMITTED);
     jobState.setStartTime(this.startTime);
-    jobState.setEndTime(this.startTime + 1000);
+    jobState.setEndTime_RENAMED(this.startTime + 1000);
     jobState.setDuration(1000);
 
     for (int i = 0; i < 3; i++) {
@@ -128,7 +128,7 @@ public class FsDatasetStateStoreTest {
     datasetState.setState(JobState.RunningState.COMMITTED);
     datasetState.setId(TEST_DATASET_URN);
     datasetState.setStartTime(this.startTime);
-    datasetState.setEndTime(this.startTime + 1000);
+    datasetState.setEndTime_RENAMED(this.startTime + 1000);
     datasetState.setDuration(1000);
 
     for (int i = 0; i < 3; i++) {

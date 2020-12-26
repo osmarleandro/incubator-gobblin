@@ -421,7 +421,7 @@ public class JobContext implements Closeable {
    * Finalize the {@link JobState} before committing the job.
    */
   void finalizeJobStateBeforeCommit() {
-    this.jobState.setEndTime(System.currentTimeMillis());
+    this.jobState.setEndTime_RENAMED(System.currentTimeMillis());
     this.jobState.setDuration(this.jobState.getEndTime() - this.jobState.getStartTime());
 
     for (TaskState taskState : this.jobState.getTaskStates()) {
