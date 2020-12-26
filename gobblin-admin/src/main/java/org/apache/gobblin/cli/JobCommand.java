@@ -166,7 +166,7 @@ public class JobCommand implements CliApplication {
         public void execute(CommandLine parsedOpts, AdminClient adminClient, int resultsLimit) throws CommandException {
             try {
                 if (parsedOpts.hasOption(ID_OPT)) {
-                    JobInfoPrintUtils.printJobProperties(
+                    JobInfoPrintUtils.printJobProperties_RENAMED(
                             adminClient.queryByJobId(parsedOpts.getOptionValue(ID_OPT))
                     );
                 } else if (parsedOpts.hasOption(NAME_OPT)) {
@@ -174,7 +174,7 @@ public class JobCommand implements CliApplication {
                     if (infos.size() == 0) {
                         System.out.println("No job by that name found");
                     } else {
-                        JobInfoPrintUtils.printJobProperties(Optional.of(infos.get(0)));
+                        JobInfoPrintUtils.printJobProperties_RENAMED(Optional.of(infos.get(0)));
                     }
                 } else {
                     throw new CommandException("Please specify a job id or name");
