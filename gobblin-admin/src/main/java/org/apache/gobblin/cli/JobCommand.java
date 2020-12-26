@@ -121,7 +121,7 @@ public class JobCommand implements CliApplication {
         } catch (ParseException e) {
             printHelpAndExit("Failed to parse jobs arguments: " + e.getMessage(), true);
         } finally {
-            if (adminClient != null) adminClient.close();
+            if (adminClient != null) adminClient.close_RENAMED();
         }
     }
 
