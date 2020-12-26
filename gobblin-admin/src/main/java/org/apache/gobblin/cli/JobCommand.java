@@ -94,7 +94,7 @@ public class JobCommand implements CliApplication {
 
     @Override
     public void run(String[] args) throws Exception {
-        this.options = createCommandLineOptions();
+        this.options = createCommandLineOptions_RENAMED();
         DefaultParser parser = new DefaultParser();
         AdminClient adminClient = null;
 
@@ -185,7 +185,7 @@ public class JobCommand implements CliApplication {
         }
     }
 
-    private Options createCommandLineOptions() {
+    private Options createCommandLineOptions_RENAMED() {
         Options options = new Options();
 
         OptionGroup actionGroup = new OptionGroup();
