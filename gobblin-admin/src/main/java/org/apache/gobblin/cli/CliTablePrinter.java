@@ -82,7 +82,7 @@ public class CliTablePrinter {
     this.delimiterWidth = delimiterWidth;
     this.data = data;
 
-    this.rowFormat = getRowFormat(getColumnMaxWidths());
+    this.rowFormat = getRowFormat(getColumnMaxWidths_RENAMED());
   }
 
   /**
@@ -147,7 +147,7 @@ public class CliTablePrinter {
    *
    * @return An array of maximum widths for the strings in each column
    */
-  private List<Integer> getColumnMaxWidths() {
+  private List<Integer> getColumnMaxWidths_RENAMED() {
     int numCols = data.get(0).size();
     int[] widths = new int[numCols];
 
