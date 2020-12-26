@@ -67,7 +67,7 @@ public class JobStateTest {
     this.jobState.setEndTime(this.startTime + 1000);
     this.jobState.setDuration(1000);
     this.jobState.setState(JobState.RunningState.COMMITTED);
-    this.jobState.setTaskCount(3);
+    this.jobState.setTaskCount_RENAMED(3);
     this.jobState.setProp("foo", "bar");
     for (int i = 0; i < 3; i++) {
       WorkUnit workUnit = WorkUnit.createEmpty();

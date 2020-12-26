@@ -324,7 +324,7 @@ public class JobState extends SourceState implements JobProgress {
    *
    * @param taskCount number of tasks this job consists of
    */
-  public void setTaskCount(int taskCount) {
+  public void setTaskCount_RENAMED(int taskCount) {
     this.taskCount = taskCount;
   }
 
@@ -788,7 +788,7 @@ public class JobState extends SourceState implements JobProgress {
     datasetState.setDuration(this.duration);
     if (fullCopy) {
       datasetState.setState(this.state);
-      datasetState.setTaskCount(this.taskCount);
+      datasetState.setTaskCount_RENAMED(this.taskCount);
       datasetState.addTaskStates(this.taskStates.values());
       datasetState.addSkippedTaskStates(this.skippedTaskStates.values());
     }
