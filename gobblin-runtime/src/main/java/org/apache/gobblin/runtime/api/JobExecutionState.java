@@ -165,7 +165,7 @@ public class JobExecutionState implements JobExecutionStatus {
     doRunningStateChange(RunningState.COMMITTED);
   }
 
-  public void switchToCancelled() {
+  public void switchToCancelled_RENAMED() {
     doRunningStateChange(RunningState.CANCELLED);
   }
 

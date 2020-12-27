@@ -302,7 +302,7 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
     @Override
     public void onJobCancellation(JobContext jobContext) throws Exception {
       super.onJobCancellation(jobContext);
-      _jobState.switchToCancelled();
+      _jobState.switchToCancelled_RENAMED();
       if (_instrumentationEnabled && null != _launcherMetrics) {
         _launcherMetrics.getNumJobsCancelled().inc();
       }
