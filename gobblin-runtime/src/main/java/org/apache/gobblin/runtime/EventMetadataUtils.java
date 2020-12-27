@@ -71,8 +71,8 @@ public class EventMetadataUtils {
     StringBuffer sb = new StringBuffer();
 
     // Add task failure messages in a group followed by task failure exceptions
-    appendTaskStateValues(taskStates, sb, TASK_FAILURE_MESSAGE_KEY);
-    appendTaskStateValues(taskStates, sb, ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY);
+    appendTaskStateValues_RENAMED(taskStates, sb, TASK_FAILURE_MESSAGE_KEY);
+    appendTaskStateValues_RENAMED(taskStates, sb, ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY);
 
     return sb.toString();
   }
@@ -82,7 +82,7 @@ public class EventMetadataUtils {
    * @param sb a {@link StringBuffer} to hold the output
    * @param key the key of the values to retrieve
    */
-  private static void appendTaskStateValues(List<TaskState> taskStates, StringBuffer sb, String key) {
+  private static void appendTaskStateValues_RENAMED(List<TaskState> taskStates, StringBuffer sb, String key) {
     // Add task failure messages in a group followed by task failure exceptions
     for (TaskState taskState : taskStates) {
       if (taskState.contains(key)) {
