@@ -116,7 +116,7 @@ public class LimitingExtractorDecorator<S, D> implements Extractor<S, D>, Decora
       return builder.build();
   }
 
-  private void submitLimiterStopMetadataEvents (){
+  private void submitLimiterStopMetadataEvents_RENAMED (){
     ImmutableMap<String, String> metaData = this.getLimiterStopMetadata();
     if (!metaData.isEmpty()) {
       this.eventSubmitter.submit(LIMITER_STOP_EVENT_NAME, metaData);
@@ -129,7 +129,7 @@ public class LimitingExtractorDecorator<S, D> implements Extractor<S, D>, Decora
       if (closer.register(this.limiter.acquirePermits(1)) != null) {
         return this.extractor.readRecord(reuse);
       }
-      submitLimiterStopMetadataEvents();
+      submitLimiterStopMetadataEvents_RENAMED();
       return null;
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
