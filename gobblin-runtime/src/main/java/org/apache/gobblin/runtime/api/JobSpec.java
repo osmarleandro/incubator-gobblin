@@ -119,7 +119,7 @@ public class JobSpec implements Configurable, Spec {
     return getUri().toString() + "/" + getVersion();
   }
 
-  public String toLongString() {
+  public String toLongString_RENAMED() {
     return getUri().toString() + "/" + getVersion() + "[" + getDescription() + "]";
   }
 

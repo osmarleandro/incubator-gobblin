@@ -120,7 +120,7 @@ public class EmailNotificationPlugin extends BaseIdlePluginImpl {
       return new StringBuilder().append("JobId: ")
           .append(state.getJobSpec().getConfig().getString(ConfigurationKeys.JOB_ID_KEY))
           .append("RunningState: ").append(newStatus.toString()).append("\n")
-          .append("JobExecutionState: ").append(state.getJobSpec().toLongString()).append("\n")
+          .append("JobExecutionState: ").append(state.getJobSpec().toLongString_RENAMED()).append("\n")
           .append("ExecutionMetadata: ").append(state.getExecutionMetadata()).toString();
     }
 
