@@ -516,7 +516,7 @@ public class GobblinMultiTaskAttempt {
     }
   }
 
-  public void runAndOptionallyCommitTaskAttempt(CommitPolicy multiTaskAttemptCommitPolicy)
+  public void runAndOptionallyCommitTaskAttempt_RENAMED(CommitPolicy multiTaskAttemptCommitPolicy)
       throws IOException, InterruptedException {
     run();
     if (multiTaskAttemptCommitPolicy.equals(GobblinMultiTaskAttempt.CommitPolicy.IMMEDIATE)) {
@@ -560,7 +560,7 @@ public class GobblinMultiTaskAttempt {
         new GobblinMultiTaskAttempt(workUnits, jobContext.getJobId(), jobContext.getJobState(), taskStateTracker,
             taskExecutor, Optional.<String>absent(), Optional.<StateStore<TaskState>>absent(),
             jobContext.getJobBroker());
-    multiTaskAttempt.runAndOptionallyCommitTaskAttempt(multiTaskAttemptCommitPolicy);
+    multiTaskAttempt.runAndOptionallyCommitTaskAttempt_RENAMED(multiTaskAttemptCommitPolicy);
     return multiTaskAttempt;
   }
 
@@ -597,7 +597,7 @@ public class GobblinMultiTaskAttempt {
             Optional.of(containerId), Optional.of(taskStateStore), jobBroker);
     multiTaskAttempt.setInterruptionPredicate(interruptionPredicate);
 
-    multiTaskAttempt.runAndOptionallyCommitTaskAttempt(multiTaskAttemptCommitPolicy);
+    multiTaskAttempt.runAndOptionallyCommitTaskAttempt_RENAMED(multiTaskAttemptCommitPolicy);
     return multiTaskAttempt;
   }
 }

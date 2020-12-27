@@ -136,7 +136,7 @@ public class SingleTask {
       }
 
       // This is a blocking call.
-      _taskAttempt.runAndOptionallyCommitTaskAttempt(GobblinMultiTaskAttempt.CommitPolicy.IMMEDIATE);
+      _taskAttempt.runAndOptionallyCommitTaskAttempt_RENAMED(GobblinMultiTaskAttempt.CommitPolicy.IMMEDIATE);
 
     } finally {
       _logger.info("Clearing all metrics object in cache.");
