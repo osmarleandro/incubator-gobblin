@@ -119,10 +119,10 @@ public abstract class InstrumentedSpecStore implements SpecStore {
   @Override
   public Collection<Spec> getSpecs(SpecSearchObject specSearchObject) throws IOException {
     if (!instrumentationEnabled) {
-      return getSpecsImpl(specSearchObject);
+      return getSpecsImpl_RENAMED(specSearchObject);
     } else {
       long startTimeMillis = System.currentTimeMillis();
-      Collection<Spec> specs = getSpecsImpl(specSearchObject);
+      Collection<Spec> specs = getSpecsImpl_RENAMED(specSearchObject);
       Instrumented.updateTimer(this.getTimer, System.currentTimeMillis() - startTimeMillis, TimeUnit.MILLISECONDS);
       return specs;
     }
@@ -173,7 +173,7 @@ public abstract class InstrumentedSpecStore implements SpecStore {
   public abstract Iterator<URI> getSpecURIsImpl() throws IOException;
 
   /** child classes can implement this if they want to get specs using {@link SpecSearchObject} */
-  public Collection<Spec> getSpecsImpl(SpecSearchObject specUri) throws IOException {
+  public Collection<Spec> getSpecsImpl_RENAMED(SpecSearchObject specUri) throws IOException {
     throw new UnsupportedOperationException();
   }
 }

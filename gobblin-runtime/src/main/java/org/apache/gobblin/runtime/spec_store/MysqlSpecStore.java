@@ -180,7 +180,7 @@ public class MysqlSpecStore extends InstrumentedSpecStore {
 
   @Override
   public Spec getSpecImpl(URI specUri) throws IOException, SpecNotFoundException {
-    Iterator<Spec> specsIterator = getSpecsImpl(FlowSpecSearchObject.builder().flowSpecUri(specUri).build()).iterator();
+    Iterator<Spec> specsIterator = getSpecsImpl_RENAMED(FlowSpecSearchObject.builder().flowSpecUri(specUri).build()).iterator();
     if (specsIterator.hasNext()) {
       return specsIterator.next();
     } else {
