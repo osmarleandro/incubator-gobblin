@@ -237,7 +237,7 @@ public class Task implements TaskIFace {
     this.shutdownLatch = new CountDownLatch(1);
 
     // Setup Streaming constructs
-    if (isStreamingTask()) {
+    if (isStreamingTask_RENAMED()) {
       Extractor underlyingExtractor = this.taskContext.getRawSourceExtractor();
       if (!(underlyingExtractor instanceof StreamingExtractor)) {
         LOG.error(
@@ -300,7 +300,7 @@ public class Task implements TaskIFace {
             .getProp(TaskConfigurationKeys.TASK_IS_SINGLE_BRANCH_SYNCHRONOUS, TaskConfigurationKeys.DEFAULT_TASK_IS_SINGLE_BRANCH_SYNCHRONOUS));
   }
 
-  protected boolean isStreamingTask() {
+  protected boolean isStreamingTask_RENAMED() {
     return this.taskMode.equals(ExecutionModel.STREAMING);
   }
 
@@ -328,7 +328,7 @@ public class Task implements TaskIFace {
   public String getProgress() {
     long currentTime = System.currentTimeMillis();
     long lastRecordTimeElapsed = currentTime - this.lastRecordPulledTimestampMillis;
-    if (isStreamingTask()) {
+    if (isStreamingTask_RENAMED()) {
       WatermarkManager.CommitStatus commitStatus = this.watermarkManager.get().getCommitStatus();
       long lastWatermarkCommitTimeElapsed = currentTime - commitStatus.getLastWatermarkCommitSuccessTimestampMillis();
 
@@ -459,8 +459,8 @@ public class Task implements TaskIFace {
       this.forks.put(Optional.<Fork>of(fork), Optional.<Future<?>> of(this.taskExecutor.submit(fork)));
     }
 
-    LOG.info("Task mode streaming = " + isStreamingTask());
-    if (isStreamingTask()) {
+    LOG.info("Task mode streaming = " + isStreamingTask_RENAMED());
+    if (isStreamingTask_RENAMED()) {
 
       // Start watermark manager and tracker
       if (this.watermarkTracker.isPresent()) {
@@ -543,7 +543,7 @@ public class Task implements TaskIFace {
   }
 
   protected void configureStreamingFork(Fork fork) throws IOException {
-    if (isStreamingTask()) {
+    if (isStreamingTask_RENAMED()) {
       DataWriter forkWriter = fork.getWriter();
       boolean isWaterMarkAwareWriter = (forkWriter instanceof WatermarkAwareWriter)
           && ((WatermarkAwareWriter) forkWriter).isWatermarkCapable();
@@ -810,7 +810,7 @@ public class Task implements TaskIFace {
       if (fork.isPresent() && forkedRecords.get(branch)) {
         Object recordForFork = needToCopy ? CopyHelper.copy(convertedRecord) : convertedRecord;
         copyInstance++;
-        if (isStreamingTask()) {
+        if (isStreamingTask_RENAMED()) {
           // Send the record, watermark pair down the fork
           ((RecordEnvelope) recordForFork).addCallBack(watermark.incrementAck());
         }

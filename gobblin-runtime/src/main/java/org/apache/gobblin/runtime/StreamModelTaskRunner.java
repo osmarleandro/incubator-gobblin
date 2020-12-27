@@ -94,7 +94,7 @@ public class StreamModelTaskRunner {
       this.task.onRecordExtract();
       return r;
     });
-    if (this.task.isStreamingTask()) {
+    if (this.task.isStreamingTask_RENAMED()) {
 
       // Start watermark manager and tracker
       if (this.watermarkTracker.isPresent()) {
