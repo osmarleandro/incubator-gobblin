@@ -337,7 +337,7 @@ public class GobblinMultiTaskAttempt {
         Integer.toString(ConfigurationKeys.DEFAULT_TASK_EXECUTOR_THREADPOOL_SIZE)));
   }
 
-  public void addCleanupCommitStep(CommitStep commitStep) {
+  public void addCleanupCommitStep_RENAMED(CommitStep commitStep) {
     if (this.cleanupCommitSteps == null) {
       this.cleanupCommitSteps = Lists.newArrayList(commitStep);
     } else {

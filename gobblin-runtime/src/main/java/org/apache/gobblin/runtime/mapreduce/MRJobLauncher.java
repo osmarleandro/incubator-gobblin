@@ -916,7 +916,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
           cleanUpCommitStep.execute();
         } else {
           LOG.info("Adding additional commit step");
-          gobblinMultiTaskAttempt.addCleanupCommitStep(cleanUpCommitStep);
+          gobblinMultiTaskAttempt.addCleanupCommitStep_RENAMED(cleanUpCommitStep);
         }
       }
     }
