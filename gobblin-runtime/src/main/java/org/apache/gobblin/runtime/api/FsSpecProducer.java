@@ -88,7 +88,7 @@ public class FsSpecProducer implements SpecProducer<Spec> {
   private Future<?> writeSpec(Spec spec, SpecExecutor.Verb verb) {
     if (spec instanceof JobSpec) {
       try {
-        AvroJobSpec avroJobSpec = convertToAvroJobSpec((JobSpec) spec, verb);
+        AvroJobSpec avroJobSpec = convertToAvroJobSpec_RENAMED((JobSpec) spec, verb);
         writeAvroJobSpec(avroJobSpec);
         return new CompletedFuture<>(Boolean.TRUE, null);
       } catch (IOException e) {
@@ -123,7 +123,7 @@ public class FsSpecProducer implements SpecProducer<Spec> {
     throw new UnsupportedOperationException();
   }
 
-  private AvroJobSpec convertToAvroJobSpec(JobSpec jobSpec, SpecExecutor.Verb verb) {
+  private AvroJobSpec convertToAvroJobSpec_RENAMED(JobSpec jobSpec, SpecExecutor.Verb verb) {
     return AvroJobSpec.newBuilder().
         setUri(jobSpec.getUri().toString()).
         setProperties(Maps.fromProperties(jobSpec.getConfigAsProperties())).
