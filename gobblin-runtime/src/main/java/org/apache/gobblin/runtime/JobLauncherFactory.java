@@ -117,7 +117,7 @@ public class JobLauncherFactory {
    * @return the JobLauncher instance
    * @throws RuntimeException if the instantiation fails
    */
-  public static JobLauncher newJobLauncher(Properties sysProps, Properties jobProps,
+  public static JobLauncher newJobLauncher_RENAMED(Properties sysProps, Properties jobProps,
       String launcherTypeValue, SharedResourcesBroker<GobblinScopeTypes> instanceBroker) {
     return newJobLauncher(sysProps, jobProps, launcherTypeValue, instanceBroker, ImmutableList.of());
   }

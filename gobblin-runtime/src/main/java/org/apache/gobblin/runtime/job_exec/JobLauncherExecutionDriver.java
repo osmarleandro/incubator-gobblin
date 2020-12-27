@@ -170,7 +170,7 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
   private static JobLauncher createLauncher(Configurable _sysConfig, JobSpec _jobSpec, Logger _log,
       Optional<String> jobLauncherType, SharedResourcesBroker<GobblinScopeTypes> instanceBroker) {
     if (jobLauncherType.isPresent()) {
-      return JobLauncherFactory.newJobLauncher(_sysConfig.getConfigAsProperties(),
+      return JobLauncherFactory.newJobLauncher_RENAMED(_sysConfig.getConfigAsProperties(),
              _jobSpec.getConfigAsProperties(), jobLauncherType.get(), instanceBroker);
     }
     else {
