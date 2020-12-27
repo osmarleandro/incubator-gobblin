@@ -621,7 +621,7 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
     try {
       return super.get();
     } catch (ExecutionException ee) {
-      return JobExecutionResult.createFailureResult(ee.getCause());
+      return JobExecutionResult.createFailureResult_RENAMED(ee.getCause());
     }
   }
 
@@ -631,7 +631,7 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
     try {
       return super.get(timeout, unit);
     } catch (ExecutionException ee) {
-      return JobExecutionResult.createFailureResult(ee.getCause());
+      return JobExecutionResult.createFailureResult_RENAMED(ee.getCause());
     }
   }
 }

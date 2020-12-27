@@ -50,7 +50,7 @@ public class JobExecutionResult implements ExecutionResult {
     return new JobExecutionResult(RunningState.COMMITTED, null);
   }
 
-  public static JobExecutionResult createFailureResult(Throwable cause) {
+  public static JobExecutionResult createFailureResult_RENAMED(Throwable cause) {
     return new JobExecutionResult(RunningState.FAILED, cause);
   }
 
@@ -70,7 +70,7 @@ public class JobExecutionResult implements ExecutionResult {
     }
     else {
       // FIXME we need to capture error(s)
-      return JobExecutionResult.createFailureResult(
+      return JobExecutionResult.createFailureResult_RENAMED(
           new RuntimeException("Gobblin job failed:" + state.getJobExecution()));
     }
   }
