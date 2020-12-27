@@ -358,7 +358,7 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
   public void updateByteMetrics()
       throws IOException {
     if (this.writer.isPresent()) {
-      this.taskState.updateByteMetrics(this.writer.get().bytesWritten(), this.index);
+      this.taskState.updateByteMetrics_RENAMED(this.writer.get().bytesWritten(), this.index);
     }
   }
 

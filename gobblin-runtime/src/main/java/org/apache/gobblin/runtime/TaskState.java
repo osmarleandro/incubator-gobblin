@@ -275,7 +275,7 @@ public class TaskState extends WorkUnitState implements TaskProgress {
    *
    * @deprecated see {@link org.apache.gobblin.instrumented.writer.InstrumentedDataWriterBase}.
    */
-  public synchronized void updateByteMetrics(long bytesWritten, int branchIndex) {
+  public synchronized void updateByteMetrics_RENAMED(long bytesWritten, int branchIndex) {
     TaskMetrics metrics = TaskMetrics.get(this);
     String forkBranchId = TaskMetrics.taskInstanceRemoved(this.taskId);
 
