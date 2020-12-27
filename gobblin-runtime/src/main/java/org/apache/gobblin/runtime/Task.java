@@ -309,7 +309,7 @@ public class Task implements TaskIFace {
     return this.shutdownLatch.await(timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
-  private void completeShutdown() {
+  private void completeShutdown_RENAMED() {
     this.shutdownLatch.countDown();
   }
 
@@ -397,7 +397,7 @@ public class Task implements TaskIFace {
       synchronized (this) {
         if (this.taskFuture == null || !this.taskFuture.isCancelled()) {
           this.taskStateTracker.onTaskRunCompletion(this);
-          completeShutdown();
+          completeShutdown_RENAMED();
           this.taskFuture = null;
         } else {
           LOG.info("will not decrease count down latch as this task is cancelled");
@@ -1037,7 +1037,7 @@ public class Task implements TaskIFace {
   public synchronized boolean cancel() {
     if (this.taskFuture != null && this.taskFuture.cancel(true)) {
       this.taskStateTracker.onTaskRunCompletion(this);
-      this.completeShutdown();
+      this.completeShutdown_RENAMED();
       return true;
     } else {
       return false;
