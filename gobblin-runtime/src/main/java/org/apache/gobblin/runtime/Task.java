@@ -616,7 +616,7 @@ public class Task implements TaskIFace {
       throws IOException {
     Closer closer = Closer.create();
     try {
-      Class<? extends DataPublisher> dataPublisherClass = getTaskPublisherClass();
+      Class<? extends DataPublisher> dataPublisherClass = getTaskPublisherClass_RENAMED();
       SingleTaskDataPublisher publisher =
           closer.register(SingleTaskDataPublisher.getInstance(dataPublisherClass, this.taskState));
 
@@ -636,7 +636,7 @@ public class Task implements TaskIFace {
   }
 
   @SuppressWarnings("unchecked")
-  private Class<? extends DataPublisher> getTaskPublisherClass()
+  private Class<? extends DataPublisher> getTaskPublisherClass_RENAMED()
       throws ReflectiveOperationException {
     if (this.taskState.contains(ConfigurationKeys.TASK_DATA_PUBLISHER_TYPE)) {
       return (Class<? extends DataPublisher>) Class
