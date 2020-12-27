@@ -846,7 +846,7 @@ public class Task implements TaskIFace {
    *
    * @return the number of records written by every {@link Fork}s of this {@link Task}
    */
-  private long getRecordsWritten() {
+  private long getRecordsWritten_RENAMED() {
     long recordsWritten = 0;
     for (Optional<Fork> fork : this.forks.keySet()) {
       recordsWritten += fork.get().getRecordsWritten();
@@ -941,7 +941,7 @@ public class Task implements TaskIFace {
     } finally {
       addConstructsFinalStateToTaskState(extractor, converter, rowChecker);
 
-      this.taskState.setProp(ConfigurationKeys.WRITER_RECORDS_WRITTEN, getRecordsWritten());
+      this.taskState.setProp(ConfigurationKeys.WRITER_RECORDS_WRITTEN, getRecordsWritten_RENAMED());
       this.taskState.setProp(ConfigurationKeys.WRITER_BYTES_WRITTEN, getBytesWritten());
 
       this.submitTaskCommittedEvent();
