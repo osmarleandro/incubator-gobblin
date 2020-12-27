@@ -94,7 +94,7 @@ public class JobSpec implements Configurable, Spec {
   }
 
   /** Creates a builder for the JobSpec based on values in a job properties config. */
-  public static Builder builder(URI catalogURI, Properties jobProps) {
+  public static Builder builder_RENAMED(URI catalogURI, Properties jobProps) {
     String name = JobState.getJobNameFromProps(jobProps);
     String group = JobState.getJobGroupFromProps(jobProps);
     if (null == group) {
