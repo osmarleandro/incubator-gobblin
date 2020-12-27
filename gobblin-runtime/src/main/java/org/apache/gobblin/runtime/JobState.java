@@ -626,10 +626,10 @@ public class JobState extends SourceState implements JobProgress {
     jsonWriter.name("task states");
     jsonWriter.beginArray();
     for (TaskState taskState : this.taskStates.values()) {
-      taskState.toJson(jsonWriter, keepConfig);
+      taskState.toJson_RENAMED(jsonWriter, keepConfig);
     }
     for (TaskState taskState : this.skippedTaskStates.values()) {
-      taskState.toJson(jsonWriter, keepConfig);
+      taskState.toJson_RENAMED(jsonWriter, keepConfig);
     }
     jsonWriter.endArray();
 

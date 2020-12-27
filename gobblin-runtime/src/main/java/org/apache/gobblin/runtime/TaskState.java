@@ -357,7 +357,7 @@ public class TaskState extends WorkUnitState implements TaskProgress {
    * @param jsonWriter a {@link com.google.gson.stream.JsonWriter} used to write the json document
    * @throws IOException
    */
-  public void toJson(JsonWriter jsonWriter, boolean keepConfig) throws IOException {
+  public void toJson_RENAMED(JsonWriter jsonWriter, boolean keepConfig) throws IOException {
     jsonWriter.beginObject();
 
     jsonWriter.name("task id").value(this.getTaskId()).name("task state").value(this.getWorkingState().name())
