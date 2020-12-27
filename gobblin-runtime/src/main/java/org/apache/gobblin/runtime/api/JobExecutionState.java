@@ -228,12 +228,12 @@ public class JobExecutionState implements JobExecutionStatus {
   }
 
   public void awaitForDone(long timeoutMs) throws InterruptedException, TimeoutException {
-    awaitForStatePredicate(EXECUTION_DONE_PREDICATE, timeoutMs);
+    awaitForStatePredicate_RENAMED(EXECUTION_DONE_PREDICATE, timeoutMs);
   }
 
   public void awaitForState(final RunningState targetState, long timeoutMs)
          throws InterruptedException, TimeoutException {
-    awaitForStatePredicate(new Predicate<JobExecutionState>() {
+    awaitForStatePredicate_RENAMED(new Predicate<JobExecutionState>() {
       @Override public boolean apply(JobExecutionState state) {
         return null != state.getRunningState() && state.getRunningState().equals(targetState);
       }
@@ -254,7 +254,7 @@ public class JobExecutionState implements JobExecutionStatus {
    * @throws InterruptedException   if the waiting was interrupted
    * @throws TimeoutException       if we reached the timeout before the predicate was satisfied.
    */
-  public void awaitForStatePredicate(Predicate<JobExecutionState> predicate, long timeoutMs)
+  public void awaitForStatePredicate_RENAMED(Predicate<JobExecutionState> predicate, long timeoutMs)
          throws InterruptedException, TimeoutException {
     Preconditions.checkArgument(timeoutMs >= 0);
     if (0 == timeoutMs) {
