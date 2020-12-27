@@ -149,7 +149,7 @@ public class JobExecutionState implements JobExecutionStatus {
     doRunningStateChange(RunningState.PENDING);
   }
 
-  public void switchToRunning() {
+  public void switchToRunning_RENAMED() {
     doRunningStateChange(RunningState.RUNNING);
   }
 
