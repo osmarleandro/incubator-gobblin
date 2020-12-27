@@ -873,7 +873,7 @@ public class Task implements TaskIFace {
    * @param converter the {@link org.apache.gobblin.converter.Converter} used by this task.
    * @param rowChecker the {@link RowLevelPolicyChecker} used by this task.
    */
-  private void addConstructsFinalStateToTaskState(InstrumentedExtractorBase<?, ?> extractor,
+  private void addConstructsFinalStateToTaskState_RENAMED(InstrumentedExtractorBase<?, ?> extractor,
       Converter<?, ?, ?, ?> converter, RowLevelPolicyChecker rowChecker) {
     ConstructState constructState = new ConstructState();
     if (extractor != null) {
@@ -939,7 +939,7 @@ public class Task implements TaskIFace {
       failTask(t);
       isTaskFailed = true;
     } finally {
-      addConstructsFinalStateToTaskState(extractor, converter, rowChecker);
+      addConstructsFinalStateToTaskState_RENAMED(extractor, converter, rowChecker);
 
       this.taskState.setProp(ConfigurationKeys.WRITER_RECORDS_WRITTEN, getRecordsWritten());
       this.taskState.setProp(ConfigurationKeys.WRITER_BYTES_WRITTEN, getBytesWritten());
