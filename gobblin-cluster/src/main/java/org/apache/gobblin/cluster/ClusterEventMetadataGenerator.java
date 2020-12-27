@@ -42,7 +42,7 @@ public class ClusterEventMetadataGenerator implements EventMetadataGenerator{
   public Map<String, String> getMetadata(JobContext jobContext, EventName eventName) {
     List<TaskState> taskStates = jobContext.getJobState().getTaskStates();
     String taskException = EventMetadataUtils.getTaskFailureExceptions(taskStates);
-    String jobException = EventMetadataUtils.getJobFailureExceptions(jobContext.getJobState());
+    String jobException = EventMetadataUtils.getJobFailureExceptions_RENAMED(jobContext.getJobState());
 
     switch (eventName) {
       case JOB_COMPLETE:

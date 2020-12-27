@@ -47,7 +47,7 @@ public class EventMetadataUtils {
    * Get failure messages
    * @return The failure messages from the job state
    */
-  public static String getJobFailureExceptions(JobState jobState) {
+  public static String getJobFailureExceptions_RENAMED(JobState jobState) {
     StringBuffer sb = new StringBuffer();
 
     if (jobState.contains(JOB_FAILURE_MESSAGE_KEY)) {
