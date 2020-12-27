@@ -34,7 +34,7 @@ public class JobExecutionResult implements ExecutionResult {
   private final Throwable errorCause;
   // TODO add TaskExecutionResults
 
-  public boolean isCancelled() {
+  public boolean isCancelled_RENAMED() {
     return RunningState.CANCELLED == getFinalState();
   }
 
