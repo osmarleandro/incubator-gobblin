@@ -321,7 +321,7 @@ public class GobblinMultiTaskAttempt {
     }
   }
 
-  public boolean isSpeculativeExecutionSafe() {
+  public boolean isSpeculativeExecutionSafe_RENAMED() {
     for (Task task : tasks) {
       if (!task.isSpeculativeExecutionSafe()) {
         log.info("One task is not safe for speculative execution.");
@@ -522,7 +522,7 @@ public class GobblinMultiTaskAttempt {
     if (multiTaskAttemptCommitPolicy.equals(GobblinMultiTaskAttempt.CommitPolicy.IMMEDIATE)) {
       this.log.info("Will commit tasks directly.");
       commit();
-    } else if (!isSpeculativeExecutionSafe()) {
+    } else if (!isSpeculativeExecutionSafe_RENAMED()) {
       throw new RuntimeException(
           "Speculative execution is enabled. However, the task context is not safe for speculative execution.");
     }
