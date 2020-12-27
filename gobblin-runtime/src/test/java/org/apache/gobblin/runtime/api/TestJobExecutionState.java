@@ -229,7 +229,7 @@ public class TestJobExecutionState {
     Thread doneDetectionThread = doneThreadFactory.newThread(new Runnable() {
       @Override public void run() {
         try {
-          jes1.awaitForDone(0);
+          jes1.awaitForDone_RENAMED(0);
         } catch (InterruptedException | TimeoutException e) {
           log.error("Error detected: " + e);
         }

@@ -162,7 +162,7 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
     @Override
     public JobExecutionResult call() throws JobException, InterruptedException, TimeoutException  {
         jobLauncher.launchJob(bridge);
-        jobState.awaitForDone(Long.MAX_VALUE);
+        jobState.awaitForDone_RENAMED(Long.MAX_VALUE);
         return JobExecutionResult.createFromState(jobState);
     }
   }

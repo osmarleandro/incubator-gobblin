@@ -227,7 +227,7 @@ public class JobExecutionState implements JobExecutionStatus {
     }
   }
 
-  public void awaitForDone(long timeoutMs) throws InterruptedException, TimeoutException {
+  public void awaitForDone_RENAMED(long timeoutMs) throws InterruptedException, TimeoutException {
     awaitForStatePredicate(EXECUTION_DONE_PREDICATE, timeoutMs);
   }
 
