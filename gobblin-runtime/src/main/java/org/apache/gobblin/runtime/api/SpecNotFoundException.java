@@ -37,7 +37,7 @@ public class SpecNotFoundException extends Exception {
     _missingJobSpecURI = missingJobSpecURI;
   }
 
-  public URI getMissingJobSpecURI() {
+  public URI getMissingJobSpecURI_RENAMED() {
     return _missingJobSpecURI;
   }
 }

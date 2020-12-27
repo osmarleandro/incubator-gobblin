@@ -67,7 +67,7 @@ public class TestMutableCachingJobCatalog {
       cachedCat.getJobSpec(jsURI);
       Assert.fail("Expected JobSpecNotFoundException");
     } catch (JobSpecNotFoundException e) {
-      Assert.assertEquals(e.getMissingJobSpecURI(), jsURI);
+      Assert.assertEquals(e.getMissingJobSpecURI_RENAMED(), jsURI);
     }
 
     cachedCat.removeListener(l);
@@ -82,13 +82,13 @@ public class TestMutableCachingJobCatalog {
       cachedCat.getJobSpec(jsURI);
       Assert.fail("Expected JobSpecNotFoundException");
     } catch (JobSpecNotFoundException e) {
-      Assert.assertEquals(e.getMissingJobSpecURI(), jsURI);
+      Assert.assertEquals(e.getMissingJobSpecURI_RENAMED(), jsURI);
     }
     try {
       baseCat.getJobSpec(jsURI);
       Assert.fail("Expected JobSpecNotFoundException");
     } catch (JobSpecNotFoundException e) {
-      Assert.assertEquals(e.getMissingJobSpecURI(), jsURI);
+      Assert.assertEquals(e.getMissingJobSpecURI_RENAMED(), jsURI);
     }
 
     Mockito.verify(l).onAddJob(Mockito.eq(js1_1));
