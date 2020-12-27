@@ -157,7 +157,7 @@ public class JobExecutionState implements JobExecutionStatus {
     doRunningStateChange(RunningState.SUCCESSFUL);
   }
 
-  public void switchToFailed() {
+  public void switchToFailed_RENAMED() {
     doRunningStateChange(RunningState.FAILED);
   }
 

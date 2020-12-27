@@ -287,7 +287,7 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
         if (_instrumentationEnabled && null != _launcherMetrics) {
           _launcherMetrics.getNumJobsFailed().inc();
         }
-        _jobState.switchToFailed();
+        _jobState.switchToFailed_RENAMED();
       }
       else {
         // TODO Remove next line once the JobLauncher starts sending notifications for success
