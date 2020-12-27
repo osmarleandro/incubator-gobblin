@@ -169,7 +169,7 @@ public class GobblinMultiTaskAttempt {
       while (countDownLatch.getCount() > 0) {
         if (this.interruptionPredicate.test(this)) {
           log.info("Interrupting task execution due to satisfied predicate.");
-          interruptTaskExecution(countDownLatch);
+          interruptTaskExecution_RENAMED(countDownLatch);
           break;
         }
         log.info(String.format("%d out of %d tasks of job %s are running in container %s", countDownLatch.getCount(),
@@ -180,12 +180,12 @@ public class GobblinMultiTaskAttempt {
       }
     } catch (InterruptedException interrupt) {
       log.info("Job interrupted by InterrupedException.");
-      interruptTaskExecution(countDownLatch);
+      interruptTaskExecution_RENAMED(countDownLatch);
     }
     log.info("All assigned tasks of job {} have completed in container {}", jobId, containerIdOptional.or(""));
   }
 
-  private void interruptTaskExecution(CountDownLatch countDownLatch)
+  private void interruptTaskExecution_RENAMED(CountDownLatch countDownLatch)
       throws InterruptedException {
     log.info("Job interrupted. Attempting a graceful shutdown of the job.");
     this.tasks.forEach(Task::shutdown);
