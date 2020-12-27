@@ -230,7 +230,7 @@ public class Task implements TaskIFace {
       throw new RuntimeException("Failed to instantiate row checker.", e);
     }
 
-    this.taskMode = getExecutionModel(this.taskState);
+    this.taskMode = getExecutionModel_RENAMED(this.taskState);
     this.recordsPulled = new AtomicLong(0);
     this.lastRecordPulledTimestampMillis = 0;
     this.shutdownRequested = new AtomicBoolean(false);
@@ -284,7 +284,7 @@ public class Task implements TaskIFace {
     }
   }
 
-  public static ExecutionModel getExecutionModel(State state) {
+  public static ExecutionModel getExecutionModel_RENAMED(State state) {
     String mode = state
         .getProp(TaskConfigurationKeys.TASK_EXECUTION_MODE, TaskConfigurationKeys.DEFAULT_TASK_EXECUTION_MODE);
     try {

@@ -343,7 +343,7 @@ public class GobblinHelixJobLauncher extends AbstractJobLauncher {
       jobConfigBuilder.setJobType(jobType);
     }
 
-    if (Task.getExecutionModel(ConfigUtils.configToState(jobConfig)).equals(ExecutionModel.STREAMING)) {
+    if (Task.getExecutionModel_RENAMED(ConfigUtils.configToState(jobConfig)).equals(ExecutionModel.STREAMING)) {
       jobConfigBuilder.setRebalanceRunningTask(true);
     }
 
