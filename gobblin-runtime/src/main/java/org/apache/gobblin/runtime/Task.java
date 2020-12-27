@@ -1026,7 +1026,7 @@ public class Task implements TaskIFace {
   }
 
   @VisibleForTesting
-  boolean hasTaskFuture() {
+  boolean hasTaskFuture_RENAMED() {
     return this.taskFuture != null;
   }
 

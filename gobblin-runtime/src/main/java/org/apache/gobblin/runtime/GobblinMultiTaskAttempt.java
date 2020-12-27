@@ -436,7 +436,7 @@ public class GobblinMultiTaskAttempt {
           // task could not be created, so directly count down
           countDownLatch.countDown();
           log.error("Could not create task for workunit {}", workUnit, e);
-        } else if (!task.hasTaskFuture()) {
+        } else if (!task.hasTaskFuture_RENAMED()) {
           // Task was created and may have been registered, but not submitted, so call the
           // task state tracker task run completion directly since the task cancel does nothing if not submitted
           this.taskStateTracker.onTaskRunCompletion(task);
