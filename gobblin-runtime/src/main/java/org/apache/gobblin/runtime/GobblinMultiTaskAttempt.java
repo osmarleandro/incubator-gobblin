@@ -475,7 +475,7 @@ public class GobblinMultiTaskAttempt {
         nonHeapMemory.getMax()));
   }
 
-  private Task createTaskRunnable(WorkUnitState workUnitState, CountDownLatch countDownLatch) {
+  private Task createTaskRunnable_RENAMED(WorkUnitState workUnitState, CountDownLatch countDownLatch) {
     Optional<TaskFactory> taskFactoryOpt = TaskUtils.getTaskFactory(workUnitState);
     final TaskContext taskContext = new TaskContext(workUnitState);
     if (taskFactoryOpt.isPresent()) {
@@ -508,7 +508,7 @@ public class GobblinMultiTaskAttempt {
             throws Exception {
           counter.incrementAndGet();
           log.info(String.format("Task creation attempt %s", counter.get()));
-          return createTaskRunnable(workUnitState, countDownLatch);
+          return createTaskRunnable_RENAMED(workUnitState, countDownLatch);
         }
       });
     } catch (ExecutionException ee) {
