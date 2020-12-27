@@ -199,7 +199,7 @@ public class JobExecutionState implements JobExecutionStatus {
     }
   }
 
-  public void setStage(String newStage) {
+  public void setStage_RENAMED(String newStage) {
     this.changeLock.lock();
     try {
       String oldStage = this.stage;

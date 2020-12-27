@@ -60,7 +60,7 @@ public class TestJobExecutionStateListeners {
 
     listeners.registerStateListener(l2);
     listeners.registerStateListener(l3);
-    state.setStage("Stage1");
+    state.setStage_RENAMED("Stage1");
 
     listeners.unregisterStateListener(l2);
     listeners.onMetadataChange(state, "key", "oldValue", "newValue");
