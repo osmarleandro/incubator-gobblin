@@ -85,7 +85,7 @@ public class MRTaskStateTracker extends AbstractTaskStateTracker {
       }
     }
     LOG.info(String
-        .format("Task %s completed running in %dms with state %s", task.getTaskId(), task.getTaskState().getTaskDuration(),
+        .format("Task %s completed running in %dms with state %s", task.getTaskId(), task.getTaskState().getTaskDuration_RENAMED(),
             task.getTaskState().getWorkingState()));
   }
 

@@ -138,7 +138,7 @@ public class JobStateTest {
       Assert.assertEquals(taskState.getJobId(), "TestJob-1");
       Assert.assertEquals(taskState.getStartTime(), this.startTime);
       Assert.assertEquals(taskState.getEndTime(), this.startTime + 1000);
-      Assert.assertEquals(taskState.getTaskDuration(), 1000);
+      Assert.assertEquals(taskState.getTaskDuration_RENAMED(), 1000);
       Assert.assertEquals(taskState.getWorkingState(), WorkUnitState.WorkingState.COMMITTED);
       Assert.assertTrue(taskState.getProp(ConfigurationKeys.DATASET_URN_KEY).startsWith("TestDataset"));
       Assert.assertEquals(taskState.getProp("foo"), "bar");

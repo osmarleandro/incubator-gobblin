@@ -126,6 +126,6 @@ public class LocalTaskStateTracker extends AbstractTaskStateTracker {
 
     // At this point, the task is considered being completed.
     LOG.info(String.format("Task %s completed in %dms with state %s", task.getTaskId(),
-        task.getTaskState().getTaskDuration(), task.getTaskState().getWorkingState()));
+        task.getTaskState().getTaskDuration_RENAMED(), task.getTaskState().getWorkingState()));
   }
 }

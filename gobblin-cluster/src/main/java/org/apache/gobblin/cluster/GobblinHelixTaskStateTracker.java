@@ -99,7 +99,7 @@ public class GobblinHelixTaskStateTracker extends AbstractTaskStateTracker {
     }
 
     log.info(String
-        .format("Task %s completed in %dms with state %s", task.getTaskId(), task.getTaskState().getTaskDuration(),
+        .format("Task %s completed in %dms with state %s", task.getTaskId(), task.getTaskState().getTaskDuration_RENAMED(),
             task.getTaskState().getWorkingState()));
   }
 

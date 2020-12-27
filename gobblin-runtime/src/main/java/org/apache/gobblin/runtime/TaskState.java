@@ -204,7 +204,7 @@ public class TaskState extends WorkUnitState implements TaskProgress {
    *
    * @return task duration in milliseconds
    */
-  public long getTaskDuration() {
+  public long getTaskDuration_RENAMED() {
     return this.duration;
   }
 
@@ -362,7 +362,7 @@ public class TaskState extends WorkUnitState implements TaskProgress {
 
     jsonWriter.name("task id").value(this.getTaskId()).name("task state").value(this.getWorkingState().name())
         .name("start time").value(this.getStartTime()).name("end time").value(this.getEndTime()).name("duration")
-        .value(this.getTaskDuration()).name("retry count")
+        .value(this.getTaskDuration_RENAMED()).name("retry count")
         .value(this.getPropAsInt(ConfigurationKeys.TASK_RETRIES_KEY, 0));
 
     // Also add failure exception information if it exists. This information is useful even in the

@@ -70,7 +70,7 @@ public class TaskStateTest {
     Assert.assertEquals(this.taskState.getHighWaterMark(), 2000);
     Assert.assertEquals(this.taskState.getStartTime(), this.startTime);
     Assert.assertEquals(this.taskState.getEndTime(), this.startTime + 1000);
-    Assert.assertEquals(this.taskState.getTaskDuration(), 1000);
+    Assert.assertEquals(this.taskState.getTaskDuration_RENAMED(), 1000);
     Assert.assertEquals(this.taskState.getWorkingState(), WorkUnitState.WorkingState.COMMITTED);
     Assert.assertEquals(this.taskState.getProp("foo"), "bar");
   }
@@ -94,7 +94,7 @@ public class TaskStateTest {
       Assert.assertEquals(this.taskState.getHighWaterMark(), 2000);
       Assert.assertEquals(newTaskState.getStartTime(), this.startTime);
       Assert.assertEquals(newTaskState.getEndTime(), this.startTime + 1000);
-      Assert.assertEquals(newTaskState.getTaskDuration(), 1000);
+      Assert.assertEquals(newTaskState.getTaskDuration_RENAMED(), 1000);
       Assert.assertEquals(newTaskState.getWorkingState(), WorkUnitState.WorkingState.COMMITTED);
       Assert.assertEquals(newTaskState.getProp("foo"), "bar");
     } catch (Throwable t) {
