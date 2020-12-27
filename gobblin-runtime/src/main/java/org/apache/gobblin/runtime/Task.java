@@ -358,7 +358,7 @@ public class Task implements TaskIFace {
       if (this.taskState.getPropAsBoolean(ConfigurationKeys.TASK_SYNCHRONOUS_EXECUTION_MODEL_KEY,
           ConfigurationKeys.DEFAULT_TASK_SYNCHRONOUS_EXECUTION_MODEL)) {
         LOG.warn("Synchronous task execution model is deprecated. Please consider using stream model.");
-        runSynchronousModel();
+        runSynchronousModel_RENAMED();
       } else {
         new StreamModelTaskRunner(this, this.taskState, this.closer, this.taskContext, this.extractor,
             this.converter, this.recordStreamProcessors, this.rowChecker, this.taskExecutor, this.taskMode, this.shutdownRequested,
@@ -414,7 +414,7 @@ public class Task implements TaskIFace {
   }
 
   @Deprecated
-  private void runSynchronousModel() throws Exception {
+  private void runSynchronousModel_RENAMED() throws Exception {
     // Get the fork operator. By default IdentityForkOperator is used with a single branch.
     ForkOperator forkOperator = closer.register(this.taskContext.getForkOperator());
     forkOperator.init(this.taskState);
