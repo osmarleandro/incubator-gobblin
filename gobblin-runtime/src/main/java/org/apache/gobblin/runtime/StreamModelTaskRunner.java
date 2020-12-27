@@ -91,7 +91,7 @@ public class StreamModelTaskRunner {
     stream = stream.withRecordStream(streamWithShutdownOnCancel);
 
     stream = stream.mapRecords(r -> {
-      this.task.onRecordExtract();
+      this.task.onRecordExtract_RENAMED();
       return r;
     });
     if (this.task.isStreamingTask()) {

@@ -474,7 +474,7 @@ public class Task implements TaskIFace {
       RecordEnvelope recordEnvelope;
       // Extract, convert, and fork one source record at a time.
       while ((recordEnvelope = extractor.readRecordEnvelope()) != null) {
-        onRecordExtract();
+        onRecordExtract_RENAMED();
         AcknowledgableWatermark ackableWatermark = new AcknowledgableWatermark(recordEnvelope.getWatermark());
         if (watermarkTracker.isPresent()) {
           watermarkTracker.get().track(ackableWatermark);
@@ -493,7 +493,7 @@ public class Task implements TaskIFace {
       // Extract, convert, and fork one source record at a time.
       long errRecords = 0;
       while ((record = extractor.readRecordEnvelope()) != null) {
-        onRecordExtract();
+        onRecordExtract_RENAMED();
         try {
           for (Object convertedRecord : converter.convertRecord(schema, record.getRecord(), this.taskState)) {
             processRecord(convertedRecord, forkOperator, rowChecker, rowResults, branches, null);
@@ -557,7 +557,7 @@ public class Task implements TaskIFace {
     }
   }
 
-  protected void onRecordExtract() {
+  protected void onRecordExtract_RENAMED() {
     this.recordsPulled.incrementAndGet();
     this.lastRecordPulledTimestampMillis = System.currentTimeMillis();
   }
