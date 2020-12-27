@@ -480,7 +480,7 @@ public class Task implements TaskIFace {
           watermarkTracker.get().track(ackableWatermark);
         }
         for (Object convertedRecord : converter.convertRecord(schema, recordEnvelope, this.taskState)) {
-          processRecord(convertedRecord, forkOperator, rowChecker, rowResults, branches,
+          processRecord_RENAMED(convertedRecord, forkOperator, rowChecker, rowResults, branches,
               ackableWatermark.incrementAck());
         }
         ackableWatermark.ack();
@@ -496,7 +496,7 @@ public class Task implements TaskIFace {
         onRecordExtract();
         try {
           for (Object convertedRecord : converter.convertRecord(schema, record.getRecord(), this.taskState)) {
-            processRecord(convertedRecord, forkOperator, rowChecker, rowResults, branches, null);
+            processRecord_RENAMED(convertedRecord, forkOperator, rowChecker, rowResults, branches, null);
           }
         } catch (Exception e) {
           if (!(e instanceof DataConversionException) && !(e.getCause() instanceof DataConversionException)) {
@@ -780,7 +780,7 @@ public class Task implements TaskIFace {
    * Process a (possibly converted) record.
    */
   @SuppressWarnings("unchecked")
-  private void processRecord(Object convertedRecord, ForkOperator forkOperator, RowLevelPolicyChecker rowChecker,
+  private void processRecord_RENAMED(Object convertedRecord, ForkOperator forkOperator, RowLevelPolicyChecker rowChecker,
       RowLevelPolicyCheckResults rowResults, int branches, AcknowledgableWatermark watermark)
       throws Exception {
     // Skip the record if quality checking fails
