@@ -154,7 +154,7 @@ public class GobblinMultiTaskAttempt {
     }
 
     CountUpAndDownLatch countDownLatch = new CountUpAndDownLatch(0);
-    Pair<List<Task>, Boolean> executionResult = runWorkUnits(countDownLatch);
+    Pair<List<Task>, Boolean> executionResult = runWorkUnits_RENAMED(countDownLatch);
     this.tasks = executionResult.getFirst();
 
     // Indicating task submission failure, propagating exception as it should be noticeable to job launcher.
@@ -384,7 +384,7 @@ public class GobblinMultiTaskAttempt {
    * @return a list of {@link Task}s from the {@link WorkUnit}s, as well as if there's a failure in task creation
    * which should be handled separately to avoid silently starving on certain workunit.
    */
-  private Pair<List<Task>, Boolean> runWorkUnits(CountUpAndDownLatch countDownLatch) {
+  private Pair<List<Task>, Boolean> runWorkUnits_RENAMED(CountUpAndDownLatch countDownLatch) {
 
     List<Task> tasks = Lists.newArrayList();
 
