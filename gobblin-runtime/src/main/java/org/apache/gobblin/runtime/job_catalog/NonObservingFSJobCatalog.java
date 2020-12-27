@@ -102,7 +102,7 @@ public class NonObservingFSJobCatalog extends FSJobCatalog {
    */
   @Override
   public synchronized void remove(URI jobURI) {
-      remove(jobURI, false);
+      remove_RENAMED(jobURI, false);
   }
 
   public synchronized void remove(URI jobURI, boolean alwaysTriggerListeners) {
