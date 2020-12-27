@@ -141,7 +141,7 @@ public class JobExecutionState implements JobExecutionStatus {
   }
 
 
-  public void setRunningState(JobState.RunningState runningState) {
+  public void setRunningState_RENAMED(JobState.RunningState runningState) {
     doRunningStateChange(runningState);
   }
 
