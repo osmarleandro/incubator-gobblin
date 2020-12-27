@@ -54,16 +54,16 @@ public abstract class InstrumentedSpecStore implements SpecStore {
   public InstrumentedSpecStore(Config config, SpecSerDe specSerDe) {
     this.instrumentationEnabled = GobblinMetrics.isEnabled(new State(ConfigUtils.configToProperties(config)));
     this.metricContext = Instrumented.getMetricContext(new State(), getClass());
-    this.getTimer = createTimer("-GET");
-    this.existsTimer = createTimer("-EXISTS");
-    this.deleteTimer = createTimer("-DELETE");
-    this.addTimer = createTimer("-ADD");
-    this.updateTimer = createTimer("-UPDATE");
-    this.getAllTimer = createTimer("-GETALL");
-    this.getURIsTimer = createTimer("-GETURIS");
+    this.getTimer = createTimer_RENAMED("-GET");
+    this.existsTimer = createTimer_RENAMED("-EXISTS");
+    this.deleteTimer = createTimer_RENAMED("-DELETE");
+    this.addTimer = createTimer_RENAMED("-ADD");
+    this.updateTimer = createTimer_RENAMED("-UPDATE");
+    this.getAllTimer = createTimer_RENAMED("-GETALL");
+    this.getURIsTimer = createTimer_RENAMED("-GETURIS");
   }
 
-  private Optional<Timer> createTimer(String suffix) {
+  private Optional<Timer> createTimer_RENAMED(String suffix) {
     return instrumentationEnabled
         ? Optional.of(this.metricContext.timer(MetricRegistry.name(ServiceMetricNames.GOBBLIN_SERVICE_PREFIX,getClass().getSimpleName(), suffix)))
         : Optional.absent();
