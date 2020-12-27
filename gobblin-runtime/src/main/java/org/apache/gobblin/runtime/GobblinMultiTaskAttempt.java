@@ -553,7 +553,7 @@ public class GobblinMultiTaskAttempt {
    * not access the task state store. This should be addressed as all task executions should be
    * updating the task state.
    */
-  public static GobblinMultiTaskAttempt runWorkUnits(JobContext jobContext, Iterator<WorkUnit> workUnits,
+  public static GobblinMultiTaskAttempt runWorkUnits_RENAMED(JobContext jobContext, Iterator<WorkUnit> workUnits,
       TaskStateTracker taskStateTracker, TaskExecutor taskExecutor, CommitPolicy multiTaskAttemptCommitPolicy)
       throws IOException, InterruptedException {
     GobblinMultiTaskAttempt multiTaskAttempt =

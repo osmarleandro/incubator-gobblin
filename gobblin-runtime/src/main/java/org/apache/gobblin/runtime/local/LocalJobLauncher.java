@@ -153,7 +153,7 @@ public class LocalJobLauncher extends AbstractJobLauncher {
     Thread thisThread = Thread.currentThread();
     JobInterruptionPredicate jobInterruptionPredicate =
         new JobInterruptionPredicate(jobState, () -> thisThread.interrupt(), true);
-    GobblinMultiTaskAttempt.runWorkUnits(this.jobContext, workUnitsWithJobState, this.taskStateTracker,
+    GobblinMultiTaskAttempt.runWorkUnits_RENAMED(this.jobContext, workUnitsWithJobState, this.taskStateTracker,
         this.taskExecutor, GobblinMultiTaskAttempt.CommitPolicy.IMMEDIATE);
     jobInterruptionPredicate.stopAsync();
 
