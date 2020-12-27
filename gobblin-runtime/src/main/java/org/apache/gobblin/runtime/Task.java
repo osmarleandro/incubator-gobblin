@@ -589,7 +589,7 @@ public class Task implements TaskIFace {
    *   </ul>
    * </p>
    */
-  private boolean shouldPublishDataInTask() {
+  private boolean shouldPublishDataInTask_RENAMED() {
     boolean publishDataAtJobLevel = this.taskState.getPropAsBoolean(ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL,
         ConfigurationKeys.DEFAULT_PUBLISH_DATA_AT_JOB_LEVEL);
     if (publishDataAtJobLevel) {
@@ -967,7 +967,7 @@ public class Task implements TaskIFace {
       }
 
       try {
-        if (shouldPublishDataInTask()) {
+        if (shouldPublishDataInTask_RENAMED()) {
           // If data should be published by the task, publish the data and set the task state to COMMITTED.
           // Task data can only be published after all forks have been closed by closer.close().
           if (this.taskState.getWorkingState() == WorkUnitState.WorkingState.SUCCESSFUL) {
