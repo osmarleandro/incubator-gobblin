@@ -65,7 +65,7 @@ public class JobLauncherFactory {
    * @return newly created {@link JobLauncher}
    */
   public static @Nonnull JobLauncher newJobLauncher(Properties sysProps, Properties jobProps) throws Exception {
-    return newJobLauncher(sysProps, jobProps, null);
+    return newJobLauncher_RENAMED(sysProps, jobProps, null);
   }
 
   /**
@@ -80,7 +80,7 @@ public class JobLauncherFactory {
    * @param instanceBroker
    * @return newly created {@link JobLauncher}
    */
-  public static @Nonnull JobLauncher newJobLauncher(Properties sysProps, Properties jobProps,
+  public static @Nonnull JobLauncher newJobLauncher_RENAMED(Properties sysProps, Properties jobProps,
       SharedResourcesBroker<GobblinScopeTypes> instanceBroker) throws Exception {
     return newJobLauncher(sysProps, jobProps, instanceBroker, ImmutableList.of());
   }

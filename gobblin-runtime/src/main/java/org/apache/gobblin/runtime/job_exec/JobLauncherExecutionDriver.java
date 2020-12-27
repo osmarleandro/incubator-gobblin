@@ -176,7 +176,7 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
     else {
       _log.info("Creating auto jobLauncher for " + _jobSpec);
       try {
-        return JobLauncherFactory.newJobLauncher(_sysConfig.getConfigAsProperties(),
+        return JobLauncherFactory.newJobLauncher_RENAMED(_sysConfig.getConfigAsProperties(),
              _jobSpec.getConfigAsProperties(), instanceBroker);
       } catch (Exception e) {
         throw new RuntimeException("JobLauncher creation failed: " + e, e);
