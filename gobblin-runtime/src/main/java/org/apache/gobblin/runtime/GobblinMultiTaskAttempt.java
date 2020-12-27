@@ -250,7 +250,7 @@ public class GobblinMultiTaskAttempt {
    * A method that shuts down all running tasks managed by this instance.
    * TODO: Call this from the right place.
    */
-  public void shutdownTasks()
+  public void shutdownTasks_RENAMED()
       throws InterruptedException {
     log.info("Shutting down tasks");
     for (Task task : this.tasks) {

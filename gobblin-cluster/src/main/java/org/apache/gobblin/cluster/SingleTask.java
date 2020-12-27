@@ -223,7 +223,7 @@ public class SingleTask {
 
       if (_taskAttempt != null) {
         _logger.info("Task cancelled: Shutdown starting for tasks with jobId: {}", _jobId);
-        _taskAttempt.shutdownTasks();
+        _taskAttempt.shutdownTasks_RENAMED();
         _logger.info("Task cancelled: Shutdown complete for tasks with jobId: {}", _jobId);
       } else {
         throw new IllegalStateException("TaskAttempt not initialized while passing conditional barrier");
