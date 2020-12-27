@@ -58,7 +58,7 @@ public class JobExecutionResult implements ExecutionResult {
     return new JobExecutionResult(RunningState.CANCELLED, null);
   }
 
-  public static JobExecutionResult createFromState(JobExecutionState state) {
+  public static JobExecutionResult createFromState_RENAMED(JobExecutionState state) {
     Preconditions.checkArgument(null != state.getRunningState());
     Preconditions.checkArgument(state.getRunningState().isDone());
 

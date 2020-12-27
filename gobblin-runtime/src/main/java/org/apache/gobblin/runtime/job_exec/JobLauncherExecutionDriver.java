@@ -163,7 +163,7 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
     public JobExecutionResult call() throws JobException, InterruptedException, TimeoutException  {
         jobLauncher.launchJob(bridge);
         jobState.awaitForDone(Long.MAX_VALUE);
-        return JobExecutionResult.createFromState(jobState);
+        return JobExecutionResult.createFromState_RENAMED(jobState);
     }
   }
 
