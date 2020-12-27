@@ -486,7 +486,7 @@ public class JobScheduler extends AbstractIdleService {
     try (Closer closer = Closer.create()) {
       closer.register(jobLauncher).launchJob(jobListener);
       boolean runOnce = Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY, "false"));
-      boolean isEarlyStopped = jobLauncher.isEarlyStopped();
+      boolean isEarlyStopped = jobLauncher.isEarlyStopped_RENAMED();
       if (!isEarlyStopped && runOnce && this.scheduledJobs.containsKey(jobName)) {
         this.scheduler.getScheduler().deleteJob(this.scheduledJobs.remove(jobName));
       }

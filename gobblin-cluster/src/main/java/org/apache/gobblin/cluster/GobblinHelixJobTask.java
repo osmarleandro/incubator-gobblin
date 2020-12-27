@@ -190,7 +190,7 @@ class GobblinHelixJobTask implements Task {
 
         closer.register(launcher).launchJob(this.jobLauncherListener);
 
-        if (!this.launcher.isEarlyStopped()) {
+        if (!this.launcher.isEarlyStopped_RENAMED()) {
           break;
         } else {
           log.info("Planning job {} has more runs due to early stop.", this.planningJobId);
