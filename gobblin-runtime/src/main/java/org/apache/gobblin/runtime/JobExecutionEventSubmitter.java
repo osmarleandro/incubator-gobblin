@@ -110,7 +110,7 @@ public class JobExecutionEventSubmitter {
     taskMetadataBuilder.put(METADATA_TASK_START_TIME, Long.toString(taskState.getStartTime()));
     taskMetadataBuilder.put(METADATA_TASK_END_TIME, Long.toString(taskState.getEndTime()));
     taskMetadataBuilder.put(METADATA_TASK_WORKING_STATE, taskState.getWorkingState().toString());
-    taskMetadataBuilder.put(METADATA_TASK_FAILURE_CONTEXT, taskState.getTaskFailureException().or(UNKNOWN_VALUE));
+    taskMetadataBuilder.put(METADATA_TASK_FAILURE_CONTEXT, taskState.getTaskFailureException_RENAMED().or(UNKNOWN_VALUE));
     taskMetadataBuilder.put(EventSubmitter.EVENT_TYPE, TASK_STATE);
 
     this.eventSubmitter.submit(TASK_STATE, taskMetadataBuilder.build());

@@ -316,7 +316,7 @@ final class SafeDatasetCommit implements Callable<Void> {
         // The dataset state is set to FAILED if any task failed and COMMIT_ON_FULL_SUCCESS is used
         datasetState.setState(JobState.RunningState.FAILED);
         datasetState.incrementJobFailures();
-        Optional<String> taskStateException = taskState.getTaskFailureException();
+        Optional<String> taskStateException = taskState.getTaskFailureException_RENAMED();
         log.warn("At least one task did not committed successfully. Setting dataset state to FAILED. "
             + (taskStateException.isPresent() ? taskStateException.get() : "Exception not set."));
         return;
@@ -393,7 +393,7 @@ final class SafeDatasetCommit implements Callable<Void> {
           // 2. Otherwise, the processing of the dataset is considered successful even if some tasks for the
           //    dataset failed to be committed.
           datasetState.setState(JobState.RunningState.FAILED);
-          Optional<String> taskStateException = taskState.getTaskFailureException();
+          Optional<String> taskStateException = taskState.getTaskFailureException_RENAMED();
           log.warn("At least one task did not committed successfully. Setting dataset state to FAILED. {}",
               taskStateException.isPresent() ? taskStateException.get() : "Exception not set.");
         }

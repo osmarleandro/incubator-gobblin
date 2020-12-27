@@ -220,7 +220,7 @@ public class TaskState extends WorkUnitState implements TaskProgress {
   /**
    * Get the {@link ConfigurationKeys#TASK_FAILURE_EXCEPTION_KEY} if it exists, else return {@link Optional#absent()}.
    */
-  public Optional<String> getTaskFailureException() {
+  public Optional<String> getTaskFailureException_RENAMED() {
     return Optional.fromNullable(this.getProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY));
   }
 
@@ -367,8 +367,8 @@ public class TaskState extends WorkUnitState implements TaskProgress {
 
     // Also add failure exception information if it exists. This information is useful even in the
     // case that the task finally succeeds so we know what happened in the course of task execution.
-    if (getTaskFailureException().isPresent()) {
-      jsonWriter.name("exception").value(getTaskFailureException().get());
+    if (getTaskFailureException_RENAMED().isPresent()) {
+      jsonWriter.name("exception").value(getTaskFailureException_RENAMED().get());
     }
 
     if (keepConfig) {

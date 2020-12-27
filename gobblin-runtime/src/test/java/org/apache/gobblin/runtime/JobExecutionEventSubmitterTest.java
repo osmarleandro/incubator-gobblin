@@ -69,7 +69,7 @@ public class JobExecutionEventSubmitterTest {
   private TaskState createMockTaskState() {
     TaskState taskState = mock(TaskState.class, Mockito.RETURNS_SMART_NULLS);
     when(taskState.getWorkingState()).thenReturn(WorkUnitState.WorkingState.SUCCESSFUL);
-    when(taskState.getTaskFailureException()).thenReturn(Optional.<String> absent());
+    when(taskState.getTaskFailureException_RENAMED()).thenReturn(Optional.<String> absent());
     return taskState;
   }
 }
