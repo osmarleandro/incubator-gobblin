@@ -70,8 +70,8 @@ public interface SpecCatalog extends SpecCatalogListenersContainer, Instrumentab
    * Get a {@link Spec} by {@link SpecSearchObject}.
    **/
   default Collection<Spec> getSpecs(SpecSearchObject specSearchObject) {
-    throw new UnsupportedOperationException();
-  }
+	return specSearchObject.getSpecs();
+}
 
   @Slf4j
   class StandardMetrics extends StandardMetricsBridge.StandardMetrics implements SpecCatalogListener {

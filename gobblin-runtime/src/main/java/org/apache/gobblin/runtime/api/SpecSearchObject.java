@@ -17,8 +17,17 @@
 
 package org.apache.gobblin.runtime.api;
 
+import java.util.Collection;
+
 /**
  * This is an interface to package all the parameters that should be used to search {@link Spec} in a {@link SpecStore}
  */
 public interface SpecSearchObject {
+
+	/**
+	   * Get a {@link Spec} by {@link SpecSearchObject}.
+	   **/
+	  default Collection<Spec> getSpecs() {
+	    throw new UnsupportedOperationException();
+	  }
 }
