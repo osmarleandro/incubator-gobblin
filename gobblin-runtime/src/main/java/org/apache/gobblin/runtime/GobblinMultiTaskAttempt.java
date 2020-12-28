@@ -50,16 +50,12 @@ import lombok.Setter;
 
 import org.apache.gobblin.annotation.Alpha;
 import org.apache.gobblin.broker.gobblin_scopes.GobblinScopeTypes;
-import org.apache.gobblin.broker.gobblin_scopes.TaskScopeInstance;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
-import org.apache.gobblin.broker.iface.SubscopedBrokerBuilder;
 import org.apache.gobblin.commit.CommitStep;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.metastore.StateStore;
 import org.apache.gobblin.metrics.Tag;
-import org.apache.gobblin.metrics.event.EventSubmitter;
-import org.apache.gobblin.metrics.event.JobEvent;
 import org.apache.gobblin.runtime.api.TaskEventMetadataGenerator;
 import org.apache.gobblin.runtime.task.TaskFactory;
 import org.apache.gobblin.runtime.task.TaskIFaceWrapper;
@@ -101,17 +97,17 @@ public class GobblinMultiTaskAttempt {
   }
 
   private static final String TASK_STATE_STORE_SUCCESS_MARKER_SUFFIX = ".suc";
-  private final Logger log;
-  private final Iterator<WorkUnit> workUnits;
-  private final String jobId;
-  private final String attemptId;
-  private final JobState jobState;
-  private final TaskStateTracker taskStateTracker;
-  private final TaskExecutor taskExecutor;
-  private final Optional<String> containerIdOptional;
+  final Logger log;
+  final Iterator<WorkUnit> workUnits;
+  final String jobId;
+  final String attemptId;
+  final JobState jobState;
+  final TaskStateTracker taskStateTracker;
+  final TaskExecutor taskExecutor;
+  final Optional<String> containerIdOptional;
   private final Optional<StateStore<TaskState>> taskStateStoreOptional;
-  private final SharedResourcesBroker<GobblinScopeTypes> jobBroker;
-  private final TaskEventMetadataGenerator taskEventMetadataGenerator;
+  final SharedResourcesBroker<GobblinScopeTypes> jobBroker;
+  final TaskEventMetadataGenerator taskEventMetadataGenerator;
   @Setter
   private Predicate<GobblinMultiTaskAttempt> interruptionPredicate = (gmta) -> false;
   private List<Task> tasks;
@@ -154,7 +150,7 @@ public class GobblinMultiTaskAttempt {
     }
 
     CountUpAndDownLatch countDownLatch = new CountUpAndDownLatch(0);
-    Pair<List<Task>, Boolean> executionResult = runWorkUnits(countDownLatch);
+    Pair<List<Task>, Boolean> executionResult = countDownLatch.runWorkUnits(this);
     this.tasks = executionResult.getFirst();
 
     // Indicating task submission failure, propagating exception as it should be noticeable to job launcher.
@@ -351,7 +347,7 @@ public class GobblinMultiTaskAttempt {
    * @param taskId task id to check
    * @return whether the task was processed successfully in a prior attempt
    */
-  private boolean taskSuccessfulInPriorAttempt(String taskId) {
+  boolean taskSuccessfulInPriorAttempt(String taskId) {
     if (this.taskStateStoreOptional.isPresent()) {
       StateStore<TaskState> taskStateStore = this.taskStateStoreOptional.get();
       // Delete the task state file for the task if it already exists.
@@ -372,93 +368,7 @@ public class GobblinMultiTaskAttempt {
     return false;
   }
 
-  /**
-   * Run a given list of {@link WorkUnit}s of a job.
-   *
-   * <p>
-   *   This method assumes that the given list of {@link WorkUnit}s have already been flattened and
-   *   each {@link WorkUnit} contains the task ID in the property {@link ConfigurationKeys#TASK_ID_KEY}.
-   * </p>
-   *
-   * @param countDownLatch a {@link java.util.concurrent.CountDownLatch} waited on for job completion
-   * @return a list of {@link Task}s from the {@link WorkUnit}s, as well as if there's a failure in task creation
-   * which should be handled separately to avoid silently starving on certain workunit.
-   */
-  private Pair<List<Task>, Boolean> runWorkUnits(CountUpAndDownLatch countDownLatch) {
-
-    List<Task> tasks = Lists.newArrayList();
-
-    // A flag indicating if there are any tasks not submitted successfully.
-    // Caller of this method should handle tasks with submission failures accordingly.
-    boolean areAllTasksSubmitted = true;
-    while (this.workUnits.hasNext()) {
-      WorkUnit workUnit = this.workUnits.next();
-      String taskId = workUnit.getProp(ConfigurationKeys.TASK_ID_KEY);
-
-      // skip tasks that executed successfully in a prior attempt
-      if (taskSuccessfulInPriorAttempt(taskId)) {
-        continue;
-      }
-
-      SubscopedBrokerBuilder<GobblinScopeTypes, ?> taskBrokerBuilder =
-          this.jobBroker.newSubscopedBuilder(new TaskScopeInstance(taskId));
-      WorkUnitState workUnitState = new WorkUnitState(workUnit, this.jobState, taskBrokerBuilder);
-      workUnitState.setId(taskId);
-      workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY, this.jobId);
-      workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY, taskId);
-      workUnitState.setProp(ConfigurationKeys.TASK_START_TIME_MILLIS_KEY, Long.toString(System.currentTimeMillis()));
-
-      if (this.containerIdOptional.isPresent()) {
-        workUnitState.setProp(ConfigurationKeys.TASK_ATTEMPT_ID_KEY, this.containerIdOptional.get());
-      }
-
-      // Create a new task from the work unit and submit the task to run.
-      // If an exception occurs here then the count down latch is decremented
-      // to avoid being stuck waiting for a task that was not created and submitted successfully.
-      Task task = null;
-      try {
-        countDownLatch.countUp();
-        task = createTaskWithRetry(workUnitState, countDownLatch);
-        this.taskStateTracker.registerNewTask(task);
-        task.setTaskFuture(this.taskExecutor.submit(task));
-        tasks.add(task);
-      } catch (Throwable e) {
-        if (e instanceof OutOfMemoryError) {
-          log.error("Encountering memory error in task creation/execution stage, please investigate memory usage:", e);
-          printMemoryUsage();
-        }
-
-        if (task == null) {
-          if (e instanceof RetryException) {
-            // Indicating task being null due to failure in creation even after retrying.
-            areAllTasksSubmitted = false;
-          }
-          // task could not be created, so directly count down
-          countDownLatch.countDown();
-          log.error("Could not create task for workunit {}", workUnit, e);
-        } else if (!task.hasTaskFuture()) {
-          // Task was created and may have been registered, but not submitted, so call the
-          // task state tracker task run completion directly since the task cancel does nothing if not submitted
-          this.taskStateTracker.onTaskRunCompletion(task);
-          areAllTasksSubmitted = false;
-          log.error("Could not submit task for workunit {}", workUnit, e);
-        } else {
-          // task was created and submitted, but failed later, so cancel the task to decrement the CountDownLatch
-          task.cancel();
-          log.error("Failure after task submitted for workunit {}", workUnit, e);
-        }
-      }
-    }
-
-    EventSubmitter.Builder eventSubmitterBuilder = new EventSubmitter.Builder(JobMetrics.get(this.jobId, new JobMetrics.CreatorTag(this.attemptId)).getMetricContext(),
-        "gobblin.runtime");
-    eventSubmitterBuilder.addMetadata(this.taskEventMetadataGenerator.getMetadata(jobState, JobEvent.TASKS_SUBMITTED));
-    eventSubmitterBuilder.build().submit(JobEvent.TASKS_SUBMITTED, "tasksCount", Long.toString(countDownLatch.getRegisteredParties()));
-
-    return new Pair<>(tasks, areAllTasksSubmitted);
-  }
-
-  private void printMemoryUsage() {
+  void printMemoryUsage() {
     MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
     MemoryUsage heapMemory = memoryBean.getHeapMemoryUsage();
     MemoryUsage nonHeapMemory = memoryBean.getNonHeapMemoryUsage();
