@@ -248,13 +248,6 @@ public class EmbeddedGobblin {
   }
 
   /**
-   * Use a {@link org.apache.gobblin.runtime.api.GobblinInstancePlugin} identified by name.
-   */
-  public EmbeddedGobblin usePlugin(String pluginAlias) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-    return usePlugin(GobblinInstancePluginUtils.instantiatePluginByAlias(pluginAlias));
-  }
-
-  /**
    * Override a Gobblin system configuration.
    */
   public EmbeddedGobblin sysConfig(String key, String value) {
@@ -291,7 +284,7 @@ public class EmbeddedGobblin {
       throw new RuntimeException("Cannot parse " + credentials + ". Expected <login-user>:<keytab-file>");
     }
     try {
-      usePlugin(PluginStaticKeys.HADOOP_LOGIN_FROM_KEYTAB_ALIAS);
+      jobTimeout.usePlugin(this, PluginStaticKeys.HADOOP_LOGIN_FROM_KEYTAB_ALIAS);
     } catch (ReflectiveOperationException roe) {
       throw new RuntimeException(String.format("Could not instantiate %s. Make sure gobblin-runtime-hadoop is in your classpath.",
           PluginStaticKeys.HADOOP_LOGIN_FROM_KEYTAB_ALIAS), roe);
@@ -594,6 +587,14 @@ public class EmbeddedGobblin {
   private static class FullTimeout {
     private final long timeout;
     private final TimeUnit timeUnit;
+	/**
+	   * Use a {@link org.apache.gobblin.runtime.api.GobblinInstancePlugin} identified by name.
+	 * @param embeddedGobblin TODO
+	 * @param pluginAlias TODO
+	   */
+	  public EmbeddedGobblin usePlugin(EmbeddedGobblin embeddedGobblin, String pluginAlias) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+	    return embeddedGobblin.usePlugin(GobblinInstancePluginUtils.instantiatePluginByAlias(pluginAlias));
+	  }
   }
 
   @VisibleForTesting
