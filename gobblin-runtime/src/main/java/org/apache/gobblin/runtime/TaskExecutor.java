@@ -67,14 +67,15 @@ import static com.codahale.metrics.MetricRegistry.name;
  */
 public class TaskExecutor extends AbstractIdleService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(TaskExecutor.class);
+  public static final Logger LOG = LoggerFactory.getLogger(TaskExecutor.class);
 
   // Thread pool executor for running tasks
   private final ScheduledExecutorService taskExecutor;
 
   // A separate thread pool executor for running forks of tasks
   @Getter
-  private final ExecutorService forkExecutor;
+public
+  final ExecutorService forkExecutor;
 
   // Task retry interval
   @Getter
@@ -258,16 +259,6 @@ public class TaskExecutor extends AbstractIdleService {
   public Future<?> submit(Task task) {
     LOG.info(String.format("Submitting task %s", task.getTaskId()));
     return this.taskExecutor.submit(new TrackingTask(task));
-  }
-
-  /**
-   * Execute a {@link Fork}.
-   *
-   * @param fork {@link Fork} to be executed
-   */
-  public void execute(Fork fork) {
-    LOG.info(String.format("Executing fork %d of task %s", fork.getIndex(), fork.getTaskId()));
-    this.forkExecutor.execute(fork);
   }
 
   /**

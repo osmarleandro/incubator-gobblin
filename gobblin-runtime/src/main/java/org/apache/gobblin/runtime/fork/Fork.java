@@ -683,4 +683,14 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
     Preconditions.checkState(this.writer.isPresent(), "Asked to get a writer, but writer is null");
     return this.writer.get();
   }
+
+/**
+   * Execute a {@link Fork}.
+   *
+   * @param taskExecutor TODO
+   */
+  public void execute(TaskExecutor taskExecutor) {
+    TaskExecutor.LOG.info(String.format("Executing fork %d of task %s", getIndex(), getTaskId()));
+    taskExecutor.forkExecutor.execute(this);
+  }
 }
