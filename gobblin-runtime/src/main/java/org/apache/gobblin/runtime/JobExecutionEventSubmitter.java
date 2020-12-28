@@ -51,21 +51,9 @@ public class JobExecutionEventSubmitter {
   private static final String UNKNOWN_VALUE = "UNKNOWN";
 
   /**
-   * Submits metadata about a given {@link JobState} and each of its {@link TaskState}s. This method will submit a
-   * single event for the {@link JobState} called {@link #JOB_STATE_EVENT}. It will submit an event for each
-   * {@link TaskState} called {@link #TASK_STATE_EVENT}.
-   *
-   * @param jobState is the {@link JobState} to emit events for
-   */
-  public void submitJobExecutionEvents(JobState jobState) {
-    submitJobStateEvent(jobState);
-    submitTaskStateEvents(jobState);
-  }
-
-  /**
    * Submits an event for the given {@link JobState}.
    */
-  private void submitJobStateEvent(JobState jobState) {
+  void submitJobStateEvent(JobState jobState) {
     ImmutableMap.Builder<String, String> jobMetadataBuilder = new ImmutableMap.Builder<>();
 
     jobMetadataBuilder.put(METADATA_JOB_ID, jobState.getJobId());
@@ -85,7 +73,7 @@ public class JobExecutionEventSubmitter {
   /**
    * Submits an event for each {@link TaskState} in the given {@link JobState}.
    */
-  private void submitTaskStateEvents(JobState jobState) {
+  void submitTaskStateEvents(JobState jobState) {
     // Build Job Metadata applicable for TaskStates
     ImmutableMap.Builder<String, String> jobMetadataBuilder = new ImmutableMap.Builder<>();
     jobMetadataBuilder.put(METADATA_JOB_ID, jobState.getJobId());

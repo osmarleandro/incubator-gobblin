@@ -62,7 +62,7 @@ public class JobExecutionEventSubmitterTest {
 
     when(mockJobState.getTaskStates()).thenReturn(Lists.newArrayList(mockTaskState1, mockTaskState2));
 
-    this.jobExecutionEventSubmitter.submitJobExecutionEvents(mockJobState);
+    mockJobState.submitJobExecutionEvents(this.jobExecutionEventSubmitter);
     verify(this.mockEventSubmitter, atLeastOnce()).submit(any(String.class), any(Map.class));
   }
 

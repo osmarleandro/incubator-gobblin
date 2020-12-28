@@ -795,7 +795,19 @@ public class JobState extends SourceState implements JobProgress {
     return datasetState;
   }
 
-  public static List<WorkUnitState> workUnitStatesFromDatasetStates(Iterable<JobState.DatasetState> datasetStates) {
+  /**
+   * Submits metadata about a given {@link JobState} and each of its {@link TaskState}s. This method will submit a
+   * single event for the {@link JobState} called {@link #JOB_STATE_EVENT}. It will submit an event for each
+   * {@link TaskState} called {@link #TASK_STATE_EVENT}.
+   *
+   * @param jobExecutionEventSubmitter TODO
+   */
+  public void submitJobExecutionEvents(JobExecutionEventSubmitter jobExecutionEventSubmitter) {
+    jobExecutionEventSubmitter.submitJobStateEvent(this);
+    jobExecutionEventSubmitter.submitTaskStateEvents(this);
+  }
+
+public static List<WorkUnitState> workUnitStatesFromDatasetStates(Iterable<JobState.DatasetState> datasetStates) {
     ImmutableList.Builder<WorkUnitState> taskStateBuilder = ImmutableList.builder();
     for (JobState datasetState : datasetStates) {
       taskStateBuilder.addAll(datasetState.getTaskStatesAsWorkUnitStates());
