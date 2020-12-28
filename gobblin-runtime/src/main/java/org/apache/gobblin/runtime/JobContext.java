@@ -57,9 +57,14 @@ import org.apache.gobblin.metastore.DatasetStateStore;
 import org.apache.gobblin.metastore.JobHistoryStore;
 import org.apache.gobblin.metastore.MetaStoreModule;
 import org.apache.gobblin.metrics.GobblinMetrics;
+import org.apache.gobblin.metrics.event.EventName;
+import org.apache.gobblin.metrics.event.TimingEvent;
 import org.apache.gobblin.publisher.DataPublisher;
+import org.apache.gobblin.runtime.AbstractJobLauncher.JobListenerAction;
 import org.apache.gobblin.runtime.JobState.DatasetState;
 import org.apache.gobblin.runtime.commit.FsCommitSequenceStore;
+import org.apache.gobblin.runtime.listeners.CloseableJobListener;
+import org.apache.gobblin.runtime.listeners.JobListener;
 import org.apache.gobblin.runtime.util.JobMetrics;
 import org.apache.gobblin.source.Source;
 import org.apache.gobblin.source.extractor.JobCommitPolicy;
@@ -546,5 +551,20 @@ public class JobContext implements Closeable {
   public String toString() {
     return Objects.toStringHelper(JobContext.class.getSimpleName()).add("jobName", getJobName())
         .add("jobId", getJobId()).add("jobState", getJobState()).toString();
+  }
+
+void notifyListeners(AbstractJobLauncher abstractJobLauncher, JobListener jobListener, String timerEventName, JobListenerAction action)
+      throws JobException {
+    TimingEvent timer = abstractJobLauncher.eventSubmitter.getTimingEvent(timerEventName);
+    try (CloseableJobListener parallelJobListener = abstractJobLauncher.getParallelCombinedJobListener(abstractJobLauncher.jobContext.getJobState(),
+        jobListener)) {
+      action.apply(parallelJobListener, this);
+    } catch (Exception e) {
+      throw new JobException("Failed to execute all JobListeners", e);
+    } finally {
+      AbstractJobLauncher.LOG.info("Submitting {}", timerEventName);
+      timer.stop(abstractJobLauncher.multiEventMetadataGenerator.getMetadata(abstractJobLauncher.jobContext,
+          EventName.getEnumFromEventId(timerEventName)));
+    }
   }
 }

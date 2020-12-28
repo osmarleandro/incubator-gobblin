@@ -166,7 +166,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
   private final List<JobListener> mandatoryJobListeners = Lists.newArrayList();
 
   // Used to generate additional metadata to emit in timing events
-  private final MultiEventMetadataGenerator multiEventMetadataGenerator;
+  final MultiEventMetadataGenerator multiEventMetadataGenerator;
 
   public AbstractJobLauncher(Properties jobProps, List<? extends Tag<?>> metadataTags)
       throws Exception {
@@ -326,7 +326,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
         } catch (IOException ioe) {
           LOG.error("Could not close job context.", ioe);
         }
-        notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_CANCEL, new JobListenerAction() {
+        this.jobContext.notifyListeners(this, jobListener, TimingEvent.LauncherTimings.JOB_CANCEL, new JobListenerAction() {
           @Override
           public void apply(JobListener jobListener, JobContext jobContext)
               throws Exception {
@@ -381,7 +381,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
 
       try (Closer closer = Closer.create()) {
         closer.register(this.jobContext);
-        notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_PREPARE, new JobListenerAction() {
+        this.jobContext.notifyListeners(this, jobListener, TimingEvent.LauncherTimings.JOB_PREPARE, new JobListenerAction() {
           @Override
           public void apply(JobListener jobListener, JobContext jobContext)
               throws Exception {
@@ -458,7 +458,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
         try {
           LOG.info("Starting job " + jobId);
 
-          notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_START, new JobListenerAction() {
+          this.jobContext.notifyListeners(this, jobListener, TimingEvent.LauncherTimings.JOB_START, new JobListenerAction() {
             @Override
             public void apply(JobListener jobListener, JobContext jobContext)
                 throws Exception {
@@ -543,7 +543,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
           launchJobTimer.stop(this.multiEventMetadataGenerator.getMetadata(this.jobContext, EventName.FULL_JOB_EXECUTION));
           if (isWorkUnitsEmpty) {
             //If no WorkUnits are created, first send the JobCompleteTimer event.
-            notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_COMPLETE, new JobListenerAction() {
+            this.jobContext.notifyListeners(this, jobListener, TimingEvent.LauncherTimings.JOB_COMPLETE, new JobListenerAction() {
               @Override
               public void apply(JobListener jobListener, JobContext jobContext)
                   throws Exception {
@@ -551,7 +551,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
               }
             });
             //Next, send the JobSucceededTimer event.
-            notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_SUCCEEDED, new JobListenerAction() {
+            this.jobContext.notifyListeners(this, jobListener, TimingEvent.LauncherTimings.JOB_SUCCEEDED, new JobListenerAction() {
               @Override
               public void apply(JobListener jobListener, JobContext jobContext)
                   throws Exception {
@@ -569,7 +569,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
             }
           }
 
-          notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_COMPLETE, new JobListenerAction() {
+          this.jobContext.notifyListeners(this, jobListener, TimingEvent.LauncherTimings.JOB_COMPLETE, new JobListenerAction() {
             @Override
             public void apply(JobListener jobListener, JobContext jobContext)
                 throws Exception {
@@ -578,7 +578,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
           });
 
           if (jobState.getState() == JobState.RunningState.FAILED) {
-            notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_FAILED, new JobListenerAction() {
+            this.jobContext.notifyListeners(this, jobListener, TimingEvent.LauncherTimings.JOB_FAILED, new JobListenerAction() {
               @Override
               public void apply(JobListener jobListener, JobContext jobContext)
                   throws Exception {
@@ -587,7 +587,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
             });
             throw new JobException(String.format("Job %s failed", jobId));
           } else {
-            notifyListeners(this.jobContext, jobListener, TimingEvent.LauncherTimings.JOB_SUCCEEDED, new JobListenerAction() {
+            this.jobContext.notifyListeners(this, jobListener, TimingEvent.LauncherTimings.JOB_SUCCEEDED, new JobListenerAction() {
               @Override
               public void apply(JobListener jobListener, JobContext jobContext)
                   throws Exception {
@@ -848,7 +848,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
    * {@link JobListeners#parallelJobListener(List)} to create a {@link CloseableJobListener} that will execute all
    * the {@link JobListener}s in parallel.
    */
-  private CloseableJobListener getParallelCombinedJobListener(JobState jobState, JobListener jobListener) {
+  CloseableJobListener getParallelCombinedJobListener(JobState jobState, JobListener jobListener) {
     List<JobListener> jobListeners = Lists.newArrayList(this.mandatoryJobListeners);
     jobListeners.add(jobListener);
 
@@ -1021,23 +1021,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
     }
   }
 
-  private void notifyListeners(JobContext jobContext, JobListener jobListener, String timerEventName,
-      JobListenerAction action)
-      throws JobException {
-    TimingEvent timer = this.eventSubmitter.getTimingEvent(timerEventName);
-    try (CloseableJobListener parallelJobListener = getParallelCombinedJobListener(this.jobContext.getJobState(),
-        jobListener)) {
-      action.apply(parallelJobListener, jobContext);
-    } catch (Exception e) {
-      throw new JobException("Failed to execute all JobListeners", e);
-    } finally {
-      LOG.info("Submitting {}", timerEventName);
-      timer.stop(this.multiEventMetadataGenerator.getMetadata(this.jobContext,
-          EventName.getEnumFromEventId(timerEventName)));
-    }
-  }
-
-  private interface JobListenerAction {
+  interface JobListenerAction {
     void apply(JobListener jobListener, JobContext jobContext)
         throws Exception;
   }
