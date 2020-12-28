@@ -28,6 +28,6 @@ public class TaskStateCollectorServiceHiveRegHandlerFactory
     implements TaskStateCollectorServiceHandler.TaskStateCollectorServiceHandlerFactory {
   @Override
   public TaskStateCollectorServiceHandler createHandler(JobState jobState) {
-    return new HiveRegTaskStateCollectorServiceHandlerImpl(jobState);
-  }
+	return jobState.createHandler();
+}
 }
