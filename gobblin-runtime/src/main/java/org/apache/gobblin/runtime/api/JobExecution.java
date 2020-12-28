@@ -33,4 +33,17 @@ public interface JobExecution {
   long getLaunchTimeMillis();
   /** Unique (for the given JobExecutionLauncher) id for this execution */
   String getExecutionId();
+default void setStage(JobExecutionState jobExecutionState, String newStage) {
+    jobExecutionState.changeLock.lock();
+    try {
+      String oldStage = jobExecutionState.stage;
+      jobExecutionState.stage = newStage;
+      if (jobExecutionState.listener.isPresent()) {
+        jobExecutionState.listener.get().onStageTransition(jobExecutionState, oldStage, jobExecutionState.stage);
+      }
+    }
+    finally {
+      jobExecutionState.changeLock.unlock();
+    }
+  }
 }
