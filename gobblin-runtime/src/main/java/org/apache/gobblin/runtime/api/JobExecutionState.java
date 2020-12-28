@@ -72,7 +72,8 @@ public class JobExecutionState implements JobExecutionStatus {
         }
       };
 
-  @Getter private final JobExecution jobExecution;
+  @Getter
+public final JobExecution jobExecution;
   private final Optional<JobExecutionStateListener> listener;
   @Getter final JobSpec jobSpec;
   // We use a lock instead of synchronized so that we can add different conditional variables if
@@ -225,10 +226,6 @@ public class JobExecutionState implements JobExecutionStatus {
     finally {
       this.changeLock.unlock();
     }
-  }
-
-  public void awaitForDone(long timeoutMs) throws InterruptedException, TimeoutException {
-    awaitForStatePredicate(EXECUTION_DONE_PREDICATE, timeoutMs);
   }
 
   public void awaitForState(final RunningState targetState, long timeoutMs)

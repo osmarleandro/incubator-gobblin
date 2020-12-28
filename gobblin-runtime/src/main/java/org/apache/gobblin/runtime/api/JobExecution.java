@@ -17,6 +17,7 @@
 package org.apache.gobblin.runtime.api;
 
 import java.net.URI;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.gobblin.annotation.Alpha;
 
@@ -33,4 +34,7 @@ public interface JobExecution {
   long getLaunchTimeMillis();
   /** Unique (for the given JobExecutionLauncher) id for this execution */
   String getExecutionId();
+default void awaitForDone(JobExecutionState jobExecutionState, long timeoutMs) throws InterruptedException, TimeoutException {
+    jobExecutionState.awaitForStatePredicate(JobExecutionState.EXECUTION_DONE_PREDICATE, timeoutMs);
+  }
 }
