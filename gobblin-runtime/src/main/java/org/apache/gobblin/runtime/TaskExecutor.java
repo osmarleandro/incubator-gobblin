@@ -303,8 +303,8 @@ public class TaskExecutor extends AbstractIdleService {
   }
 
   public MetricSet getTaskExecutorQueueMetricSet() {
-    return this.metricSet;
-  }
+	return metricSet.getTaskExecutorQueueMetricSet(this);
+}
 
   private synchronized void calculateMetrics() {
     long currentTimeMillis = System.currentTimeMillis();
@@ -418,6 +418,10 @@ public class TaskExecutor extends AbstractIdleService {
       metrics.put(name("failed", "count"), failedTaskCount);
       return Collections.unmodifiableMap(metrics);
     }
+
+	public MetricSet getTaskExecutorQueueMetricSet(TaskExecutor taskExecutor) {
+	    return this;
+	  }
   }
 
   private class TrackingTask implements Runnable {
