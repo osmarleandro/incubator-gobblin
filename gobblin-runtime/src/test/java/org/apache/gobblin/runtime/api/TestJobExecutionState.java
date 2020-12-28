@@ -259,7 +259,7 @@ public class TestJobExecutionState {
     }
 
     Assert.assertTrue(doneDetectionThread.isAlive());
-    jes1.switchToFailed();
+    jes1.jobExecution.switchToFailed(jes1);
 
     doneDetectionThread.join(50);
     Assert.assertFalse(doneDetectionThread.isAlive());
