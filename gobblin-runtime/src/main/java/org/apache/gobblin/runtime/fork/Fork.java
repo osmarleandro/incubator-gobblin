@@ -153,7 +153,7 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
     this.executionModel = executionModel;
 
     this.converter =
-        this.closer.register(new MultiConverter(this.taskContext.getConverters(this.index, this.forkTaskState)));
+        this.closer.register(new MultiConverter(this.forkTaskState.getConverters(this.index, this.taskContext)));
     this.convertedSchema = Optional.fromNullable(this.converter.convertSchema(schema, this.taskState));
     this.rowLevelPolicyChecker = this.closer.register(this.taskContext.getRowLevelPolicyChecker(this.index));
     this.rowLevelPolicyCheckingResult = new RowLevelPolicyCheckResults();

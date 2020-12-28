@@ -20,6 +20,8 @@ package org.apache.gobblin.runtime;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.gobblin.runtime.job.TaskProgress;
@@ -30,8 +32,10 @@ import com.codahale.metrics.Gauge;
 import com.codahale.metrics.Meter;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.stream.JsonWriter;
 
@@ -46,6 +50,8 @@ import org.apache.gobblin.rest.TaskExecutionInfo;
 import org.apache.gobblin.rest.TaskStateEnum;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.WorkUnitState;
+import org.apache.gobblin.converter.Converter;
+import org.apache.gobblin.instrumented.converter.InstrumentedConverterDecorator;
 import org.apache.gobblin.runtime.util.MetricGroup;
 import org.apache.gobblin.runtime.util.TaskMetrics;
 import org.apache.gobblin.source.workunit.Extract;
@@ -462,5 +468,45 @@ public class TaskState extends WorkUnitState implements TaskProgress {
     taskExecutionInfo.setTaskProperties(new StringMap(taskProperties));
 
     return taskExecutionInfo;
+  }
+
+/**
+   * Get the list of post-fork {@link Converter}s for a given branch.
+   *
+   * @param index branch index
+ * @param taskContext TODO
+ * @return list (possibly empty) of {@link Converter}s
+   */
+  @SuppressWarnings("unchecked")
+  public List<Converter<?, ?, ?, ?>> getConverters(int index, TaskContext taskContext) {
+    String converterClassKey =
+        ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.CONVERTER_CLASSES_KEY, index);
+
+    if (!taskContext.taskState.contains(converterClassKey)) {
+      return Collections.emptyList();
+    }
+
+    if (index >= 0) {
+      setProp(ConfigurationKeys.FORK_BRANCH_ID_KEY, index);
+    }
+
+    List<Converter<?, ?, ?, ?>> converters = Lists.newArrayList();
+    for (String converterClass : Splitter.on(",").omitEmptyStrings().trimResults()
+        .split(taskContext.taskState.getProp(converterClassKey))) {
+      try {
+        Converter<?, ?, ?, ?> converter = Converter.class.cast(Class.forName(converterClass).newInstance());
+        InstrumentedConverterDecorator instrumentedConverter = new InstrumentedConverterDecorator<>(converter);
+        instrumentedConverter.init(this);
+        converters.add(instrumentedConverter);
+      } catch (ClassNotFoundException cnfe) {
+        throw new RuntimeException(cnfe);
+      } catch (InstantiationException ie) {
+        throw new RuntimeException(ie);
+      } catch (IllegalAccessException iae) {
+        throw new RuntimeException(iae);
+      }
+    }
+
+    return converters;
   }
 }

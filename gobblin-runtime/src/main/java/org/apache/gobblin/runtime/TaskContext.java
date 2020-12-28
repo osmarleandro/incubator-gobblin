@@ -64,7 +64,7 @@ import org.apache.gobblin.writer.WriterOutputFormat;
 @Slf4j
 public class TaskContext {
 
-  private final TaskState taskState;
+  final TaskState taskState;
   private final TaskMetrics taskMetrics;
   private Extractor rawSourceExtractor;
 
@@ -189,47 +189,7 @@ public class TaskContext {
    * @return list (possibly empty) of {@link Converter}s
    */
   public List<Converter<?, ?, ?, ?>> getConverters() {
-    return getConverters(-1, this.taskState);
-  }
-
-  /**
-   * Get the list of post-fork {@link Converter}s for a given branch.
-   *
-   * @param index branch index
-   * @param forkTaskState a {@link TaskState} instance specific to the fork identified by the branch index
-   * @return list (possibly empty) of {@link Converter}s
-   */
-  @SuppressWarnings("unchecked")
-  public List<Converter<?, ?, ?, ?>> getConverters(int index, TaskState forkTaskState) {
-    String converterClassKey =
-        ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.CONVERTER_CLASSES_KEY, index);
-
-    if (!this.taskState.contains(converterClassKey)) {
-      return Collections.emptyList();
-    }
-
-    if (index >= 0) {
-      forkTaskState.setProp(ConfigurationKeys.FORK_BRANCH_ID_KEY, index);
-    }
-
-    List<Converter<?, ?, ?, ?>> converters = Lists.newArrayList();
-    for (String converterClass : Splitter.on(",").omitEmptyStrings().trimResults()
-        .split(this.taskState.getProp(converterClassKey))) {
-      try {
-        Converter<?, ?, ?, ?> converter = Converter.class.cast(Class.forName(converterClass).newInstance());
-        InstrumentedConverterDecorator instrumentedConverter = new InstrumentedConverterDecorator<>(converter);
-        instrumentedConverter.init(forkTaskState);
-        converters.add(instrumentedConverter);
-      } catch (ClassNotFoundException cnfe) {
-        throw new RuntimeException(cnfe);
-      } catch (InstantiationException ie) {
-        throw new RuntimeException(ie);
-      } catch (IllegalAccessException iae) {
-        throw new RuntimeException(iae);
-      }
-    }
-
-    return converters;
+    return this.taskState.getConverters(-1, this);
   }
 
   /**
