@@ -359,13 +359,6 @@ public class EmbeddedGobblin {
   }
 
   /**
-   * Set the timeout for shutting down the Gobblin instance driver after the job is done from ISO-style period.
-   */
-  public EmbeddedGobblin setShutdownTimeout(String timeout) {
-    return setShutdownTimeout(Period.parse(timeout).getSeconds(), TimeUnit.SECONDS);
-  }
-
-  /**
    * Enable dumping jstack when error happens.
    */
   public EmbeddedGobblin setDumpJStackOnTimeout(boolean dumpJStackOnTimeout) {
@@ -594,6 +587,14 @@ public class EmbeddedGobblin {
   private static class FullTimeout {
     private final long timeout;
     private final TimeUnit timeUnit;
+	/**
+	   * Set the timeout for shutting down the Gobblin instance driver after the job is done from ISO-style period.
+	 * @param embeddedGobblin TODO
+	 * @param timeout TODO
+	   */
+	  public EmbeddedGobblin setShutdownTimeout(EmbeddedGobblin embeddedGobblin, String timeout) {
+	    return embeddedGobblin.setShutdownTimeout(Period.parse(timeout).getSeconds(), TimeUnit.SECONDS);
+	  }
   }
 
   @VisibleForTesting
