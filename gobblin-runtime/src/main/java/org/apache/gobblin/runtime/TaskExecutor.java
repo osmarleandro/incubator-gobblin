@@ -231,13 +231,8 @@ public class TaskExecutor extends AbstractIdleService {
   @Override
   protected void shutDown()
       throws Exception {
-    LOG.info("Stopping the task executor");
-    try {
-      ExecutorsUtils.shutdownExecutorService(this.taskExecutor, Optional.of(LOG));
-    } finally {
-      ExecutorsUtils.shutdownExecutorService(this.forkExecutor, Optional.of(LOG));
-    }
-  }
+		metricSet.shutDown(this);
+	}
 
   /**
    * Execute a {@link Task}.
@@ -418,6 +413,16 @@ public class TaskExecutor extends AbstractIdleService {
       metrics.put(name("failed", "count"), failedTaskCount);
       return Collections.unmodifiableMap(metrics);
     }
+
+	protected void shutDown(TaskExecutor taskExecutor)
+	      throws Exception {
+	    TaskExecutor.LOG.info("Stopping the task executor");
+	    try {
+	      ExecutorsUtils.shutdownExecutorService(taskExecutor.taskExecutor, Optional.of(TaskExecutor.LOG));
+	    } finally {
+	      ExecutorsUtils.shutdownExecutorService(taskExecutor.forkExecutor, Optional.of(TaskExecutor.LOG));
+	    }
+	  }
   }
 
   private class TrackingTask implements Runnable {
