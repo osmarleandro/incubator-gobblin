@@ -41,7 +41,7 @@ import org.apache.gobblin.util.ConfigUtils;
  * Subclasses should implement addSpecImpl instead of addSpec and so on.
  */
 public abstract class InstrumentedSpecStore implements SpecStore {
-  private Optional<Timer> getTimer;
+  Optional<Timer> getTimer;
   private Optional<Timer> existsTimer;
   private Optional<Timer> deleteTimer;
   private Optional<Timer> addTimer;
@@ -49,7 +49,7 @@ public abstract class InstrumentedSpecStore implements SpecStore {
   private Optional<Timer> getAllTimer;
   private Optional<Timer> getURIsTimer;
   private MetricContext metricContext;
-  private final boolean instrumentationEnabled;
+  final boolean instrumentationEnabled;
 
   public InstrumentedSpecStore(Config config, SpecSerDe specSerDe) {
     this.instrumentationEnabled = GobblinMetrics.isEnabled(new State(ConfigUtils.configToProperties(config)));
@@ -118,15 +118,8 @@ public abstract class InstrumentedSpecStore implements SpecStore {
 
   @Override
   public Collection<Spec> getSpecs(SpecSearchObject specSearchObject) throws IOException {
-    if (!instrumentationEnabled) {
-      return getSpecsImpl(specSearchObject);
-    } else {
-      long startTimeMillis = System.currentTimeMillis();
-      Collection<Spec> specs = getSpecsImpl(specSearchObject);
-      Instrumented.updateTimer(this.getTimer, System.currentTimeMillis() - startTimeMillis, TimeUnit.MILLISECONDS);
-      return specs;
-    }
-  }
+	return specSearchObject.getSpecs(this);
+}
 
   @Override
   public Spec updateSpec(Spec spec) throws IOException, SpecNotFoundException {

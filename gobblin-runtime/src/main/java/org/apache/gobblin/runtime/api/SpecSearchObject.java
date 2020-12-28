@@ -17,8 +17,25 @@
 
 package org.apache.gobblin.runtime.api;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.gobblin.instrumented.Instrumented;
+
 /**
  * This is an interface to package all the parameters that should be used to search {@link Spec} in a {@link SpecStore}
  */
 public interface SpecSearchObject {
+
+	default Collection<Spec> getSpecs(InstrumentedSpecStore instrumentedSpecStore) throws IOException {
+	    if (!instrumentedSpecStore.instrumentationEnabled) {
+	      return instrumentedSpecStore.getSpecsImpl(this);
+	    } else {
+	      long startTimeMillis = System.currentTimeMillis();
+	      Collection<Spec> specs = instrumentedSpecStore.getSpecsImpl(this);
+	      Instrumented.updateTimer(instrumentedSpecStore.getTimer, System.currentTimeMillis() - startTimeMillis, TimeUnit.MILLISECONDS);
+	      return specs;
+	    }
+	  }
 }
