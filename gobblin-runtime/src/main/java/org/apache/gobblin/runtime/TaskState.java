@@ -20,6 +20,8 @@ package org.apache.gobblin.runtime;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.gobblin.runtime.job.TaskProgress;
@@ -30,8 +32,10 @@ import com.codahale.metrics.Gauge;
 import com.codahale.metrics.Meter;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.stream.JsonWriter;
 
@@ -46,11 +50,14 @@ import org.apache.gobblin.rest.TaskExecutionInfo;
 import org.apache.gobblin.rest.TaskStateEnum;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.WorkUnitState;
+import org.apache.gobblin.converter.Converter;
+import org.apache.gobblin.instrumented.converter.InstrumentedConverterDecorator;
 import org.apache.gobblin.runtime.util.MetricGroup;
 import org.apache.gobblin.runtime.util.TaskMetrics;
 import org.apache.gobblin.source.workunit.Extract;
 import org.apache.gobblin.util.ForkOperatorUtils;
 import org.apache.gobblin.metrics.GobblinMetrics;
+import org.apache.gobblin.records.RecordStreamProcessor;
 
 import lombok.Getter;
 
@@ -462,5 +469,52 @@ public class TaskState extends WorkUnitState implements TaskProgress {
     taskExecutionInfo.setTaskProperties(new StringMap(taskProperties));
 
     return taskExecutionInfo;
+  }
+
+/**
+   * Get the list of post-fork {@link RecordStreamProcessor}s for a given branch.
+   *
+   * @param index branch index
+ * @param taskContext TODO
+ * @return list (possibly empty) of {@link RecordStreamProcessor}s
+   */
+  @SuppressWarnings("unchecked")
+  public List<RecordStreamProcessor<?, ?, ?, ?>> getRecordStreamProcessors(int index, TaskContext taskContext) {
+    String streamProcessorClassKey =
+        ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.RECORD_STREAM_PROCESSOR_CLASSES_KEY, index);
+
+    if (!taskContext.taskState.contains(streamProcessorClassKey)) {
+      return Collections.emptyList();
+    }
+
+    if (index >= 0) {
+      setProp(ConfigurationKeys.FORK_BRANCH_ID_KEY, index);
+    }
+
+    List<RecordStreamProcessor<?, ?, ?, ?>> streamProcessors = Lists.newArrayList();
+    for (String streamProcessorClass : Splitter.on(",").omitEmptyStrings().trimResults()
+        .split(taskContext.taskState.getProp(streamProcessorClassKey))) {
+      try {
+        RecordStreamProcessor<?, ?, ?, ?> streamProcessor =
+            RecordStreamProcessor.class.cast(Class.forName(streamProcessorClass).newInstance());
+
+        if (streamProcessor instanceof Converter) {
+          InstrumentedConverterDecorator instrumentedConverter =
+              new InstrumentedConverterDecorator<>((Converter)streamProcessor);
+          instrumentedConverter.init(this);
+          streamProcessors.add(instrumentedConverter);
+        } else {
+          streamProcessors.add(streamProcessor);
+        }
+      } catch (ClassNotFoundException cnfe) {
+        throw new RuntimeException(cnfe);
+      } catch (InstantiationException ie) {
+        throw new RuntimeException(ie);
+      } catch (IllegalAccessException iae) {
+        throw new RuntimeException(iae);
+      }
+    }
+
+    return streamProcessors;
   }
 }
