@@ -685,17 +685,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
    * @param workUnitStream stream of {@link WorkUnit}s of the job
    */
   protected void runWorkUnitStream(WorkUnitStream workUnitStream) throws Exception {
-    runWorkUnits(materializeWorkUnitList(workUnitStream));
-  }
-
-  /**
-   * Materialize a {@link WorkUnitStream} into an in-memory list. Note that infinite work unit streams cannot be materialized.
-   */
-  private List<WorkUnit> materializeWorkUnitList(WorkUnitStream workUnitStream) {
-    if (!workUnitStream.isFiniteStream()) {
-      throw new UnsupportedOperationException("Cannot materialize an infinite work unit stream.");
-    }
-    return Lists.newArrayList(workUnitStream.getWorkUnits());
+    runWorkUnits(workUnitStream.materializeWorkUnitList());
   }
 
   /**

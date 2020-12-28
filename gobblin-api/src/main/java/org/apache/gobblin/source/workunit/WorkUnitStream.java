@@ -69,4 +69,14 @@ public interface WorkUnitStream {
    * introduces a synchronization point for all work units, removing the speed and memory-efficiency benefits.
    */
   Collection<WorkUnit> getMaterializedWorkUnitCollection();
+
+/**
+   * Materialize a {@link WorkUnitStream} into an in-memory list. Note that infinite work unit streams cannot be materialized.
+   */
+  public default List<WorkUnit> materializeWorkUnitList() {
+    if (!isFiniteStream()) {
+      throw new UnsupportedOperationException("Cannot materialize an infinite work unit stream.");
+    }
+    return Lists.newArrayList(getWorkUnits());
+  }
 }
