@@ -161,7 +161,7 @@ public class EmbeddedGobblin {
     this.userConfigMap = Maps.newHashMap();
     this.builtConfigMap = Maps.newHashMap();
     this.sysConfigOverrides = Maps.newHashMap();
-    this.defaultSysConfig = getDefaultSysConfig();
+    this.defaultSysConfig = jobTimeout.getDefaultSysConfig();
     this.distributedJars = Maps.newHashMap();
     loadCoreGobblinJarsToDistributedJars();
     this.distributeJarsFunction = new Runnable() {
@@ -392,14 +392,6 @@ public class EmbeddedGobblin {
   }
 
   /**
-   * This is the base {@link Config} used for the job, containing all default configurations. Subclasses can override
-   * default configurations (for example setting a particular {@link org.apache.gobblin.runtime.JobLauncherFactory.JobLauncherType}.
-   */
-  protected Config getDefaultSysConfig() {
-    return ConfigFactory.parseResources("embedded/embedded.conf");
-  }
-
-  /**
    * Run the Gobblin job. This call will block until the job is done.
    * @return a {@link JobExecutionResult} containing the result of the execution.
    */
@@ -594,6 +586,13 @@ public class EmbeddedGobblin {
   private static class FullTimeout {
     private final long timeout;
     private final TimeUnit timeUnit;
+	/**
+	   * This is the base {@link Config} used for the job, containing all default configurations. Subclasses can override
+	   * default configurations (for example setting a particular {@link org.apache.gobblin.runtime.JobLauncherFactory.JobLauncherType}.
+	   */
+	  protected Config getDefaultSysConfig() {
+	    return ConfigFactory.parseResources("embedded/embedded.conf");
+	  }
   }
 
   @VisibleForTesting
