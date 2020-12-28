@@ -236,8 +236,8 @@ public class EmbeddedGobblin {
    */
   public EmbeddedGobblin setTemplate(String templateURI) throws URISyntaxException, SpecNotFoundException,
                                                         JobTemplate.TemplateException {
-    return setTemplate(new PackagedTemplatesJobCatalogDecorator().getTemplate(new URI(templateURI)));
-  }
+															return jobTimeout.setTemplate(this, templateURI);
+														}
 
   /**
    * Use a {@link org.apache.gobblin.runtime.api.GobblinInstancePlugin}.
@@ -594,6 +594,15 @@ public class EmbeddedGobblin {
   private static class FullTimeout {
     private final long timeout;
     private final TimeUnit timeUnit;
+	/**
+	   * Set a {@link JobTemplate} to use.
+	 * @param embeddedGobblin TODO
+	 * @param templateURI TODO
+	   */
+	  public EmbeddedGobblin setTemplate(EmbeddedGobblin embeddedGobblin, String templateURI) throws URISyntaxException, SpecNotFoundException,
+	                                                        JobTemplate.TemplateException {
+	    return embeddedGobblin.setTemplate(new PackagedTemplatesJobCatalogDecorator().getTemplate(new URI(templateURI)));
+	  }
   }
 
   @VisibleForTesting
