@@ -795,7 +795,16 @@ public class JobState extends SourceState implements JobProgress {
     return datasetState;
   }
 
-  public static List<WorkUnitState> workUnitStatesFromDatasetStates(Iterable<JobState.DatasetState> datasetStates) {
+  /**
+   * Subclasses can override this method to do whatever processing on the {@link JobState} and its
+   * associated {@link TaskState}s, e.g., aggregate task-level metrics into job-level metrics.
+ * @param abstractJobLauncher TODO
+   */
+  protected void postProcessJobState(AbstractJobLauncher abstractJobLauncher) {
+    abstractJobLauncher.postProcessTaskStates(getTaskStates());
+  }
+
+public static List<WorkUnitState> workUnitStatesFromDatasetStates(Iterable<JobState.DatasetState> datasetStates) {
     ImmutableList.Builder<WorkUnitState> taskStateBuilder = ImmutableList.builder();
     for (JobState datasetState : datasetStates) {
       taskStateBuilder.addAll(datasetState.getTaskStatesAsWorkUnitStates());

@@ -520,7 +520,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
           TimingEvent jobCommitTimer = this.eventSubmitter.getTimingEvent(TimingEvent.LauncherTimings.JOB_COMMIT);
           this.jobContext.finalizeJobStateBeforeCommit();
           this.jobContext.commit();
-          postProcessJobState(jobState);
+          jobState.postProcessJobState(this);
           jobCommitTimer.stop(this.multiEventMetadataGenerator.getMetadata(this.jobContext, EventName.JOB_COMMIT));
         } finally {
           long endTime = System.currentTimeMillis();
@@ -625,19 +625,11 @@ public abstract class AbstractJobLauncher implements JobLauncher {
    * Subclasses can override this method to do whatever processing on the {@link TaskState}s,
    * e.g., aggregate task-level metrics into job-level metrics.
    *
-   * @deprecated Use {@link #postProcessJobState(JobState)}
+   * @deprecated Use {@link #MISSING()}
    */
   @Deprecated
   protected void postProcessTaskStates(@SuppressWarnings("unused") List<TaskState> taskStates) {
     // Do nothing
-  }
-
-  /**
-   * Subclasses can override this method to do whatever processing on the {@link JobState} and its
-   * associated {@link TaskState}s, e.g., aggregate task-level metrics into job-level metrics.
-   */
-  protected void postProcessJobState(JobState jobState) {
-    postProcessTaskStates(jobState.getTaskStates());
   }
 
   @Override
