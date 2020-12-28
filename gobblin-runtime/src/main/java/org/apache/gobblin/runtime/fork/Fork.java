@@ -683,4 +683,19 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
     Preconditions.checkState(this.writer.isPresent(), "Asked to get a writer, but writer is null");
     return this.writer.get();
   }
+
+public void configureStreamingFork(Task task) throws IOException {
+    if (task.isStreamingTask()) {
+      DataWriter forkWriter = getWriter();
+      boolean isWaterMarkAwareWriter = (forkWriter instanceof WatermarkAwareWriter)
+          && ((WatermarkAwareWriter) forkWriter).isWatermarkCapable();
+
+      if (!isWaterMarkAwareWriter) {
+        String errorMessage = String.format("The Task is configured to run in continuous mode, "
+            + "but the writer %s is not a WatermarkAwareWriter", forkWriter.getClass().getName());
+        Task.LOG.error(errorMessage);
+        throw new RuntimeException(errorMessage);
+      }
+    }
+  }
 }

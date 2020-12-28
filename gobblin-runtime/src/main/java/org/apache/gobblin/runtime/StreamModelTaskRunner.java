@@ -146,7 +146,7 @@ public class StreamModelTaskRunner {
         Fork fork = new Fork(this.taskContext, forkedStream.getGlobalMetadata().getSchema(), forkedStreams.getForkedStreams().size(), fidx, this.taskMode);
         fork.consumeRecordStream(forkedStream);
         this.forks.put(Optional.of(fork), Optional.of(Futures.immediateFuture(null)));
-        this.task.configureStreamingFork(fork);
+        fork.configureStreamingFork(this.task);
       }
     }
 

@@ -89,10 +89,8 @@ import org.apache.gobblin.stream.RecordEnvelope;
 import org.apache.gobblin.util.ConfigUtils;
 import org.apache.gobblin.util.TaskEventMetadataUtils;
 import org.apache.gobblin.writer.AcknowledgableWatermark;
-import org.apache.gobblin.writer.DataWriter;
 import org.apache.gobblin.writer.FineGrainedWatermarkTracker;
 import org.apache.gobblin.writer.TrackerBasedWatermarkManager;
-import org.apache.gobblin.writer.WatermarkAwareWriter;
 import org.apache.gobblin.writer.WatermarkManager;
 import org.apache.gobblin.writer.WatermarkStorage;
 
@@ -128,7 +126,7 @@ import org.apache.gobblin.writer.WatermarkStorage;
 @NoArgsConstructor(force = true)
 public class Task implements TaskIFace {
 
-  private static final Logger LOG = LoggerFactory.getLogger(Task.class);
+  public static final Logger LOG = LoggerFactory.getLogger(Task.class);
 
   private static final String TASK_STATE = "taskState";
   private static final String FAILED_TASK_EVENT = "failedTask";
@@ -300,7 +298,7 @@ public class Task implements TaskIFace {
             .getProp(TaskConfigurationKeys.TASK_IS_SINGLE_BRANCH_SYNCHRONOUS, TaskConfigurationKeys.DEFAULT_TASK_IS_SINGLE_BRANCH_SYNCHRONOUS));
   }
 
-  protected boolean isStreamingTask() {
+  public boolean isStreamingTask() {
     return this.taskMode.equals(ExecutionModel.STREAMING);
   }
 
@@ -444,7 +442,7 @@ public class Task implements TaskIFace {
           AsynchronousFork fork = closer.register(
               new AsynchronousFork(this.taskContext, schema instanceof Copyable ? ((Copyable) schema).copy() : schema,
                   branches, i, this.taskMode));
-          configureStreamingFork(fork);
+          fork.configureStreamingFork(this);
           // Run the Fork
           this.forks.put(Optional.<Fork>of(fork), Optional.<Future<?>>of(this.taskExecutor.submit(fork)));
         } else {
@@ -455,7 +453,7 @@ public class Task implements TaskIFace {
       SynchronousFork fork = closer.register(
           new SynchronousFork(this.taskContext, schema instanceof Copyable ? ((Copyable) schema).copy() : schema,
               branches, 0, this.taskMode));
-      configureStreamingFork(fork);
+      fork.configureStreamingFork(this);
       this.forks.put(Optional.<Fork>of(fork), Optional.<Future<?>> of(this.taskExecutor.submit(fork)));
     }
 
@@ -538,21 +536,6 @@ public class Task implements TaskIFace {
         } catch (InterruptedException ie) {
           Thread.currentThread().interrupt();
         }
-      }
-    }
-  }
-
-  protected void configureStreamingFork(Fork fork) throws IOException {
-    if (isStreamingTask()) {
-      DataWriter forkWriter = fork.getWriter();
-      boolean isWaterMarkAwareWriter = (forkWriter instanceof WatermarkAwareWriter)
-          && ((WatermarkAwareWriter) forkWriter).isWatermarkCapable();
-
-      if (!isWaterMarkAwareWriter) {
-        String errorMessage = String.format("The Task is configured to run in continuous mode, "
-            + "but the writer %s is not a WatermarkAwareWriter", forkWriter.getClass().getName());
-        LOG.error(errorMessage);
-        throw new RuntimeException(errorMessage);
       }
     }
   }
