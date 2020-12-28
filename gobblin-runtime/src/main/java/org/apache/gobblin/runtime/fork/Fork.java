@@ -19,6 +19,7 @@ package org.apache.gobblin.runtime.fork;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
@@ -682,5 +683,16 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
   public DataWriter getWriter() throws IOException {
     Preconditions.checkState(this.writer.isPresent(), "Asked to get a writer, but writer is null");
     return this.writer.get();
+  }
+
+/**
+   * Submit a {@link Fork} to run.
+   *
+   * @param taskExecutor TODO
+ * @return a {@link java.util.concurrent.Future} for the submitted {@link Fork}
+   */
+  public Future<?> submit(TaskExecutor taskExecutor) {
+    TaskExecutor.LOG.info(String.format("Submitting fork %d of task %s", getIndex(), getTaskId()));
+    return taskExecutor.forkExecutor.submit(this);
   }
 }

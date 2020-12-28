@@ -446,7 +446,7 @@ public class Task implements TaskIFace {
                   branches, i, this.taskMode));
           configureStreamingFork(fork);
           // Run the Fork
-          this.forks.put(Optional.<Fork>of(fork), Optional.<Future<?>>of(this.taskExecutor.submit(fork)));
+          this.forks.put(Optional.<Fork>of(fork), Optional.<Future<?>>of(fork.submit(this.taskExecutor)));
         } else {
           this.forks.put(Optional.<Fork>absent(), Optional.<Future<?>> absent());
         }
@@ -456,7 +456,7 @@ public class Task implements TaskIFace {
           new SynchronousFork(this.taskContext, schema instanceof Copyable ? ((Copyable) schema).copy() : schema,
               branches, 0, this.taskMode));
       configureStreamingFork(fork);
-      this.forks.put(Optional.<Fork>of(fork), Optional.<Future<?>> of(this.taskExecutor.submit(fork)));
+      this.forks.put(Optional.<Fork>of(fork), Optional.<Future<?>> of(fork.submit(this.taskExecutor)));
     }
 
     LOG.info("Task mode streaming = " + isStreamingTask());
