@@ -97,7 +97,19 @@ public class GobblinMultiTaskAttempt {
     /**
      * Not committing {@link GobblinMultiTaskAttempt} but leaving it to user customized launcher.
      */
-    CUSTOMIZED
+    CUSTOMIZED;
+
+	public void runAndOptionallyCommitTaskAttempt(GobblinMultiTaskAttempt gobblinMultiTaskAttempt)
+	      throws IOException, InterruptedException {
+	    gobblinMultiTaskAttempt.run();
+	    if (equals(GobblinMultiTaskAttempt.CommitPolicy.IMMEDIATE)) {
+	      gobblinMultiTaskAttempt.log.info("Will commit tasks directly.");
+	      gobblinMultiTaskAttempt.commit();
+	    } else if (!gobblinMultiTaskAttempt.isSpeculativeExecutionSafe()) {
+	      throw new RuntimeException(
+	          "Speculative execution is enabled. However, the task context is not safe for speculative execution.");
+	    }
+	  }
   }
 
   private static final String TASK_STATE_STORE_SUCCESS_MARKER_SUFFIX = ".suc";
@@ -516,18 +528,6 @@ public class GobblinMultiTaskAttempt {
     }
   }
 
-  public void runAndOptionallyCommitTaskAttempt(CommitPolicy multiTaskAttemptCommitPolicy)
-      throws IOException, InterruptedException {
-    run();
-    if (multiTaskAttemptCommitPolicy.equals(GobblinMultiTaskAttempt.CommitPolicy.IMMEDIATE)) {
-      this.log.info("Will commit tasks directly.");
-      commit();
-    } else if (!isSpeculativeExecutionSafe()) {
-      throw new RuntimeException(
-          "Speculative execution is enabled. However, the task context is not safe for speculative execution.");
-    }
-  }
-
   /**
    * <p> During the task execution, the fork/task instances will create metric contexts (fork, task, job, container)
    * along the hierarchy up to the root metric context. Although root metric context has a weak reference to
@@ -560,7 +560,7 @@ public class GobblinMultiTaskAttempt {
         new GobblinMultiTaskAttempt(workUnits, jobContext.getJobId(), jobContext.getJobState(), taskStateTracker,
             taskExecutor, Optional.<String>absent(), Optional.<StateStore<TaskState>>absent(),
             jobContext.getJobBroker());
-    multiTaskAttempt.runAndOptionallyCommitTaskAttempt(multiTaskAttemptCommitPolicy);
+    multiTaskAttemptCommitPolicy.runAndOptionallyCommitTaskAttempt(multiTaskAttempt);
     return multiTaskAttempt;
   }
 
@@ -597,7 +597,7 @@ public class GobblinMultiTaskAttempt {
             Optional.of(containerId), Optional.of(taskStateStore), jobBroker);
     multiTaskAttempt.setInterruptionPredicate(interruptionPredicate);
 
-    multiTaskAttempt.runAndOptionallyCommitTaskAttempt(multiTaskAttemptCommitPolicy);
+    multiTaskAttemptCommitPolicy.runAndOptionallyCommitTaskAttempt(multiTaskAttempt);
     return multiTaskAttempt;
   }
 }
