@@ -360,7 +360,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
       if (workUnit.getPropAsBoolean(ConfigurationKeys.WORK_UNIT_SKIP_KEY, false)) {
         WorkUnitState workUnitState = new WorkUnitState(workUnit, this.jobState);
         workUnitState.setWorkingState(WorkUnitState.WorkingState.SKIPPED);
-        this.jobState.addSkippedTaskState(new TaskState(workUnitState));
+        new TaskState(workUnitState).addSkippedTaskState(this.jobState);
         return false;
       }
       return true;

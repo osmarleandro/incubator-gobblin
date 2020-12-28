@@ -136,7 +136,7 @@ public class JobState extends SourceState implements JobProgress {
   private int taskCount = 0;
   private final Map<String, TaskState> taskStates = Maps.newLinkedHashMap();
   // Skipped task states shouldn't be exposed to publisher, but they need to be in JobState and DatasetState so that they can be written to StateStore.
-  private final Map<String, TaskState> skippedTaskStates = Maps.newLinkedHashMap();
+  final Map<String, TaskState> skippedTaskStates = Maps.newLinkedHashMap();
   private DatasetStateStore datasetStateStore;
 
   // Necessary for serialization/deserialization
@@ -378,10 +378,6 @@ public class JobState extends SourceState implements JobProgress {
     this.taskStates.put(taskState.getTaskId(), taskState);
   }
 
-  public void addSkippedTaskState(TaskState taskState) {
-    this.skippedTaskStates.put(taskState.getTaskId(), taskState);
-  }
-
   public void removeTaskState(TaskState taskState) {
     this.taskStates.remove(taskState.getTaskId());
     this.taskCount--;
@@ -399,7 +395,7 @@ public class JobState extends SourceState implements JobProgress {
     }
     for (TaskState taskState : skippedTaskStates) {
       removeTaskState(taskState);
-      addSkippedTaskState(taskState);
+      taskState.addSkippedTaskState(this);
     }
   }
 
@@ -416,7 +412,7 @@ public class JobState extends SourceState implements JobProgress {
 
   public void addSkippedTaskStates(Collection<TaskState> taskStates) {
     for (TaskState taskState : taskStates) {
-      addSkippedTaskState(taskState);
+      taskState.addSkippedTaskState(this);
     }
   }
 
@@ -474,7 +470,7 @@ public class JobState extends SourceState implements JobProgress {
 
     for (TaskState taskState : this.skippedTaskStates.values()) {
       String datasetUrn = createDatasetUrn(datasetStatesByUrns, taskState);
-      datasetStatesByUrns.get(datasetUrn).addSkippedTaskState(taskState);
+      taskState.addSkippedTaskState(datasetStatesByUrns.get(datasetUrn));
     }
 
     return ImmutableMap.copyOf(datasetStatesByUrns);

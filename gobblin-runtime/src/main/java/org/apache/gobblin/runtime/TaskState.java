@@ -463,4 +463,8 @@ public class TaskState extends WorkUnitState implements TaskProgress {
 
     return taskExecutionInfo;
   }
+
+public void addSkippedTaskState(JobState jobState) {
+    jobState.skippedTaskStates.put(getTaskId(), this);
+  }
 }
