@@ -141,10 +141,6 @@ public class JobExecutionState implements JobExecutionStatus {
   }
 
 
-  public void setRunningState(JobState.RunningState runningState) {
-    doRunningStateChange(runningState);
-  }
-
   public void switchToPending() {
     doRunningStateChange(RunningState.PENDING);
   }
@@ -170,7 +166,7 @@ public class JobExecutionState implements JobExecutionStatus {
   }
 
   // This must be called only when holding changeLock
-  private void doRunningStateChange(RunningState newState) {
+  public void doRunningStateChange(RunningState newState) {
     RunningState oldState = null;
     JobExecutionStateListener stateListener = null;
     this.changeLock.lock();

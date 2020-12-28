@@ -183,7 +183,7 @@ public class TestJobExecutionState {
 
   private void assertFailedStateTransition(final JobExecutionState jes1, RunningState newState) {
     try {
-      jes1.setRunningState(newState);
+      newState.setRunningState(jes1);
       Assert.fail("Exception expected");
     }
     catch (IllegalStateException e) {
@@ -196,7 +196,7 @@ public class TestJobExecutionState {
       final RunningState fromState,  final RunningState toState,
       final Logger log) throws TimeoutException, InterruptedException {
 
-    jes1.setRunningState(toState);
+    toState.setRunningState(jes1);
     Assert.assertEquals(jes1.getRunningState(), toState);
     AssertWithBackoff.assertTrue(new Predicate<Void>() {
       @Override public boolean apply(Void input) {

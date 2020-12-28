@@ -58,6 +58,7 @@ import org.apache.gobblin.rest.Metric;
 import org.apache.gobblin.rest.MetricArray;
 import org.apache.gobblin.rest.MetricTypeEnum;
 import org.apache.gobblin.rest.TaskExecutionInfoArray;
+import org.apache.gobblin.runtime.api.JobExecutionState;
 import org.apache.gobblin.runtime.api.MonitoredObject;
 import org.apache.gobblin.runtime.util.JobMetrics;
 import org.apache.gobblin.runtime.util.MetricGroup;
@@ -125,6 +126,10 @@ public class JobState extends SourceState implements JobProgress {
     public boolean isRunningOrDone() {
       return isDone() || this.equals(RUNNING);
     }
+
+	public void setRunningState(JobExecutionState jobExecutionState) {
+	    jobExecutionState.doRunningStateChange(this);
+	  }
   }
 
   private String jobName;

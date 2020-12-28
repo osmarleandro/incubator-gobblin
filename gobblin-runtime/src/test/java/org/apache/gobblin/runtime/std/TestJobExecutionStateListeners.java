@@ -55,8 +55,8 @@ public class TestJobExecutionStateListeners {
 
     JobExecutionState state =
         new JobExecutionState(js1, je1, Optional.<JobExecutionStateListener>of(listeners));
-    state.setRunningState(RunningState.PENDING);
-    state.setRunningState(RunningState.RUNNING);
+    RunningState.PENDING.setRunningState(state);
+    RunningState.RUNNING.setRunningState(state);
 
     listeners.registerStateListener(l2);
     listeners.registerStateListener(l3);
