@@ -282,26 +282,6 @@ public class EmbeddedGobblin {
   }
 
   /**
-   * Load Kerberos keytab for authentication. Crendetials format "<login-user>:<keytab-file>".
-   */
-  @CliObjectOption(description = "Authenticate using kerberos. Format: \"<login-user>:<keytab-file>\".")
-  public EmbeddedGobblin kerberosAuthentication(String credentials) {
-    List<String> split = Splitter.on(":").splitToList(credentials);
-    if (split.size() != 2) {
-      throw new RuntimeException("Cannot parse " + credentials + ". Expected <login-user>:<keytab-file>");
-    }
-    try {
-      usePlugin(PluginStaticKeys.HADOOP_LOGIN_FROM_KEYTAB_ALIAS);
-    } catch (ReflectiveOperationException roe) {
-      throw new RuntimeException(String.format("Could not instantiate %s. Make sure gobblin-runtime-hadoop is in your classpath.",
-          PluginStaticKeys.HADOOP_LOGIN_FROM_KEYTAB_ALIAS), roe);
-    }
-    sysConfig(PluginStaticKeys.LOGIN_USER_FULL_KEY, split.get(0));
-    sysConfig(PluginStaticKeys.LOGIN_USER_KEYTAB_FILE_FULL_KEY, split.get(1));
-    return this;
-  }
-
-  /**
    * Manually set a key-value pair in the job configuration.
    */
   public EmbeddedGobblin setConfiguration(String key, String value) {
@@ -594,6 +574,27 @@ public class EmbeddedGobblin {
   private static class FullTimeout {
     private final long timeout;
     private final TimeUnit timeUnit;
+	/**
+	   * Load Kerberos keytab for authentication. Crendetials format "<login-user>:<keytab-file>".
+	 * @param embeddedGobblin TODO
+	 * @param credentials TODO
+	   */
+	  @CliObjectOption(description = "Authenticate using kerberos. Format: \"<login-user>:<keytab-file>\".")
+	  public EmbeddedGobblin kerberosAuthentication(EmbeddedGobblin embeddedGobblin, String credentials) {
+	    List<String> split = Splitter.on(":").splitToList(credentials);
+	    if (split.size() != 2) {
+	      throw new RuntimeException("Cannot parse " + credentials + ". Expected <login-user>:<keytab-file>");
+	    }
+	    try {
+	      embeddedGobblin.usePlugin(PluginStaticKeys.HADOOP_LOGIN_FROM_KEYTAB_ALIAS);
+	    } catch (ReflectiveOperationException roe) {
+	      throw new RuntimeException(String.format("Could not instantiate %s. Make sure gobblin-runtime-hadoop is in your classpath.",
+	          PluginStaticKeys.HADOOP_LOGIN_FROM_KEYTAB_ALIAS), roe);
+	    }
+	    embeddedGobblin.sysConfig(PluginStaticKeys.LOGIN_USER_FULL_KEY, split.get(0));
+	    embeddedGobblin.sysConfig(PluginStaticKeys.LOGIN_USER_KEYTAB_FILE_FULL_KEY, split.get(1));
+	    return embeddedGobblin;
+	  }
   }
 
   @VisibleForTesting
