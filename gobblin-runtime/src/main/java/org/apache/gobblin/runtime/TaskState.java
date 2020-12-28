@@ -22,6 +22,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Map;
 
+import org.apache.gobblin.runtime.JobState.DatasetState;
 import org.apache.gobblin.runtime.job.TaskProgress;
 import org.apache.hadoop.io.Text;
 
@@ -462,5 +463,15 @@ public class TaskState extends WorkUnitState implements TaskProgress {
     taskExecutionInfo.setTaskProperties(new StringMap(taskProperties));
 
     return taskExecutionInfo;
+  }
+
+String createDatasetUrn(Map<String, DatasetState> datasetStatesByUrns, JobState jobState) {
+    String datasetUrn = getProp(ConfigurationKeys.DATASET_URN_KEY, ConfigurationKeys.DEFAULT_DATASET_URN);
+    if (!datasetStatesByUrns.containsKey(datasetUrn)) {
+      DatasetState datasetState = jobState.newDatasetState(false);
+      datasetState.setDatasetUrn(datasetUrn);
+      datasetStatesByUrns.put(datasetUrn, datasetState);
+    }
+    return datasetUrn;
   }
 }
