@@ -310,17 +310,6 @@ public class EmbeddedGobblin {
   }
 
   /**
-   * Manually set a key-value pair in the job configuration. Input is of the form <key>:<value>
-   */
-  public EmbeddedGobblin setConfiguration(String keyValue) {
-    List<String> split = KEY_VALUE_SPLITTER.splitToList(keyValue);
-    if (split.size() != 2) {
-      throw new RuntimeException("Cannot parse " + keyValue + ". Expected <key>:<value>.");
-    }
-    return setConfiguration(split.get(0), split.get(1));
-  }
-
-  /**
    * Set the timeout for the Gobblin job execution.
    */
   public EmbeddedGobblin setJobTimeout(long timeout, TimeUnit timeUnit) {
@@ -594,6 +583,18 @@ public class EmbeddedGobblin {
   private static class FullTimeout {
     private final long timeout;
     private final TimeUnit timeUnit;
+	/**
+	   * Manually set a key-value pair in the job configuration. Input is of the form <key>:<value>
+	 * @param embeddedGobblin TODO
+	 * @param keyValue TODO
+	   */
+	  public EmbeddedGobblin setConfiguration(EmbeddedGobblin embeddedGobblin, String keyValue) {
+	    List<String> split = EmbeddedGobblin.KEY_VALUE_SPLITTER.splitToList(keyValue);
+	    if (split.size() != 2) {
+	      throw new RuntimeException("Cannot parse " + keyValue + ". Expected <key>:<value>.");
+	    }
+	    return embeddedGobblin.setConfiguration(split.get(0), split.get(1));
+	  }
   }
 
   @VisibleForTesting
