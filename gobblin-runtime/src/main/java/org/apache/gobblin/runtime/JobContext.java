@@ -41,8 +41,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.typesafe.config.Config;
 
 import org.apache.gobblin.broker.gobblin_scopes.GobblinScopeTypes;
@@ -55,7 +53,6 @@ import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.instrumented.Instrumented;
 import org.apache.gobblin.metastore.DatasetStateStore;
 import org.apache.gobblin.metastore.JobHistoryStore;
-import org.apache.gobblin.metastore.MetaStoreModule;
 import org.apache.gobblin.metrics.GobblinMetrics;
 import org.apache.gobblin.publisher.DataPublisher;
 import org.apache.gobblin.runtime.JobState.DatasetState;
@@ -206,15 +203,8 @@ public class JobContext implements Closeable {
   }
 
   protected Optional<JobHistoryStore> createJobHistoryStore(Properties jobProps) {
-    boolean jobHistoryStoreEnabled = Boolean
-        .valueOf(jobProps.getProperty(ConfigurationKeys.JOB_HISTORY_STORE_ENABLED_KEY, Boolean.FALSE.toString()));
-    if (jobHistoryStoreEnabled) {
-      Injector injector = Guice.createInjector(new MetaStoreModule(jobProps));
-      return Optional.of(injector.getInstance(JobHistoryStore.class));
-    } else {
-      return Optional.absent();
-    }
-  }
+	return datasetStateStore.createJobHistoryStore(jobProps);
+}
 
   protected Optional<CommitSequenceStore> createCommitSequenceStore()
       throws IOException {

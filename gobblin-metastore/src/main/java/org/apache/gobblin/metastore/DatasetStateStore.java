@@ -21,10 +21,14 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Strings;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.typesafe.config.Config;
 
 import org.apache.gobblin.configuration.ConfigurationKeys;
@@ -65,7 +69,18 @@ public interface DatasetStateStore<T extends State> extends StateStore<T> {
     return datasetURN;
   }
 
-  static String buildTableName(DatasetStateStore store, String storeName, String stateId, String datasetUrn) throws IOException {
+  public default Optional<JobHistoryStore> createJobHistoryStore(Properties jobProps) {
+    boolean jobHistoryStoreEnabled = Boolean
+        .valueOf(jobProps.getProperty(ConfigurationKeys.JOB_HISTORY_STORE_ENABLED_KEY, Boolean.FALSE.toString()));
+    if (jobHistoryStoreEnabled) {
+      Injector injector = Guice.createInjector(new MetaStoreModule(jobProps));
+      return Optional.of(injector.getInstance(JobHistoryStore.class));
+    } else {
+      return Optional.absent();
+    }
+  }
+
+static String buildTableName(DatasetStateStore store, String storeName, String stateId, String datasetUrn) throws IOException {
     return Strings.isNullOrEmpty(datasetUrn) ? stateId + DATASET_STATE_STORE_TABLE_SUFFIX
         : store.sanitizeDatasetStatestoreNameFromDatasetURN(storeName,datasetUrn) + "-" + stateId + DATASET_STATE_STORE_TABLE_SUFFIX;
   }
