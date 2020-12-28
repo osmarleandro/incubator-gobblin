@@ -72,7 +72,8 @@ public class JobExecutionState implements JobExecutionStatus {
         }
       };
 
-  @Getter private final JobExecution jobExecution;
+  @Getter
+public final JobExecution jobExecution;
   private final Optional<JobExecutionStateListener> listener;
   @Getter final JobSpec jobSpec;
   // We use a lock instead of synchronized so that we can add different conditional variables if
@@ -165,12 +166,8 @@ public class JobExecutionState implements JobExecutionStatus {
     doRunningStateChange(RunningState.COMMITTED);
   }
 
-  public void switchToCancelled() {
-    doRunningStateChange(RunningState.CANCELLED);
-  }
-
   // This must be called only when holding changeLock
-  private void doRunningStateChange(RunningState newState) {
+  void doRunningStateChange(RunningState newState) {
     RunningState oldState = null;
     JobExecutionStateListener stateListener = null;
     this.changeLock.lock();
