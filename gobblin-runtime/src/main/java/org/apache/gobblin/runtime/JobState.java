@@ -795,7 +795,11 @@ public class JobState extends SourceState implements JobProgress {
     return datasetState;
   }
 
-  public static List<WorkUnitState> workUnitStatesFromDatasetStates(Iterable<JobState.DatasetState> datasetStates) {
+  protected void runOneIteration(TaskStateCollectorService taskStateCollectorService) throws Exception {
+    taskStateCollectorService.collectOutputTaskStates();
+  }
+
+public static List<WorkUnitState> workUnitStatesFromDatasetStates(Iterable<JobState.DatasetState> datasetStates) {
     ImmutableList.Builder<WorkUnitState> taskStateBuilder = ImmutableList.builder();
     for (JobState datasetState : datasetStates) {
       taskStateBuilder.addAll(datasetState.getTaskStatesAsWorkUnitStates());
