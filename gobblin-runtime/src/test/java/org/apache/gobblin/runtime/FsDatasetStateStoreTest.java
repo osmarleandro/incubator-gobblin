@@ -89,7 +89,7 @@ public class FsDatasetStateStoreTest {
       taskState.setTaskId(TEST_TASK_ID_PREFIX + i);
       taskState.setId(TEST_TASK_ID_PREFIX + i);
       taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-      jobState.addTaskState(taskState);
+      taskState.addTaskState(jobState);
     }
 
     this.fsJobStateStore.put(TEST_JOB_NAME,
@@ -137,7 +137,7 @@ public class FsDatasetStateStoreTest {
       taskState.setTaskId(TEST_TASK_ID_PREFIX + i);
       taskState.setId(TEST_TASK_ID_PREFIX + i);
       taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-      datasetState.addTaskState(taskState);
+      taskState.addTaskState(datasetState);
     }
 
     this.fsDatasetStateStore.persistDatasetState(TEST_DATASET_URN, datasetState);
@@ -222,7 +222,7 @@ public class FsDatasetStateStoreTest {
     taskState.setJobId("job1_id2");
     taskState.setTaskId("task123");
     taskState.setProp("key", "value");
-    dataset2State.addTaskState(taskState);
+    taskState.addTaskState(dataset2State);
 
     store.persistDatasetState("dataset1", new JobState.DatasetState("job1", "job1_id1"));
     store.persistDatasetState("dataset1", new JobState.DatasetState("job1", "job1_id2"));

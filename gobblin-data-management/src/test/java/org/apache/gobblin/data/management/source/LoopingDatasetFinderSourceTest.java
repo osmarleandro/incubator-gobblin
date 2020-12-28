@@ -503,7 +503,7 @@ public class LoopingDatasetFinderSourceTest {
       if (i < datasets.size() - 1) {
         taskState.setActualHighWatermark(watermarks.get(i));
       }
-      datasetState.addTaskState(taskState);
+      taskState.addTaskState(datasetState);
 
       this.fsDatasetStateStore.persistDatasetState(datasetUrn, datasetState);
     }

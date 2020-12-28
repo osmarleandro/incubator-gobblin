@@ -101,7 +101,7 @@ public class ZkDatasetStateStoreTest {
       taskState.setTaskId(TEST_TASK_ID_PREFIX + i);
       taskState.setId(TEST_TASK_ID_PREFIX + i);
       taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-      jobState.addTaskState(taskState);
+      taskState.addTaskState(jobState);
     }
 
     zkJobStateStore.put(TEST_JOB_NAME,
@@ -156,7 +156,7 @@ public class ZkDatasetStateStoreTest {
       taskState.setTaskId(TEST_TASK_ID_PREFIX + i);
       taskState.setId(TEST_TASK_ID_PREFIX + i);
       taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-      datasetState.addTaskState(taskState);
+      taskState.addTaskState(datasetState);
     }
 
     zkDatasetStateStore.persistDatasetState(TEST_DATASET_URN, datasetState);

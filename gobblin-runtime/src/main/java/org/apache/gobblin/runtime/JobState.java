@@ -134,7 +134,7 @@ public class JobState extends SourceState implements JobProgress {
   private long duration = 0;
   private RunningState state = RunningState.PENDING;
   private int taskCount = 0;
-  private final Map<String, TaskState> taskStates = Maps.newLinkedHashMap();
+  final Map<String, TaskState> taskStates = Maps.newLinkedHashMap();
   // Skipped task states shouldn't be exposed to publisher, but they need to be in JobState and DatasetState so that they can be written to StateStore.
   private final Map<String, TaskState> skippedTaskStates = Maps.newLinkedHashMap();
   private DatasetStateStore datasetStateStore;
@@ -369,15 +369,6 @@ public class JobState extends SourceState implements JobProgress {
     this.taskCount++;
   }
 
-  /**
-   * Add a single {@link TaskState}.
-   *
-   * @param taskState {@link TaskState} to add
-   */
-  public void addTaskState(TaskState taskState) {
-    this.taskStates.put(taskState.getTaskId(), taskState);
-  }
-
   public void addSkippedTaskState(TaskState taskState) {
     this.skippedTaskStates.put(taskState.getTaskId(), taskState);
   }
@@ -469,7 +460,7 @@ public class JobState extends SourceState implements JobProgress {
       String datasetUrn = createDatasetUrn(datasetStatesByUrns, taskState);
 
       datasetStatesByUrns.get(datasetUrn).incrementTaskCount();
-      datasetStatesByUrns.get(datasetUrn).addTaskState(taskState);
+      taskState.addTaskState(datasetStatesByUrns.get(datasetUrn));
     }
 
     for (TaskState taskState : this.skippedTaskStates.values()) {

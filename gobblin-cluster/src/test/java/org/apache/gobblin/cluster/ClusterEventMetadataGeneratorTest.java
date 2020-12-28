@@ -51,8 +51,8 @@ public class ClusterEventMetadataGeneratorTest {
     taskState2.setTaskId("2");
     taskState2.setProp(ConfigurationKeys.WRITER_RECORDS_WRITTEN, "22");
 
-    jobState.addTaskState(taskState1);
-    jobState.addTaskState(taskState2);
+    taskState1.addTaskState(jobState);
+    taskState2.addTaskState(jobState);
 
     Mockito.when(jobContext.getJobState()).thenReturn(jobState);
 
@@ -82,8 +82,8 @@ public class ClusterEventMetadataGeneratorTest {
     taskState2.setProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY, "exception2");
     taskState2.setProp(EventMetadataUtils.TASK_FAILURE_MESSAGE_KEY, "failureMessage2");
 
-    jobState.addTaskState(taskState1);
-    jobState.addTaskState(taskState2);
+    taskState1.addTaskState(jobState);
+    taskState2.addTaskState(jobState);
 
     Mockito.when(jobContext.getJobState()).thenReturn(jobState);
 

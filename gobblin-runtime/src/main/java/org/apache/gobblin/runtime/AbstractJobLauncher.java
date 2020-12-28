@@ -477,7 +477,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
             @Override
             public void forWorkUnit(WorkUnit workUnit) {
               jobState.incrementTaskCount();
-              jobState.addTaskState(new TaskState(new WorkUnitState(workUnit, jobState)));
+              new TaskState(new WorkUnitState(workUnit, jobState)).addTaskState(jobState);
             }
           });
 

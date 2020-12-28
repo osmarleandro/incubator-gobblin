@@ -201,7 +201,7 @@ public class TaskStateCollectorService extends AbstractScheduledService {
     // returns to the launcher, it sees the TaskStates of all completed tasks.
     for (TaskState taskState : taskStateQueue) {
       taskState.setJobState(this.jobState);
-      this.jobState.addTaskState(taskState);
+      taskState.addTaskState(this.jobState);
     }
 
     // Finish any additional steps defined in handler on driver level.

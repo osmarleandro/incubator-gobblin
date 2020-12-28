@@ -463,4 +463,13 @@ public class TaskState extends WorkUnitState implements TaskProgress {
 
     return taskExecutionInfo;
   }
+
+/**
+   * Add a single {@link TaskState}.
+   *
+   * @param jobState TODO
+   */
+  public void addTaskState(JobState jobState) {
+    jobState.taskStates.put(getTaskId(), this);
+  }
 }

@@ -128,7 +128,7 @@ public class CleanableMysqlDatasetStoreDatasetTest {
       taskState.setTaskId(TEST_TASK_ID_PREFIX + i);
       taskState.setId(TEST_TASK_ID_PREFIX + i);
       taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-      jobState.addTaskState(taskState);
+      taskState.addTaskState(jobState);
     }
 
     // set old time to test that this state is deleted
@@ -193,7 +193,7 @@ public class CleanableMysqlDatasetStoreDatasetTest {
       taskState.setTaskId(TEST_TASK_ID_PREFIX + i);
       taskState.setId(TEST_TASK_ID_PREFIX + i);
       taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-      datasetState.addTaskState(taskState);
+      taskState.addTaskState(datasetState);
     }
 
     // set old time to test that this state is deleted
