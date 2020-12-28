@@ -24,12 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -78,7 +76,6 @@ import org.apache.gobblin.runtime.job_spec.JobSpecResolver;
 import org.apache.gobblin.runtime.listeners.CloseableJobListener;
 import org.apache.gobblin.runtime.listeners.JobExecutionEventSubmitterListener;
 import org.apache.gobblin.runtime.listeners.JobListener;
-import org.apache.gobblin.runtime.listeners.JobListeners;
 import org.apache.gobblin.runtime.locks.JobLock;
 import org.apache.gobblin.runtime.locks.JobLockEventListener;
 import org.apache.gobblin.runtime.locks.JobLockException;
@@ -163,7 +160,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
   protected final EventBus eventBus = new EventBus(AbstractJobLauncher.class.getSimpleName());
 
   // A list of JobListeners that will be injected into the user provided JobListener
-  private final List<JobListener> mandatoryJobListeners = Lists.newArrayList();
+  final List<JobListener> mandatoryJobListeners = Lists.newArrayList();
 
   // Used to generate additional metadata to emit in timing events
   private final MultiEventMetadataGenerator multiEventMetadataGenerator;
@@ -844,30 +841,6 @@ public abstract class AbstractJobLauncher implements JobLauncher {
   }
 
   /**
-   * Combines the specified {@link JobListener} with the {@link #mandatoryJobListeners} for this job. Uses
-   * {@link JobListeners#parallelJobListener(List)} to create a {@link CloseableJobListener} that will execute all
-   * the {@link JobListener}s in parallel.
-   */
-  private CloseableJobListener getParallelCombinedJobListener(JobState jobState, JobListener jobListener) {
-    List<JobListener> jobListeners = Lists.newArrayList(this.mandatoryJobListeners);
-    jobListeners.add(jobListener);
-
-    Set<String> jobListenerClassNames = jobState.getPropAsSet(ConfigurationKeys.JOB_LISTENERS_KEY, StringUtils.EMPTY);
-    for (String jobListenerClassName : jobListenerClassNames) {
-      try {
-        @SuppressWarnings("unchecked")
-        Class<? extends JobListener> jobListenerClass =
-            (Class<? extends JobListener>) Class.forName(jobListenerClassName);
-        jobListeners.add(jobListenerClass.newInstance());
-      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-        LOG.warn(String.format("JobListener could not be created due to %s", jobListenerClassName), e);
-      }
-    }
-
-    return JobListeners.parallelJobListener(jobListeners);
-  }
-
-  /**
    * Takes a {@link List} of {@link Tag}s and returns a new {@link List} with the original {@link Tag}s as well as any
    * additional {@link Tag}s returned by {@link ClusterNameTags#getClusterNameTags()}.
    *
@@ -1025,7 +998,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
       JobListenerAction action)
       throws JobException {
     TimingEvent timer = this.eventSubmitter.getTimingEvent(timerEventName);
-    try (CloseableJobListener parallelJobListener = getParallelCombinedJobListener(this.jobContext.getJobState(),
+    try (CloseableJobListener parallelJobListener = this.jobContext.getJobState().getParallelCombinedJobListener(this,
         jobListener)) {
       action.apply(parallelJobListener, jobContext);
     } catch (Exception e) {

@@ -26,10 +26,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.gobblin.metastore.DatasetStateStore;
 import org.apache.gobblin.runtime.job.JobProgress;
-
+import org.apache.gobblin.runtime.listeners.CloseableJobListener;
+import org.apache.gobblin.runtime.listeners.JobListener;
+import org.apache.gobblin.runtime.listeners.JobListeners;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.io.Text;
 
@@ -42,6 +45,7 @@ import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.stream.JsonWriter;
 import com.linkedin.data.template.StringMap;
@@ -795,7 +799,33 @@ public class JobState extends SourceState implements JobProgress {
     return datasetState;
   }
 
-  public static List<WorkUnitState> workUnitStatesFromDatasetStates(Iterable<JobState.DatasetState> datasetStates) {
+  /**
+   * Combines the specified {@link JobListener} with the {@link #mandatoryJobListeners} for this job. Uses
+   * {@link JobListeners#parallelJobListener(List)} to create a {@link CloseableJobListener} that will execute all
+   * the {@link JobListener}s in parallel.
+ * @param abstractJobLauncher TODO
+ * @param jobListener TODO
+   */
+  CloseableJobListener getParallelCombinedJobListener(AbstractJobLauncher abstractJobLauncher, JobListener jobListener) {
+    List<JobListener> jobListeners = Lists.newArrayList(abstractJobLauncher.mandatoryJobListeners);
+    jobListeners.add(jobListener);
+
+    Set<String> jobListenerClassNames = getPropAsSet(ConfigurationKeys.JOB_LISTENERS_KEY, org.apache.commons.lang.StringUtils.EMPTY);
+    for (String jobListenerClassName : jobListenerClassNames) {
+      try {
+        @SuppressWarnings("unchecked")
+        Class<? extends JobListener> jobListenerClass =
+            (Class<? extends JobListener>) Class.forName(jobListenerClassName);
+        jobListeners.add(jobListenerClass.newInstance());
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+        AbstractJobLauncher.LOG.warn(String.format("JobListener could not be created due to %s", jobListenerClassName), e);
+      }
+    }
+
+    return JobListeners.parallelJobListener(jobListeners);
+  }
+
+public static List<WorkUnitState> workUnitStatesFromDatasetStates(Iterable<JobState.DatasetState> datasetStates) {
     ImmutableList.Builder<WorkUnitState> taskStateBuilder = ImmutableList.builder();
     for (JobState datasetState : datasetStates) {
       taskStateBuilder.addAll(datasetState.getTaskStatesAsWorkUnitStates());
