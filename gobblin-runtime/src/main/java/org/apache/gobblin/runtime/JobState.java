@@ -888,5 +888,7 @@ public class JobState extends SourceState implements JobProgress {
       super.writeStateSummary(jsonWriter);
       jsonWriter.name("datasetUrn").value(getDatasetUrn());
     }
+
+	public void persistDatasetState(String datasetUrn) throws IOException {}
   }
 }
