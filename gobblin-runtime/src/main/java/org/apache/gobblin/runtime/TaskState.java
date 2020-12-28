@@ -463,4 +463,9 @@ public class TaskState extends WorkUnitState implements TaskProgress {
 
     return taskExecutionInfo;
   }
+
+public void removeTaskState(JobState jobState) {
+    jobState.taskStates.remove(getTaskId());
+    jobState.taskCount--;
+  }
 }

@@ -133,8 +133,8 @@ public class JobState extends SourceState implements JobProgress {
   private long endTime = 0;
   private long duration = 0;
   private RunningState state = RunningState.PENDING;
-  private int taskCount = 0;
-  private final Map<String, TaskState> taskStates = Maps.newLinkedHashMap();
+  int taskCount = 0;
+  final Map<String, TaskState> taskStates = Maps.newLinkedHashMap();
   // Skipped task states shouldn't be exposed to publisher, but they need to be in JobState and DatasetState so that they can be written to StateStore.
   private final Map<String, TaskState> skippedTaskStates = Maps.newLinkedHashMap();
   private DatasetStateStore datasetStateStore;
@@ -382,11 +382,6 @@ public class JobState extends SourceState implements JobProgress {
     this.skippedTaskStates.put(taskState.getTaskId(), taskState);
   }
 
-  public void removeTaskState(TaskState taskState) {
-    this.taskStates.remove(taskState.getTaskId());
-    this.taskCount--;
-  }
-
   /**
    * Filter the task states corresponding to the skipped work units and add it to the skippedTaskStates
    */
@@ -398,7 +393,7 @@ public class JobState extends SourceState implements JobProgress {
       }
     }
     for (TaskState taskState : skippedTaskStates) {
-      removeTaskState(taskState);
+      taskState.removeTaskState(this);
       addSkippedTaskState(taskState);
     }
   }
