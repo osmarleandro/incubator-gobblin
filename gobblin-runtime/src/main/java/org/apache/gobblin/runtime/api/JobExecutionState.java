@@ -16,7 +16,6 @@
  */
 package org.apache.gobblin.runtime.api;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -72,17 +71,18 @@ public class JobExecutionState implements JobExecutionStatus {
         }
       };
 
-  @Getter private final JobExecution jobExecution;
+  @Getter
+public final JobExecution jobExecution;
   private final Optional<JobExecutionStateListener> listener;
   @Getter final JobSpec jobSpec;
   // We use a lock instead of synchronized so that we can add different conditional variables if
   // needed.
-  private final Lock changeLock = new ReentrantLock();
+  final Lock changeLock = new ReentrantLock();
   private final Condition runningStateChanged = changeLock.newCondition();
   private JobState.RunningState runningState;
   /** Arbitrary execution stage, e.g. setup, workUnitGeneration, taskExecution, publishing */
   private String stage;
-  private Map<String, Object> executionMetadata;
+  Map<String, Object> executionMetadata;
 
   public JobExecutionState(JobSpec jobSpec, JobExecution jobExecution,
                            Optional<JobExecutionStateListener> listener) {
@@ -93,16 +93,6 @@ public class JobExecutionState implements JobExecutionStatus {
     this.listener = listener;
     // TODO default implementation
     this.executionMetadata = new HashMap<>();
-  }
-
-  public Map<String, Object> getExecutionMetadata() {
-    this.changeLock.lock();
-    try {
-      return Collections.unmodifiableMap(this.executionMetadata);
-    }
-    finally {
-      this.changeLock.unlock();
-    }
   }
 
   @Override public String toString() {

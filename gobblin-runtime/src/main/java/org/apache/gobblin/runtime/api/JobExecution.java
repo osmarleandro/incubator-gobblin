@@ -17,6 +17,8 @@
 package org.apache.gobblin.runtime.api;
 
 import java.net.URI;
+import java.util.Collections;
+import java.util.Map;
 
 import org.apache.gobblin.annotation.Alpha;
 
@@ -33,4 +35,13 @@ public interface JobExecution {
   long getLaunchTimeMillis();
   /** Unique (for the given JobExecutionLauncher) id for this execution */
   String getExecutionId();
+default Map<String, Object> getExecutionMetadata(JobExecutionState jobExecutionState) {
+    jobExecutionState.changeLock.lock();
+    try {
+      return Collections.unmodifiableMap(jobExecutionState.executionMetadata);
+    }
+    finally {
+      jobExecutionState.changeLock.unlock();
+    }
+  }
 }
