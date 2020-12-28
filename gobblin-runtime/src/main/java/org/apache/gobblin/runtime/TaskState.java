@@ -51,6 +51,8 @@ import org.apache.gobblin.runtime.util.TaskMetrics;
 import org.apache.gobblin.source.workunit.Extract;
 import org.apache.gobblin.util.ForkOperatorUtils;
 import org.apache.gobblin.metrics.GobblinMetrics;
+import org.apache.gobblin.qualitychecker.task.TaskLevelPolicyChecker;
+import org.apache.gobblin.qualitychecker.task.TaskLevelPolicyCheckerBuilderFactory;
 
 import lombok.Getter;
 
@@ -462,5 +464,17 @@ public class TaskState extends WorkUnitState implements TaskProgress {
     taskExecutionInfo.setTaskProperties(new StringMap(taskProperties));
 
     return taskExecutionInfo;
+  }
+
+/**
+   * Get a post-fork {@link TaskLevelPolicyChecker} for executing task-level
+   * {@link org.apache.gobblin.qualitychecker.task.TaskLevelPolicy} in the given branch.
+   *
+   * @param index branch index
+ * @return a {@link TaskLevelPolicyChecker}
+   * @throws Exception
+   */
+  public TaskLevelPolicyChecker getTaskLevelPolicyChecker(int index) throws Exception {
+    return TaskLevelPolicyCheckerBuilderFactory.newPolicyCheckerBuilder(this, index).build();
   }
 }

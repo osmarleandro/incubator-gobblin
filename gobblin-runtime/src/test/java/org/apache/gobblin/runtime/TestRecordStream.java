@@ -269,7 +269,7 @@ public class TestRecordStream {
     when(mockTaskContext.getForkOperator()).thenReturn(new IdentityForkOperator());
     when(mockTaskContext.getTaskState()).thenReturn(taskState);
     when(mockTaskContext.getConverters()).thenReturn(Lists.newArrayList(converter));
-    when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class), anyInt()))
+    when(any(TaskState.class).getTaskLevelPolicyChecker(anyInt()))
         .thenReturn(mock(TaskLevelPolicyChecker.class));
     when(mockTaskContext.getRowLevelPolicyChecker()).
         thenReturn(new RowLevelPolicyChecker(Lists.newArrayList(), "ss", FileSystem.getLocal(new Configuration())));
@@ -329,7 +329,7 @@ public class TestRecordStream {
     when(mockTaskContext.getTaskState()).thenReturn(taskState);
     when(mockTaskContext.getConverters()).thenReturn(converters);
     when(mockTaskContext.getRecordStreamProcessors()).thenReturn(recordStreamProcessors);
-    when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class), anyInt()))
+    when(any(TaskState.class).getTaskLevelPolicyChecker(anyInt()))
         .thenReturn(mock(TaskLevelPolicyChecker.class));
     when(mockTaskContext.getRowLevelPolicyChecker()).
         thenReturn(new RowLevelPolicyChecker(Lists.newArrayList(), "ss", FileSystem.getLocal(new Configuration())));

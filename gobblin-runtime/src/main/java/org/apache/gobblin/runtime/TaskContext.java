@@ -39,8 +39,6 @@ import org.apache.gobblin.publisher.TaskPublisherBuilderFactory;
 import org.apache.gobblin.qualitychecker.row.RowLevelPolicyChecker;
 import org.apache.gobblin.qualitychecker.row.RowLevelPolicyCheckerBuilderFactory;
 import org.apache.gobblin.qualitychecker.task.TaskLevelPolicyCheckResults;
-import org.apache.gobblin.qualitychecker.task.TaskLevelPolicyChecker;
-import org.apache.gobblin.qualitychecker.task.TaskLevelPolicyCheckerBuilderFactory;
 import org.apache.gobblin.records.RecordStreamProcessor;
 import org.apache.gobblin.runtime.util.TaskMetrics;
 import org.apache.gobblin.source.Source;
@@ -328,19 +326,6 @@ public class TaskContext {
    */
   public RowLevelPolicyChecker getRowLevelPolicyChecker(int index) throws Exception {
     return RowLevelPolicyCheckerBuilderFactory.newPolicyCheckerBuilder(this.taskState, index).build();
-  }
-
-  /**
-   * Get a post-fork {@link TaskLevelPolicyChecker} for executing task-level
-   * {@link org.apache.gobblin.qualitychecker.task.TaskLevelPolicy} in the given branch.
-   *
-   * @param taskState {@link TaskState} of a {@link Task}
-   * @param index branch index
-   * @return a {@link TaskLevelPolicyChecker}
-   * @throws Exception
-   */
-  public TaskLevelPolicyChecker getTaskLevelPolicyChecker(TaskState taskState, int index) throws Exception {
-    return TaskLevelPolicyCheckerBuilderFactory.newPolicyCheckerBuilder(taskState, index).build();
   }
 
   /**
