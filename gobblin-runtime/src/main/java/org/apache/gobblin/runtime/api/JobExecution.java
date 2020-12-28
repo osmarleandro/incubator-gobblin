@@ -19,6 +19,8 @@ package org.apache.gobblin.runtime.api;
 import java.net.URI;
 
 import org.apache.gobblin.annotation.Alpha;
+import org.apache.gobblin.runtime.JobState;
+import org.apache.gobblin.runtime.JobState.RunningState;
 
 /**
  * Identifies a specific execution of a {@link JobSpec}
@@ -33,4 +35,13 @@ public interface JobExecution {
   long getLaunchTimeMillis();
   /** Unique (for the given JobExecutionLauncher) id for this execution */
   String getExecutionId();
+default RunningState getRunningState(JobExecutionState jobExecutionState) {
+    jobExecutionState.changeLock.lock();
+    try {
+      return jobExecutionState.runningState;
+    }
+    finally {
+      jobExecutionState.changeLock.unlock();
+    }
+  }
 }

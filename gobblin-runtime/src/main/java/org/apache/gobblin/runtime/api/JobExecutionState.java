@@ -77,9 +77,9 @@ public class JobExecutionState implements JobExecutionStatus {
   @Getter final JobSpec jobSpec;
   // We use a lock instead of synchronized so that we can add different conditional variables if
   // needed.
-  private final Lock changeLock = new ReentrantLock();
+  final Lock changeLock = new ReentrantLock();
   private final Condition runningStateChanged = changeLock.newCondition();
-  private JobState.RunningState runningState;
+  JobState.RunningState runningState;
   /** Arbitrary execution stage, e.g. setup, workUnitGeneration, taskExecution, publishing */
   private String stage;
   private Map<String, Object> executionMetadata;
@@ -120,14 +120,8 @@ public class JobExecutionState implements JobExecutionStatus {
   }
 
   @Override public JobState.RunningState getRunningState() {
-    this.changeLock.lock();
-    try {
-      return this.runningState;
-    }
-    finally {
-      this.changeLock.unlock();
-    }
-  }
+	return jobExecution.getRunningState(this);
+}
 
   @Override
   public String getStage() {
@@ -244,7 +238,7 @@ public class JobExecutionState implements JobExecutionStatus {
   }
 
   /**
-   * Waits till a predicate on {@link #getRunningState()} becomes true or timeout is reached.
+   * Waits till a predicate on {@link #MISSING()} becomes true or timeout is reached.
    *
    * @param predicate               the predicate to evaluate. Note that even though the predicate
    *                                is applied on the entire object, it will be evaluated only when
