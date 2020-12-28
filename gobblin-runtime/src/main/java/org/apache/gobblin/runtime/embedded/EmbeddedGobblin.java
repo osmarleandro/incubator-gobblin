@@ -344,13 +344,6 @@ public class EmbeddedGobblin {
   }
 
   /**
-   * Set the timeout for launching the Gobblin job from ISO-style period.
-   */
-  public EmbeddedGobblin setLaunchTimeout(String timeout) {
-    return setLaunchTimeout(Period.parse(timeout).getSeconds(), TimeUnit.SECONDS);
-  }
-
-  /**
    * Set the timeout for shutting down the Gobblin instance driver after the job is done.
    */
   public EmbeddedGobblin setShutdownTimeout(long timeout, TimeUnit timeUnit) {
@@ -594,6 +587,14 @@ public class EmbeddedGobblin {
   private static class FullTimeout {
     private final long timeout;
     private final TimeUnit timeUnit;
+	/**
+	   * Set the timeout for launching the Gobblin job from ISO-style period.
+	 * @param embeddedGobblin TODO
+	 * @param timeout TODO
+	   */
+	  public EmbeddedGobblin setLaunchTimeout(EmbeddedGobblin embeddedGobblin, String timeout) {
+	    return embeddedGobblin.setLaunchTimeout(Period.parse(timeout).getSeconds(), TimeUnit.SECONDS);
+	  }
   }
 
   @VisibleForTesting
