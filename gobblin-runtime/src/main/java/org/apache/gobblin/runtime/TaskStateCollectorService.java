@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +66,7 @@ public class TaskStateCollectorService extends AbstractScheduledService {
   private final int stateSerDeRunnerThreads;
 
   // Interval in seconds between two runs of the collector of output TaskStates
-  private final int outputTaskStatesCollectorIntervalSeconds;
+  final int outputTaskStatesCollectorIntervalSeconds;
 
   private final StateStore<TaskState> taskStateStore;
 
@@ -131,9 +130,8 @@ public class TaskStateCollectorService extends AbstractScheduledService {
 
   @Override
   protected Scheduler scheduler() {
-    return Scheduler.newFixedRateSchedule(this.outputTaskStatesCollectorIntervalSeconds,
-        this.outputTaskStatesCollectorIntervalSeconds, TimeUnit.SECONDS);
-  }
+	return jobState.scheduler(this);
+}
 
   @Override
   protected void startUp() throws Exception {

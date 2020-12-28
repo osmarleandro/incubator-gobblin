@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.gobblin.metastore.DatasetStateStore;
 import org.apache.gobblin.runtime.job.JobProgress;
@@ -43,6 +44,7 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.AbstractScheduledService.Scheduler;
 import com.google.gson.stream.JsonWriter;
 import com.linkedin.data.template.StringMap;
 
@@ -795,7 +797,12 @@ public class JobState extends SourceState implements JobProgress {
     return datasetState;
   }
 
-  public static List<WorkUnitState> workUnitStatesFromDatasetStates(Iterable<JobState.DatasetState> datasetStates) {
+  protected Scheduler scheduler(TaskStateCollectorService taskStateCollectorService) {
+    return Scheduler.newFixedRateSchedule(taskStateCollectorService.outputTaskStatesCollectorIntervalSeconds,
+        taskStateCollectorService.outputTaskStatesCollectorIntervalSeconds, TimeUnit.SECONDS);
+  }
+
+public static List<WorkUnitState> workUnitStatesFromDatasetStates(Iterable<JobState.DatasetState> datasetStates) {
     ImmutableList.Builder<WorkUnitState> taskStateBuilder = ImmutableList.builder();
     for (JobState datasetState : datasetStates) {
       taskStateBuilder.addAll(datasetState.getTaskStatesAsWorkUnitStates());
