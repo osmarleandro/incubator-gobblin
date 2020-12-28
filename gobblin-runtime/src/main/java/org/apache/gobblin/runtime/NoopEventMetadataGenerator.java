@@ -19,8 +19,6 @@ package org.apache.gobblin.runtime;
 
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-
 import org.apache.gobblin.annotation.Alias;
 import org.apache.gobblin.metrics.event.EventName;
 import org.apache.gobblin.runtime.api.EventMetadataGenerator;
@@ -28,6 +26,6 @@ import org.apache.gobblin.runtime.api.EventMetadataGenerator;
 @Alias("noop")
 public class NoopEventMetadataGenerator implements EventMetadataGenerator{
   public Map<String, String> getMetadata(JobContext jobContext, EventName eventName) {
-    return ImmutableMap.of();
-  }
+	return jobContext.getMetadata(eventName);
+}
 }

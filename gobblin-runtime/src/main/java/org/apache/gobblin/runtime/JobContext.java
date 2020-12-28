@@ -57,6 +57,7 @@ import org.apache.gobblin.metastore.DatasetStateStore;
 import org.apache.gobblin.metastore.JobHistoryStore;
 import org.apache.gobblin.metastore.MetaStoreModule;
 import org.apache.gobblin.metrics.GobblinMetrics;
+import org.apache.gobblin.metrics.event.EventName;
 import org.apache.gobblin.publisher.DataPublisher;
 import org.apache.gobblin.runtime.JobState.DatasetState;
 import org.apache.gobblin.runtime.commit.FsCommitSequenceStore;
@@ -546,5 +547,9 @@ public class JobContext implements Closeable {
   public String toString() {
     return Objects.toStringHelper(JobContext.class.getSimpleName()).add("jobName", getJobName())
         .add("jobId", getJobId()).add("jobState", getJobState()).toString();
+  }
+
+public Map<String, String> getMetadata(EventName eventName) {
+    return ImmutableMap.of();
   }
 }
