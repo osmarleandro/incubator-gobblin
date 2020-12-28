@@ -249,7 +249,7 @@ public class TestJobExecutionState {
     }
 
     jes1.switchToPending();
-    jes1.switchToRunning();
+    jes1.jobExecution.switchToRunning(jes1);
 
     try {
       jes1.awaitForState(RunningState.RUNNING, 10);
