@@ -42,7 +42,6 @@ import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.instrumented.Instrumented;
 import org.apache.gobblin.metrics.MetricContext;
-import org.apache.gobblin.metrics.event.FailureEventBuilder;
 import org.apache.gobblin.metrics.event.lineage.LineageInfo;
 import org.apache.gobblin.publisher.CommitSequencePublisher;
 import org.apache.gobblin.publisher.DataPublisher;
@@ -65,8 +64,8 @@ final class SafeDatasetCommit implements Callable<Void> {
 
   private static final Object GLOBAL_LOCK = new Object();
 
-  private static final String DATASET_STATE = "datasetState";
-  private static final String FAILED_DATASET_EVENT = "failedDataset";
+  static final String DATASET_STATE = "datasetState";
+  static final String FAILED_DATASET_EVENT = "failedDataset";
 
   private final boolean shouldCommitDataInJob;
   private final boolean isJobCancelled;
@@ -76,7 +75,7 @@ final class SafeDatasetCommit implements Callable<Void> {
   private final boolean isMultithreaded;
   private final JobContext jobContext;
 
-  private MetricContext metricContext;
+  MetricContext metricContext;
 
   @Override
   public Void call()
@@ -106,7 +105,7 @@ final class SafeDatasetCommit implements Callable<Void> {
           this.jobContext.getJobId(), roe);
       throw new RuntimeException(roe);
     } finally {
-      maySubmitFailureEvent(datasetState);
+      datasetState.maySubmitFailureEvent(this);
     }
 
     if (this.isJobCancelled) {
@@ -180,7 +179,7 @@ final class SafeDatasetCommit implements Callable<Void> {
     } finally {
       try {
         finalizeDatasetState(datasetState, datasetUrn);
-        maySubmitFailureEvent(datasetState);
+        datasetState.maySubmitFailureEvent(this);
         maySubmitLineageEvent(datasetState);
         if (commitSequenceBuilder.isPresent()) {
           buildAndExecuteCommitSequence(commitSequenceBuilder.get(), datasetState, datasetUrn);
@@ -197,14 +196,6 @@ final class SafeDatasetCommit implements Callable<Void> {
       }
     }
     return null;
-  }
-
-  private void maySubmitFailureEvent(JobState.DatasetState datasetState) {
-    if (datasetState.getState() == JobState.RunningState.FAILED) {
-      FailureEventBuilder failureEvent = new FailureEventBuilder(FAILED_DATASET_EVENT);
-      failureEvent.addMetadata(DATASET_STATE, datasetState.toString());
-      failureEvent.submit(metricContext);
-    }
   }
 
   private void maySubmitLineageEvent(JobState.DatasetState datasetState) {

@@ -51,6 +51,7 @@ import org.apache.gobblin.configuration.SourceState;
 import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.metrics.GobblinMetrics;
+import org.apache.gobblin.metrics.event.FailureEventBuilder;
 import org.apache.gobblin.rest.JobExecutionInfo;
 import org.apache.gobblin.rest.JobStateEnum;
 import org.apache.gobblin.rest.LauncherTypeEnum;
@@ -888,5 +889,13 @@ public class JobState extends SourceState implements JobProgress {
       super.writeStateSummary(jsonWriter);
       jsonWriter.name("datasetUrn").value(getDatasetUrn());
     }
+
+	void maySubmitFailureEvent(SafeDatasetCommit safeDatasetCommit) {
+	    if (getState() == JobState.RunningState.FAILED) {
+	      FailureEventBuilder failureEvent = new FailureEventBuilder(SafeDatasetCommit.FAILED_DATASET_EVENT);
+	      failureEvent.addMetadata(SafeDatasetCommit.DATASET_STATE, toString());
+	      failureEvent.submit(safeDatasetCommit.metricContext);
+	    }
+	  }
   }
 }
