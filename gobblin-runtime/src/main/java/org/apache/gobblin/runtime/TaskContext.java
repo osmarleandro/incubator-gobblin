@@ -27,6 +27,7 @@ import com.google.common.collect.Lists;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.converter.Converter;
@@ -387,5 +388,10 @@ public class TaskContext {
 
   public WatermarkStorage getWatermarkStorage() {
     return new StateStoreBasedWatermarkStorage(taskState);
+  }
+
+protected boolean areSingleBranchTasksSynchronous() {
+    return BooleanUtils.toBoolean(getTaskState()
+            .getProp(TaskConfigurationKeys.TASK_IS_SINGLE_BRANCH_SYNCHRONOUS, TaskConfigurationKeys.DEFAULT_TASK_IS_SINGLE_BRANCH_SYNCHRONOUS));
   }
 }

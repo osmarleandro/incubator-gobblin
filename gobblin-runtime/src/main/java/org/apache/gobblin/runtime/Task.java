@@ -31,7 +31,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -295,11 +294,6 @@ public class Task implements TaskIFace {
     }
   }
 
-  protected boolean areSingleBranchTasksSynchronous(TaskContext taskContext) {
-    return BooleanUtils.toBoolean(taskContext.getTaskState()
-            .getProp(TaskConfigurationKeys.TASK_IS_SINGLE_BRANCH_SYNCHRONOUS, TaskConfigurationKeys.DEFAULT_TASK_IS_SINGLE_BRANCH_SYNCHRONOUS));
-  }
-
   protected boolean isStreamingTask() {
     return this.taskMode.equals(ExecutionModel.STREAMING);
   }
@@ -437,7 +431,7 @@ public class Task implements TaskIFace {
 
     RowLevelPolicyCheckResults rowResults = new RowLevelPolicyCheckResults();
 
-    if (!areSingleBranchTasksSynchronous(this.taskContext) || branches > 1) {
+    if (!this.taskContext.areSingleBranchTasksSynchronous() || branches > 1) {
       // Create one fork for each forked branch
       for (int i = 0; i < branches; i++) {
         if (forkedSchemas.get(i)) {

@@ -133,7 +133,7 @@ public class StreamModelTaskRunner {
 
     Forker.ForkedStream<?, ?> forkedStreams = new Forker().forkStream(stream, forkOperator, this.taskState);
 
-    boolean isForkAsync = !this.task.areSingleBranchTasksSynchronous(this.taskContext) || forkedStreams.getForkedStreams().size() > 1;
+    boolean isForkAsync = !this.taskContext.areSingleBranchTasksSynchronous() || forkedStreams.getForkedStreams().size() > 1;
     int bufferSize =
         this.taskState.getPropAsInt(ConfigurationKeys.FORK_RECORD_QUEUE_CAPACITY_KEY, ConfigurationKeys.DEFAULT_FORK_RECORD_QUEUE_CAPACITY);
 
