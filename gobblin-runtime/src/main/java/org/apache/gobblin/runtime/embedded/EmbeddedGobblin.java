@@ -374,15 +374,6 @@ public class EmbeddedGobblin {
   }
 
   /**
-   * Enable state store.
-   */
-  public EmbeddedGobblin useStateStore(String rootDir) {
-    this.setConfiguration(ConfigurationKeys.STATE_STORE_ENABLED, "true");
-    this.setConfiguration(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY, rootDir);
-    return this;
-  }
-
-  /**
    * Enable metrics. Does not start any reporters.
    */
   public EmbeddedGobblin enableMetrics() {
@@ -594,6 +585,16 @@ public class EmbeddedGobblin {
   private static class FullTimeout {
     private final long timeout;
     private final TimeUnit timeUnit;
+	/**
+	   * Enable state store.
+	 * @param embeddedGobblin TODO
+	 * @param rootDir TODO
+	   */
+	  public EmbeddedGobblin useStateStore(EmbeddedGobblin embeddedGobblin, String rootDir) {
+	    embeddedGobblin.setConfiguration(ConfigurationKeys.STATE_STORE_ENABLED, "true");
+	    embeddedGobblin.setConfiguration(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY, rootDir);
+	    return embeddedGobblin;
+	  }
   }
 
   @VisibleForTesting
