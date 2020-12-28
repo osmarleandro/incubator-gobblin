@@ -17,8 +17,13 @@
 package org.apache.gobblin.runtime.api;
 
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.gobblin.annotation.Alpha;
+
+import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
 
 /**
  * Identifies a specific execution of a {@link JobSpec}
@@ -33,4 +38,43 @@ public interface JobExecution {
   long getLaunchTimeMillis();
   /** Unique (for the given JobExecutionLauncher) id for this execution */
   String getExecutionId();
+/**
+   * Waits till a predicate on {@link #getRunningState()} becomes true or timeout is reached.
+   *
+   * @param jobExecutionState TODO
+ * @param predicate               the predicate to evaluate. Note that even though the predicate
+   *                                is applied on the entire object, it will be evaluated only when
+   *                                the running state changes.
+ * @param timeoutMs               the number of milliseconds to wait for the predicate to become
+   *                                true; 0 means wait forever.
+ * @throws InterruptedException   if the waiting was interrupted
+   * @throws TimeoutException       if we reached the timeout before the predicate was satisfied.
+   */
+  default void awaitForStatePredicate(JobExecutionState jobExecutionState, Predicate<JobExecutionState> predicate, long timeoutMs)
+         throws InterruptedException, TimeoutException {
+    Preconditions.checkArgument(timeoutMs >= 0);
+    if (0 == timeoutMs) {
+      timeoutMs = Long.MAX_VALUE;
+    }
+
+    long startTimeMs = System.currentTimeMillis();
+    long millisRemaining = timeoutMs;
+    jobExecutionState.changeLock.lock();
+    try {
+      while (!predicate.apply(jobExecutionState) && millisRemaining > 0) {
+        if (!jobExecutionState.runningStateChanged.await(millisRemaining, TimeUnit.MILLISECONDS)) {
+          // Not necessary but shuts up FindBugs RV_RETURN_VALUE_IGNORED_BAD_PRACTICE
+          break;
+        }
+        millisRemaining = timeoutMs - (System.currentTimeMillis() - startTimeMs);
+      }
+
+      if (!predicate.apply(jobExecutionState)) {
+        throw new TimeoutException("Timeout waiting for state predicate: " + predicate);
+      }
+    }
+    finally {
+      jobExecutionState.changeLock.unlock();
+    }
+  }
 }
