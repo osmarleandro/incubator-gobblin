@@ -219,14 +219,8 @@ public class TaskExecutor extends AbstractIdleService {
   @Override
   protected void startUp()
       throws Exception {
-    LOG.info("Starting the task executor");
-    if (this.taskExecutor.isShutdown() || this.taskExecutor.isTerminated()) {
-      throw new IllegalStateException("Task thread pool executor is shutdown or terminated");
-    }
-    if (this.forkExecutor.isShutdown() || this.forkExecutor.isTerminated()) {
-      throw new IllegalStateException("Fork thread pool executor is shutdown or terminated");
-    }
-  }
+		metricSet.startUp(this);
+	}
 
   @Override
   protected void shutDown()
@@ -418,6 +412,17 @@ public class TaskExecutor extends AbstractIdleService {
       metrics.put(name("failed", "count"), failedTaskCount);
       return Collections.unmodifiableMap(metrics);
     }
+
+	protected void startUp(TaskExecutor taskExecutor)
+	      throws Exception {
+	    TaskExecutor.LOG.info("Starting the task executor");
+	    if (taskExecutor.taskExecutor.isShutdown() || taskExecutor.taskExecutor.isTerminated()) {
+	      throw new IllegalStateException("Task thread pool executor is shutdown or terminated");
+	    }
+	    if (taskExecutor.forkExecutor.isShutdown() || taskExecutor.forkExecutor.isTerminated()) {
+	      throw new IllegalStateException("Fork thread pool executor is shutdown or terminated");
+	    }
+	  }
   }
 
   private class TrackingTask implements Runnable {
