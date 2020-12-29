@@ -18,14 +18,23 @@
 package org.apache.gobblin.runtime.job;
 
 import java.io.IOException;
+import java.util.List;
 
+import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.fsm.FiniteStateMachine;
 import org.apache.gobblin.fsm.StateWithCallbacks;
 import org.apache.gobblin.runtime.JobState;
+import org.apache.gobblin.runtime.mapreduce.MRJobLauncher;
+import org.apache.gobblin.source.workunit.MultiWorkUnit;
+import org.apache.gobblin.source.workunit.WorkUnit;
+import org.apache.gobblin.util.JobLauncherUtils;
+import org.apache.gobblin.util.ParallelRunner;
+import org.apache.hadoop.fs.Path;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
+import com.google.common.io.Closer;
 
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -166,6 +175,42 @@ public class GobblinJobFiniteStateMachine extends FiniteStateMachine<GobblinJobF
 			}
 		}
 	}
+
+	/**
+	   * Prepare the job input.
+	   * @param mrJobLauncher TODO
+	 * @param workUnits TODO
+	 * @throws IOException
+	   */
+	  public void prepareJobInput(MRJobLauncher mrJobLauncher, List<WorkUnit> workUnits) throws IOException {
+	    Closer closer = Closer.create();
+	    try {
+	      ParallelRunner parallelRunner = closer.register(new ParallelRunner(mrJobLauncher.parallelRunnerThreads, mrJobLauncher.fs));
+	
+	      int multiTaskIdSequence = 0;
+	      // Serialize each work unit into a file named after the task ID
+	      for (WorkUnit workUnit : workUnits) {
+	
+	        String workUnitFileName;
+	        if (workUnit instanceof MultiWorkUnit) {
+	          workUnitFileName = JobLauncherUtils.newMultiTaskId(mrJobLauncher.jobContext.getJobId(), multiTaskIdSequence++)
+	              + MRJobLauncher.MULTI_WORK_UNIT_FILE_EXTENSION;
+	        } else {
+	          workUnitFileName = workUnit.getProp(ConfigurationKeys.TASK_ID_KEY) + MRJobLauncher.WORK_UNIT_FILE_EXTENSION;
+	        }
+	        Path workUnitFile = new Path(mrJobLauncher.jobInputPath, workUnitFileName);
+	        MRJobLauncher.LOG.debug("Writing work unit file " + workUnitFileName);
+	
+	        parallelRunner.serializeToFile(workUnit, workUnitFile);
+	
+	        // Append the work unit file path to the job input file
+	      }
+	    } catch (Throwable t) {
+	      throw closer.rethrow(t);
+	    } finally {
+	      closer.close();
+	    }
+	  }
 
 	private static SetMultimap<JobFSMState, JobFSMState> buildAllowedTransitions() {
 		SetMultimap<JobFSMState, JobFSMState> transitions = HashMultimap.create();

@@ -132,7 +132,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
   protected final Properties jobProps;
 
   // This contains all job context information
-  protected final JobContext jobContext;
+  public final JobContext jobContext;
 
   // This (optional) JobLock is used to prevent the next scheduled run
   // of the job from starting if the current run has not finished yet

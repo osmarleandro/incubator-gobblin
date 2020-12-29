@@ -130,7 +130,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
   private static final String INTERRUPT_JOB_FILE_NAME = "_INTERRUPT_JOB";
   private static final String GOBBLIN_JOB_INTERRUPT_PATH_KEY = "gobblin.jobInterruptPath";
 
-  private static final Logger LOG = LoggerFactory.getLogger(MRJobLauncher.class);
+  public static final Logger LOG = LoggerFactory.getLogger(MRJobLauncher.class);
 
   private static final String JOB_NAME_PREFIX = "Gobblin-";
 
@@ -160,16 +160,16 @@ public class MRJobLauncher extends AbstractJobLauncher {
   private static final Splitter SPLITTER = Splitter.on(',').omitEmptyStrings().trimResults();
 
   private final Configuration conf;
-  private final FileSystem fs;
+  public final FileSystem fs;
   private final Job job;
   private final Path mrJobDir;
   private final Path jarsDir;
   /** A location to store jars that should not be shared between different jobs. */
   private final Path unsharedJarsDir;
-  private final Path jobInputPath;
+  public final Path jobInputPath;
   private final Path jobOutputPath;
 
-  private final int parallelRunnerThreads;
+  public final int parallelRunnerThreads;
 
   private final TaskStateCollectorService taskStateCollectorService;
 
@@ -473,7 +473,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
     // Job input path is where input work unit files are stored
 
     // Prepare job input
-    prepareJobInput(workUnits);
+    fsm.prepareJobInput(this, workUnits);
     FileInputFormat.addInputPath(this.job, this.jobInputPath);
 
     // Job output path is where serialized task states are stored
@@ -625,40 +625,6 @@ public class MRJobLauncher extends AbstractJobLauncher {
           DistributedCache.addFileToClassPath(path, conf, this.fs);
         }
       }
-    }
-  }
-
-  /**
-   * Prepare the job input.
-   * @throws IOException
-   */
-  private void prepareJobInput(List<WorkUnit> workUnits) throws IOException {
-    Closer closer = Closer.create();
-    try {
-      ParallelRunner parallelRunner = closer.register(new ParallelRunner(this.parallelRunnerThreads, this.fs));
-
-      int multiTaskIdSequence = 0;
-      // Serialize each work unit into a file named after the task ID
-      for (WorkUnit workUnit : workUnits) {
-
-        String workUnitFileName;
-        if (workUnit instanceof MultiWorkUnit) {
-          workUnitFileName = JobLauncherUtils.newMultiTaskId(this.jobContext.getJobId(), multiTaskIdSequence++)
-              + MULTI_WORK_UNIT_FILE_EXTENSION;
-        } else {
-          workUnitFileName = workUnit.getProp(ConfigurationKeys.TASK_ID_KEY) + WORK_UNIT_FILE_EXTENSION;
-        }
-        Path workUnitFile = new Path(this.jobInputPath, workUnitFileName);
-        LOG.debug("Writing work unit file " + workUnitFileName);
-
-        parallelRunner.serializeToFile(workUnit, workUnitFile);
-
-        // Append the work unit file path to the job input file
-      }
-    } catch (Throwable t) {
-      throw closer.rethrow(t);
-    } finally {
-      closer.close();
     }
   }
 
