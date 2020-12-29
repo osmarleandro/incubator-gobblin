@@ -174,6 +174,6 @@ public abstract class InstrumentedSpecStore implements SpecStore {
 
   /** child classes can implement this if they want to get specs using {@link SpecSearchObject} */
   public Collection<Spec> getSpecsImpl(SpecSearchObject specUri) throws IOException {
-    throw new UnsupportedOperationException();
-  }
+	return specUri.getSpecsImpl();
+}
 }

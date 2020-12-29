@@ -17,8 +17,16 @@
 
 package org.apache.gobblin.runtime.api;
 
+import java.io.IOException;
+import java.util.Collection;
+
 /**
  * This is an interface to package all the parameters that should be used to search {@link Spec} in a {@link SpecStore}
  */
 public interface SpecSearchObject {
+
+	/** child classes can implement this if they want to get specs using {@link SpecSearchObject} */
+	  default Collection<Spec> getSpecsImpl() throws IOException {
+	    throw new UnsupportedOperationException();
+	  }
 }
