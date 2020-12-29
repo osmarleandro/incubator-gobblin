@@ -78,7 +78,7 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
   protected final MetricContext _metricCtx;
   protected JobSpecListener _jobSpecListener;
   private final StandardMetrics _metrics;
-  private final SharedResourcesBroker<GobblinScopeTypes> _instanceBroker;
+  public final SharedResourcesBroker<GobblinScopeTypes> _instanceBroker;
 
   public DefaultGobblinInstanceDriverImpl(String instanceName,
       Configurable sysConfig, JobCatalog jobCatalog,
@@ -141,8 +141,8 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
 
   /** {@inheritDoc} */
   @Override public SharedResourcesBroker<GobblinScopeTypes> getInstanceBroker() {
-    return _instanceBroker;
-  }
+	return _callbacksDispatcher.getInstanceBroker(this);
+}
 
   /** {@inheritDoc} */
   @Override public Logger getLog() {
