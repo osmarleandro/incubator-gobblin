@@ -21,6 +21,11 @@ import java.util.Properties;
 import com.typesafe.config.Config;
 
 import org.apache.gobblin.annotation.Alpha;
+import org.apache.gobblin.instrumented.Instrumented;
+import org.apache.gobblin.metrics.GobblinMetrics;
+import org.apache.gobblin.metrics.MetricContext;
+import org.apache.gobblin.runtime.instance.DefaultGobblinInstanceDriverImpl;
+import org.slf4j.Logger;
 
 /** A generic interface for any class that can be configured using a {@link Config}. */
 @Alpha
@@ -29,4 +34,10 @@ public interface Configurable {
   public Config getConfig();
   /** The configuration as properties collection for backwards compatibility. */
   public Properties getConfigAsProperties();
+public default MetricContext constructMetricContext(DefaultGobblinInstanceDriverImpl defaultGobblinInstanceDriverImpl, Logger log) {
+    org.apache.gobblin.configuration.State tmpState = new org.apache.gobblin.configuration.State(getConfigAsProperties());
+    return GobblinMetrics.isEnabled(getConfig()) ?
+          Instrumented.getMetricContext(tmpState, defaultGobblinInstanceDriverImpl.getClass())
+          : null;
+  }
 }

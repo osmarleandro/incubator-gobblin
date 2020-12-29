@@ -30,7 +30,6 @@ import com.google.common.util.concurrent.AbstractIdleService;
 
 import org.apache.gobblin.broker.gobblin_scopes.GobblinScopeTypes;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
-import org.apache.gobblin.instrumented.Instrumented;
 import org.apache.gobblin.metrics.GobblinMetrics;
 import org.apache.gobblin.metrics.MetricContext;
 import org.apache.gobblin.metrics.Tag;
@@ -94,7 +93,7 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
 
     _instanceName = instanceName;
     _log = log.or(LoggerFactory.getLogger(getClass()));
-    _metricCtx = baseMetricContext.or(constructMetricContext(sysConfig, _log));
+    _metricCtx = baseMetricContext.or(sysConfig.constructMetricContext(this, _log));
     _instrumentationEnabled = null != _metricCtx && GobblinMetrics.isEnabled(sysConfig.getConfig());
     _jobCatalog = jobCatalog;
     _jobScheduler = jobScheduler;
@@ -105,13 +104,6 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
     _instanceBroker = instanceBroker;
 
     _metrics = new StandardMetrics(this);
-  }
-
-  private MetricContext constructMetricContext(Configurable sysConfig, Logger log) {
-    org.apache.gobblin.configuration.State tmpState = new org.apache.gobblin.configuration.State(sysConfig.getConfigAsProperties());
-    return GobblinMetrics.isEnabled(sysConfig.getConfig()) ?
-          Instrumented.getMetricContext(tmpState, getClass())
-          : null;
   }
 
   /** {@inheritDoc} */
