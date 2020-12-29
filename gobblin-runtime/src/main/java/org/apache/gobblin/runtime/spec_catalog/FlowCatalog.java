@@ -78,8 +78,8 @@ public class FlowCatalog extends AbstractIdleService implements SpecCatalog, Mut
   public static final String FLOWSPEC_SERDE_CLASS_KEY = "flowSpec.serde.class";
   public static final String DEFAULT_FLOWSPEC_SERDE_CLASS = JavaSpecSerDe.class.getCanonicalName();
 
-  protected final SpecCatalogListenersList listeners;
-  protected final Logger log;
+  public final SpecCatalogListenersList listeners;
+  public final Logger log;
   protected final MetricContext metricContext;
   protected final MutableStandardMetrics metrics;
   @Getter
@@ -171,22 +171,8 @@ public class FlowCatalog extends AbstractIdleService implements SpecCatalog, Mut
 
   @Override
   public void addListener(SpecCatalogListener specListener) {
-    Preconditions.checkNotNull(specListener);
-    this.listeners.addListener(specListener);
-
-    if (state() == State.RUNNING) {
-      try {
-        Iterator<URI> uriIterator = getSpecURIs();
-        while (uriIterator.hasNext()) {
-          SpecCatalogListener.AddSpecCallback addJobCallback =
-              new SpecCatalogListener.AddSpecCallback(getSpecWrapper(uriIterator.next()));
-          this.listeners.callbackOneListener(addJobCallback, specListener);
-        }
-      } catch (IOException e) {
-        log.error("Cannot retrieve specs from catalog:", e);
-      }
-    }
-  }
+	specListener.addListener(this);
+}
 
   @Override
   public void removeListener(SpecCatalogListener specCatalogListener) {

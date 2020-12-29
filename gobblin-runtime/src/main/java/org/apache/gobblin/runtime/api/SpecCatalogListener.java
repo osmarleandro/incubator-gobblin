@@ -17,12 +17,18 @@
 
 package org.apache.gobblin.runtime.api;
 
+import java.io.IOException;
 import java.net.URI;
+import java.util.Iterator;
 import java.util.Properties;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.util.concurrent.Service.State;
 
+import org.apache.gobblin.runtime.api.SpecCatalogListener.AddSpecCallback;
 import org.apache.gobblin.runtime.spec_catalog.AddSpecResponse;
+import org.apache.gobblin.runtime.spec_catalog.FlowCatalog;
 import org.apache.gobblin.util.callbacks.Callback;
 
 public interface SpecCatalogListener {
@@ -96,6 +102,24 @@ public interface SpecCatalogListener {
    */
   default String getName() {
     return getClass().getName();
+  }
+
+default void addListener(FlowCatalog flowCatalog) {
+    Preconditions.checkNotNull(this);
+    flowCatalog.listeners.addListener(this);
+
+    if (flowCatalog.state() == State.RUNNING) {
+      try {
+        Iterator<URI> uriIterator = flowCatalog.getSpecURIs();
+        while (uriIterator.hasNext()) {
+          AddSpecCallback addJobCallback =
+              new AddSpecCallback(flowCatalog.getSpecWrapper(uriIterator.next()));
+          flowCatalog.listeners.callbackOneListener(addJobCallback, this);
+        }
+      } catch (IOException e) {
+        flowCatalog.log.error("Cannot retrieve specs from catalog:", e);
+      }
+    }
   }
 
 }
