@@ -482,8 +482,8 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
   }
 
   protected void processRecords() throws IOException, DataConversionException {
-    throw new UnsupportedOperationException();
-  }
+	broker.processRecords();
+}
 
 
   protected void processRecord(Object record) throws IOException, DataConversionException {

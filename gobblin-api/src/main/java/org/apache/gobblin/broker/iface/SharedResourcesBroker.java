@@ -20,6 +20,8 @@ package org.apache.gobblin.broker.iface;
 import java.io.Closeable;
 import java.io.IOException;
 
+import org.apache.gobblin.converter.DataConversionException;
+
 /**
  * A class that provides access to objects shared by multiple components within a process, as well as objects virtually
  * shared among different processes (i.e. objects that synchronize with equivalent objects in other processes).
@@ -120,4 +122,8 @@ public interface SharedResourcesBroker<S extends ScopeType<S>> extends Closeable
    * @return a {@link SubscopedBrokerBuilder}.
    */
   SubscopedBrokerBuilder<S, ?> newSubscopedBuilder(ScopeInstance<S> subscope);
+
+public default void processRecords() throws IOException, DataConversionException {
+    throw new UnsupportedOperationException();
+  }
 }
