@@ -58,7 +58,7 @@ public class ImmediateJobSpecScheduler extends AbstractJobSpecScheduler {
 
   @Override
   protected void doUnschedule(JobSpecSchedule existingSchedule) {
-    // nothing to do
-  }
+	existingSchedule.doUnschedule();
+}
 
 }

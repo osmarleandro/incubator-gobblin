@@ -29,4 +29,7 @@ public interface JobSpecSchedule {
   Runnable getJobRunnable();
   /** The millisecond timestamp of the next execution of this schedule if any. */
   Optional<Long> getNextRunTimeMillis();
+public default void doUnschedule() {
+    // nothing to do
+  }
 }
