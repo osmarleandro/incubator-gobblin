@@ -574,12 +574,10 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
   }
 
   @Override public boolean isDone() {
-    RunningState runState = fetchRunningState();
+	return _callbackDispatcher.isDone(this);
+}
 
-    return runState == null ? false : runState.isDone() ;
-  }
-
-  private RunningState fetchRunningState() {
+  public RunningState fetchRunningState() {
     MonitoredObject monitoredObject = getJobExecutionStatus().getRunningState();
     if (monitoredObject == null) {
       return null;
