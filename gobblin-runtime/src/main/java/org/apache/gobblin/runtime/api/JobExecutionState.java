@@ -26,7 +26,6 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
@@ -72,16 +71,16 @@ public class JobExecutionState implements JobExecutionStatus {
         }
       };
 
-  @Getter private final JobExecution jobExecution;
+  @Getter final JobExecution jobExecution;
   private final Optional<JobExecutionStateListener> listener;
   @Getter final JobSpec jobSpec;
   // We use a lock instead of synchronized so that we can add different conditional variables if
   // needed.
-  private final Lock changeLock = new ReentrantLock();
+  final Lock changeLock = new ReentrantLock();
   private final Condition runningStateChanged = changeLock.newCondition();
-  private JobState.RunningState runningState;
+  JobState.RunningState runningState;
   /** Arbitrary execution stage, e.g. setup, workUnitGeneration, taskExecution, publishing */
-  private String stage;
+  String stage;
   private Map<String, Object> executionMetadata;
 
   public JobExecutionState(JobSpec jobSpec, JobExecution jobExecution,
@@ -106,18 +105,8 @@ public class JobExecutionState implements JobExecutionStatus {
   }
 
   @Override public String toString() {
-    this.changeLock.lock();
-    try {
-      return Objects.toStringHelper(JobExecutionState.class.getSimpleName())
-              .add("jobExecution", this.jobExecution)
-              .add("runningState", this.runningState)
-              .add("stage", this.stage)
-              .toString();
-    }
-    finally {
-      this.changeLock.unlock();
-    }
-  }
+	return jobExecution.toString(this);
+}
 
   @Override public JobState.RunningState getRunningState() {
     this.changeLock.lock();

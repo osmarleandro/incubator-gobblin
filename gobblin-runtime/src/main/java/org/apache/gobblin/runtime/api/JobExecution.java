@@ -20,6 +20,8 @@ import java.net.URI;
 
 import org.apache.gobblin.annotation.Alpha;
 
+import com.google.common.base.Objects;
+
 /**
  * Identifies a specific execution of a {@link JobSpec}
  */
@@ -33,4 +35,17 @@ public interface JobExecution {
   long getLaunchTimeMillis();
   /** Unique (for the given JobExecutionLauncher) id for this execution */
   String getExecutionId();
+default String toString(JobExecutionState jobExecutionState) {
+    jobExecutionState.changeLock.lock();
+    try {
+      return Objects.toStringHelper(JobExecutionState.class.getSimpleName())
+              .add("jobExecution", this)
+              .add("runningState", jobExecutionState.runningState)
+              .add("stage", jobExecutionState.stage)
+              .toString();
+    }
+    finally {
+      jobExecutionState.changeLock.unlock();
+    }
+  }
 }
