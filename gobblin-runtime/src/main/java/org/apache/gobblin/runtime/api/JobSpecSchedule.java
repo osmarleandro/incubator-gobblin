@@ -16,6 +16,8 @@
  */
 package org.apache.gobblin.runtime.api;
 
+import org.apache.gobblin.runtime.scheduler.DefaultJobSpecSchedulerListenerImpl;
+
 import com.google.common.base.Optional;
 
 /**
@@ -29,4 +31,11 @@ public interface JobSpecSchedule {
   Runnable getJobRunnable();
   /** The millisecond timestamp of the next execution of this schedule if any. */
   Optional<Long> getNextRunTimeMillis();
+/** {@inheritDoc} 
+ * @param defaultJobSpecSchedulerListenerImpl TODO*/
+  default void onJobUnscheduled(DefaultJobSpecSchedulerListenerImpl defaultJobSpecSchedulerListenerImpl) {
+    if (defaultJobSpecSchedulerListenerImpl._log.isPresent()) {
+      defaultJobSpecSchedulerListenerImpl._log.get().info("Job unscheduled: " + this);
+    }
+  }
 }

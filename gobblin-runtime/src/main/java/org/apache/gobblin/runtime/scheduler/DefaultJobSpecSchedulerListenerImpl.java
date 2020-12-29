@@ -29,7 +29,7 @@ import org.apache.gobblin.runtime.api.JobSpecSchedulerListener;
  * the callbacks.
  */
 public class DefaultJobSpecSchedulerListenerImpl implements JobSpecSchedulerListener {
-  protected final Optional<Logger> _log;
+  public final Optional<Logger> _log;
 
   /**
    * Constructor
@@ -57,10 +57,8 @@ public class DefaultJobSpecSchedulerListenerImpl implements JobSpecSchedulerList
 
   /** {@inheritDoc} */
   @Override public void onJobUnscheduled(JobSpecSchedule jobSchedule) {
-    if (_log.isPresent()) {
-      _log.get().info("Job unscheduled: " + jobSchedule);
-    }
-  }
+	jobSchedule.onJobUnscheduled(this);
+}
 
   /** {@inheritDoc} */
   @Override public void onJobTriggered(JobSpec jobSpec) {
