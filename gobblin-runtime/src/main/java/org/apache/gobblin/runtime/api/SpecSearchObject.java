@@ -17,8 +17,21 @@
 
 package org.apache.gobblin.runtime.api;
 
+import java.io.IOException;
+import java.util.Collection;
+
+import org.apache.gobblin.runtime.spec_catalog.FlowCatalog;
+
 /**
  * This is an interface to package all the parameters that should be used to search {@link Spec} in a {@link SpecStore}
  */
 public interface SpecSearchObject {
+
+	default Collection<Spec> getSpecs(FlowCatalog flowCatalog) {
+	    try {
+	      return flowCatalog.specStore.getSpecs(this);
+	    } catch (IOException e) {
+	      throw new RuntimeException("Cannot retrieve Spec from Spec store for URI: " + this, e);
+	    }
+	  }
 }

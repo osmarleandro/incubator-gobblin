@@ -83,7 +83,8 @@ public class FlowCatalog extends AbstractIdleService implements SpecCatalog, Mut
   protected final MetricContext metricContext;
   protected final MutableStandardMetrics metrics;
   @Getter
-  protected final SpecStore specStore;
+public
+  final SpecStore specStore;
   // a map which keeps a handle of condition variables for each spec being added to the flow catalog
   // to provide synchronization needed for flow specs
   private final Map<String, Object> specSyncObjects = new HashMap<>();
@@ -280,12 +281,8 @@ public class FlowCatalog extends AbstractIdleService implements SpecCatalog, Mut
 
   @Override
   public Collection<Spec> getSpecs(SpecSearchObject specSearchObject) {
-    try {
-      return specStore.getSpecs(specSearchObject);
-    } catch (IOException e) {
-      throw new RuntimeException("Cannot retrieve Spec from Spec store for URI: " + specSearchObject, e);
-    }
-  }
+	return specSearchObject.getSpecs(this);
+}
 
   public Collection<Spec> getAllSpecs() {
     try {
