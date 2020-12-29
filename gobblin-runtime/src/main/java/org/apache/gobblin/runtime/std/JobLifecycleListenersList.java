@@ -35,6 +35,8 @@ import org.apache.gobblin.runtime.api.JobExecutionStateListener.StatusChangeCall
 import org.apache.gobblin.runtime.api.JobLifecycleListener;
 import org.apache.gobblin.runtime.api.JobLifecycleListenersContainer;
 import org.apache.gobblin.runtime.api.JobSpecSchedulerListenersContainer;
+import org.apache.gobblin.runtime.api.MutableJobCatalog;
+import org.apache.gobblin.runtime.instance.DefaultGobblinInstanceDriverImpl;
 import org.apache.gobblin.util.callbacks.CallbacksDispatcher;
 
 /**
@@ -134,6 +136,12 @@ public class JobLifecycleListenersList implements JobLifecycleListenersContainer
     _dispatcher.addWeakListener(listener);
     _jobCatalogDelegate.registerWeakJobCatalogListener(listener);
     _jobSchedulerDelegate.registerWeakJobSpecSchedulerListener(listener);
+  }
+
+/** {@inheritDoc} 
+ * @param defaultGobblinInstanceDriverImpl TODO*/
+  public MutableJobCatalog getMutableJobCatalog(DefaultGobblinInstanceDriverImpl defaultGobblinInstanceDriverImpl) {
+    return (MutableJobCatalog)defaultGobblinInstanceDriverImpl._jobCatalog;
   }
 
 }

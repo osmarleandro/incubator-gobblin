@@ -69,7 +69,7 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
   protected final Logger _log;
   protected final String _instanceName;
   protected final Configurable _sysConfig;
-  protected final JobCatalog _jobCatalog;
+  public final JobCatalog _jobCatalog;
   protected final JobSpecScheduler _jobScheduler;
   protected final JobExecutionLauncher _jobLauncher;
   protected final ConfigAccessor _instanceCfg;
@@ -121,8 +121,8 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
 
   /** {@inheritDoc} */
   @Override public MutableJobCatalog getMutableJobCatalog() {
-    return (MutableJobCatalog)_jobCatalog;
-  }
+	return _callbacksDispatcher.getMutableJobCatalog(this);
+}
 
   /** {@inheritDoc} */
   @Override public JobSpecScheduler getJobScheduler() {
