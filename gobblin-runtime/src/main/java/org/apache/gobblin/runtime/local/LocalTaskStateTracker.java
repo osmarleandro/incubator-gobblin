@@ -29,7 +29,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.eventbus.EventBus;
 
-import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.metrics.GobblinMetrics;
 import org.apache.gobblin.runtime.AbstractTaskStateTracker;
@@ -46,12 +45,12 @@ import org.apache.gobblin.runtime.TaskExecutor;
  */
 public class LocalTaskStateTracker extends AbstractTaskStateTracker {
 
-  private static final Logger LOG = LoggerFactory.getLogger(LocalTaskStateTracker.class);
+  public static final Logger LOG = LoggerFactory.getLogger(LocalTaskStateTracker.class);
 
   private final JobState jobState;
 
   // This is used to retry failed tasks
-  private final TaskExecutor taskExecutor;
+  public final TaskExecutor taskExecutor;
 
   // Mapping between tasks and the task state reporters associated with them
   private final Map<String, ScheduledFuture<?>> scheduledReporters = Maps.newHashMap();
@@ -59,7 +58,7 @@ public class LocalTaskStateTracker extends AbstractTaskStateTracker {
   private final EventBus eventBus;
 
   // Maximum number of task retries allowed
-  private final int maxTaskRetries;
+  public final int maxTaskRetries;
 
   public LocalTaskStateTracker(Properties properties, JobState jobState, TaskExecutor taskExecutor,
       EventBus eventBus) {
@@ -83,20 +82,8 @@ public class LocalTaskStateTracker extends AbstractTaskStateTracker {
 
   @Override
   public void onTaskRunCompletion(Task task) {
-    try {
-      // Check the task state and handle task retry if task failed and
-      // it has not reached the maximum number of retries
-      WorkUnitState.WorkingState state = task.getTaskState().getWorkingState();
-      if (state == WorkUnitState.WorkingState.FAILED && task.getRetryCount() < this.maxTaskRetries) {
-        this.taskExecutor.retry(task);
-        return;
-      }
-    } catch (Throwable t) {
-      LOG.error("Failed to process a task completion callback", t);
-    }
-    // Mark the completion of this task
-    task.markTaskCompletion();
-  }
+	task.onTaskRunCompletion(this);
+}
 
   @Override
   public void onTaskCommitCompletion(Task task) {

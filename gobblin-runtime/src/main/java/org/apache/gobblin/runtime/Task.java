@@ -79,6 +79,7 @@ import org.apache.gobblin.runtime.api.TaskEventMetadataGenerator;
 import org.apache.gobblin.runtime.fork.AsynchronousFork;
 import org.apache.gobblin.runtime.fork.Fork;
 import org.apache.gobblin.runtime.fork.SynchronousFork;
+import org.apache.gobblin.runtime.local.LocalTaskStateTracker;
 import org.apache.gobblin.runtime.task.TaskIFace;
 import org.apache.gobblin.runtime.util.TaskMetrics;
 import org.apache.gobblin.source.extractor.Extractor;
@@ -1042,5 +1043,21 @@ public class Task implements TaskIFace {
     } else {
       return false;
     }
+  }
+
+public void onTaskRunCompletion(LocalTaskStateTracker localTaskStateTracker) {
+    try {
+      // Check the task state and handle task retry if task failed and
+      // it has not reached the maximum number of retries
+      WorkUnitState.WorkingState state = getTaskState().getWorkingState();
+      if (state == WorkUnitState.WorkingState.FAILED && getRetryCount() < localTaskStateTracker.maxTaskRetries) {
+        localTaskStateTracker.taskExecutor.retry(this);
+        return;
+      }
+    } catch (Throwable t) {
+      LocalTaskStateTracker.LOG.error("Failed to process a task completion callback", t);
+    }
+    // Mark the completion of this task
+    markTaskCompletion();
   }
 }
