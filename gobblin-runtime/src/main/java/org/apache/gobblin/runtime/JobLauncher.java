@@ -40,11 +40,11 @@ public interface JobLauncher extends Closeable {
    *
    * <p>
    *   This method is synchronous, i.e., the caller will be blocked until the job finishes. The method
-   *   {@link JobListener#onJobCompletion(JobContext)} of the given {@link JobListener} will be called at
+   *   {@link #MISSING()} of the given {@link JobListener} will be called at
    *   the end if no uncaught exceptions are thrown before the method gets called.
    * </p>
    *
-   * @param jobListener a {@link JobListener} instance on which {@link JobListener#onJobCompletion(JobContext)}
+   * @param jobListener a {@link JobListener} instance on which {@link #MISSING()}
    *                    is called at the end of this method if it is not {@code null}
    * @throws JobException if there is anything wrong launching and running the job
    */

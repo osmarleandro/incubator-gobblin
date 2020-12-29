@@ -60,6 +60,7 @@ import org.apache.gobblin.metrics.GobblinMetrics;
 import org.apache.gobblin.publisher.DataPublisher;
 import org.apache.gobblin.runtime.JobState.DatasetState;
 import org.apache.gobblin.runtime.commit.FsCommitSequenceStore;
+import org.apache.gobblin.runtime.listeners.AbstractJobListener;
 import org.apache.gobblin.runtime.util.JobMetrics;
 import org.apache.gobblin.source.Source;
 import org.apache.gobblin.source.extractor.JobCommitPolicy;
@@ -546,5 +547,11 @@ public class JobContext implements Closeable {
   public String toString() {
     return Objects.toStringHelper(JobContext.class.getSimpleName()).add("jobName", getJobName())
         .add("jobId", getJobId()).add("jobState", getJobState()).toString();
+  }
+
+public void onJobCompletion(AbstractJobListener abstractJobListener) throws Exception {
+    if (abstractJobListener._log.isPresent()) {
+      abstractJobListener._log.get().info("jobCompletion: " + this);
+    }
   }
 }
