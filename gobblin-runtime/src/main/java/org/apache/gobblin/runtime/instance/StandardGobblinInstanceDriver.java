@@ -474,4 +474,10 @@ public class StandardGobblinInstanceDriver extends DefaultGobblinInstanceDriverI
   public List<GobblinInstancePlugin> getPlugins() {
     return _plugins;
   }
+
+/** {@inheritDoc} 
+ * @param standardGobblinInstanceLauncher TODO*/
+  public String getInstanceName(StandardGobblinInstanceLauncher standardGobblinInstanceLauncher) {
+    return standardGobblinInstanceLauncher._name;
+  }
 }
