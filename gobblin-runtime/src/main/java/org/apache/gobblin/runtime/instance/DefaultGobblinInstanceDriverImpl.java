@@ -75,7 +75,7 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
   protected final ConfigAccessor _instanceCfg;
   protected final JobLifecycleListenersList _callbacksDispatcher;
   private final boolean _instrumentationEnabled;
-  protected final MetricContext _metricCtx;
+  public final MetricContext _metricCtx;
   protected JobSpecListener _jobSpecListener;
   private final StandardMetrics _metrics;
   private final SharedResourcesBroker<GobblinScopeTypes> _instanceBroker;
@@ -280,8 +280,8 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
   }
 
   @Override public MetricContext getMetricContext() {
-    return _metricCtx;
-  }
+	return _callbacksDispatcher.getMetricContext(this);
+}
 
   @Override public boolean isInstrumentationEnabled() {
     return _instrumentationEnabled;
