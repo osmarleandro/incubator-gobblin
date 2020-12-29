@@ -20,6 +20,7 @@ import com.google.common.base.Objects;
 
 import org.apache.gobblin.runtime.JobState;
 import org.apache.gobblin.runtime.JobState.RunningState;
+import org.apache.gobblin.runtime.job_exec.JobLauncherExecutionDriver;
 import org.apache.gobblin.util.callbacks.Callback;
 
 /**
@@ -31,7 +32,13 @@ public interface JobExecutionStateListener {
   void onStageTransition(JobExecutionState state, String previousStage, String newStage);
   void onMetadataChange(JobExecutionState state, String key, Object oldValue, Object newValue);
 
-  /** A standard implementation of {@link JobExecutionStateListener#onStatusChange(JobExecutionState, RunningState, RunningState)}
+  /** {@inheritDoc} 
+ * @param jobLauncherExecutionDriver TODO*/
+  default void registerStateListener(JobLauncherExecutionDriver jobLauncherExecutionDriver) {
+    jobLauncherExecutionDriver._callbackDispatcher.registerStateListener(this);
+  }
+
+/** A standard implementation of {@link JobExecutionStateListener#onStatusChange(JobExecutionState, RunningState, RunningState)}
    * as a functional object. */
   static class StatusChangeCallback extends Callback<JobExecutionStateListener, Void> {
     private final JobExecutionState state;

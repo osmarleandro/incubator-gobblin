@@ -90,7 +90,7 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
   private final JobSpec _jobSpec;
   private final JobExecutionUpdatable _jobExec;
   private final JobExecutionState _jobState;
-  private final JobExecutionStateListeners _callbackDispatcher;
+  public final JobExecutionStateListeners _callbackDispatcher;
   private final ExecutionList _executionList;
   private final DriverRunnable _runnable;
   private final Closer _closer;
@@ -315,8 +315,8 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
 
   /** {@inheritDoc} */
   @Override public void registerStateListener(JobExecutionStateListener listener) {
-    _callbackDispatcher.registerStateListener(listener);
-  }
+	listener.registerStateListener(this);
+}
 
   /** {@inheritDoc} */
   @Override public void unregisterStateListener(JobExecutionStateListener listener) {
