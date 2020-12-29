@@ -18,6 +18,7 @@ package org.apache.gobblin.runtime.std;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import org.apache.gobblin.runtime.JobState.RunningState;
 import org.apache.gobblin.runtime.api.JobExecutionState;
 import org.apache.gobblin.runtime.api.JobExecutionStateListener;
 import org.apache.gobblin.runtime.api.JobExecutionStateListenerContainer;
+import org.apache.gobblin.runtime.job_exec.JobLauncherExecutionDriver;
 import org.apache.gobblin.util.callbacks.CallbacksDispatcher;
 
 /**
@@ -104,5 +106,9 @@ public class JobExecutionStateListeners
   public void close()
       throws IOException {
     _dispatcher.close();
+  }
+
+public void addListener(JobLauncherExecutionDriver jobLauncherExecutionDriver, Runnable listener, Executor executor) {
+    jobLauncherExecutionDriver._executionList.add(listener, executor);
   }
 }

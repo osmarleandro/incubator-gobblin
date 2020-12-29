@@ -91,7 +91,7 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
   private final JobExecutionUpdatable _jobExec;
   private final JobExecutionState _jobState;
   private final JobExecutionStateListeners _callbackDispatcher;
-  private final ExecutionList _executionList;
+  public final ExecutionList _executionList;
   private final DriverRunnable _runnable;
   private final Closer _closer;
   private JobContext _jobContext;
@@ -235,8 +235,8 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
 
   @Override
   public void addListener(Runnable listener, Executor executor) {
-    _executionList.add(listener, executor);
-  }
+	_callbackDispatcher.addListener(this, listener, executor);
+}
 
   static class JobListenerToJobStateBridge extends AbstractJobListener {
 
