@@ -47,7 +47,7 @@ import lombok.Getter;
 @Alpha
 public class JobExecutionState implements JobExecutionStatus {
   public static final String UKNOWN_STAGE = "unkown";
-  private static final Map<RunningState, Set<RunningState>>
+  public static final Map<RunningState, Set<RunningState>>
       EXPECTED_PRE_TRANSITION_STATES = ImmutableMap.<RunningState, Set<RunningState>>builder()
         .put(RunningState.PENDING, ImmutableSet.<RunningState>builder().build())
         .put(RunningState.RUNNING, ImmutableSet.<RunningState>builder().add(RunningState.PENDING).build())
@@ -73,13 +73,13 @@ public class JobExecutionState implements JobExecutionStatus {
       };
 
   @Getter private final JobExecution jobExecution;
-  private final Optional<JobExecutionStateListener> listener;
+  public final Optional<JobExecutionStateListener> listener;
   @Getter final JobSpec jobSpec;
   // We use a lock instead of synchronized so that we can add different conditional variables if
   // needed.
-  private final Lock changeLock = new ReentrantLock();
-  private final Condition runningStateChanged = changeLock.newCondition();
-  private JobState.RunningState runningState;
+  public final Lock changeLock = new ReentrantLock();
+  public final Condition runningStateChanged = changeLock.newCondition();
+  public JobState.RunningState runningState;
   /** Arbitrary execution stage, e.g. setup, workUnitGeneration, taskExecution, publishing */
   private String stage;
   private Map<String, Object> executionMetadata;
@@ -142,61 +142,31 @@ public class JobExecutionState implements JobExecutionStatus {
 
 
   public void setRunningState(JobState.RunningState runningState) {
-    doRunningStateChange(runningState);
+    runningState.doRunningStateChange(this);
   }
 
   public void switchToPending() {
-    doRunningStateChange(RunningState.PENDING);
+    RunningState.PENDING.doRunningStateChange(this);
   }
 
   public void switchToRunning() {
-    doRunningStateChange(RunningState.RUNNING);
+    RunningState.RUNNING.doRunningStateChange(this);
   }
 
   public void switchToSuccessful() {
-    doRunningStateChange(RunningState.SUCCESSFUL);
+    RunningState.SUCCESSFUL.doRunningStateChange(this);
   }
 
   public void switchToFailed() {
-    doRunningStateChange(RunningState.FAILED);
+    RunningState.FAILED.doRunningStateChange(this);
   }
 
   public void switchToCommitted() {
-    doRunningStateChange(RunningState.COMMITTED);
+    RunningState.COMMITTED.doRunningStateChange(this);
   }
 
   public void switchToCancelled() {
-    doRunningStateChange(RunningState.CANCELLED);
-  }
-
-  // This must be called only when holding changeLock
-  private void doRunningStateChange(RunningState newState) {
-    RunningState oldState = null;
-    JobExecutionStateListener stateListener = null;
-    this.changeLock.lock();
-    try {
-      // verify transition
-      if (null == this.runningState) {
-        Preconditions.checkState(RunningState.PENDING == newState);
-      }
-      else {
-        Preconditions.checkState(EXPECTED_PRE_TRANSITION_STATES.get(newState).contains(this.runningState),
-            "unexpected state transition " + this.runningState + " --> " + newState);
-      }
-
-      oldState = this.runningState;
-      this.runningState = newState;
-      if (this.listener.isPresent()) {
-        stateListener = this.listener.get();
-      }
-      this.runningStateChanged.signalAll();
-    }
-    finally {
-      this.changeLock.unlock();
-    }
-    if (null != stateListener) {
-      stateListener.onStatusChange(this, oldState, newState);
-    }
+    RunningState.CANCELLED.doRunningStateChange(this);
   }
 
   public void setStage(String newStage) {

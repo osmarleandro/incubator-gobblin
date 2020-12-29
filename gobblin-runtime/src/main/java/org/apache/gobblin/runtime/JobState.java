@@ -38,6 +38,7 @@ import com.codahale.metrics.Gauge;
 import com.codahale.metrics.Meter;
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
@@ -58,6 +59,9 @@ import org.apache.gobblin.rest.Metric;
 import org.apache.gobblin.rest.MetricArray;
 import org.apache.gobblin.rest.MetricTypeEnum;
 import org.apache.gobblin.rest.TaskExecutionInfoArray;
+import org.apache.gobblin.runtime.JobState.RunningState;
+import org.apache.gobblin.runtime.api.JobExecutionState;
+import org.apache.gobblin.runtime.api.JobExecutionStateListener;
 import org.apache.gobblin.runtime.api.MonitoredObject;
 import org.apache.gobblin.runtime.util.JobMetrics;
 import org.apache.gobblin.runtime.util.MetricGroup;
@@ -125,6 +129,35 @@ public class JobState extends SourceState implements JobProgress {
     public boolean isRunningOrDone() {
       return isDone() || this.equals(RUNNING);
     }
+
+	public void doRunningStateChange(JobExecutionState jobExecutionState) {
+	    RunningState oldState = null;
+	    JobExecutionStateListener stateListener = null;
+	    jobExecutionState.changeLock.lock();
+	    try {
+	      // verify transition
+	      if (null == jobExecutionState.runningState) {
+	        Preconditions.checkState(RunningState.PENDING == this);
+	      }
+	      else {
+	        Preconditions.checkState(JobExecutionState.EXPECTED_PRE_TRANSITION_STATES.get(this).contains(jobExecutionState.runningState),
+	            "unexpected state transition " + jobExecutionState.runningState + " --> " + this);
+	      }
+	
+	      oldState = jobExecutionState.runningState;
+	      jobExecutionState.runningState = this;
+	      if (jobExecutionState.listener.isPresent()) {
+	        stateListener = jobExecutionState.listener.get();
+	      }
+	      jobExecutionState.runningStateChanged.signalAll();
+	    }
+	    finally {
+	      jobExecutionState.changeLock.unlock();
+	    }
+	    if (null != stateListener) {
+	      stateListener.onStatusChange(jobExecutionState, oldState, this);
+	    }
+	  }
   }
 
   private String jobName;
