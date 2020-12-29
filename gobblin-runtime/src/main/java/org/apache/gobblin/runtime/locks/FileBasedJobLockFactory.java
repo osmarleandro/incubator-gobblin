@@ -246,4 +246,16 @@ public class FileBasedJobLockFactory implements JobLockFactory<FileBasedJobLock>
     }
   }
 
+/**
+   * Try locking the lock.
+   *
+   * @return <em>true</em> if the lock is successfully locked,
+   *         <em>false</em> if otherwise.
+   * @param fileBasedJobLock TODO
+ * @throws JobLockException thrown if the {@link JobLock} fails to be acquired
+   */
+  public boolean tryLock(FileBasedJobLock fileBasedJobLock) throws JobLockException {
+    return tryLock(fileBasedJobLock.lockFile);
+  }
+
 }

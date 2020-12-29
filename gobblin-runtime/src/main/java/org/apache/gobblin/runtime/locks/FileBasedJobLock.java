@@ -42,8 +42,8 @@ public class FileBasedJobLock implements JobLock {
   public static final String JOB_LOCK_DIR = "job.lock.dir";
   public static final String LOCK_FILE_EXTENSION = ".lock";
 
-  private final FileBasedJobLockFactory parent;
-  private final Path lockFile;
+  final FileBasedJobLockFactory parent;
+  final Path lockFile;
 
   public FileBasedJobLock(Properties properties) throws JobLockException {
     this(properties.getProperty(ConfigurationKeys.JOB_NAME_KEY),
@@ -84,8 +84,8 @@ public class FileBasedJobLock implements JobLock {
    */
   @Override
   public boolean tryLock() throws JobLockException {
-    return this.parent.tryLock(this.lockFile);
-  }
+	return parent.tryLock(this);
+}
 
   /**
    * Check if the lock is locked.
