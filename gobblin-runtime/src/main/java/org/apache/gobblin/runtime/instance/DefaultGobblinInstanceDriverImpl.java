@@ -77,7 +77,7 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
   private final boolean _instrumentationEnabled;
   protected final MetricContext _metricCtx;
   protected JobSpecListener _jobSpecListener;
-  private final StandardMetrics _metrics;
+  public final StandardMetrics _metrics;
   private final SharedResourcesBroker<GobblinScopeTypes> _instanceBroker;
 
   public DefaultGobblinInstanceDriverImpl(String instanceName,
@@ -301,8 +301,8 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
   }
 
   @Override public StandardMetrics getMetrics() {
-    return _metrics;
-  }
+	return _callbacksDispatcher.getMetrics(this);
+}
 
   @Override
   public String getInstanceName() {
