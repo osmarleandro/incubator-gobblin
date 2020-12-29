@@ -248,7 +248,7 @@ public class TestJobExecutionState {
       Assert.assertTrue(now - startTime >= 10, "Insufficient wait: " + (now - startTime));
     }
 
-    jes1.switchToPending();
+    jes1.jobExecution.switchToPending(jes1);
     jes1.switchToRunning();
 
     try {

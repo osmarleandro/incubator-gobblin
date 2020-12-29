@@ -260,7 +260,7 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
       super.onJobPrepare(jobContext);
       _jobContext = jobContext;
       if (_jobState.getRunningState() == null) {
-        _jobState.switchToPending();
+        _jobState.jobExecution.switchToPending(_jobState);
       }
       _jobState.switchToRunning();
       if (_instrumentationEnabled && null != _launcherMetrics) {
