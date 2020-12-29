@@ -63,7 +63,6 @@ import org.apache.gobblin.runtime.commit.FsCommitSequenceStore;
 import org.apache.gobblin.runtime.util.JobMetrics;
 import org.apache.gobblin.source.Source;
 import org.apache.gobblin.source.extractor.JobCommitPolicy;
-import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
 import org.apache.gobblin.util.Either;
 import org.apache.gobblin.util.ExecutorsUtils;
@@ -180,30 +179,9 @@ public class JobContext implements Closeable {
   }
 
   protected DatasetStateStore createStateStore(Config jobConfig)
-      throws IOException {
-    boolean stateStoreEnabled = !jobConfig.hasPath(ConfigurationKeys.STATE_STORE_ENABLED) || jobConfig
-        .getBoolean(ConfigurationKeys.STATE_STORE_ENABLED);
-
-    String stateStoreType;
-
-    if (!stateStoreEnabled) {
-      stateStoreType = ConfigurationKeys.STATE_STORE_TYPE_NOOP;
-    } else {
-      stateStoreType = ConfigUtils.getString(jobConfig, ConfigurationKeys.DATASET_STATE_STORE_TYPE_KEY, ConfigUtils
-          .getString(jobConfig, ConfigurationKeys.STATE_STORE_TYPE_KEY, ConfigurationKeys.DEFAULT_STATE_STORE_TYPE));
-    }
-
-    ClassAliasResolver<DatasetStateStore.Factory> resolver = new ClassAliasResolver<>(DatasetStateStore.Factory.class);
-
-    try {
-      DatasetStateStore.Factory stateStoreFactory = resolver.resolveClass(stateStoreType).newInstance();
-      return stateStoreFactory.createStateStore(jobConfig);
-    } catch (RuntimeException e) {
-      throw e;
-    } catch (Exception e) {
-      throw new IOException(e);
-    }
-  }
+  throws IOException {
+	return datasetStateStore.createStateStore(jobConfig);
+}
 
   protected Optional<JobHistoryStore> createJobHistoryStore(Properties jobProps) {
     boolean jobHistoryStoreEnabled = Boolean

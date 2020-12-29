@@ -29,6 +29,7 @@ import com.typesafe.config.Config;
 
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.State;
+import org.apache.gobblin.metastore.DatasetStateStore.Factory;
 import org.apache.gobblin.metastore.metadata.DatasetStateStoreEntryManager;
 import org.apache.gobblin.metastore.predicates.StateStorePredicate;
 import org.apache.gobblin.util.ClassAliasResolver;
@@ -65,7 +66,33 @@ public interface DatasetStateStore<T extends State> extends StateStore<T> {
     return datasetURN;
   }
 
-  static String buildTableName(DatasetStateStore store, String storeName, String stateId, String datasetUrn) throws IOException {
+  public default DatasetStateStore createStateStore(Config jobConfig)
+      throws IOException {
+    boolean stateStoreEnabled = !jobConfig.hasPath(ConfigurationKeys.STATE_STORE_ENABLED) || jobConfig
+        .getBoolean(ConfigurationKeys.STATE_STORE_ENABLED);
+
+    String stateStoreType;
+
+    if (!stateStoreEnabled) {
+      stateStoreType = ConfigurationKeys.STATE_STORE_TYPE_NOOP;
+    } else {
+      stateStoreType = ConfigUtils.getString(jobConfig, ConfigurationKeys.DATASET_STATE_STORE_TYPE_KEY, ConfigUtils
+          .getString(jobConfig, ConfigurationKeys.STATE_STORE_TYPE_KEY, ConfigurationKeys.DEFAULT_STATE_STORE_TYPE));
+    }
+
+    ClassAliasResolver<DatasetStateStore.Factory> resolver = new ClassAliasResolver<>(DatasetStateStore.Factory.class);
+
+    try {
+      DatasetStateStore.Factory stateStoreFactory = resolver.resolveClass(stateStoreType).newInstance();
+      return stateStoreFactory.createStateStore(jobConfig);
+    } catch (RuntimeException e) {
+      throw e;
+    } catch (Exception e) {
+      throw new IOException(e);
+    }
+  }
+
+static String buildTableName(DatasetStateStore store, String storeName, String stateId, String datasetUrn) throws IOException {
     return Strings.isNullOrEmpty(datasetUrn) ? stateId + DATASET_STATE_STORE_TABLE_SUFFIX
         : store.sanitizeDatasetStatestoreNameFromDatasetURN(storeName,datasetUrn) + "-" + stateId + DATASET_STATE_STORE_TABLE_SUFFIX;
   }
