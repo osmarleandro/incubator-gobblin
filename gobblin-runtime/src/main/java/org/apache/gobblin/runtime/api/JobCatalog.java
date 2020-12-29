@@ -40,6 +40,7 @@ import org.apache.gobblin.metrics.ContextAwareGauge;
 import org.apache.gobblin.metrics.ContextAwareTimer;
 import org.apache.gobblin.metrics.GobblinTrackingEvent;
 import org.apache.gobblin.metrics.MetricContext;
+import org.apache.gobblin.runtime.job_catalog.PackagedTemplatesJobCatalogDecorator;
 import org.apache.gobblin.util.ConfigUtils;
 
 
@@ -70,7 +71,11 @@ public interface JobCatalog extends JobCatalogListenersContainer, Instrumentable
    **/
   JobSpec getJobSpec(URI uri) throws JobSpecNotFoundException;
 
-  @Slf4j
+  default Object getDecoratedObject(PackagedTemplatesJobCatalogDecorator packagedTemplatesJobCatalogDecorator) {
+    return this;
+  }
+
+@Slf4j
   public static class StandardMetrics extends StandardMetricsBridge.StandardMetrics implements JobCatalogListener {
     public static final String NUM_ACTIVE_JOBS_NAME = "numActiveJobs";
     public static final String TOTAL_ADD_CALLS = "totalAddCalls";

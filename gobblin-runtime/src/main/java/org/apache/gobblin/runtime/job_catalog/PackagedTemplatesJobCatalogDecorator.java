@@ -57,7 +57,8 @@ public class PackagedTemplatesJobCatalogDecorator implements Decorator, JobCatal
   }
 
   @Delegate
-  private final JobCatalog underlying;
+public
+  final JobCatalog underlying;
 
   public PackagedTemplatesJobCatalogDecorator(JobCatalog underlying) {
     this.underlying = underlying != null ? underlying : new InMemoryJobCatalog();
@@ -65,8 +66,8 @@ public class PackagedTemplatesJobCatalogDecorator implements Decorator, JobCatal
 
   @Override
   public Object getDecoratedObject() {
-    return this.underlying;
-  }
+	return underlying.getDecoratedObject(this);
+}
 
   @Override
   public JobTemplate getTemplate(URI uri)
