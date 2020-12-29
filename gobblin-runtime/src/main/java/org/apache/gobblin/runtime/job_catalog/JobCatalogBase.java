@@ -169,7 +169,7 @@ public abstract class JobCatalogBase extends AbstractIdleService implements JobC
   }
 
   @Override public StandardMetrics getMetrics() {
-    return this.metrics;
-  }
+	return listeners.getMetrics(this);
+}
 
 }

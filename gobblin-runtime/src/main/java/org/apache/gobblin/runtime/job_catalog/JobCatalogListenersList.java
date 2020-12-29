@@ -30,6 +30,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 import org.apache.gobblin.runtime.api.JobCatalog;
+import org.apache.gobblin.runtime.api.JobCatalog.StandardMetrics;
 import org.apache.gobblin.runtime.api.JobCatalogListener;
 import org.apache.gobblin.runtime.api.JobCatalogListenersContainer;
 import org.apache.gobblin.runtime.api.JobSpec;
@@ -127,6 +128,10 @@ public class JobCatalogListenersList implements JobCatalogListener, JobCatalogLi
   @Override
   public void registerWeakJobCatalogListener(JobCatalogListener jobListener) {
     _disp.addWeakListener(jobListener);
+  }
+
+public StandardMetrics getMetrics(JobCatalogBase jobCatalogBase) {
+    return jobCatalogBase.metrics;
   }
 
 }
