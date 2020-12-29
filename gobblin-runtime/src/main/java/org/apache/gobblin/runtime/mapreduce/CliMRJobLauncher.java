@@ -52,7 +52,7 @@ public class CliMRJobLauncher extends Configured implements ApplicationLauncher,
   private final Closer closer = Closer.create();
 
   private final ApplicationLauncher applicationLauncher;
-  private final MRJobLauncher mrJobLauncher;
+  public final MRJobLauncher mrJobLauncher;
 
   public CliMRJobLauncher(Configuration conf, Properties jobProperties) throws Exception {
     log.debug("Configuration: {}", conf);
@@ -90,8 +90,8 @@ public class CliMRJobLauncher extends Configured implements ApplicationLauncher,
 
   @Override
   public void launchJob(@Nullable JobListener jobListener) throws JobException {
-    this.mrJobLauncher.launchJob(jobListener);
-  }
+	jobListener.launchJob(this);
+}
 
   @Override
   public void cancelJob(@Nullable JobListener jobListener) throws JobException {
