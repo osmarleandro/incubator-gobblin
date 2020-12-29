@@ -292,7 +292,7 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
       else {
         // TODO Remove next line once the JobLauncher starts sending notifications for success
         _jobState.switchToSuccessful();
-        _jobState.switchToCommitted();
+        _jobState.jobExecution.switchToCommitted(_jobState);
         if (_instrumentationEnabled && null != _launcherMetrics) {
           _launcherMetrics.getNumJobsCommitted().inc();
         }
