@@ -474,4 +474,8 @@ public class StandardGobblinInstanceDriver extends DefaultGobblinInstanceDriverI
   public List<GobblinInstancePlugin> getPlugins() {
     return _plugins;
   }
+
+public Logger getLog(StandardGobblinInstanceLauncher standardGobblinInstanceLauncher) {
+    return standardGobblinInstanceLauncher._log;
+  }
 }

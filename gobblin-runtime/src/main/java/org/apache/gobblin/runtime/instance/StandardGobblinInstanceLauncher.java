@@ -50,7 +50,7 @@ import org.apache.gobblin.runtime.std.DefaultConfigurableImpl;
  */
 public class StandardGobblinInstanceLauncher extends AbstractIdleService
       implements GobblinInstanceLauncher {
-  private final Logger _log;
+  final Logger _log;
   private final String _name;
   private final Configurable _instanceConf;
   private final StandardGobblinInstanceDriver _driver;
@@ -296,8 +296,8 @@ public class StandardGobblinInstanceLauncher extends AbstractIdleService
 
   @Override
   public Logger getLog() {
-    return _log;
-  }
+	return _driver.getLog(this);
+}
 
   @Override
   public Configurable getSysConfig() {
