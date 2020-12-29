@@ -225,8 +225,8 @@ public class FlowCatalog extends AbstractIdleService implements SpecCatalog, Mut
 
   @Override
   public void switchMetricContext(MetricContext context) {
-    throw new UnsupportedOperationException();
-  }
+	context.switchMetricContext();
+}
 
   @Override
   public SpecCatalog.StandardMetrics getMetrics() {

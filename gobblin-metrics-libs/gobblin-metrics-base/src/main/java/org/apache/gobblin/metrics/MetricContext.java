@@ -640,7 +640,11 @@ public class MetricContext extends MetricRegistry implements ReportableContext, 
     this.notificationTargets.clear();
   }
 
-  /**
+  public void switchMetricContext() {
+    throw new UnsupportedOperationException();
+  }
+
+/**
    * A builder class for {@link MetricContext}.
    */
   public static class Builder {
