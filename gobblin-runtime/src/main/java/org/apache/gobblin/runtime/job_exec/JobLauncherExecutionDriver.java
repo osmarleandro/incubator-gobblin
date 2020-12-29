@@ -89,7 +89,7 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
   private final Logger _log;
   private final JobSpec _jobSpec;
   private final JobExecutionUpdatable _jobExec;
-  private final JobExecutionState _jobState;
+  public final JobExecutionState _jobState;
   private final JobExecutionStateListeners _callbackDispatcher;
   private final ExecutionList _executionList;
   private final DriverRunnable _runnable;
@@ -191,8 +191,8 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
 
   @Override
   public JobExecutionStatus getJobExecutionStatus() {
-    return _jobState;
-  }
+	return _callbackDispatcher.getJobExecutionStatus(this);
+}
 
   protected void startAsync() throws JobException {
     _log.info("Starting " + getClass().getSimpleName());
