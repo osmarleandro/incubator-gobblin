@@ -52,7 +52,7 @@ public class JobListeners {
    * @param jobListeners is a {@link List} of {@link JobListener}s that need to be executed
    *
    * @return a {@link CloseableJobListener}, which is similar to {@link JobListener}, except
-   * {@link CloseableJobListener#close()} will block until all {@link JobListener}s have finished their executions.
+   * {@link #MISSING()} will block until all {@link JobListener}s have finished their executions.
    */
   public static CloseableJobListener parallelJobListener(List<JobListener> jobListeners) {
     Iterables.removeIf(jobListeners, Predicates.isNull());

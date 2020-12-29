@@ -49,7 +49,7 @@ import org.apache.gobblin.runtime.listeners.JobListener;
 @Slf4j
 public class CliMRJobLauncher extends Configured implements ApplicationLauncher, JobLauncher, Tool {
 
-  private final Closer closer = Closer.create();
+  public final Closer closer = Closer.create();
 
   private final ApplicationLauncher applicationLauncher;
   private final MRJobLauncher mrJobLauncher;
@@ -100,8 +100,8 @@ public class CliMRJobLauncher extends Configured implements ApplicationLauncher,
 
   @Override
   public void close() throws IOException {
-    this.closer.close();
-  }
+	applicationLauncher.close(this);
+}
 
   public static void main(String[] args) throws Exception {
 
