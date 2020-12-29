@@ -236,7 +236,7 @@ public class FSJobCatalog extends ImmutableFSJobCatalog implements MutableJobCat
 
   @Override
   public Collection<JobTemplate> getAllTemplates() {
-    throw new UnsupportedOperationException();
-  }
+	return mutableMetrics.getAllTemplates();
+}
 }
 

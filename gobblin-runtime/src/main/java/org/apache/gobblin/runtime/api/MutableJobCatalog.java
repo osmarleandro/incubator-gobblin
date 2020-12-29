@@ -80,5 +80,9 @@ public interface MutableJobCatalog extends JobCatalog {
       log.info("updateRemoveJobTime...");
       Instrumented.updateTimer(Optional.of(this.timeForJobCatalogRemove), System.currentTimeMillis() - startTime, TimeUnit.MILLISECONDS);
     }
+
+	public Collection<JobTemplate> getAllTemplates() {
+	    throw new UnsupportedOperationException();
+	  }
   }
 }
