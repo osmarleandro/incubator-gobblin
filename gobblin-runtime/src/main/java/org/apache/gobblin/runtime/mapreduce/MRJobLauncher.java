@@ -160,12 +160,12 @@ public class MRJobLauncher extends AbstractJobLauncher {
   private static final Splitter SPLITTER = Splitter.on(',').omitEmptyStrings().trimResults();
 
   private final Configuration conf;
-  private final FileSystem fs;
+  public final FileSystem fs;
   private final Job job;
   private final Path mrJobDir;
   private final Path jarsDir;
   /** A location to store jars that should not be shared between different jobs. */
-  private final Path unsharedJarsDir;
+  public final Path unsharedJarsDir;
   private final Path jobInputPath;
   private final Path jobOutputPath;
 
@@ -535,7 +535,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
         // the retryCount is to avoid cases (if any) where retry is going too far and causes job hanging.
         int retryCount = 0;
         boolean shouldFileBeAddedIntoDC = true;
-        Path destJarFile = calculateDestJarFile(status, jarFileDir);
+        Path destJarFile = fsm.calculateDestJarFile(this, status, jarFileDir);
         // Adding destJarFile into HDFS until it exists and the size of file on targetPath matches the one on local path.
         while (!this.fs.exists(destJarFile) || fs.getFileStatus(destJarFile).getLen() != status.getLen()) {
           try {
@@ -565,17 +565,6 @@ public class MRJobLauncher extends AbstractJobLauncher {
         }
       }
     }
-  }
-
-  /**
-   * Calculate the target filePath of the jar file to be copied on HDFS,
-   * given the {@link FileStatus} of a jarFile and the path of directory that contains jar.
-   */
-  private Path calculateDestJarFile(FileStatus status, Path jarFileDir) {
-    // SNAPSHOT jars should not be shared, as different jobs may be using different versions of it
-    Path baseDir = status.getPath().getName().contains("SNAPSHOT") ? this.unsharedJarsDir : jarFileDir;
-    // DistributedCache requires absolute path, so we need to use makeQualified.
-    return new Path(this.fs.makeQualified(baseDir), status.getPath().getName());
   }
 
   /**

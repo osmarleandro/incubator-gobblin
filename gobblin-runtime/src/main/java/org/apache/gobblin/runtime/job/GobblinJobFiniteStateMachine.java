@@ -22,6 +22,9 @@ import java.io.IOException;
 import org.apache.gobblin.fsm.FiniteStateMachine;
 import org.apache.gobblin.fsm.StateWithCallbacks;
 import org.apache.gobblin.runtime.JobState;
+import org.apache.gobblin.runtime.mapreduce.MRJobLauncher;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.Path;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
@@ -166,6 +169,20 @@ public class GobblinJobFiniteStateMachine extends FiniteStateMachine<GobblinJobF
 			}
 		}
 	}
+
+	/**
+	   * Calculate the target filePath of the jar file to be copied on HDFS,
+	   * given the {@link FileStatus} of a jarFile and the path of directory that contains jar.
+	 * @param mrJobLauncher TODO
+	 * @param status TODO
+	 * @param jarFileDir TODO
+	   */
+	  public Path calculateDestJarFile(MRJobLauncher mrJobLauncher, FileStatus status, Path jarFileDir) {
+	    // SNAPSHOT jars should not be shared, as different jobs may be using different versions of it
+	    Path baseDir = status.getPath().getName().contains("SNAPSHOT") ? mrJobLauncher.unsharedJarsDir : jarFileDir;
+	    // DistributedCache requires absolute path, so we need to use makeQualified.
+	    return new Path(mrJobLauncher.fs.makeQualified(baseDir), status.getPath().getName());
+	  }
 
 	private static SetMultimap<JobFSMState, JobFSMState> buildAllowedTransitions() {
 		SetMultimap<JobFSMState, JobFSMState> transitions = HashMultimap.create();
