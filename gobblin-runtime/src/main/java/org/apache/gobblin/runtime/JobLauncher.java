@@ -56,12 +56,12 @@ public interface JobLauncher extends Closeable {
    *
    * <p>
    *   This method is synchronous, i.e., the caller will be blocked until the cancellation is executed.
-   *   The method {@link JobListener#onJobCancellation(JobContext)} of the given {@link JobListener} will
+   *   The method {@link #MISSING()} of the given {@link JobListener} will
    *   be called at the end if the caller is not interrupted while being blocked. If a cancellation has
    *   already been requested, however, this method will return immediately.
    * </p>
    *
-   * @param jobListener {@link JobListener} instance on which {@link JobListener#onJobCancellation(JobContext)}
+   * @param jobListener {@link JobListener} instance on which {@link #MISSING()}
    *                    is called at the end of this method if it is not {@code null}
    * @throws JobException if there is anything wrong cancelling the job
    */

@@ -36,7 +36,7 @@ import org.apache.gobblin.util.EmailUtils;
 @Alias("EmailNotificationJobListener")
 public class EmailNotificationJobListener extends AbstractJobListener {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificationJobListener.class);
+  public static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificationJobListener.class);
 
   @Override
   public void onJobCompletion(JobContext jobContext) {
@@ -73,16 +73,6 @@ public class EmailNotificationJobListener extends AbstractJobListener {
 
   @Override
   public void onJobCancellation(JobContext jobContext) {
-    JobState jobState = jobContext.getJobState();
-    boolean notificationEmailEnabled =
-        Boolean.valueOf(jobState.getProp(ConfigurationKeys.NOTIFICATION_EMAIL_ENABLED_KEY, Boolean.toString(false)));
-
-    if (notificationEmailEnabled) {
-      try {
-        EmailUtils.sendJobCancellationEmail(jobState.getJobId(), jobState.toString(), jobState);
-      } catch (EmailException ee) {
-        LOGGER.error("Failed to send job cancellation notification email for job " + jobState.getJobId(), ee);
-      }
-    }
-  }
+	jobContext.onJobCancellation();
+}
 }

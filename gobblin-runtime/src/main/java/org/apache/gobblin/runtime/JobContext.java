@@ -45,6 +45,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.typesafe.config.Config;
 
+import org.apache.commons.mail.EmailException;
 import org.apache.gobblin.broker.gobblin_scopes.GobblinScopeTypes;
 import org.apache.gobblin.broker.gobblin_scopes.JobScopeInstance;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
@@ -60,12 +61,14 @@ import org.apache.gobblin.metrics.GobblinMetrics;
 import org.apache.gobblin.publisher.DataPublisher;
 import org.apache.gobblin.runtime.JobState.DatasetState;
 import org.apache.gobblin.runtime.commit.FsCommitSequenceStore;
+import org.apache.gobblin.runtime.listeners.EmailNotificationJobListener;
 import org.apache.gobblin.runtime.util.JobMetrics;
 import org.apache.gobblin.source.Source;
 import org.apache.gobblin.source.extractor.JobCommitPolicy;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
 import org.apache.gobblin.util.Either;
+import org.apache.gobblin.util.EmailUtils;
 import org.apache.gobblin.util.ExecutorsUtils;
 import org.apache.gobblin.util.HadoopUtils;
 import org.apache.gobblin.util.Id;
@@ -546,5 +549,19 @@ public class JobContext implements Closeable {
   public String toString() {
     return Objects.toStringHelper(JobContext.class.getSimpleName()).add("jobName", getJobName())
         .add("jobId", getJobId()).add("jobState", getJobState()).toString();
+  }
+
+public void onJobCancellation() {
+    JobState jobState = getJobState();
+    boolean notificationEmailEnabled =
+        Boolean.valueOf(jobState.getProp(ConfigurationKeys.NOTIFICATION_EMAIL_ENABLED_KEY, Boolean.toString(false)));
+
+    if (notificationEmailEnabled) {
+      try {
+        EmailUtils.sendJobCancellationEmail(jobState.getJobId(), jobState.toString(), jobState);
+      } catch (EmailException ee) {
+        EmailNotificationJobListener.LOGGER.error("Failed to send job cancellation notification email for job " + jobState.getJobId(), ee);
+      }
+    }
   }
 }
