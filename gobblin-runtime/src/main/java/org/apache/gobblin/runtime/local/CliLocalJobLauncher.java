@@ -47,7 +47,7 @@ public class CliLocalJobLauncher implements ApplicationLauncher, JobLauncher {
   private final Closer closer = Closer.create();
 
   private final ApplicationLauncher applicationLauncher;
-  private final LocalJobLauncher localJobLauncher;
+  public final LocalJobLauncher localJobLauncher;
 
   private CliLocalJobLauncher(Properties properties) throws Exception {
     this.applicationLauncher = this.closer.register(new ServiceBasedAppLauncher(properties,
@@ -87,8 +87,8 @@ public class CliLocalJobLauncher implements ApplicationLauncher, JobLauncher {
 
   @Override
   public void launchJob(@Nullable JobListener jobListener) throws JobException {
-    this.localJobLauncher.launchJob(jobListener);
-  }
+	jobListener.launchJob(this);
+}
 
   @Override
   public void cancelJob(@Nullable JobListener jobListener) throws JobException {

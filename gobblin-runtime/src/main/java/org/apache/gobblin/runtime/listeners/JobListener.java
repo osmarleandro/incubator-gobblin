@@ -17,7 +17,11 @@
 
 package org.apache.gobblin.runtime.listeners;
 
+import javax.annotation.Nullable;
+
 import org.apache.gobblin.runtime.JobContext;
+import org.apache.gobblin.runtime.JobException;
+import org.apache.gobblin.runtime.local.CliLocalJobLauncher;
 import org.apache.gobblin.source.workunit.WorkUnit;
 
 /**
@@ -59,4 +63,8 @@ public interface JobListener {
    * @param jobContext a {@link JobContext} object
    */
   void onJobFailure(JobContext jobContext) throws Exception;
+
+default void launchJob(CliLocalJobLauncher cliLocalJobLauncher) throws JobException {
+    cliLocalJobLauncher.localJobLauncher.launchJob(this);
+  }
 }
