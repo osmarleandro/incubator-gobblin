@@ -129,4 +129,8 @@ public class JobCatalogListenersList implements JobCatalogListener, JobCatalogLi
     _disp.addWeakListener(jobListener);
   }
 
+protected void startUp(JobCatalogBase jobCatalogBase) throws IOException {
+    jobCatalogBase.notifyAllListeners();
+  }
+
 }

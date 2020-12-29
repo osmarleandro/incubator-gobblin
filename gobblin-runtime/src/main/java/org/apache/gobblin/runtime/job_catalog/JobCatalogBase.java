@@ -91,8 +91,8 @@ public abstract class JobCatalogBase extends AbstractIdleService implements JobC
 
   @Override
   protected void startUp() throws IOException {
-    notifyAllListeners();
-  }
+	listeners.startUp(this);
+}
 
   @Override
   protected void shutDown() throws IOException {
