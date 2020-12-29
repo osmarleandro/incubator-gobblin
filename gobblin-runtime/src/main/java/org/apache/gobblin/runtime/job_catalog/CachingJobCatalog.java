@@ -138,8 +138,8 @@ public class CachingJobCatalog extends AbstractIdleService implements JobCatalog
   }
 
   @Override public void switchMetricContext(List<Tag<?>> tags) {
-    _fallback.switchMetricContext(tags);
-  }
+	_cache.switchMetricContext(this, tags);
+}
 
   @Override public void switchMetricContext(MetricContext context) {
     _fallback.switchMetricContext(context);

@@ -20,6 +20,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -30,6 +31,7 @@ import com.google.common.base.Preconditions;
 
 import org.apache.gobblin.instrumented.Instrumented;
 import org.apache.gobblin.metrics.MetricContext;
+import org.apache.gobblin.metrics.Tag;
 import org.apache.gobblin.runtime.api.GobblinInstanceEnvironment;
 import org.apache.gobblin.runtime.api.JobCatalog;
 import org.apache.gobblin.runtime.api.JobSpec;
@@ -87,5 +89,9 @@ public class InMemoryJobCatalog extends MutableJobCatalogBase {
   @Override
   protected JobSpec doRemove(URI uri) {
     return this.jobSpecs.remove(uri);
+  }
+
+public void switchMetricContext(CachingJobCatalog cachingJobCatalog, List<Tag<?>> tags) {
+    cachingJobCatalog._fallback.switchMetricContext(tags);
   }
 }
