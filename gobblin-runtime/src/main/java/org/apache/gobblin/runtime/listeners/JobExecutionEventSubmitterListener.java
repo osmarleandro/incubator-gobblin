@@ -31,7 +31,7 @@ import org.apache.gobblin.runtime.JobExecutionEventSubmitter;
  */
 public class JobExecutionEventSubmitterListener extends AbstractJobListener {
 
-  private final JobExecutionEventSubmitter jobExecutionEventSubmitter;
+  public final JobExecutionEventSubmitter jobExecutionEventSubmitter;
 
   @Override
   public void onJobCompletion(JobContext jobContext) {
@@ -40,6 +40,6 @@ public class JobExecutionEventSubmitterListener extends AbstractJobListener {
 
   @Override
   public void onJobCancellation(JobContext jobContext) {
-    this.jobExecutionEventSubmitter.submitJobExecutionEvents(jobContext.getJobState());
-  }
+	jobContext.onJobCancellation(this);
+}
 }
