@@ -54,7 +54,7 @@ public class StandardGobblinInstanceLauncher extends AbstractIdleService
   private final String _name;
   private final Configurable _instanceConf;
   private final StandardGobblinInstanceDriver _driver;
-  private final MetricContext _metricContext;
+  final MetricContext _metricContext;
   private final boolean _instrumentationEnabled;
   private final SharedResourcesBroker<GobblinScopeTypes> _instanceBroker;
 
@@ -275,8 +275,8 @@ public class StandardGobblinInstanceLauncher extends AbstractIdleService
   }
 
   @Override public MetricContext getMetricContext() {
-    return _metricContext;
-  }
+	return _driver.getMetricContext(this);
+}
 
   @Override public boolean isInstrumentationEnabled() {
     return _instrumentationEnabled;
