@@ -46,7 +46,7 @@ public abstract class AbstractJobSpecScheduler extends AbstractIdleService
                                                implements JobSpecScheduler  {
   protected final Map<URI, JobSpecSchedule> _schedules = new HashMap<>();
   private final Logger _log;
-  private final JobSpecSchedulerListeners _callbacksDispatcher;
+  public final JobSpecSchedulerListeners _callbacksDispatcher;
 
   public AbstractJobSpecScheduler(Optional<Logger> log) {
     _log = log.or(LoggerFactory.getLogger(getClass()));
@@ -65,8 +65,8 @@ public abstract class AbstractJobSpecScheduler extends AbstractIdleService
 
   /** {@inheritDoc} */
   @Override public void unregisterJobSpecSchedulerListener(JobSpecSchedulerListener listener) {
-    _callbacksDispatcher.unregisterJobSpecSchedulerListener(listener);
-  }
+	listener.unregisterJobSpecSchedulerListener(this);
+}
 
   /** {@inheritDoc} */
   @Override public List<JobSpecSchedulerListener> getJobSpecSchedulerListeners() {
