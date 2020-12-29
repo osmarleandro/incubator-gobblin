@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.util.concurrent.Service.State;
 
 import org.apache.gobblin.runtime.api.JobCatalog;
 import org.apache.gobblin.runtime.api.JobCatalogListener;
@@ -127,6 +128,15 @@ public class JobCatalogListenersList implements JobCatalogListener, JobCatalogLi
   @Override
   public void registerWeakJobCatalogListener(JobCatalogListener jobListener) {
     _disp.addWeakListener(jobListener);
+  }
+
+public void remove(MutableJobCatalogBase mutableJobCatalogBase, URI uri) {
+    Preconditions.checkState(mutableJobCatalogBase.state() == State.RUNNING, String.format("%s is not running.", mutableJobCatalogBase.getClass().getName()));
+    Preconditions.checkNotNull(uri);
+    JobSpec jobSpec = mutableJobCatalogBase.doRemove(uri);
+    if (null != jobSpec) {
+      onDeleteJob(jobSpec.getUri(), jobSpec.getVersion());
+    }
   }
 
 }

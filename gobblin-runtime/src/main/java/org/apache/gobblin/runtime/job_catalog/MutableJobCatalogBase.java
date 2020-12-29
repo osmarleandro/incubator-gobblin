@@ -74,13 +74,8 @@ public abstract class MutableJobCatalogBase extends JobCatalogBase implements Mu
 
   @Override
   public void remove(URI uri) {
-    Preconditions.checkState(state() == State.RUNNING, String.format("%s is not running.", this.getClass().getName()));
-    Preconditions.checkNotNull(uri);
-    JobSpec jobSpec = doRemove(uri);
-    if (null != jobSpec) {
-      this.listeners.onDeleteJob(jobSpec.getUri(), jobSpec.getVersion());
-    }
-  }
+	listeners.remove(this, uri);
+}
 
   /**
    * Remove the {@link JobSpec} with the given {@link URI} from the catalog.
