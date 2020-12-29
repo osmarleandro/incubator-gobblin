@@ -73,7 +73,7 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
   protected final JobSpecScheduler _jobScheduler;
   protected final JobExecutionLauncher _jobLauncher;
   protected final ConfigAccessor _instanceCfg;
-  protected final JobLifecycleListenersList _callbacksDispatcher;
+  public final JobLifecycleListenersList _callbacksDispatcher;
   private final boolean _instrumentationEnabled;
   protected final MetricContext _metricCtx;
   protected JobSpecListener _jobSpecListener;
@@ -261,8 +261,8 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
 
   @Override
   public void registerJobLifecycleListener(JobLifecycleListener listener) {
-    _callbacksDispatcher.registerJobLifecycleListener(listener);
-  }
+	listener.registerJobLifecycleListener(this);
+}
 
   @Override
   public void unregisterJobLifecycleListener(JobLifecycleListener listener) {

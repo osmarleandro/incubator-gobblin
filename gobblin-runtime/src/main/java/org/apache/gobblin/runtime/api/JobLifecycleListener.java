@@ -20,6 +20,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 import org.apache.gobblin.annotation.Alpha;
+import org.apache.gobblin.runtime.instance.DefaultGobblinInstanceDriverImpl;
 import org.apache.gobblin.util.callbacks.Callback;
 
 /**
@@ -32,7 +33,11 @@ public interface JobLifecycleListener
   /** Called before the job driver gets started. */
   void onJobLaunch(JobExecutionDriver jobDriver);
 
-  public static class JobLaunchCallback extends Callback<JobLifecycleListener, Void> {
+  default void registerJobLifecycleListener(DefaultGobblinInstanceDriverImpl defaultGobblinInstanceDriverImpl) {
+    defaultGobblinInstanceDriverImpl._callbacksDispatcher.registerJobLifecycleListener(this);
+  }
+
+public static class JobLaunchCallback extends Callback<JobLifecycleListener, Void> {
     private final JobExecutionDriver _jobDriver;
 
     public JobLaunchCallback(JobExecutionDriver jobDriver) {
