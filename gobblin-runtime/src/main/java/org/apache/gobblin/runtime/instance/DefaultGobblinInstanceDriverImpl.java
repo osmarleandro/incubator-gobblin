@@ -292,8 +292,8 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
   }
 
   @Override public void switchMetricContext(List<Tag<?>> tags) {
-    throw new UnsupportedOperationException();
-  }
+	_callbacksDispatcher.switchMetricContext(tags);
+}
 
   @Override
   public void switchMetricContext(MetricContext context) {

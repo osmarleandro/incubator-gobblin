@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 
 import com.google.common.base.Optional;
 
+import org.apache.gobblin.metrics.Tag;
 import org.apache.gobblin.runtime.JobState.RunningState;
 import org.apache.gobblin.runtime.api.JobCatalogListenersContainer;
 import org.apache.gobblin.runtime.api.JobExecutionDriver;
@@ -134,6 +135,10 @@ public class JobLifecycleListenersList implements JobLifecycleListenersContainer
     _dispatcher.addWeakListener(listener);
     _jobCatalogDelegate.registerWeakJobCatalogListener(listener);
     _jobSchedulerDelegate.registerWeakJobSpecSchedulerListener(listener);
+  }
+
+public void switchMetricContext(List<Tag<?>> tags) {
+    throw new UnsupportedOperationException();
   }
 
 }
