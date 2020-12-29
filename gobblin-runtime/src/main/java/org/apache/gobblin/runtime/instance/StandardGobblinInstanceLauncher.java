@@ -52,7 +52,7 @@ public class StandardGobblinInstanceLauncher extends AbstractIdleService
       implements GobblinInstanceLauncher {
   private final Logger _log;
   private final String _name;
-  private final Configurable _instanceConf;
+  final Configurable _instanceConf;
   private final StandardGobblinInstanceDriver _driver;
   private final MetricContext _metricContext;
   private final boolean _instrumentationEnabled;
@@ -82,8 +82,8 @@ public class StandardGobblinInstanceLauncher extends AbstractIdleService
   /** {@inheritDoc} */
   @Override
   public Properties getConfigAsProperties() {
-    return _instanceConf.getConfigAsProperties();
-  }
+	return _driver.getConfigAsProperties(this);
+}
 
   /** {@inheritDoc} */
   @Override

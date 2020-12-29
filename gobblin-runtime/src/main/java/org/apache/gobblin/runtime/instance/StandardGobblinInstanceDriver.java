@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -473,5 +474,11 @@ public class StandardGobblinInstanceDriver extends DefaultGobblinInstanceDriverI
 
   public List<GobblinInstancePlugin> getPlugins() {
     return _plugins;
+  }
+
+/** {@inheritDoc} 
+ * @param standardGobblinInstanceLauncher TODO*/
+  public Properties getConfigAsProperties(StandardGobblinInstanceLauncher standardGobblinInstanceLauncher) {
+    return standardGobblinInstanceLauncher._instanceConf.getConfigAsProperties();
   }
 }
