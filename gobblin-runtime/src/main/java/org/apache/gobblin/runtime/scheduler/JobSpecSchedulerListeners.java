@@ -18,6 +18,7 @@ package org.apache.gobblin.runtime.scheduler;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
@@ -99,5 +100,23 @@ public class JobSpecSchedulerListeners
   public void close()
       throws IOException {
     _dispatcher.close();
+  }
+
+/** {@inheritDoc} 
+ * @param abstractJobSpecScheduler TODO
+ * @param jobSpecURI TODO*/
+  public void unscheduleJob(AbstractJobSpecScheduler abstractJobSpecScheduler, URI jobSpecURI) {
+    JobSpecSchedule existingSchedule = null;
+    synchronized (abstractJobSpecScheduler) {
+      existingSchedule = abstractJobSpecScheduler._schedules.get(jobSpecURI);
+      if (null != existingSchedule) {
+        abstractJobSpecScheduler._log.info("Unscheduling " + existingSchedule);
+        abstractJobSpecScheduler._schedules.remove(jobSpecURI);
+        abstractJobSpecScheduler.doUnschedule(existingSchedule);
+      }
+    }
+    if (null != existingSchedule) {
+      onJobUnscheduled(existingSchedule);
+    }
   }
 }

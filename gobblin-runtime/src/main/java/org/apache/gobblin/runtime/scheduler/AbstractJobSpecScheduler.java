@@ -45,8 +45,8 @@ import org.apache.gobblin.runtime.api.JobSpecSchedulerListener;
 public abstract class AbstractJobSpecScheduler extends AbstractIdleService
                                                implements JobSpecScheduler  {
   protected final Map<URI, JobSpecSchedule> _schedules = new HashMap<>();
-  private final Logger _log;
-  private final JobSpecSchedulerListeners _callbacksDispatcher;
+  final Logger _log;
+  final JobSpecSchedulerListeners _callbacksDispatcher;
 
   public AbstractJobSpecScheduler(Optional<Logger> log) {
     _log = log.or(LoggerFactory.getLogger(getClass()));
@@ -109,19 +109,8 @@ public abstract class AbstractJobSpecScheduler extends AbstractIdleService
 
   /** {@inheritDoc} */
   @Override public void unscheduleJob(URI jobSpecURI) {
-    JobSpecSchedule existingSchedule = null;
-    synchronized (this) {
-      existingSchedule = _schedules.get(jobSpecURI);
-      if (null != existingSchedule) {
-        _log.info("Unscheduling " + existingSchedule);
-        this._schedules.remove(jobSpecURI);
-        doUnschedule(existingSchedule);
-      }
-    }
-    if (null != existingSchedule) {
-      _callbacksDispatcher.onJobUnscheduled(existingSchedule);
-    }
-  }
+	_callbacksDispatcher.unscheduleJob(this, jobSpecURI);
+}
 
   /** Actual implementation of scheduling */
   protected abstract JobSpecSchedule doScheduleJob(JobSpec jobSpec, Runnable jobRunnable);
