@@ -33,4 +33,17 @@ public interface JobExecution {
   long getLaunchTimeMillis();
   /** Unique (for the given JobExecutionLauncher) id for this execution */
   String getExecutionId();
+default void setMedatata(JobExecutionState jobExecutionState, String key, Object value) {
+    jobExecutionState.changeLock.lock();
+    try {
+      Object oldValue = jobExecutionState.executionMetadata.get(key);
+      jobExecutionState.executionMetadata.put(key, value);
+      if (jobExecutionState.listener.isPresent()) {
+        jobExecutionState.listener.get().onMetadataChange(jobExecutionState, key, oldValue, value);
+      }
+    }
+    finally {
+      jobExecutionState.changeLock.unlock();
+    }
+  }
 }

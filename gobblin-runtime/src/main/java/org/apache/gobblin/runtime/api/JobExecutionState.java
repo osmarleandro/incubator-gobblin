@@ -73,16 +73,16 @@ public class JobExecutionState implements JobExecutionStatus {
       };
 
   @Getter private final JobExecution jobExecution;
-  private final Optional<JobExecutionStateListener> listener;
+  final Optional<JobExecutionStateListener> listener;
   @Getter final JobSpec jobSpec;
   // We use a lock instead of synchronized so that we can add different conditional variables if
   // needed.
-  private final Lock changeLock = new ReentrantLock();
+  final Lock changeLock = new ReentrantLock();
   private final Condition runningStateChanged = changeLock.newCondition();
   private JobState.RunningState runningState;
   /** Arbitrary execution stage, e.g. setup, workUnitGeneration, taskExecution, publishing */
   private String stage;
-  private Map<String, Object> executionMetadata;
+  Map<String, Object> executionMetadata;
 
   public JobExecutionState(JobSpec jobSpec, JobExecution jobExecution,
                            Optional<JobExecutionStateListener> listener) {
@@ -206,20 +206,6 @@ public class JobExecutionState implements JobExecutionStatus {
       this.stage = newStage;
       if (this.listener.isPresent()) {
         this.listener.get().onStageTransition(this, oldStage, this.stage);
-      }
-    }
-    finally {
-      this.changeLock.unlock();
-    }
-  }
-
-  public void setMedatata(String key, Object value) {
-    this.changeLock.lock();
-    try {
-      Object oldValue = this.executionMetadata.get(key);
-      this.executionMetadata.put(key, value);
-      if (this.listener.isPresent()) {
-        this.listener.get().onMetadataChange(this, key, oldValue, value);
       }
     }
     finally {
