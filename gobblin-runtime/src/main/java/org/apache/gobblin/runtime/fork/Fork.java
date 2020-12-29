@@ -525,8 +525,8 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
   }
 
   protected boolean putRecordImpl(Object record) throws InterruptedException {
-    throw new UnsupportedOperationException();
-  };
+	return broker.putRecordImpl(record);
+};
 
   protected void cleanup() {
   }

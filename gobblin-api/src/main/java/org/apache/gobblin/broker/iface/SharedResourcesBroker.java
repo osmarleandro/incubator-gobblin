@@ -120,4 +120,8 @@ public interface SharedResourcesBroker<S extends ScopeType<S>> extends Closeable
    * @return a {@link SubscopedBrokerBuilder}.
    */
   SubscopedBrokerBuilder<S, ?> newSubscopedBuilder(ScopeInstance<S> subscope);
+
+public default boolean putRecordImpl(Object record) throws InterruptedException {
+    throw new UnsupportedOperationException();
+  }
 }
