@@ -91,7 +91,7 @@ public abstract class JobCatalogBase extends AbstractIdleService implements JobC
 
   @Override
   protected void startUp() throws IOException {
-    notifyAllListeners();
+    listeners.notifyAllListeners(this);
   }
 
   @Override
@@ -99,14 +99,7 @@ public abstract class JobCatalogBase extends AbstractIdleService implements JobC
     this.listeners.close();
   }
 
-  protected void notifyAllListeners() {
-    Collection<JobSpec> jobSpecs = getJobsWithTimeUpdate();
-    for (JobSpec jobSpec : jobSpecs) {
-      this.listeners.onAddJob(jobSpec);
-    }
-  }
-
-  private Collection<JobSpec> getJobsWithTimeUpdate() {
+  Collection<JobSpec> getJobsWithTimeUpdate() {
     long startTime = System.currentTimeMillis();
     Collection<JobSpec> jobSpecs = getJobs();
     this.metrics.updateGetJobTime(startTime);

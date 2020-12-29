@@ -20,6 +20,7 @@ package org.apache.gobblin.runtime.job_catalog;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
@@ -127,6 +128,13 @@ public class JobCatalogListenersList implements JobCatalogListener, JobCatalogLi
   @Override
   public void registerWeakJobCatalogListener(JobCatalogListener jobListener) {
     _disp.addWeakListener(jobListener);
+  }
+
+protected void notifyAllListeners(JobCatalogBase jobCatalogBase) {
+    Collection<JobSpec> jobSpecs = jobCatalogBase.getJobsWithTimeUpdate();
+    for (JobSpec jobSpec : jobSpecs) {
+      onAddJob(jobSpec);
+    }
   }
 
 }
