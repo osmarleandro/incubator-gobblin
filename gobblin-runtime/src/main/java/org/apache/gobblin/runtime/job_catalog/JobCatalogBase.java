@@ -132,7 +132,7 @@ public abstract class JobCatalogBase extends AbstractIdleService implements JobC
         JobSpec jobSpec = jobSpecItr.next();
         if (jobSpec != null) {
           JobCatalogListener.AddJobCallback addJobCallback = new JobCatalogListener.AddJobCallback(jobSpec);
-          this.listeners.callbackOneListener(addJobCallback, jobListener);
+          jobListener.callbackOneListener(addJobCallback, this.listeners);
         }
       }
     }

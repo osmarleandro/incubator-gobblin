@@ -25,7 +25,6 @@ import java.util.concurrent.ExecutorService;
 
 import org.slf4j.Logger;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
@@ -39,7 +38,7 @@ import org.apache.gobblin.util.callbacks.CallbacksDispatcher;
 /** A helper class to manage a list of {@link JobCatalogListener}s for a
  * {@link JobCatalog}. It will dispatch the callbacks to each listener sequentially.*/
 public class JobCatalogListenersList implements JobCatalogListener, JobCatalogListenersContainer, Closeable {
-  private final CallbacksDispatcher<JobCatalogListener> _disp;
+  public final CallbacksDispatcher<JobCatalogListener> _disp;
 
   public JobCatalogListenersList() {
     this(Optional.<Logger>absent());
@@ -113,15 +112,6 @@ public class JobCatalogListenersList implements JobCatalogListener, JobCatalogLi
   public void close()
       throws IOException {
     _disp.close();
-  }
-
-  public void callbackOneListener(Function<JobCatalogListener, Void> callback,
-                                  JobCatalogListener listener) {
-    try {
-      _disp.execCallbacks(callback, listener);
-    } catch (InterruptedException e) {
-      getLog().warn("callback interrupted: "+ callback);
-    }
   }
 
   @Override
