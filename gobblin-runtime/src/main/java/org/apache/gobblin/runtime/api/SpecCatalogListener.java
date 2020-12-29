@@ -20,9 +20,11 @@ package org.apache.gobblin.runtime.api;
 import java.net.URI;
 import java.util.Properties;
 
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
 
 import org.apache.gobblin.runtime.spec_catalog.AddSpecResponse;
+import org.apache.gobblin.runtime.spec_catalog.SpecCatalogListenersList;
 import org.apache.gobblin.util.callbacks.Callback;
 
 public interface SpecCatalogListener {
@@ -96,6 +98,14 @@ public interface SpecCatalogListener {
    */
   default String getName() {
     return getClass().getName();
+  }
+
+default void callbackOneListener(Function<SpecCatalogListener, AddSpecResponse> callback, SpecCatalogListenersList specCatalogListenersList) {
+    try {
+      specCatalogListenersList._disp.execCallbacks(callback, this);
+    } catch (InterruptedException e) {
+      specCatalogListenersList.getLog().warn("callback interrupted: "+ callback);
+    }
   }
 
 }

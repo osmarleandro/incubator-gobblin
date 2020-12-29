@@ -165,7 +165,7 @@ public class TopologyCatalog extends AbstractIdleService implements SpecCatalog,
     if (state() == Service.State.RUNNING) {
       for (Spec spec : getSpecs()) {
         SpecCatalogListener.AddSpecCallback addJobCallback = new SpecCatalogListener.AddSpecCallback(spec);
-        this.listeners.callbackOneListener(addJobCallback, specListener);
+        specListener.callbackOneListener(addJobCallback, this.listeners);
       }
     }
   }

@@ -26,7 +26,6 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
@@ -37,7 +36,7 @@ import org.apache.gobblin.util.callbacks.CallbacksDispatcher;
 
 
 public class SpecCatalogListenersList implements SpecCatalogListener, SpecCatalogListenersContainer, Closeable {
-  private final CallbacksDispatcher<SpecCatalogListener> _disp;
+  public final CallbacksDispatcher<SpecCatalogListener> _disp;
 
   public SpecCatalogListenersList() {
     this(Optional.<Logger>absent());
@@ -101,15 +100,6 @@ public class SpecCatalogListenersList implements SpecCatalogListener, SpecCatalo
   public void close()
       throws IOException {
     _disp.close();
-  }
-
-  public void callbackOneListener(Function<SpecCatalogListener, AddSpecResponse> callback,
-      SpecCatalogListener listener) {
-    try {
-      _disp.execCallbacks(callback, listener);
-    } catch (InterruptedException e) {
-      getLog().warn("callback interrupted: "+ callback);
-    }
   }
 
   @Override
