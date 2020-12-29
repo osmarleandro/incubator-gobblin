@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.gobblin.metastore.DatasetStateStore;
 import org.apache.gobblin.runtime.job.JobProgress;
@@ -38,6 +39,7 @@ import com.codahale.metrics.Gauge;
 import com.codahale.metrics.Meter;
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
@@ -58,6 +60,8 @@ import org.apache.gobblin.rest.Metric;
 import org.apache.gobblin.rest.MetricArray;
 import org.apache.gobblin.rest.MetricTypeEnum;
 import org.apache.gobblin.rest.TaskExecutionInfoArray;
+import org.apache.gobblin.runtime.JobState.RunningState;
+import org.apache.gobblin.runtime.api.JobExecutionState;
 import org.apache.gobblin.runtime.api.MonitoredObject;
 import org.apache.gobblin.runtime.util.JobMetrics;
 import org.apache.gobblin.runtime.util.MetricGroup;
@@ -125,6 +129,18 @@ public class JobState extends SourceState implements JobProgress {
     public boolean isRunningOrDone() {
       return isDone() || this.equals(RUNNING);
     }
+
+	public void awaitForState(JobExecutionState jobExecutionState, long timeoutMs)
+	         throws InterruptedException, TimeoutException {
+	    jobExecutionState.awaitForStatePredicate(new Predicate<JobExecutionState>() {
+	      @Override public boolean apply(JobExecutionState state) {
+	        return null != state.getRunningState() && state.getRunningState().equals(RunningState.this);
+	      }
+	      @Override public String toString() {
+	        return "runningState == " + RunningState.this;
+	      }
+	    }, timeoutMs);
+	  }
   }
 
   private String jobName;

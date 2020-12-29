@@ -241,7 +241,7 @@ public class TestJobExecutionState {
 
     long startTime = System.currentTimeMillis();
     try {
-      jes1.awaitForState(RunningState.RUNNING, 10);
+      RunningState.RUNNING.awaitForState(jes1, 10);
       Assert.fail("Timeout expected");
     } catch (TimeoutException e) {
       long now = System.currentTimeMillis();
@@ -252,7 +252,7 @@ public class TestJobExecutionState {
     jes1.switchToRunning();
 
     try {
-      jes1.awaitForState(RunningState.RUNNING, 10);
+      RunningState.RUNNING.awaitForState(jes1, 10);
       Assert.assertEquals(jes1.getRunningState(), RunningState.RUNNING);
     } catch (TimeoutException e) {
       Assert.fail("Timeout: ");

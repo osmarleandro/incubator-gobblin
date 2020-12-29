@@ -231,18 +231,6 @@ public class JobExecutionState implements JobExecutionStatus {
     awaitForStatePredicate(EXECUTION_DONE_PREDICATE, timeoutMs);
   }
 
-  public void awaitForState(final RunningState targetState, long timeoutMs)
-         throws InterruptedException, TimeoutException {
-    awaitForStatePredicate(new Predicate<JobExecutionState>() {
-      @Override public boolean apply(JobExecutionState state) {
-        return null != state.getRunningState() && state.getRunningState().equals(targetState);
-      }
-      @Override public String toString() {
-        return "runningState == " + targetState;
-      }
-    }, timeoutMs);
-  }
-
   /**
    * Waits till a predicate on {@link #getRunningState()} becomes true or timeout is reached.
    *
