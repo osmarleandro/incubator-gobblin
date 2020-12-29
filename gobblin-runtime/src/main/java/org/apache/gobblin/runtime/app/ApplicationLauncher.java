@@ -18,9 +18,11 @@
 package org.apache.gobblin.runtime.app;
 
 import java.io.Closeable;
+import java.io.IOException;
 
 import org.apache.gobblin.annotation.Alpha;
 import org.apache.gobblin.runtime.JobLauncher;
+import org.apache.gobblin.runtime.local.CliLocalJobLauncher;
 
 
 /**
@@ -48,4 +50,8 @@ public interface ApplicationLauncher extends Closeable {
    * @throws ApplicationException if there is any problem starting the application
    */
   public void stop() throws ApplicationException;
+
+default void close(CliLocalJobLauncher cliLocalJobLauncher) throws IOException {
+    cliLocalJobLauncher.closer.close();
+  }
 }

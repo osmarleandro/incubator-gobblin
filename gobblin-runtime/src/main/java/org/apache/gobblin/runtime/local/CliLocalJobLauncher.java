@@ -44,7 +44,7 @@ public class CliLocalJobLauncher implements ApplicationLauncher, JobLauncher {
 
   private static final Logger LOG = LoggerFactory.getLogger(CliLocalJobLauncher.class);
 
-  private final Closer closer = Closer.create();
+  public final Closer closer = Closer.create();
 
   private final ApplicationLauncher applicationLauncher;
   private final LocalJobLauncher localJobLauncher;
@@ -97,6 +97,6 @@ public class CliLocalJobLauncher implements ApplicationLauncher, JobLauncher {
 
   @Override
   public void close() throws IOException {
-    this.closer.close();
-  }
+	applicationLauncher.close(this);
+}
 }
