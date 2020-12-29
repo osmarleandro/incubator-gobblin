@@ -38,6 +38,6 @@ public class MRTaskFactory implements TaskFactory {
 
   @Override
   public DataPublisher createDataPublisher(JobState.DatasetState datasetState) {
-    return new NoopPublisher(datasetState);
-  }
+	return datasetState.createDataPublisher();
+}
 }

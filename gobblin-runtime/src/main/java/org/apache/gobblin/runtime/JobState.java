@@ -51,6 +51,8 @@ import org.apache.gobblin.configuration.SourceState;
 import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.metrics.GobblinMetrics;
+import org.apache.gobblin.publisher.DataPublisher;
+import org.apache.gobblin.publisher.NoopPublisher;
 import org.apache.gobblin.rest.JobExecutionInfo;
 import org.apache.gobblin.rest.JobStateEnum;
 import org.apache.gobblin.rest.LauncherTypeEnum;
@@ -888,5 +890,9 @@ public class JobState extends SourceState implements JobProgress {
       super.writeStateSummary(jsonWriter);
       jsonWriter.name("datasetUrn").value(getDatasetUrn());
     }
+
+	public DataPublisher createDataPublisher() {
+	    return new NoopPublisher(this);
+	  }
   }
 }
