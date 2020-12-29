@@ -17,10 +17,12 @@
 package org.apache.gobblin.runtime.api;
 
 import java.net.URI;
+import java.util.Map;
 
 import com.google.common.base.Objects;
 
 import org.apache.gobblin.annotation.Alpha;
+import org.apache.gobblin.runtime.job_catalog.StaticJobCatalog;
 import org.apache.gobblin.util.callbacks.Callback;
 
 /**
@@ -45,7 +47,19 @@ public interface JobCatalogListener {
    */
   public void onUpdateJob(JobSpec updatedJob);
 
-  /** A standard implementation of onAddJob as a functional object */
+  @edu.umd.cs.findbugs.annotations.SuppressWarnings(
+      value = "UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR",
+      justification = "Uninitialized variable has been checked.")
+  default void addListener(StaticJobCatalog staticJobCatalog) {
+    if (staticJobCatalog.jobs == null) {
+      return;
+    }
+    for (Map.Entry<URI, JobSpec> entry : staticJobCatalog.jobs.entrySet()) {
+      onAddJob(entry.getValue());
+    }
+  }
+
+/** A standard implementation of onAddJob as a functional object */
   public static class AddJobCallback extends Callback<JobCatalogListener, Void> {
     private final JobSpec _addedJob;
     public AddJobCallback(JobSpec addedJob) {

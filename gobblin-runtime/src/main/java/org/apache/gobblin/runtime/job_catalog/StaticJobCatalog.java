@@ -38,7 +38,7 @@ import org.apache.gobblin.runtime.api.JobSpecNotFoundException;
  */
 public class StaticJobCatalog extends JobCatalogBase {
 
-  private final Map<URI, JobSpec> jobs;
+  public final Map<URI, JobSpec> jobs;
 
   public StaticJobCatalog(Collection<JobSpec> jobSpecs) {
     this.jobs = parseJobs(jobSpecs);
@@ -73,13 +73,8 @@ public class StaticJobCatalog extends JobCatalogBase {
       justification = "Uninitialized variable has been checked.")
   @Override
   public void addListener(JobCatalogListener jobListener) {
-    if (this.jobs == null) {
-      return;
-    }
-    for (Map.Entry<URI, JobSpec> entry : this.jobs.entrySet()) {
-      jobListener.onAddJob(entry.getValue());
-    }
-  }
+	jobListener.addListener(this);
+}
 
   @Override
   public Collection<JobSpec> getJobs() {
