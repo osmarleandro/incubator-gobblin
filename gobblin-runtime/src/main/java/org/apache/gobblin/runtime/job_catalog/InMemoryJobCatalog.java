@@ -88,4 +88,8 @@ public class InMemoryJobCatalog extends MutableJobCatalogBase {
   protected JobSpec doRemove(URI uri) {
     return this.jobSpecs.remove(uri);
   }
+
+public boolean isInstrumentationEnabled(CachingJobCatalog cachingJobCatalog) {
+    return cachingJobCatalog._fallback.isInstrumentationEnabled();
+  }
 }
