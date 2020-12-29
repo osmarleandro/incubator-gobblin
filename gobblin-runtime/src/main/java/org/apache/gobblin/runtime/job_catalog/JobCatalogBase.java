@@ -149,8 +149,8 @@ public abstract class JobCatalogBase extends AbstractIdleService implements JobC
   }
 
   @Override public MetricContext getMetricContext() {
-    return this.metricContext;
-  }
+	return listeners.getMetricContext(this);
+}
 
   @Override public boolean isInstrumentationEnabled() {
     return null != this.metricContext;
