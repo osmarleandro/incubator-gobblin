@@ -30,6 +30,10 @@ import org.apache.gobblin.runtime.JobState;
 import org.apache.gobblin.runtime.template.ResourceBasedJobTemplate;
 import org.apache.gobblin.runtime.template.StaticJobTemplate;
 import org.apache.gobblin.util.ConfigUtils;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.JobKey;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Optional;
@@ -386,5 +390,19 @@ public class JobSpec implements Configurable, Spec {
     templateURI = Optional.fromNullable((URI) stream.readObject());
     configAsProperties = (Properties) stream.readObject();
     config = ConfigUtils.propertiesToConfig(configAsProperties);
+  }
+
+/**
+   * Create a {@link Trigger} from the given {@link JobSpec}
+ * @param jobKey TODO
+   */
+  public Trigger createTrigger(JobKey jobKey) {
+    // Build a trigger for the job with the given cron-style schedule
+    return TriggerBuilder.newTrigger()
+        .withIdentity("Cron for " + getUri())
+        .forJob(jobKey)
+        .withSchedule(CronScheduleBuilder.cronSchedule(
+                         getConfig().getString(ConfigurationKeys.JOB_SCHEDULE_KEY)))
+        .build();
   }
 }

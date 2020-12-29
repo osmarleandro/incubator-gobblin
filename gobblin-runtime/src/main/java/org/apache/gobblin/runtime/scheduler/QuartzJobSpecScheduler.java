@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.quartz.CronScheduleBuilder;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
@@ -28,10 +27,8 @@ import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.JobKey;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
 import org.slf4j.Logger;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -42,7 +39,6 @@ import com.google.common.collect.ImmutableMap;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
-import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.runtime.api.GobblinInstanceEnvironment;
 import org.apache.gobblin.runtime.api.JobSpec;
 import org.apache.gobblin.runtime.api.JobSpecSchedule;
@@ -111,7 +107,7 @@ public class QuartzJobSpecScheduler extends AbstractJobSpecScheduler {
         .usingJobData(jobDataMap)
         .build();
 
-    Trigger jobTrigger = createTrigger(job.getKey(), jobSpec);
+    Trigger jobTrigger = jobSpec.createTrigger(job.getKey());
     QuartzJobSchedule jobSchedule = new QuartzJobSchedule(jobSpec, jobRunnable, jobTrigger);
     try {
       _scheduler.getScheduler().scheduleJob(job, jobTrigger);
@@ -152,19 +148,6 @@ public class QuartzJobSpecScheduler extends AbstractJobSpecScheduler {
     super.shutDown();
     _scheduler.stopAsync();
     _scheduler.awaitTerminated(_cfg.getShutDownTimeoutMs(), TimeUnit.MILLISECONDS);
-  }
-
-  /**
-   * Create a {@link Trigger} from the given {@link JobSpec}
-   */
-  private Trigger createTrigger(JobKey jobKey, JobSpec jobSpec) {
-    // Build a trigger for the job with the given cron-style schedule
-    return TriggerBuilder.newTrigger()
-        .withIdentity("Cron for " + jobSpec.getUri())
-        .forJob(jobKey)
-        .withSchedule(CronScheduleBuilder.cronSchedule(
-                         jobSpec.getConfig().getString(ConfigurationKeys.JOB_SCHEDULE_KEY)))
-        .build();
   }
 
   @Data
