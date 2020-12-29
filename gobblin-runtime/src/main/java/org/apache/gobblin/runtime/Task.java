@@ -1043,4 +1043,8 @@ public class Task implements TaskIFace {
       return false;
     }
   }
+
+public void onTaskRunCompletion() {
+    markTaskCompletion();
+  }
 }

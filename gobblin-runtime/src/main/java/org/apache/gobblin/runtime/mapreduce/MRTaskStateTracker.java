@@ -68,8 +68,8 @@ public class MRTaskStateTracker extends AbstractTaskStateTracker {
 
   @Override
   public void onTaskRunCompletion(Task task) {
-    task.markTaskCompletion();
-  }
+	task.onTaskRunCompletion();
+}
 
   @Override
   public void onTaskCommitCompletion(Task task) {
