@@ -78,7 +78,7 @@ public class FlowCatalog extends AbstractIdleService implements SpecCatalog, Mut
   public static final String FLOWSPEC_SERDE_CLASS_KEY = "flowSpec.serde.class";
   public static final String DEFAULT_FLOWSPEC_SERDE_CLASS = JavaSpecSerDe.class.getCanonicalName();
 
-  protected final SpecCatalogListenersList listeners;
+  public final SpecCatalogListenersList listeners;
   protected final Logger log;
   protected final MetricContext metricContext;
   protected final MutableStandardMetrics metrics;
@@ -195,8 +195,8 @@ public class FlowCatalog extends AbstractIdleService implements SpecCatalog, Mut
 
   @Override
   public void registerWeakSpecCatalogListener(SpecCatalogListener specCatalogListener) {
-    this.listeners.registerWeakSpecCatalogListener(specCatalogListener);
-  }
+	specCatalogListener.registerWeakSpecCatalogListener(this);
+}
 
   /***************************************************
    /* Catalog metrics                                *

@@ -23,6 +23,7 @@ import java.util.Properties;
 import com.google.common.base.Objects;
 
 import org.apache.gobblin.runtime.spec_catalog.AddSpecResponse;
+import org.apache.gobblin.runtime.spec_catalog.FlowCatalog;
 import org.apache.gobblin.util.callbacks.Callback;
 
 public interface SpecCatalogListener {
@@ -96,6 +97,10 @@ public interface SpecCatalogListener {
    */
   default String getName() {
     return getClass().getName();
+  }
+
+default void registerWeakSpecCatalogListener(FlowCatalog flowCatalog) {
+    flowCatalog.listeners.registerWeakSpecCatalogListener(this);
   }
 
 }
