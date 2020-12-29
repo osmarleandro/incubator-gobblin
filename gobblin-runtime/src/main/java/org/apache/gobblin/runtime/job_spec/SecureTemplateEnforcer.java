@@ -38,6 +38,6 @@ public class SecureTemplateEnforcer implements JobResolutionCallbacks {
 
 	@Override
 	public void afterResolution(JobSpecResolver jobSpecResolver, ResolvedJobSpec resolvedJobSpec) {
-		// NOOP
+		jobSpecResolver.afterResolution(resolvedJobSpec);
 	}
 }

@@ -164,4 +164,8 @@ public class JobSpecResolver {
 		return resolvedJobSpec;
 	}
 
+	public void afterResolution(ResolvedJobSpec resolvedJobSpec) {
+		// NOOP
+	}
+
 }
