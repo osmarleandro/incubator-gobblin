@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,5 +89,14 @@ public class InMemoryJobCatalog extends MutableJobCatalogBase {
   @Override
   protected JobSpec doRemove(URI uri) {
     return this.jobSpecs.remove(uri);
+  }
+
+protected void startUp() {
+    startAsync();
+    try {
+      awaitRunning(2, TimeUnit.SECONDS);
+    } catch (TimeoutException te) {
+      throw new RuntimeException("Failed to start " + CachingJobCatalog.class.getName(), te);
+    }
   }
 }
