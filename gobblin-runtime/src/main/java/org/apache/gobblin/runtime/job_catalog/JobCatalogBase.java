@@ -113,13 +113,6 @@ public abstract class JobCatalogBase extends AbstractIdleService implements JobC
     return jobSpecs;
   }
 
-  private Iterator<JobSpec> getJobSpecsWithTimeUpdate() {
-    long startTime = System.currentTimeMillis();
-    Iterator<JobSpec> jobSpecs = getJobSpecIterator();
-    this.metrics.updateGetJobTime(startTime);
-    return jobSpecs;
-  }
-
   /**{@inheritDoc}*/
   @Override
   public synchronized void addListener(JobCatalogListener jobListener) {
@@ -127,7 +120,7 @@ public abstract class JobCatalogBase extends AbstractIdleService implements JobC
     this.listeners.addListener(jobListener);
 
     if (state() == State.RUNNING) {
-      Iterator<JobSpec> jobSpecItr = getJobSpecsWithTimeUpdate();
+      Iterator<JobSpec> jobSpecItr = listeners.getJobSpecsWithTimeUpdate(this);
       while (jobSpecItr.hasNext()) {
         JobSpec jobSpec = jobSpecItr.next();
         if (jobSpec != null) {
