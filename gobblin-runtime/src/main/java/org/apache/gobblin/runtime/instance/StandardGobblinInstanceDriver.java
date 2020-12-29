@@ -474,4 +474,8 @@ public class StandardGobblinInstanceDriver extends DefaultGobblinInstanceDriverI
   public List<GobblinInstancePlugin> getPlugins() {
     return _plugins;
   }
+
+public void switchMetricContext(List<Tag<?>> tags) {
+    throw new UnsupportedOperationException();
+  }
 }
