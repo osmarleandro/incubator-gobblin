@@ -79,6 +79,8 @@ import org.apache.gobblin.runtime.api.TaskEventMetadataGenerator;
 import org.apache.gobblin.runtime.fork.AsynchronousFork;
 import org.apache.gobblin.runtime.fork.Fork;
 import org.apache.gobblin.runtime.fork.SynchronousFork;
+import org.apache.gobblin.runtime.mapreduce.MRTaskStateTracker;
+import org.apache.gobblin.runtime.mapreduce.MRTaskStateTracker.MetricGroupFilter;
 import org.apache.gobblin.runtime.task.TaskIFace;
 import org.apache.gobblin.runtime.util.TaskMetrics;
 import org.apache.gobblin.source.extractor.Extractor;
@@ -1042,5 +1044,10 @@ public class Task implements TaskIFace {
     } else {
       return false;
     }
+  }
+
+public void updateCounters(MRTaskStateTracker mrTaskStateTracker) {
+    mrTaskStateTracker.updateCounters(this, MetricGroupFilter.JOB);
+    mrTaskStateTracker.updateCounters(this, MetricGroupFilter.TASK);
   }
 }

@@ -81,7 +81,7 @@ public class MRTaskStateTracker extends AbstractTaskStateTracker {
 
       if (workUnit.getPropAsBoolean(ConfigurationKeys.MR_REPORT_METRICS_AS_COUNTERS_KEY,
           ConfigurationKeys.DEFAULT_MR_REPORT_METRICS_AS_COUNTERS)) {
-        updateCounters(task);
+        task.updateCounters(this);
       }
     }
     LOG.info(String
@@ -111,7 +111,7 @@ public class MRTaskStateTracker extends AbstractTaskStateTracker {
       if (GobblinMetrics.isEnabled(workUnit)) {
         if (workUnit.getPropAsBoolean(ConfigurationKeys.MR_REPORT_METRICS_AS_COUNTERS_KEY,
             ConfigurationKeys.DEFAULT_MR_REPORT_METRICS_AS_COUNTERS)) {
-          updateCounters(this.task);
+          this.task.updateCounters(MRTaskStateTracker.this);
         }
       }
 
@@ -120,12 +120,7 @@ public class MRTaskStateTracker extends AbstractTaskStateTracker {
     }
   }
 
-  private void updateCounters(Task task) {
-    updateCounters(task, MetricGroupFilter.JOB);
-    updateCounters(task, MetricGroupFilter.TASK);
-  }
-
-  private void updateCounters(Task task, MetricGroupFilter filter) {
+  public void updateCounters(Task task, MetricGroupFilter filter) {
     Map<String, Counter> counters = JobMetrics.get(null, task.getJobId()).getMetricContext().getCounters(filter);
     if (counters != null) {
       for (Map.Entry<String, Counter> entry : counters.entrySet()) {
@@ -134,7 +129,7 @@ public class MRTaskStateTracker extends AbstractTaskStateTracker {
     }
   }
 
-  private enum MetricGroupFilter implements MetricFilter {
+  public enum MetricGroupFilter implements MetricFilter {
     JOB() {
       @Override
       public String getGroupName() {
