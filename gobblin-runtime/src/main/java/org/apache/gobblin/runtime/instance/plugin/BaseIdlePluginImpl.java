@@ -32,13 +32,14 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 public abstract class BaseIdlePluginImpl extends AbstractIdleService implements GobblinInstancePlugin {
-  @Getter protected final GobblinInstanceDriver instance;
+  @Getter
+public final GobblinInstanceDriver instance;
 
   /** {@inheritDoc} */
   @Override
   protected void shutDown() throws Exception {
-    instance.getLog().info("Plugin shutdown: " + this);
-  }
+	instance.shutDown(this);
+}
 
   @Override
   public String toString() {

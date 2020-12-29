@@ -24,6 +24,7 @@ import com.google.common.util.concurrent.Service;
 import org.apache.gobblin.annotation.Alpha;
 import org.apache.gobblin.metrics.ContextAwareCounter;
 import org.apache.gobblin.metrics.ContextAwareGauge;
+import org.apache.gobblin.runtime.instance.plugin.BaseIdlePluginImpl;
 
 import lombok.Getter;
 
@@ -54,7 +55,13 @@ public interface GobblinInstanceDriver extends Service, JobLifecycleListenersCon
   /** Metrics for instance */
   StandardMetrics getMetrics();
 
-  public class StandardMetrics extends Service.Listener {
+  /** {@inheritDoc} 
+ * @param baseIdlePluginImpl TODO*/
+  public default void shutDown(BaseIdlePluginImpl baseIdlePluginImpl) throws Exception {
+    getLog().info("Plugin shutdown: " + baseIdlePluginImpl);
+  }
+
+public class StandardMetrics extends Service.Listener {
     public static final String INSTANCE_NAME_TAG = "instanceName";
     public static final String UPTIMEMS_NAME = "uptimeMs";
     public static final String UPFLAG_NAME = "upFlag";
