@@ -80,5 +80,13 @@ public interface MutableJobCatalog extends JobCatalog {
       log.info("updateRemoveJobTime...");
       Instrumented.updateTimer(Optional.of(this.timeForJobCatalogRemove), System.currentTimeMillis() - startTime, TimeUnit.MILLISECONDS);
     }
+
+	/**
+	   * It is InMemoryJobCatalog's responsibility to inform the gobblin instance driver about the file change.
+	   * Here it is internal detector's responsibility.
+	   */
+	  public boolean shouldLoadGlobalConf() {
+	    return false;
+	  }
   }
 }
