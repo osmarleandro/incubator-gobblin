@@ -161,8 +161,8 @@ public abstract class JobCatalogBase extends AbstractIdleService implements JobC
   }
 
   @Override public void switchMetricContext(List<Tag<?>> tags) {
-    throw new UnsupportedOperationException();
-  }
+	listeners.switchMetricContext(tags);
+}
 
   @Override public void switchMetricContext(MetricContext context) {
     throw new UnsupportedOperationException();

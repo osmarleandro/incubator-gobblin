@@ -29,6 +29,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
+import org.apache.gobblin.metrics.Tag;
 import org.apache.gobblin.runtime.api.JobCatalog;
 import org.apache.gobblin.runtime.api.JobCatalogListener;
 import org.apache.gobblin.runtime.api.JobCatalogListenersContainer;
@@ -127,6 +128,10 @@ public class JobCatalogListenersList implements JobCatalogListener, JobCatalogLi
   @Override
   public void registerWeakJobCatalogListener(JobCatalogListener jobListener) {
     _disp.addWeakListener(jobListener);
+  }
+
+public void switchMetricContext(List<Tag<?>> tags) {
+    throw new UnsupportedOperationException();
   }
 
 }
