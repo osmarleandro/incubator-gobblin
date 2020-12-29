@@ -246,4 +246,14 @@ public class FileBasedJobLockFactory implements JobLockFactory<FileBasedJobLock>
     }
   }
 
+/**
+* Acquire the lock.
+*
+* @param fileBasedJobLock TODO
+ * @throws JobLockException thrown if the {@link JobLock} fails to be acquired
+*/
+public void lock(FileBasedJobLock fileBasedJobLock) throws JobLockException {
+lock(fileBasedJobLock.lockFile);
+}
+
 }
