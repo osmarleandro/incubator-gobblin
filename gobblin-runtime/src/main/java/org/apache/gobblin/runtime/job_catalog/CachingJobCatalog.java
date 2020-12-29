@@ -146,7 +146,7 @@ public class CachingJobCatalog extends AbstractIdleService implements JobCatalog
   }
 
   @Override public StandardMetrics getMetrics() {
-    return _fallback.getMetrics();
-  }
+	return _cache.getMetrics(this);
+}
 
 }

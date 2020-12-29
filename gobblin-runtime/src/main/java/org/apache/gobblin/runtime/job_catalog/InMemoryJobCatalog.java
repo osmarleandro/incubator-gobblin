@@ -32,6 +32,7 @@ import org.apache.gobblin.instrumented.Instrumented;
 import org.apache.gobblin.metrics.MetricContext;
 import org.apache.gobblin.runtime.api.GobblinInstanceEnvironment;
 import org.apache.gobblin.runtime.api.JobCatalog;
+import org.apache.gobblin.runtime.api.JobCatalog.StandardMetrics;
 import org.apache.gobblin.runtime.api.JobSpec;
 import org.apache.gobblin.runtime.api.JobSpecNotFoundException;
 import org.apache.gobblin.runtime.api.MutableJobCatalog;
@@ -87,5 +88,9 @@ public class InMemoryJobCatalog extends MutableJobCatalogBase {
   @Override
   protected JobSpec doRemove(URI uri) {
     return this.jobSpecs.remove(uri);
+  }
+
+public StandardMetrics getMetrics(CachingJobCatalog cachingJobCatalog) {
+    return cachingJobCatalog._fallback.getMetrics();
   }
 }
