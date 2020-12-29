@@ -85,7 +85,6 @@ import org.apache.gobblin.metrics.event.JobEvent;
 import org.apache.gobblin.metrics.event.JobStateEventBuilder;
 import org.apache.gobblin.metrics.event.TimingEvent;
 import org.apache.gobblin.metrics.reporter.util.MetricReportUtils;
-import org.apache.gobblin.password.PasswordManager;
 import org.apache.gobblin.runtime.AbstractJobLauncher;
 import org.apache.gobblin.runtime.DynamicConfigGeneratorFactory;
 import org.apache.gobblin.runtime.GobblinMultiTaskAttempt;
@@ -130,7 +129,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
   private static final String INTERRUPT_JOB_FILE_NAME = "_INTERRUPT_JOB";
   private static final String GOBBLIN_JOB_INTERRUPT_PATH_KEY = "gobblin.jobInterruptPath";
 
-  private static final Logger LOG = LoggerFactory.getLogger(MRJobLauncher.class);
+  public static final Logger LOG = LoggerFactory.getLogger(MRJobLauncher.class);
 
   private static final String JOB_NAME_PREFIX = "Gobblin-";
 
@@ -157,7 +156,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
   public static final String REDUCER_TASK_NUM_KEY = ConfigurationKeys.METRICS_CONFIGURATIONS_PREFIX + "reporting.reducer.task.num";
   public static final String REDUCER_TASK_ATTEMPT_NUM_KEY = ConfigurationKeys.METRICS_CONFIGURATIONS_PREFIX + "reporting.reducer.task.attempt.num";
 
-  private static final Splitter SPLITTER = Splitter.on(',').omitEmptyStrings().trimResults();
+  public static final Splitter SPLITTER = Splitter.on(',').omitEmptyStrings().trimResults();
 
   private final Configuration conf;
   private final FileSystem fs;
@@ -433,7 +432,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
 
     // Add files (if any) already on HDFS that the job depends on to DistributedCache
     if (this.jobProps.containsKey(ConfigurationKeys.JOB_HDFS_FILES_KEY)) {
-      addHDFSFiles(this.jobProps.getProperty(ConfigurationKeys.JOB_HDFS_FILES_KEY), conf);
+      fsm.addHDFSFiles(this, this.jobProps.getProperty(ConfigurationKeys.JOB_HDFS_FILES_KEY), conf);
     }
 
     // Add job-specific jars existing in HDFS to the classpath for the mappers
@@ -595,23 +594,6 @@ public class MRJobLauncher extends AbstractJobLauncher {
       LOG.info(String.format("Adding %s to DistributedCache", destFileUri));
       // Finally add the file to DistributedCache with a symlink named after the file name
       DistributedCache.addCacheFile(destFileUri, conf);
-    }
-  }
-
-  /**
-   * Add non-jar files already on HDFS that the job depends on to DistributedCache.
-   */
-  @SuppressWarnings("deprecation")
-  private void addHDFSFiles(String jobFileList, Configuration conf) {
-    DistributedCache.createSymlink(conf);
-    jobFileList = PasswordManager.getInstance(this.jobProps).readPassword(jobFileList);
-    for (String jobFile : SPLITTER.split(jobFileList)) {
-      Path srcJobFile = new Path(jobFile);
-      // Create a URI that is in the form path#symlink
-      URI srcFileUri = URI.create(srcJobFile.toUri().getPath() + "#" + srcJobFile.getName());
-      LOG.info(String.format("Adding %s to DistributedCache", srcFileUri));
-      // Finally add the file to DistributedCache with a symlink named after the file name
-      DistributedCache.addCacheFile(srcFileUri, conf);
     }
   }
 

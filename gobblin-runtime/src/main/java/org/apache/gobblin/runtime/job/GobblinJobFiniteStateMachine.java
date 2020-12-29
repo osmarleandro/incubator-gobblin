@@ -18,10 +18,16 @@
 package org.apache.gobblin.runtime.job;
 
 import java.io.IOException;
+import java.net.URI;
 
 import org.apache.gobblin.fsm.FiniteStateMachine;
 import org.apache.gobblin.fsm.StateWithCallbacks;
+import org.apache.gobblin.password.PasswordManager;
 import org.apache.gobblin.runtime.JobState;
+import org.apache.gobblin.runtime.mapreduce.MRJobLauncher;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.mapreduce.filecache.DistributedCache;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
@@ -166,6 +172,26 @@ public class GobblinJobFiniteStateMachine extends FiniteStateMachine<GobblinJobF
 			}
 		}
 	}
+
+	/**
+	   * Add non-jar files already on HDFS that the job depends on to DistributedCache.
+	 * @param mrJobLauncher TODO
+	 * @param jobFileList TODO
+	 * @param conf TODO
+	   */
+	  @SuppressWarnings("deprecation")
+	public void addHDFSFiles(MRJobLauncher mrJobLauncher, String jobFileList, Configuration conf) {
+	    DistributedCache.createSymlink(conf);
+	    jobFileList = PasswordManager.getInstance(mrJobLauncher.jobProps).readPassword(jobFileList);
+	    for (String jobFile : MRJobLauncher.SPLITTER.split(jobFileList)) {
+	      Path srcJobFile = new Path(jobFile);
+	      // Create a URI that is in the form path#symlink
+	      URI srcFileUri = URI.create(srcJobFile.toUri().getPath() + "#" + srcJobFile.getName());
+	      MRJobLauncher.LOG.info(String.format("Adding %s to DistributedCache", srcFileUri));
+	      // Finally add the file to DistributedCache with a symlink named after the file name
+	      DistributedCache.addCacheFile(srcFileUri, conf);
+	    }
+	  }
 
 	private static SetMultimap<JobFSMState, JobFSMState> buildAllowedTransitions() {
 		SetMultimap<JobFSMState, JobFSMState> transitions = HashMultimap.create();

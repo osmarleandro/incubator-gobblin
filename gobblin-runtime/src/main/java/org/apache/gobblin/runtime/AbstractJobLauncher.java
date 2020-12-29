@@ -129,7 +129,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
   public static final String GOBBLIN_JOB_MULTI_TEMPLATE_KEY = "gobblin.template.uris";
 
   // Job configuration properties
-  protected final Properties jobProps;
+  public final Properties jobProps;
 
   // This contains all job context information
   protected final JobContext jobContext;
