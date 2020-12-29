@@ -18,6 +18,7 @@ package org.apache.gobblin.runtime.api;
 
 import com.google.common.base.Objects;
 
+import org.apache.gobblin.runtime.scheduler.JobSpecSchedulerListeners;
 import org.apache.gobblin.util.callbacks.Callback;
 
 /**
@@ -33,7 +34,13 @@ public interface JobSpecSchedulerListener {
   /** Called just before the job (runnable) gets triggered by the scheduler */
   void onJobTriggered(JobSpec jobSpec);
 
-  public class JobScheduledCallback extends Callback<JobSpecSchedulerListener, Void> {
+  /** {@inheritDoc} 
+ * @param jobSpecSchedulerListeners TODO*/
+  default void registerJobSpecSchedulerListener(JobSpecSchedulerListeners jobSpecSchedulerListeners) {
+    jobSpecSchedulerListeners._dispatcher.addListener(this);
+  }
+
+public class JobScheduledCallback extends Callback<JobSpecSchedulerListener, Void> {
     private final JobSpecSchedule _jobSchedule;
 
     public JobScheduledCallback(JobSpecSchedule jobSchedule) {

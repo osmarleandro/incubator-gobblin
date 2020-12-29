@@ -36,7 +36,7 @@ import org.apache.gobblin.util.callbacks.CallbacksDispatcher;
  */
 public class JobSpecSchedulerListeners
        implements JobSpecSchedulerListenersContainer, JobSpecSchedulerListener, Closeable {
-  private CallbacksDispatcher<JobSpecSchedulerListener> _dispatcher;
+  public CallbacksDispatcher<JobSpecSchedulerListener> _dispatcher;
 
   public JobSpecSchedulerListeners(Optional<ExecutorService> execService,
                                     Optional<Logger> log) {
@@ -53,8 +53,8 @@ public class JobSpecSchedulerListeners
 
   /** {@inheritDoc} */
   @Override public void registerJobSpecSchedulerListener(JobSpecSchedulerListener listener) {
-    _dispatcher.addListener(listener);
-  }
+	listener.registerJobSpecSchedulerListener(this);
+}
 
   /** {@inheritDoc} */
   @Override public void unregisterJobSpecSchedulerListener(JobSpecSchedulerListener listener) {
