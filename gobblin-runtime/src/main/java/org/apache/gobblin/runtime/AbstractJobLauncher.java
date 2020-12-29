@@ -129,10 +129,10 @@ public abstract class AbstractJobLauncher implements JobLauncher {
   public static final String GOBBLIN_JOB_MULTI_TEMPLATE_KEY = "gobblin.template.uris";
 
   // Job configuration properties
-  protected final Properties jobProps;
+  public final Properties jobProps;
 
   // This contains all job context information
-  protected final JobContext jobContext;
+  public final JobContext jobContext;
 
   // This (optional) JobLock is used to prevent the next scheduled run
   // of the job from starting if the current run has not finished yet
@@ -157,7 +157,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
   protected final Optional<MetricContext> runtimeMetricContext;
 
   // An EventBuilder with basic metadata.
-  protected final EventSubmitter eventSubmitter;
+  public final EventSubmitter eventSubmitter;
 
   // This is for dispatching events related to job launching and execution to registered subscribers
   protected final EventBus eventBus = new EventBus(AbstractJobLauncher.class.getSimpleName());

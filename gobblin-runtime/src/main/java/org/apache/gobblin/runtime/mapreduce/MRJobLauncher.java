@@ -45,7 +45,6 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.TaskAttemptID;
 import org.apache.hadoop.mapreduce.TaskType;
 import org.apache.hadoop.mapreduce.filecache.DistributedCache;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.map.WrappedMapper;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.task.MapContextImpl;
@@ -128,7 +127,7 @@ import org.apache.gobblin.util.reflection.RestrictedFieldAccessingUtils;
 public class MRJobLauncher extends AbstractJobLauncher {
 
   private static final String INTERRUPT_JOB_FILE_NAME = "_INTERRUPT_JOB";
-  private static final String GOBBLIN_JOB_INTERRUPT_PATH_KEY = "gobblin.jobInterruptPath";
+  public static final String GOBBLIN_JOB_INTERRUPT_PATH_KEY = "gobblin.jobInterruptPath";
 
   private static final Logger LOG = LoggerFactory.getLogger(MRJobLauncher.class);
 
@@ -159,15 +158,15 @@ public class MRJobLauncher extends AbstractJobLauncher {
 
   private static final Splitter SPLITTER = Splitter.on(',').omitEmptyStrings().trimResults();
 
-  private final Configuration conf;
-  private final FileSystem fs;
-  private final Job job;
-  private final Path mrJobDir;
+  public final Configuration conf;
+  public final FileSystem fs;
+  public final Job job;
+  public final Path mrJobDir;
   private final Path jarsDir;
   /** A location to store jars that should not be shared between different jobs. */
   private final Path unsharedJarsDir;
-  private final Path jobInputPath;
-  private final Path jobOutputPath;
+  public final Path jobInputPath;
+  public final Path jobOutputPath;
 
   private final int parallelRunnerThreads;
 
@@ -178,7 +177,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
   private final StateStore<TaskState> taskStateStore;
 
   private final int jarFileMaximumRetry;
-  private final Path interruptPath;
+  public final Path interruptPath;
   private final GobblinJobFiniteStateMachine fsm;
 
   public MRJobLauncher(Properties jobProps) throws Exception {
@@ -289,7 +288,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
       this.eventSubmitter.submit(countEventBuilder);
       LOG.info("Emitting WorkUnitsCreated Count: " + countEventBuilder.getCount());
 
-      prepareHadoopJob(workUnits);
+      fsm.prepareHadoopJob(this, workUnits);
 
       // Start the output TaskState collector service
       this.taskStateCollectorService.startAsync().awaitRunning();
@@ -409,7 +408,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
   /**
    * Add dependent jars and files.
    */
-  private void addDependencies(Configuration conf) throws IOException {
+  public void addDependencies(Configuration conf) throws IOException {
     TimingEvent distributedCacheSetupTimer =
         this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.MR_DISTRIBUTED_CACHE_SETUP);
 
@@ -444,55 +443,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
     distributedCacheSetupTimer.stop();
   }
 
-  /**
-   * Prepare the Hadoop MR job, including configuring the job and setting up the input/output paths.
-   */
-  private void prepareHadoopJob(List<WorkUnit> workUnits) throws IOException {
-    TimingEvent mrJobSetupTimer = this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.MR_JOB_SETUP);
-
-    // Add dependent jars/files
-    addDependencies(this.job.getConfiguration());
-
-    this.job.setJarByClass(MRJobLauncher.class);
-    this.job.setMapperClass(TaskRunner.class);
-
-    // The job is mapper-only
-    this.job.setNumReduceTasks(0);
-
-    this.job.setInputFormatClass(GobblinWorkUnitsInputFormat.class);
-    this.job.setOutputFormatClass(GobblinOutputFormat.class);
-    this.job.setMapOutputKeyClass(NullWritable.class);
-    this.job.setMapOutputValueClass(NullWritable.class);
-
-    // Set speculative execution
-
-    this.job.setSpeculativeExecution(isSpeculativeExecutionEnabled(this.jobProps));
-
-    this.job.getConfiguration().set("mapreduce.job.user.classpath.first", "true");
-
-    // Job input path is where input work unit files are stored
-
-    // Prepare job input
-    prepareJobInput(workUnits);
-    FileInputFormat.addInputPath(this.job, this.jobInputPath);
-
-    // Job output path is where serialized task states are stored
-    FileOutputFormat.setOutputPath(this.job, this.jobOutputPath);
-
-    // Serialize source state to a file which will be picked up by the mappers
-    serializeJobState(this.fs, this.mrJobDir, this.conf, this.jobContext.getJobState(), this.job);
-
-    if (this.jobProps.containsKey(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY)) {
-      GobblinWorkUnitsInputFormat.setMaxMappers(this.job,
-          Integer.parseInt(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY)));
-    }
-
-    this.job.getConfiguration().set(GOBBLIN_JOB_INTERRUPT_PATH_KEY, this.interruptPath.toString());
-
-    mrJobSetupTimer.stop();
-  }
-
-  static boolean isSpeculativeExecutionEnabled(Properties props) {
+  public static boolean isSpeculativeExecutionEnabled(Properties props) {
     return Boolean.valueOf(
         props.getProperty(JobContext.MAP_SPECULATIVE, ConfigurationKeys.DEFAULT_ENABLE_MR_SPECULATIVE_EXECUTION));
   }
@@ -503,6 +454,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
   }
 
   @VisibleForTesting
+public
   static void serializeJobState(FileSystem fs, Path mrJobDir, Configuration conf, JobState jobState, Job job)
       throws IOException {
     Path jobStateFilePath = new Path(mrJobDir, JOB_STATE_FILE_NAME);
@@ -632,7 +584,7 @@ public class MRJobLauncher extends AbstractJobLauncher {
    * Prepare the job input.
    * @throws IOException
    */
-  private void prepareJobInput(List<WorkUnit> workUnits) throws IOException {
+  public void prepareJobInput(List<WorkUnit> workUnits) throws IOException {
     Closer closer = Closer.create();
     try {
       ParallelRunner parallelRunner = closer.register(new ParallelRunner(this.parallelRunnerThreads, this.fs));

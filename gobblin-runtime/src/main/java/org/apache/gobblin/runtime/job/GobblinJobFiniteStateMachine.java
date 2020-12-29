@@ -18,10 +18,22 @@
 package org.apache.gobblin.runtime.job;
 
 import java.io.IOException;
+import java.util.List;
 
+import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.fsm.FiniteStateMachine;
 import org.apache.gobblin.fsm.StateWithCallbacks;
+import org.apache.gobblin.metrics.event.TimingEvent;
+import org.apache.gobblin.metrics.event.TimingEvent.RunJobTimings;
 import org.apache.gobblin.runtime.JobState;
+import org.apache.gobblin.runtime.mapreduce.GobblinOutputFormat;
+import org.apache.gobblin.runtime.mapreduce.GobblinWorkUnitsInputFormat;
+import org.apache.gobblin.runtime.mapreduce.MRJobLauncher;
+import org.apache.gobblin.runtime.mapreduce.MRJobLauncher.TaskRunner;
+import org.apache.gobblin.source.workunit.WorkUnit;
+import org.apache.hadoop.io.NullWritable;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
@@ -166,6 +178,56 @@ public class GobblinJobFiniteStateMachine extends FiniteStateMachine<GobblinJobF
 			}
 		}
 	}
+
+	/**
+	   * Prepare the Hadoop MR job, including configuring the job and setting up the input/output paths.
+	 * @param mrJobLauncher TODO
+	 * @param workUnits TODO
+	   */
+	  public void prepareHadoopJob(MRJobLauncher mrJobLauncher, List<WorkUnit> workUnits) throws IOException {
+	    TimingEvent mrJobSetupTimer = mrJobLauncher.eventSubmitter.getTimingEvent(RunJobTimings.MR_JOB_SETUP);
+	
+	    // Add dependent jars/files
+	    mrJobLauncher.addDependencies(mrJobLauncher.job.getConfiguration());
+	
+	    mrJobLauncher.job.setJarByClass(MRJobLauncher.class);
+	    mrJobLauncher.job.setMapperClass(TaskRunner.class);
+	
+	    // The job is mapper-only
+	    mrJobLauncher.job.setNumReduceTasks(0);
+	
+	    mrJobLauncher.job.setInputFormatClass(GobblinWorkUnitsInputFormat.class);
+	    mrJobLauncher.job.setOutputFormatClass(GobblinOutputFormat.class);
+	    mrJobLauncher.job.setMapOutputKeyClass(NullWritable.class);
+	    mrJobLauncher.job.setMapOutputValueClass(NullWritable.class);
+	
+	    // Set speculative execution
+	
+	    mrJobLauncher.job.setSpeculativeExecution(MRJobLauncher.isSpeculativeExecutionEnabled(mrJobLauncher.jobProps));
+	
+	    mrJobLauncher.job.getConfiguration().set("mapreduce.job.user.classpath.first", "true");
+	
+	    // Job input path is where input work unit files are stored
+	
+	    // Prepare job input
+	    mrJobLauncher.prepareJobInput(workUnits);
+	    FileInputFormat.addInputPath(mrJobLauncher.job, mrJobLauncher.jobInputPath);
+	
+	    // Job output path is where serialized task states are stored
+	    FileOutputFormat.setOutputPath(mrJobLauncher.job, mrJobLauncher.jobOutputPath);
+	
+	    // Serialize source state to a file which will be picked up by the mappers
+	    MRJobLauncher.serializeJobState(mrJobLauncher.fs, mrJobLauncher.mrJobDir, mrJobLauncher.conf, mrJobLauncher.jobContext.getJobState(), mrJobLauncher.job);
+	
+	    if (mrJobLauncher.jobProps.containsKey(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY)) {
+	      GobblinWorkUnitsInputFormat.setMaxMappers(mrJobLauncher.job,
+	          Integer.parseInt(mrJobLauncher.jobProps.getProperty(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY)));
+	    }
+	
+	    mrJobLauncher.job.getConfiguration().set(MRJobLauncher.GOBBLIN_JOB_INTERRUPT_PATH_KEY, mrJobLauncher.interruptPath.toString());
+	
+	    mrJobSetupTimer.stop();
+	  }
 
 	private static SetMultimap<JobFSMState, JobFSMState> buildAllowedTransitions() {
 		SetMultimap<JobFSMState, JobFSMState> transitions = HashMultimap.create();
