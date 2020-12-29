@@ -32,10 +32,10 @@ import org.apache.gobblin.util.filesystem.PathAlterationListenerAdaptor;
 
 public class FSPathAlterationListenerAdaptor extends PathAlterationListenerAdaptor {
   private final Path jobConfDirPath;
-  private final PullFileLoader loader;
-  private final Config sysConfig;
-  private final JobCatalogListenersList listeners;
-  private final ImmutableFSJobCatalog.JobSpecConverter converter;
+  final PullFileLoader loader;
+  final Config sysConfig;
+  final JobCatalogListenersList listeners;
+  final ImmutableFSJobCatalog.JobSpecConverter converter;
 
   FSPathAlterationListenerAdaptor(Path jobConfDirPath, PullFileLoader loader, Config sysConfig,
       JobCatalogListenersList listeners, ImmutableFSJobCatalog.JobSpecConverter converter) {
@@ -76,12 +76,6 @@ public class FSPathAlterationListenerAdaptor extends PathAlterationListenerAdapt
 
   @Override
   public void onFileChange(Path rawPath) {
-    try {
-      JobSpec updatedJobSpec =
-          this.converter.apply(loader.loadPullFile(rawPath, sysConfig, false));
-      listeners.onUpdateJob(updatedJobSpec);
-    } catch (IOException e) {
-      throw new RuntimeException(e.getMessage());
-    }
-  }
+	converter.onFileChange(this, rawPath);
+}
 }

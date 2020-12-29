@@ -357,5 +357,15 @@ public class ImmutableFSJobCatalog extends JobCatalogBase implements JobCatalog 
 
       return builder.build();
     }
+
+	public void onFileChange(FSPathAlterationListenerAdaptor fsPathAlterationListenerAdaptor, Path rawPath) {
+	    try {
+	      JobSpec updatedJobSpec =
+	          apply(fsPathAlterationListenerAdaptor.loader.loadPullFile(rawPath, fsPathAlterationListenerAdaptor.sysConfig, false));
+	      fsPathAlterationListenerAdaptor.listeners.onUpdateJob(updatedJobSpec);
+	    } catch (IOException e) {
+	      throw new RuntimeException(e.getMessage());
+	    }
+	  }
   }
 }
