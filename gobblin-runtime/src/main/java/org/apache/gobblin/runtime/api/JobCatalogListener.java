@@ -21,6 +21,7 @@ import java.net.URI;
 import com.google.common.base.Objects;
 
 import org.apache.gobblin.annotation.Alpha;
+import org.apache.gobblin.runtime.job_catalog.CachingJobCatalog;
 import org.apache.gobblin.util.callbacks.Callback;
 
 /**
@@ -45,7 +46,11 @@ public interface JobCatalogListener {
    */
   public void onUpdateJob(JobSpec updatedJob);
 
-  /** A standard implementation of onAddJob as a functional object */
+  default void registerWeakJobCatalogListener(CachingJobCatalog cachingJobCatalog) {
+    cachingJobCatalog._cache.registerWeakJobCatalogListener(this);
+  }
+
+/** A standard implementation of onAddJob as a functional object */
   public static class AddJobCallback extends Callback<JobCatalogListener, Void> {
     private final JobSpec _addedJob;
     public AddJobCallback(JobSpec addedJob) {
