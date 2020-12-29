@@ -244,8 +244,8 @@ public class ImmutableFSJobCatalog extends JobCatalogBase implements JobCatalog 
   }
 
   protected Optional<String> getInjectedExtension() {
-    return Optional.absent();
-  }
+	return converter.getInjectedExtension();
+}
 
   @Getter
   public static class ConfigAccessor {
@@ -357,5 +357,9 @@ public class ImmutableFSJobCatalog extends JobCatalogBase implements JobCatalog 
 
       return builder.build();
     }
+
+	protected Optional<String> getInjectedExtension() {
+	    return Optional.absent();
+	  }
   }
 }
