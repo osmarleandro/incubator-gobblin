@@ -86,12 +86,12 @@ import lombok.Getter;
  * {@link JobLauncher} API.
  */
 public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> implements JobExecutionDriver {
-  private final Logger _log;
+  public final Logger _log;
   private final JobSpec _jobSpec;
   private final JobExecutionUpdatable _jobExec;
   private final JobExecutionState _jobState;
   private final JobExecutionStateListeners _callbackDispatcher;
-  private final ExecutionList _executionList;
+  public final ExecutionList _executionList;
   private final DriverRunnable _runnable;
   private final Closer _closer;
   private JobContext _jobContext;
@@ -201,15 +201,10 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
 
   @Override
   protected void done() {
-    _executionList.execute();
-    try {
-      shutDown();
-    } catch (IOException ioe) {
-      _log.error("Failed to close job launcher.");
-    }
-  }
+	_callbackDispatcher.done(this);
+}
 
-  private void shutDown() throws IOException {
+  public void shutDown() throws IOException {
     _log.info("Shutting down " + getClass().getSimpleName());
     if (null != _jobContext) {
       switch (_jobContext.getJobState().getState()) {

@@ -28,6 +28,7 @@ import org.apache.gobblin.runtime.JobState.RunningState;
 import org.apache.gobblin.runtime.api.JobExecutionState;
 import org.apache.gobblin.runtime.api.JobExecutionStateListener;
 import org.apache.gobblin.runtime.api.JobExecutionStateListenerContainer;
+import org.apache.gobblin.runtime.job_exec.JobLauncherExecutionDriver;
 import org.apache.gobblin.util.callbacks.CallbacksDispatcher;
 
 /**
@@ -104,5 +105,14 @@ public class JobExecutionStateListeners
   public void close()
       throws IOException {
     _dispatcher.close();
+  }
+
+public void done(JobLauncherExecutionDriver jobLauncherExecutionDriver) {
+    jobLauncherExecutionDriver._executionList.execute();
+    try {
+      jobLauncherExecutionDriver.shutDown();
+    } catch (IOException ioe) {
+      jobLauncherExecutionDriver._log.error("Failed to close job launcher.");
+    }
   }
 }
