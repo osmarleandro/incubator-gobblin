@@ -26,6 +26,7 @@ import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.instrumented.Instrumented;
 import org.apache.gobblin.metrics.ContextAwareMetric;
 import org.apache.gobblin.metrics.ContextAwareTimer;
+import org.apache.gobblin.runtime.job_catalog.FSJobCatalog;
 import org.apache.gobblin.util.ConfigUtils;
 
 import com.google.common.base.Optional;
@@ -80,5 +81,9 @@ public interface MutableJobCatalog extends JobCatalog {
       log.info("updateRemoveJobTime...");
       Instrumented.updateTimer(Optional.of(this.timeForJobCatalogRemove), System.currentTimeMillis() - startTime, TimeUnit.MILLISECONDS);
     }
+
+	public Optional<String> getInjectedExtension() {
+	    return Optional.of(FSJobCatalog.CONF_EXTENSION);
+	  }
   }
 }

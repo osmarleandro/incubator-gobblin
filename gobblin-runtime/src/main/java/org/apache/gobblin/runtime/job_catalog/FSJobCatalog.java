@@ -169,8 +169,8 @@ public class FSJobCatalog extends ImmutableFSJobCatalog implements MutableJobCat
 
   @Override
   protected Optional<String> getInjectedExtension() {
-    return Optional.of(CONF_EXTENSION);
-  }
+	return mutableMetrics.getInjectedExtension();
+}
 
   /**
    * Used for shadow copying in the process of updating a existing job configuration file,
