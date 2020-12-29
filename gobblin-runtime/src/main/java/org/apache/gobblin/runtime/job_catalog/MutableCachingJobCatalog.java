@@ -43,7 +43,7 @@ public class MutableCachingJobCatalog extends CachingJobCatalog implements Mutab
   /** {@inheritDoc} */
   @Override
   public void remove(URI uri) {
-    ((MutableJobCatalog)_fallback).remove(uri);
-  }
+	_fallback.remove(uri);
+}
 
 }

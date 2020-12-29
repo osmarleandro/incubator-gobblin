@@ -40,7 +40,7 @@ import org.apache.gobblin.runtime.api.JobSpecNotFoundException;
  *
  */
 public class CachingJobCatalog extends AbstractIdleService implements JobCatalog {
-  protected final JobCatalog _fallback;
+  public final JobCatalog _fallback;
   protected final InMemoryJobCatalog _cache;
   protected final Logger _log;
 

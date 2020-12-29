@@ -70,7 +70,13 @@ public interface JobCatalog extends JobCatalogListenersContainer, Instrumentable
    **/
   JobSpec getJobSpec(URI uri) throws JobSpecNotFoundException;
 
-  @Slf4j
+  /** {@inheritDoc} 
+ * @param uri TODO*/
+  default void remove(URI uri) {
+    ((MutableJobCatalog)this).remove(uri);
+  }
+
+@Slf4j
   public static class StandardMetrics extends StandardMetricsBridge.StandardMetrics implements JobCatalogListener {
     public static final String NUM_ACTIVE_JOBS_NAME = "numActiveJobs";
     public static final String TOTAL_ADD_CALLS = "totalAddCalls";
