@@ -176,6 +176,6 @@ public class LocalJobLauncher extends AbstractJobLauncher {
 
   @Override
   protected void executeCancellation() {
-
-  }
+	taskExecutor.executeCancellation();
+}
 }

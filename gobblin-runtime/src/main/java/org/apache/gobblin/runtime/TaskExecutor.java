@@ -367,7 +367,11 @@ public class TaskExecutor extends AbstractIdleService {
     }
   }
 
-  private class TaskExecutorQueueMetricSet implements MetricSet {
+  public void executeCancellation() {
+
+  }
+
+private class TaskExecutorQueueMetricSet implements MetricSet {
     @Override
     public Map<String, Metric> getMetrics() {
       final Map<String, Metric> metrics = new HashMap<>();
