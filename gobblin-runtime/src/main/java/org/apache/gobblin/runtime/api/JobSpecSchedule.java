@@ -16,6 +16,9 @@
  */
 package org.apache.gobblin.runtime.api;
 
+import org.apache.gobblin.runtime.api.JobSpecSchedulerListener.JobUnscheduledCallback;
+import org.apache.gobblin.runtime.scheduler.JobSpecSchedulerListeners;
+
 import com.google.common.base.Optional;
 
 /**
@@ -29,4 +32,11 @@ public interface JobSpecSchedule {
   Runnable getJobRunnable();
   /** The millisecond timestamp of the next execution of this schedule if any. */
   Optional<Long> getNextRunTimeMillis();
+default void onJobUnscheduled(JobSpecSchedulerListeners jobSpecSchedulerListeners) {
+    try {
+      jobSpecSchedulerListeners._dispatcher.execCallbacks(new JobUnscheduledCallback(this));
+    } catch (InterruptedException e) {
+      jobSpecSchedulerListeners._dispatcher.getLog().warn("onJobUnscheduled interrupted.");
+    }
+  }
 }

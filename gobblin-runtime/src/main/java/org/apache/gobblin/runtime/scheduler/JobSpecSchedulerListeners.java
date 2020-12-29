@@ -36,7 +36,7 @@ import org.apache.gobblin.util.callbacks.CallbacksDispatcher;
  */
 public class JobSpecSchedulerListeners
        implements JobSpecSchedulerListenersContainer, JobSpecSchedulerListener, Closeable {
-  private CallbacksDispatcher<JobSpecSchedulerListener> _dispatcher;
+  public CallbacksDispatcher<JobSpecSchedulerListener> _dispatcher;
 
   public JobSpecSchedulerListeners(Optional<ExecutorService> execService,
                                     Optional<Logger> log) {
@@ -83,12 +83,8 @@ public class JobSpecSchedulerListeners
   }
 
   @Override public void onJobUnscheduled(JobSpecSchedule jobSchedule) {
-    try {
-      _dispatcher.execCallbacks(new JobUnscheduledCallback(jobSchedule));
-    } catch (InterruptedException e) {
-      _dispatcher.getLog().warn("onJobUnscheduled interrupted.");
-    }
-  }
+	jobSchedule.onJobUnscheduled(this);
+}
 
   @Override
   public void registerWeakJobSpecSchedulerListener(JobSpecSchedulerListener listener) {
