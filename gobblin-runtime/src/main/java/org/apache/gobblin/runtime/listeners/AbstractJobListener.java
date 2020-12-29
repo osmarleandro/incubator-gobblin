@@ -31,7 +31,7 @@ import org.apache.gobblin.runtime.JobContext;
  * @author Joel Baranick
  */
 public abstract class AbstractJobListener implements JobListener {
-  private final Optional<Logger> _log;
+  public final Optional<Logger> _log;
 
   public AbstractJobListener(Optional<Logger> log) {
     _log = log;
@@ -43,10 +43,8 @@ public abstract class AbstractJobListener implements JobListener {
 
   @Override
   public void onJobPrepare(JobContext jobContext) throws Exception {
-    if (_log.isPresent()) {
-      _log.get().info("jobPrepare: " + jobContext);
-    }
-  }
+	jobContext.onJobPrepare(this);
+}
 
   @Override
   public void onJobStart(JobContext jobContext) throws Exception {
