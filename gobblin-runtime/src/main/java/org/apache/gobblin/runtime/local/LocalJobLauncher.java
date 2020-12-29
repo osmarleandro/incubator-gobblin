@@ -122,9 +122,8 @@ public class LocalJobLauncher extends AbstractJobLauncher {
 
   @Override
   protected void runWorkUnits(List<WorkUnit> workUnits) throws Exception {
-    // This should never happen
-    throw new UnsupportedOperationException();
-  }
+	taskExecutor.runWorkUnits(workUnits);
+}
 
   @Override
   protected void runWorkUnitStream(WorkUnitStream workUnitStream) throws Exception {

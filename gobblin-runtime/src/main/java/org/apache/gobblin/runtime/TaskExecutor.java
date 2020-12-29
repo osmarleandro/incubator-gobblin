@@ -20,6 +20,7 @@ package org.apache.gobblin.runtime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Properties;
@@ -53,6 +54,7 @@ import org.slf4j.LoggerFactory;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.metrics.GobblinMetrics;
 import org.apache.gobblin.runtime.fork.Fork;
+import org.apache.gobblin.source.workunit.WorkUnit;
 import org.apache.gobblin.util.ExecutorsUtils;
 
 import lombok.Getter;
@@ -367,7 +369,12 @@ public class TaskExecutor extends AbstractIdleService {
     }
   }
 
-  private class TaskExecutorQueueMetricSet implements MetricSet {
+  public void runWorkUnits(List<WorkUnit> workUnits) throws Exception {
+    // This should never happen
+    throw new UnsupportedOperationException();
+  }
+
+private class TaskExecutorQueueMetricSet implements MetricSet {
     @Override
     public Map<String, Metric> getMetrics() {
       final Map<String, Metric> metrics = new HashMap<>();
