@@ -357,5 +357,21 @@ public class ImmutableFSJobCatalog extends JobCatalogBase implements JobCatalog 
 
       return builder.build();
     }
+
+	/**
+	   * Transform the event triggered by file creation into JobSpec Creation for Driver (One of the JobCatalogListener )
+	   * Create a new JobSpec object and notify each of member inside JobCatalogListenersList
+	   * @param fsPathAlterationListenerAdaptor TODO
+	 * @param rawPath This could be complete path to the newly-created configuration file.
+	   */
+	  public void onFileCreate(FSPathAlterationListenerAdaptor fsPathAlterationListenerAdaptor, Path rawPath) {
+	    try {
+	      JobSpec newJobSpec =
+	          apply(fsPathAlterationListenerAdaptor.loader.loadPullFile(rawPath, fsPathAlterationListenerAdaptor.sysConfig, false));
+	      fsPathAlterationListenerAdaptor.listeners.onAddJob(newJobSpec);
+	    } catch (IOException e) {
+	      throw new RuntimeException(e.getMessage());
+	    }
+	  }
   }
 }
