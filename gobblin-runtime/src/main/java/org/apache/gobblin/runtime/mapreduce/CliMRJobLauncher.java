@@ -51,7 +51,7 @@ public class CliMRJobLauncher extends Configured implements ApplicationLauncher,
 
   private final Closer closer = Closer.create();
 
-  private final ApplicationLauncher applicationLauncher;
+  public final ApplicationLauncher applicationLauncher;
   private final MRJobLauncher mrJobLauncher;
 
   public CliMRJobLauncher(Configuration conf, Properties jobProperties) throws Exception {
@@ -80,8 +80,8 @@ public class CliMRJobLauncher extends Configured implements ApplicationLauncher,
 
   @Override
   public void start() throws ApplicationException {
-    this.applicationLauncher.start();
-  }
+	applicationLauncher.start(this);
+}
 
   @Override
   public void stop() throws ApplicationException {
