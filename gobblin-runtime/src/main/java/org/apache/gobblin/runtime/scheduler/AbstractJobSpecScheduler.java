@@ -16,7 +16,6 @@
  */
 package org.apache.gobblin.runtime.scheduler;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
@@ -45,8 +44,8 @@ import org.apache.gobblin.runtime.api.JobSpecSchedulerListener;
 public abstract class AbstractJobSpecScheduler extends AbstractIdleService
                                                implements JobSpecScheduler  {
   protected final Map<URI, JobSpecSchedule> _schedules = new HashMap<>();
-  private final Logger _log;
-  private final JobSpecSchedulerListeners _callbacksDispatcher;
+  final Logger _log;
+  final JobSpecSchedulerListeners _callbacksDispatcher;
 
   public AbstractJobSpecScheduler(Optional<Logger> log) {
     _log = log.or(LoggerFactory.getLogger(getClass()));
@@ -184,11 +183,7 @@ public abstract class AbstractJobSpecScheduler extends AbstractIdleService
 
   @Override
   protected void shutDown() throws TimeoutException {
-    try {
-      _callbacksDispatcher.close();
-    } catch (IOException ioe) {
-      _log.error("Failed to shut down " + this.getClass().getName(), ioe);
-    }
-  }
+	_callbacksDispatcher.shutDown(this);
+}
 
 }

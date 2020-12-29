@@ -20,6 +20,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeoutException;
 
 import org.slf4j.Logger;
 
@@ -99,5 +100,13 @@ public class JobSpecSchedulerListeners
   public void close()
       throws IOException {
     _dispatcher.close();
+  }
+
+protected void shutDown(AbstractJobSpecScheduler abstractJobSpecScheduler) throws TimeoutException {
+    try {
+      close();
+    } catch (IOException ioe) {
+      abstractJobSpecScheduler._log.error("Failed to shut down " + abstractJobSpecScheduler.getClass().getName(), ioe);
+    }
   }
 }
