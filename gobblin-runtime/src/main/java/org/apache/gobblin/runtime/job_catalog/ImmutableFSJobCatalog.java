@@ -230,8 +230,8 @@ public class ImmutableFSJobCatalog extends JobCatalogBase implements JobCatalog 
    * @return
    */
   public boolean shouldLoadGlobalConf() {
-    return true;
-  }
+	return converter.shouldLoadGlobalConf();
+}
 
   /**
    *
@@ -357,5 +357,13 @@ public class ImmutableFSJobCatalog extends JobCatalogBase implements JobCatalog 
 
       return builder.build();
     }
+
+	/**
+	   * For immutable job catalog,
+	   * @return
+	   */
+	  public boolean shouldLoadGlobalConf() {
+	    return true;
+	  }
   }
 }
