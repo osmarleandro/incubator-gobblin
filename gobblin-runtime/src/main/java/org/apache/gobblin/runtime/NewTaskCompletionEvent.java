@@ -19,6 +19,8 @@ package org.apache.gobblin.runtime;
 
 import java.util.Collection;
 
+import com.google.common.eventbus.Subscribe;
+
 
 /**
  * An event triggered upon the completion of one or more {@link Task}s.
@@ -47,5 +49,12 @@ public class NewTaskCompletionEvent {
    */
   public Collection<TaskState> getTaskStates() {
     return this.taskStates;
+  }
+
+@Subscribe
+  public void handleNewTaskCompletionEvent(JobContext jobContext) {
+    JobContext.LOG.info("{} more tasks of job {} have completed", getTaskStates().size(), jobContext.jobId);
+    // Update the job execution history store upon new task completion
+    jobContext.storeJobExecutionInfo();
   }
 }

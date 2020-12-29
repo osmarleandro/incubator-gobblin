@@ -40,7 +40,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.typesafe.config.Config;
@@ -84,13 +83,13 @@ import lombok.Getter;
  */
 public class JobContext implements Closeable {
 
-  private static final Logger LOG = LoggerFactory.getLogger(JobContext.class);
+  static final Logger LOG = LoggerFactory.getLogger(JobContext.class);
 
   private static final String TASK_STAGING_DIR_NAME = "task-staging";
   private static final String TASK_OUTPUT_DIR_NAME = "task-output";
 
   private final String jobName;
-  private final String jobId;
+  final String jobId;
   private final String jobSequence;
   private final JobState jobState;
   @Getter(AccessLevel.PACKAGE)
@@ -408,13 +407,6 @@ public class JobContext implements Closeable {
         this.logger.error("Failed to write job execution information to the job history store: " + ioe, ioe);
       }
     }
-  }
-
-  @Subscribe
-  public void handleNewTaskCompletionEvent(NewTaskCompletionEvent newOutputTaskStateEvent) {
-    LOG.info("{} more tasks of job {} have completed", newOutputTaskStateEvent.getTaskStates().size(), this.jobId);
-    // Update the job execution history store upon new task completion
-    storeJobExecutionInfo();
   }
 
   /**
