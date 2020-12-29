@@ -46,7 +46,7 @@ public class CliLocalJobLauncher implements ApplicationLauncher, JobLauncher {
 
   private final Closer closer = Closer.create();
 
-  private final ApplicationLauncher applicationLauncher;
+  public final ApplicationLauncher applicationLauncher;
   private final LocalJobLauncher localJobLauncher;
 
   private CliLocalJobLauncher(Properties properties) throws Exception {
@@ -77,8 +77,8 @@ public class CliLocalJobLauncher implements ApplicationLauncher, JobLauncher {
 
   @Override
   public void start() throws ApplicationException {
-    this.applicationLauncher.start();
-  }
+	applicationLauncher.start(this);
+}
 
   @Override
   public void stop() throws ApplicationException {
