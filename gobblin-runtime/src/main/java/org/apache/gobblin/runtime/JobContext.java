@@ -50,6 +50,7 @@ import org.apache.gobblin.broker.gobblin_scopes.JobScopeInstance;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 import org.apache.gobblin.commit.CommitSequenceStore;
 import org.apache.gobblin.commit.DeliverySemantics;
+import org.apache.gobblin.commit.IDeliverySemantics;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.instrumented.Instrumented;
@@ -116,7 +117,7 @@ public class JobContext implements Closeable {
   protected final Boolean outputDirProvided;
 
   @Getter
-  private final DeliverySemantics semantics;
+  private final IDeliverySemantics semantics;
 
   @Getter
   private final Optional<CommitSequenceStore> commitSequenceStore;
@@ -446,7 +447,7 @@ public class JobContext implements Closeable {
       throws IOException {
     this.datasetStatesByUrns = Optional.of(computeDatasetStatesByUrns());
     final boolean shouldCommitDataInJob = shouldCommitDataInJob(this.jobState);
-    final DeliverySemantics deliverySemantics = DeliverySemantics.parse(this.jobState);
+    final IDeliverySemantics deliverySemantics = DeliverySemantics.parse(this.jobState);
     final int numCommitThreads = numCommitThreads();
 
     if (!shouldCommitDataInJob) {
@@ -502,7 +503,7 @@ public class JobContext implements Closeable {
    */
   @VisibleForTesting
   protected Callable<Void> createSafeDatasetCommit(boolean shouldCommitDataInJob, boolean isJobCancelled,
-      DeliverySemantics deliverySemantics, String datasetUrn, JobState.DatasetState datasetState,
+      IDeliverySemantics deliverySemantics, String datasetUrn, JobState.DatasetState datasetState,
       boolean isMultithreaded, JobContext jobContext) {
     return new SafeDatasetCommit(shouldCommitDataInJob, isJobCancelled, deliverySemantics, datasetUrn, datasetState,
         isMultithreaded, jobContext);
