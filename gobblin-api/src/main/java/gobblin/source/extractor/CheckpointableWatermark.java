@@ -19,5 +19,5 @@ package gobblin.source.extractor;
 /***
  * Shim layer for org.apache.gobblin.source.extractor.CheckpointableWatermark
  */
-public interface CheckpointableWatermark extends org.apache.gobblin.source.extractor.CheckpointableWatermark {
+public interface CheckpointableWatermark extends org.apache.gobblin.source.extractor.CheckpointableWatermark, ICheckpointableWatermark {
 }
