@@ -37,7 +37,7 @@ import java.util.Map;
 /**
  * Utility methods to print out various pieces of info about jobs
  */
-public class JobInfoPrintUtils {
+public class JobInfoPrintUtils implements IJobInfoPrintUtils {
     private static NumberFormat decimalFormatter = new DecimalFormat("#0.00");
     private static DateTimeFormatter dateTimeFormatter = ISODateTimeFormat.dateHourMinuteSecond();
     private static PeriodFormatter periodFormatter = PeriodFormat.getDefault();
