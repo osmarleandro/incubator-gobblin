@@ -42,7 +42,7 @@ import org.apache.gobblin.runtime.cli.CliApplication;
  */
 @Slf4j
 @Alias(value = "jobs", description = "Command line job info and operations")
-public class JobCommand implements CliApplication {
+public class JobCommand implements CliApplication, IJobCommand {
     private Options options;
 
     private static class CommandException extends Exception {
