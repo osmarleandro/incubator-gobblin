@@ -35,7 +35,7 @@ public interface SharedResourceFactory<T, K extends SharedResourceKey, S extends
    * * {@link org.apache.gobblin.broker.ResourceCoordinate}: the coordinates (factory, key, scope) of another resource of type T that
    *    should be used instead (this allows, for example, to use a different factory, or always return a global scoped object.)
    */
-  SharedResourceFactoryResponse<T>
+  ISharedResourceFactoryResponse<T>
       createResource(SharedResourcesBroker<S> broker, ScopedConfigView<S, K> config) throws NotConfiguredException;
 
   /**

@@ -41,8 +41,8 @@ import com.google.common.util.concurrent.Striped;
 
 import org.apache.gobblin.broker.iface.ScopeType;
 import org.apache.gobblin.broker.iface.SharedResourceFactory;
-import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.SharedResourceKey;
+import org.apache.gobblin.broker.iface.ISharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.NoSuchScopeException;
 
 import javax.annotation.Nonnull;
@@ -106,7 +106,7 @@ class DefaultBrokerCache<S extends ScopeType<S>> {
    * Get a scoped object from the cache.
    */
   @SuppressWarnings(value = "unchecked")
-  <T, K extends SharedResourceKey> SharedResourceFactoryResponse<T> getScopedFromCache(
+  <T, K extends SharedResourceKey> ISharedResourceFactoryResponse<T> getScopedFromCache(
       final SharedResourceFactory<T, K, S> factory, @Nonnull final K key,
       @Nonnull final ScopeWrapper<S> scope, final SharedResourcesBrokerImpl<S> broker)
       throws ExecutionException {
@@ -119,7 +119,7 @@ class DefaultBrokerCache<S extends ScopeType<S>> {
       }
     });
 
-    return (SharedResourceFactoryResponse<T>)obj;
+    return (ISharedResourceFactoryResponse<T>)obj;
   }
 
   /**

@@ -17,16 +17,16 @@
 
 package org.apache.gobblin.broker;
 
+import org.apache.gobblin.broker.iface.ISharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.ScopeType;
 import org.apache.gobblin.broker.iface.ScopedConfigView;
-import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 
 
 public class TestFactoryWithRedirect<S extends ScopeType<S>> extends TestFactory<S> {
 
   @Override
-  public SharedResourceFactoryResponse<SharedResource> createResource(SharedResourcesBroker broker, ScopedConfigView config) {
+  public ISharedResourceFactoryResponse<SharedResource> createResource(SharedResourcesBroker broker, ScopedConfigView config) {
     return new ResourceCoordinate<>(new TestFactory<S>(), (TestResourceKey) config.getKey(), (S) config.getScope().rootScope());
   }
 }

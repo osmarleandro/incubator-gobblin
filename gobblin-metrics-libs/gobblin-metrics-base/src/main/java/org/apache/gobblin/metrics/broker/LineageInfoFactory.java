@@ -21,10 +21,10 @@ import org.apache.gobblin.broker.EmptyKey;
 import org.apache.gobblin.broker.ResourceInstance;
 import org.apache.gobblin.broker.gobblin_scopes.GobblinScopeTypes;
 import org.apache.gobblin.broker.iface.ConfigView;
+import org.apache.gobblin.broker.iface.ISharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.NotConfiguredException;
 import org.apache.gobblin.broker.iface.ScopedConfigView;
 import org.apache.gobblin.broker.iface.SharedResourceFactory;
-import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 import org.apache.gobblin.metrics.event.lineage.LineageInfo;
 
@@ -41,7 +41,7 @@ public class LineageInfoFactory implements SharedResourceFactory<LineageInfo, Em
   }
 
   @Override
-  public SharedResourceFactoryResponse<LineageInfo> createResource(SharedResourcesBroker<GobblinScopeTypes> broker,
+  public ISharedResourceFactoryResponse<LineageInfo> createResource(SharedResourcesBroker<GobblinScopeTypes> broker,
       ScopedConfigView<GobblinScopeTypes, EmptyKey> config)
       throws NotConfiguredException {
     return new ResourceInstance<>(new LineageInfo(config.getConfig()));

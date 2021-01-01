@@ -23,11 +23,11 @@ import com.linkedin.restli.client.RestClient;
 import org.apache.gobblin.broker.ResourceCoordinate;
 import org.apache.gobblin.broker.ResourceInstance;
 import org.apache.gobblin.broker.iface.ConfigView;
+import org.apache.gobblin.broker.iface.ISharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.NotConfiguredException;
 import org.apache.gobblin.broker.iface.ScopeType;
 import org.apache.gobblin.broker.iface.ScopedConfigView;
 import org.apache.gobblin.broker.iface.SharedResourceFactory;
-import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 import org.apache.gobblin.metrics.broker.MetricContextFactory;
 import org.apache.gobblin.metrics.broker.MetricContextKey;
@@ -57,7 +57,7 @@ public class RestliLimiterFactory<S extends ScopeType<S>>
   }
 
   @Override
-  public SharedResourceFactoryResponse<RestliServiceBasedLimiter> createResource(SharedResourcesBroker<S> broker,
+  public ISharedResourceFactoryResponse<RestliServiceBasedLimiter> createResource(SharedResourcesBroker<S> broker,
       ScopedConfigView<S, SharedLimiterKey> config) throws NotConfiguredException {
 
     S scope = config.getScope();
