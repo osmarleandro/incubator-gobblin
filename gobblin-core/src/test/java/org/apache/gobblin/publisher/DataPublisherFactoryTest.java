@@ -40,6 +40,7 @@ import org.apache.gobblin.broker.iface.NoSuchScopeException;
 import org.apache.gobblin.broker.iface.NotConfiguredException;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 import org.apache.gobblin.capability.Capability;
+import org.apache.gobblin.capability.ICapability;
 import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.configuration.WorkUnitState;
 
@@ -183,7 +184,7 @@ public class DataPublisherFactoryTest {
     }
 
     @Override
-    public boolean supportsCapability(Capability c, Map<String, Object> properties) {
+    public boolean supportsCapability(ICapability c, Map<String, Object> properties) {
       return c == DataPublisher.REUSABLE;
     }
   }
@@ -194,7 +195,7 @@ public class DataPublisherFactoryTest {
     }
 
     @Override
-    public boolean supportsCapability(Capability c, Map<String, Object> properties) {
+    public boolean supportsCapability(ICapability c, Map<String, Object> properties) {
       return (c == Capability.THREADSAFE || c == DataPublisher.REUSABLE);
     }
   }
