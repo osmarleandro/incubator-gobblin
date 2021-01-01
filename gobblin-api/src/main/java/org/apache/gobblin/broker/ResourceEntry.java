@@ -23,7 +23,7 @@ import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 /**
  * A {@link SharedResourceFactoryResponse} containing a instance of a resource.
  */
-public interface ResourceEntry<T> extends SharedResourceFactoryResponse<T> {
+public interface ResourceEntry<T> extends SharedResourceFactoryResponse<T>, IResourceEntry<T> {
   /**
    * @return The instance of the resource.
    */
