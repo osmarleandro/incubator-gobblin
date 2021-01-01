@@ -22,7 +22,7 @@ import gobblin.source.extractor.WatermarkInterval;
 /***
  * Shim layer for org.apache.gobblin.source.workunit.WorkUnit
  */
-public class WorkUnit extends org.apache.gobblin.source.workunit.WorkUnit {
+public class WorkUnit extends org.apache.gobblin.source.workunit.WorkUnit implements IWorkUnit {
   @Deprecated
   public WorkUnit() {
     super();
