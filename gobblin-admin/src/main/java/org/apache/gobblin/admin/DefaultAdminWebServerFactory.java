@@ -28,7 +28,7 @@ import org.apache.gobblin.runtime.api.AdminWebServerFactory;
  * A factory for the default implementation of the admin web server
  */
 @Alias(value="default")
-public class DefaultAdminWebServerFactory implements AdminWebServerFactory {
+public class DefaultAdminWebServerFactory implements AdminWebServerFactory, IDefaultAdminWebServerFactory {
 
   /** {@inheritDoc} */
   @Override
