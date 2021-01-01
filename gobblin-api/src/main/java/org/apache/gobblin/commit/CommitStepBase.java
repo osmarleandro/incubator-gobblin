@@ -32,7 +32,7 @@ import org.apache.gobblin.configuration.State;
  * @author Ziyang Liu
  */
 @Alpha
-public abstract class CommitStepBase implements CommitStep {
+public abstract class CommitStepBase implements CommitStep, ICommitStepBase {
 
   protected final State props;
 
