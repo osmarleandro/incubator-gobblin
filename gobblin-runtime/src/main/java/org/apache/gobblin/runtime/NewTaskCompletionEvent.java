@@ -32,7 +32,7 @@ import java.util.Collection;
  *
  * @author Yinan Li
  */
-public class NewTaskCompletionEvent {
+public class NewTaskCompletionEvent implements INewTaskCompletionEvent {
 
   private final Collection<TaskState> taskStates;
 

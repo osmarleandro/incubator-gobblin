@@ -124,7 +124,7 @@ public class TaskStateCollectorServiceTest {
 
   @Subscribe
   @Test(enabled = false)
-  public void handleNewOutputTaskStateEvent(NewTaskCompletionEvent newOutputTaskStateEvent) {
+  public void handleNewOutputTaskStateEvent(INewTaskCompletionEvent newOutputTaskStateEvent) {
     for (TaskState taskState : newOutputTaskStateEvent.getTaskStates()) {
       this.taskStateMap.put(taskState.getTaskId(), taskState);
     }
