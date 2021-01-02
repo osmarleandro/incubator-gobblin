@@ -31,7 +31,7 @@ import org.apache.gobblin.annotation.Alpha;
  *
  */
 @Alpha
-public interface AdminWebServerFactory {
+public interface AdminWebServerFactory extends IAdminWebServerFactory {
 
   /**
    * Creates a new AdminWebServer instance
