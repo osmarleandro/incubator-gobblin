@@ -16,7 +16,7 @@
  */
 package org.apache.gobblin.recordaccess;
 
-public class FieldDoesNotExistException extends RecordAccessorException {
+public class FieldDoesNotExistException extends RecordAccessorException implements IFieldDoesNotExistException {
   public FieldDoesNotExistException(String msg) {
     super(msg);
   }
