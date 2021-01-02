@@ -44,7 +44,7 @@ public class MultiInitializer implements Initializer {
 
   @Override
   public void initialize() {
-    for (Initializer initializer : this.initializers) {
+    for (IInitializer initializer : this.initializers) {
       initializer.initialize();
     }
   }
