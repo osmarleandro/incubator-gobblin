@@ -42,7 +42,7 @@ import org.apache.gobblin.data.management.retention.dataset.CleanableDataset;
 import org.apache.gobblin.data.management.retention.dataset.CleanableDatasetBase;
 import org.apache.gobblin.data.management.retention.profile.MultiCleanableDatasetFinder;
 import org.apache.gobblin.dataset.Dataset;
-import org.apache.gobblin.dataset.DatasetsFinder;
+import org.apache.gobblin.dataset.IDatasetsFinder;
 import org.apache.gobblin.util.PathUtils;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 
@@ -99,8 +99,8 @@ public class RetentionTestHelper {
      jobProps.putAll(additionalJobProps);
 
       @SuppressWarnings("unchecked")
-      DatasetsFinder<CleanableDataset> finder =
-          (DatasetsFinder<CleanableDataset>) GobblinConstructorUtils.invokeFirstConstructor(
+      IDatasetsFinder<CleanableDataset> finder =
+          (IDatasetsFinder<CleanableDataset>) GobblinConstructorUtils.invokeFirstConstructor(
               Class.forName(testConfig.getString(MultiCleanableDatasetFinder.DATASET_FINDER_CLASS_KEY)), ImmutableList.of(fs, jobProps, testConfig, client),
               ImmutableList.of(fs, jobProps, client));
 

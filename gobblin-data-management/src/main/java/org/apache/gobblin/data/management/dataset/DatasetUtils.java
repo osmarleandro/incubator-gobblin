@@ -33,6 +33,7 @@ import org.apache.gobblin.dataset.IterableDatasetFinderImpl;
 import org.apache.gobblin.data.management.copy.CopyableFile;
 import org.apache.gobblin.data.management.copy.CopyableFileFilter;
 import org.apache.gobblin.dataset.DatasetsFinder;
+import org.apache.gobblin.dataset.IDatasetsFinder;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 
 
@@ -73,7 +74,7 @@ public class DatasetUtils {
    * @throws IOException
    */
   @SuppressWarnings("unchecked")
-  public static <T extends org.apache.gobblin.dataset.Dataset> DatasetsFinder<T> instantiateDatasetFinder(Properties props,
+  public static <T extends org.apache.gobblin.dataset.Dataset> IDatasetsFinder<T> instantiateDatasetFinder(Properties props,
       FileSystem fs, String default_class, Object... additionalArgs)
       throws IOException {
     String className = default_class;
@@ -86,7 +87,7 @@ public class DatasetUtils {
       if (additionalArgs != null) {
         args.addAll(Lists.newArrayList(additionalArgs));
       }
-      return (DatasetsFinder<T>) GobblinConstructorUtils.invokeLongestConstructor(datasetFinderClass, args.toArray());
+      return (IDatasetsFinder<T>) GobblinConstructorUtils.invokeLongestConstructor(datasetFinderClass, args.toArray());
     } catch (ReflectiveOperationException exception) {
       throw new IOException(exception);
     }
@@ -94,7 +95,7 @@ public class DatasetUtils {
 
   public static <T extends org.apache.gobblin.dataset.Dataset> IterableDatasetFinder<T> instantiateIterableDatasetFinder(
       Properties props, FileSystem fs, String default_class, Object... additionalArgs) throws IOException {
-    DatasetsFinder<T> datasetsFinder = instantiateDatasetFinder(props, fs, default_class, additionalArgs);
+    IDatasetsFinder<T> datasetsFinder = instantiateDatasetFinder(props, fs, default_class, additionalArgs);
     return datasetsFinder instanceof IterableDatasetFinder ? (IterableDatasetFinder<T>) datasetsFinder
         : new IterableDatasetFinderImpl<>(datasetsFinder);
   }

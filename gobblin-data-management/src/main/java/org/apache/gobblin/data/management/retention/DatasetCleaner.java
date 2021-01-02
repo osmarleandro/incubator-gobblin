@@ -53,7 +53,7 @@ import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.data.management.retention.dataset.CleanableDataset;
 import org.apache.gobblin.data.management.retention.profile.MultiCleanableDatasetFinder;
 import org.apache.gobblin.dataset.Dataset;
-import org.apache.gobblin.dataset.DatasetsFinder;
+import org.apache.gobblin.dataset.IDatasetsFinder;
 import org.apache.gobblin.instrumented.Instrumentable;
 import org.apache.gobblin.instrumented.Instrumented;
 import org.apache.gobblin.metrics.GobblinMetrics;
@@ -81,7 +81,7 @@ public class DatasetCleaner implements Instrumentable, Closeable {
 
   private static Logger LOG = LoggerFactory.getLogger(DatasetCleaner.class);
 
-  private final DatasetsFinder<Dataset> datasetFinder;
+  private final IDatasetsFinder<Dataset> datasetFinder;
   private final ListeningExecutorService service;
   private final Closer closer;
   private final boolean isMetricEnabled;

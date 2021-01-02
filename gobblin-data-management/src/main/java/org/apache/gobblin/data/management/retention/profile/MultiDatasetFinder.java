@@ -45,6 +45,7 @@ import org.apache.gobblin.config.store.api.ConfigStoreCreationException;
 import org.apache.gobblin.config.store.api.VersionDoesNotExistException;
 import org.apache.gobblin.dataset.Dataset;
 import org.apache.gobblin.dataset.DatasetsFinder;
+import org.apache.gobblin.dataset.IDatasetsFinder;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 
 
@@ -136,7 +137,7 @@ public abstract class MultiDatasetFinder implements DatasetsFinder<Dataset> {
   @Override
   public List<Dataset> findDatasets() throws IOException {
     List<Dataset> datasets = Lists.newArrayList();
-    for (DatasetsFinder<Dataset> df : this.datasetFinders) {
+    for (IDatasetsFinder<Dataset> df : this.datasetFinders) {
       datasets.addAll(df.findDatasets());
     }
     return datasets;

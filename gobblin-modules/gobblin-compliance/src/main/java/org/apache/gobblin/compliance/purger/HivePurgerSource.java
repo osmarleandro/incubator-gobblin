@@ -44,6 +44,7 @@ import org.apache.gobblin.configuration.SourceState;
 import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.dataset.DatasetsFinder;
+import org.apache.gobblin.dataset.IDatasetsFinder;
 import org.apache.gobblin.instrumented.Instrumented;
 import org.apache.gobblin.metrics.MetricContext;
 import org.apache.gobblin.metrics.event.EventSubmitter;
@@ -64,7 +65,7 @@ import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
  */
 @Slf4j
 public class HivePurgerSource implements Source {
-  protected DatasetsFinder datasetFinder;
+  protected IDatasetsFinder datasetFinder;
   protected Map<String, WorkUnit> workUnitMap = new HashMap<>();
   protected int maxWorkUnitExecutionAttempts;
   protected int maxWorkUnits;
