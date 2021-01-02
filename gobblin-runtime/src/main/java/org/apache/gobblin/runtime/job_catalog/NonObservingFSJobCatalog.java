@@ -39,7 +39,7 @@ import org.apache.gobblin.runtime.api.SpecNotFoundException;
  * The job Catalog for file system to persist the job configuration information.
  * This implementation does not observe for file system changes
  */
-public class NonObservingFSJobCatalog extends FSJobCatalog {
+public class NonObservingFSJobCatalog extends FSJobCatalog implements INonObservingFSJobCatalog {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(NonObservingFSJobCatalog.class);
 
