@@ -35,7 +35,7 @@ import org.apache.gobblin.runtime.embedded.EmbeddedGobblin;
  * For an example usage see {@link EmbeddedGobblin.CliFactory}.
  */
 public abstract class ConstructorAndPublicMethodsGobblinCliFactory
-    extends ConstructorAndPublicMethodsCliObjectFactory<EmbeddedGobblin> implements EmbeddedGobblinCliFactory {
+    extends ConstructorAndPublicMethodsCliObjectFactory<EmbeddedGobblin> implements EmbeddedGobblinCliFactory, IConstructorAndPublicMethodsGobblinCliFactory {
   public ConstructorAndPublicMethodsGobblinCliFactory(Class<? extends EmbeddedGobblin> klazz) {
     super(klazz);
   }
