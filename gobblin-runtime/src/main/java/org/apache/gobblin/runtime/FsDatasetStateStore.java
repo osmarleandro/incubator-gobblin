@@ -87,7 +87,7 @@ import org.apache.gobblin.util.hadoop.GobblinSequenceFileReader;
  *
  * @author Yinan Li
  */
-public class FsDatasetStateStore extends FsStateStore<JobState.DatasetState> implements DatasetStateStore<JobState.DatasetState> {
+public class FsDatasetStateStore extends FsStateStore<JobState.DatasetState> implements DatasetStateStore<JobState.DatasetState>, IFsDatasetStateStore {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FsDatasetStateStore.class);
   private int threadPoolOfGettingDatasetState;
