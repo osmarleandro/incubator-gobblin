@@ -31,7 +31,7 @@ import lombok.Getter;
  *
  */
 @AllArgsConstructor
-public abstract class BaseIdlePluginImpl extends AbstractIdleService implements GobblinInstancePlugin {
+public abstract class BaseIdlePluginImpl extends AbstractIdleService implements GobblinInstancePlugin, IBaseIdlePluginImpl {
   @Getter protected final GobblinInstanceDriver instance;
 
   /** {@inheritDoc} */
