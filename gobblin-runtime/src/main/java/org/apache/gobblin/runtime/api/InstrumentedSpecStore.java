@@ -40,7 +40,7 @@ import org.apache.gobblin.util.ConfigUtils;
  * Instrumented version of {@link SpecStore} automatically capturing certain metrics.
  * Subclasses should implement addSpecImpl instead of addSpec and so on.
  */
-public abstract class InstrumentedSpecStore implements SpecStore {
+public abstract class InstrumentedSpecStore implements SpecStore, IInstrumentedSpecStore {
   private Optional<Timer> getTimer;
   private Optional<Timer> existsTimer;
   private Optional<Timer> deleteTimer;
