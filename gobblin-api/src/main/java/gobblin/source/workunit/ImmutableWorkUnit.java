@@ -19,7 +19,7 @@ package gobblin.source.workunit;
 /***
  * Shim layer for org.apache.gobblin.source.workunit.ImmutableWorkUnit
  */
-public class ImmutableWorkUnit extends org.apache.gobblin.source.workunit.ImmutableWorkUnit {
+public class ImmutableWorkUnit extends org.apache.gobblin.source.workunit.ImmutableWorkUnit implements IImmutableWorkUnit {
   public ImmutableWorkUnit(WorkUnit workUnit) {
     super(workUnit);
   }
