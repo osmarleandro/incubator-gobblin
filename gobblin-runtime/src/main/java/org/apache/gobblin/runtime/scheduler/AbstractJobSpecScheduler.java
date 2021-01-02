@@ -43,7 +43,7 @@ import org.apache.gobblin.runtime.api.JobSpecSchedulerListener;
  * implement the actual scheduling.
  */
 public abstract class AbstractJobSpecScheduler extends AbstractIdleService
-                                               implements JobSpecScheduler  {
+                                               implements JobSpecScheduler, IAbstractJobSpecScheduler  {
   protected final Map<URI, JobSpecSchedule> _schedules = new HashMap<>();
   private final Logger _log;
   private final JobSpecSchedulerListeners _callbacksDispatcher;
