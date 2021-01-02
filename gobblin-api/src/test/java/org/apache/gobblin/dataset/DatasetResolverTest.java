@@ -23,7 +23,7 @@ import org.testng.annotations.Test;
 import org.apache.gobblin.configuration.State;
 
 
-public class DatasetResolverTest {
+public class DatasetResolverTest implements IDatasetResolverTest {
 
   @Test
   public void testAsDescriptorResolver() {
