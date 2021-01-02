@@ -54,7 +54,7 @@ import org.apache.gobblin.converter.DataConversionException;
  */
 @Slf4j
 @SuppressWarnings("unchecked")
-public class AsynchronousFork extends Fork {
+public class AsynchronousFork extends Fork implements IAsynchronousFork {
   private final BoundedBlockingRecordQueue<Object> recordQueue;
 
   public AsynchronousFork(TaskContext taskContext, Object schema, int branches, int index, ExecutionModel executionModel)
