@@ -26,7 +26,7 @@ import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.runtime.api.TaskEventMetadataGenerator;
 
 @Alias("nooptask")
-public class NoopTaskEventMetadataGenerator implements TaskEventMetadataGenerator  {
+public class NoopTaskEventMetadataGenerator implements TaskEventMetadataGenerator, INoopTaskEventMetadataGenerator  {
   /**
    * Generate a map of additional metadata for the specified event name.
    *
