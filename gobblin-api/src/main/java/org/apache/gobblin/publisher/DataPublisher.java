@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.apache.gobblin.capability.Capability;
 import org.apache.gobblin.capability.CapabilityAware;
+import org.apache.gobblin.capability.ICapability;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.configuration.WorkUnitState;
@@ -37,7 +38,7 @@ public abstract class DataPublisher implements Closeable, CapabilityAware {
   /**
    * Reusable capability.
    */
-  public static final Capability REUSABLE = new Capability("REUSABLE", false);
+  public static final ICapability REUSABLE = new Capability("REUSABLE", false);
 
   protected final State state;
 
@@ -143,7 +144,7 @@ public abstract class DataPublisher implements Closeable, CapabilityAware {
   }
 
   @Override
-  public boolean supportsCapability(Capability c, Map<String, Object> properties) {
+  public boolean supportsCapability(ICapability c, Map<String, Object> properties) {
     return false;
   }
 }

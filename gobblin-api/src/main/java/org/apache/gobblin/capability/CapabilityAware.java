@@ -34,5 +34,5 @@ public interface CapabilityAware {
    * @param properties Properties specific to the capability. Properties are capability specific.
    * @return True if this object supports the given capability + property settings, false if not
    */
-  boolean supportsCapability(Capability c, Map<String, Object> properties);
+  boolean supportsCapability(ICapability c, Map<String, Object> properties);
 }

@@ -41,6 +41,7 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
 import org.apache.gobblin.capability.Capability;
+import org.apache.gobblin.capability.ICapability;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.DynamicConfigGenerator;
 import org.apache.gobblin.configuration.State;
@@ -503,7 +504,7 @@ public class MRJobLauncherTest extends BMNGRunner {
     }
 
     @Override
-    public boolean supportsCapability(Capability c, Map<String, Object> properties) {
+    public boolean supportsCapability(ICapability c, Map<String, Object> properties) {
       return c == DataPublisher.REUSABLE;
     }
   }
@@ -514,7 +515,7 @@ public class MRJobLauncherTest extends BMNGRunner {
     }
 
     @Override
-    public boolean supportsCapability(Capability c, Map<String, Object> properties) {
+    public boolean supportsCapability(ICapability c, Map<String, Object> properties) {
       return (c == Capability.THREADSAFE || c == DataPublisher.REUSABLE);
     }
   }
