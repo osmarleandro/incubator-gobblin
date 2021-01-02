@@ -41,7 +41,7 @@ import lombok.Data;
  *
  * Each forked stream is a mirror of the original stream.
  */
-public class Forker {
+public class Forker implements IForker {
 
   /**
    * Obtain the {@link ForkedStream} for the input {@link RecordStreamWithMetadata} and {@link ForkOperator}.
