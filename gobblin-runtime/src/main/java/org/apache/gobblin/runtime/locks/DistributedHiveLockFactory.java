@@ -25,7 +25,7 @@ import org.apache.gobblin.hive.HiveLockImpl;
 /**
  * A lock factory that extends {@link HiveLockFactory} provide a get method for a distributed lock for a specific object
  */
-public class DistributedHiveLockFactory extends HiveLockFactory {
+public class DistributedHiveLockFactory extends HiveLockFactory implements IDistributedHiveLockFactory {
   public DistributedHiveLockFactory(Properties properties) {
     super(properties);
   }
