@@ -19,7 +19,7 @@ package org.apache.gobblin.configuration;
 import java.io.IOException;
 
 
-public class ConfigurationException extends IOException {
+public class ConfigurationException extends IOException implements IConfigurationException {
 
   public ConfigurationException(String message, Exception e) {
     super(message, e);
