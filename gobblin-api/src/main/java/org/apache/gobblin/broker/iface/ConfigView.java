@@ -23,7 +23,7 @@ import com.typesafe.config.Config;
 /**
  * Provides a view of a {@link Config} specific to a {@link SharedResourceKey} and factory.
  */
-public interface ConfigView<S extends ScopeType<S>, K extends SharedResourceKey> {
+public interface ConfigView<S extends ScopeType<S>, K extends SharedResourceKey> extends IConfigView<S, K> {
 
   /**
    * @return The name of the factory this {@link ConfigView} was created for.
