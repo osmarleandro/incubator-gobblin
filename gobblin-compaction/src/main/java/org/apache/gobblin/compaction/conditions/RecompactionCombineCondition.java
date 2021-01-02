@@ -30,6 +30,7 @@ import org.apache.gobblin.compaction.dataset.Dataset;
 import org.apache.gobblin.compaction.dataset.DatasetHelper;
 import org.apache.gobblin.compaction.mapreduce.MRCompactor;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 
 
@@ -83,7 +84,7 @@ public class RecompactionCombineCondition implements RecompactionCondition {
   }
 
   private ImmutableList<RecompactionCondition> getConditionsFromProperties (Dataset dataset) {
-    ClassAliasResolver<RecompactionConditionFactory> conditionClassAliasResolver = new ClassAliasResolver<>(RecompactionConditionFactory.class);
+    IClassAliasResolver<RecompactionConditionFactory> conditionClassAliasResolver = new ClassAliasResolver<>(RecompactionConditionFactory.class);
     List<String> factoryNames = dataset.jobProps().getPropAsList(MRCompactor.COMPACTION_RECOMPACT_COMBINE_CONDITIONS,
         MRCompactor.DEFAULT_COMPACTION_RECOMPACT_CONDITION);
 

@@ -29,6 +29,7 @@ import com.google.common.base.Strings;
 import org.apache.gobblin.annotation.Alias;
 import org.apache.gobblin.runtime.embedded.EmbeddedGobblin;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -76,7 +77,7 @@ public class CliEmbeddedGobblin implements CliApplication {
     EmbeddedGobblinCliFactory factory;
     if (!Strings.isNullOrEmpty(alias)) {
       try {
-        ClassAliasResolver<EmbeddedGobblinCliFactory> resolver = new ClassAliasResolver<>(EmbeddedGobblinCliFactory.class);
+        IClassAliasResolver<EmbeddedGobblinCliFactory> resolver = new ClassAliasResolver<>(EmbeddedGobblinCliFactory.class);
         factoryClass = resolver.resolveClass(alias);
         factory = factoryClass.newInstance();
       } catch (ReflectiveOperationException roe) {
@@ -105,7 +106,7 @@ public class CliEmbeddedGobblin implements CliApplication {
   }
 
   private List<Alias> getAllAliases() {
-    ClassAliasResolver<EmbeddedGobblinCliFactory> resolver = new ClassAliasResolver<>(EmbeddedGobblinCliFactory.class);
+    IClassAliasResolver<EmbeddedGobblinCliFactory> resolver = new ClassAliasResolver<>(EmbeddedGobblinCliFactory.class);
     return resolver.getAliasObjects();
   }
 

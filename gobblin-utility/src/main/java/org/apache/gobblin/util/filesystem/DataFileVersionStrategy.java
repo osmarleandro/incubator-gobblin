@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
@@ -73,7 +74,7 @@ public interface DataFileVersionStrategy<T extends Comparable<T> & Serializable>
   static DataFileVersionStrategy instantiateDataFileVersionStrategy(FileSystem fs, Config config) throws IOException {
     String versionStrategy = ConfigUtils.getString(config, DATA_FILE_VERSION_STRATEGY_KEY, DEFAULT_DATA_FILE_VERSION_STRATEGY);
 
-    ClassAliasResolver resolver = new ClassAliasResolver(DataFileVersionFactory.class);
+    IClassAliasResolver resolver = new ClassAliasResolver(DataFileVersionFactory.class);
 
     try {
       Class<? extends DataFileVersionFactory> klazz = resolver.resolveClass(versionStrategy);

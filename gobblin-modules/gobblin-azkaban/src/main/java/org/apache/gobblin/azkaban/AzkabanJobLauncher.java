@@ -72,6 +72,7 @@ import org.apache.gobblin.runtime.services.MetricsReportingService;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
 import org.apache.gobblin.util.HadoopUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.PropertiesUtils;
 import org.apache.gobblin.util.TimeRangeChecker;
 import org.apache.gobblin.util.hadoop.TokenUtils;
@@ -234,7 +235,7 @@ public class AzkabanJobLauncher extends AbstractJob implements ApplicationLaunch
     List<String> listeners = new State(props).getPropAsList(GOBBLIN_CUSTOM_JOB_LISTENERS, EmailNotificationJobListener.class.getSimpleName());
     try {
       for (String listenerAlias: listeners) {
-        ClassAliasResolver<JobListener> conditionClassAliasResolver = new ClassAliasResolver<>(JobListener.class);
+        IClassAliasResolver<JobListener> conditionClassAliasResolver = new ClassAliasResolver<>(JobListener.class);
         compositeJobListener.addJobListener(conditionClassAliasResolver.resolveClass(listenerAlias).newInstance());
       }
     } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {

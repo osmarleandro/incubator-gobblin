@@ -69,6 +69,7 @@ import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
 import org.apache.gobblin.util.DatasetFilterUtils;
 import org.apache.gobblin.util.ExecutorsUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.dataset.DatasetUtils;
 
 import static java.util.stream.Collectors.toSet;
@@ -153,7 +154,7 @@ public abstract class KafkaSource<S, D> extends EventBasedSource<S, D> {
   protected static final ThreadLocal<GobblinKafkaConsumerClient> kafkaConsumerClient =
           new ThreadLocal<GobblinKafkaConsumerClient>();
   private GobblinKafkaConsumerClient sharedKafkaConsumerClient = null;
-  private final ClassAliasResolver<GobblinKafkaConsumerClientFactory> kafkaConsumerClientResolver =
+  private final IClassAliasResolver<GobblinKafkaConsumerClientFactory> kafkaConsumerClientResolver =
       new ClassAliasResolver<>(GobblinKafkaConsumerClientFactory.class);
 
   private volatile boolean doneGettingAllPreviousOffsets = false;

@@ -27,12 +27,14 @@ import com.typesafe.config.ConfigValueFactory;
 
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.metastore.StateStore;
+import org.apache.gobblin.metastore.StateStore.Factory;
 import org.apache.gobblin.runtime.JobState;
 import org.apache.gobblin.runtime.TaskState;
 import org.apache.gobblin.source.workunit.MultiWorkUnit;
 import org.apache.gobblin.source.workunit.WorkUnit;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 import lombok.Getter;
 
@@ -66,7 +68,7 @@ public class StateStores {
         ConfigUtils.getString(config, ConfigurationKeys.STATE_STORE_TYPE_KEY,
             ConfigurationKeys.DEFAULT_STATE_STORE_TYPE));
 
-    ClassAliasResolver<StateStore.Factory> resolver =
+    IClassAliasResolver<Factory> resolver =
         new ClassAliasResolver<>(StateStore.Factory.class);
     StateStore.Factory stateStoreFactory;
 

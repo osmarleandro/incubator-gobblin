@@ -60,6 +60,7 @@ import org.apache.gobblin.runtime.spec_serde.JavaSpecSerDe;
 import org.apache.gobblin.runtime.spec_store.FSSpecStore;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.callbacks.CallbackResult;
 import org.apache.gobblin.util.callbacks.CallbacksDispatcher;
 
@@ -78,7 +79,7 @@ public class TopologyCatalog extends AbstractIdleService implements SpecCatalog,
   @Getter
   protected CountDownLatch initComplete = new CountDownLatch(1);
 
-  private final ClassAliasResolver<SpecStore> aliasResolver;
+  private final IClassAliasResolver<SpecStore> aliasResolver;
 
   public TopologyCatalog(Config config) {
     this(config, Optional.<Logger>absent());

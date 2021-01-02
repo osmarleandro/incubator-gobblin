@@ -48,6 +48,7 @@ import org.apache.gobblin.runtime.api.SpecExecutor;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
 import org.apache.gobblin.util.ExecutorsUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 
 
@@ -83,7 +84,7 @@ public class StreamingJobConfigurationManager extends JobConfigurationManager {
         specExecutorInstanceConsumerClassName);
 
     try {
-      ClassAliasResolver<SpecConsumer> aliasResolver =
+      IClassAliasResolver<SpecConsumer> aliasResolver =
           new ClassAliasResolver<>(SpecConsumer.class);
 
       this.specConsumer = (SpecConsumer) GobblinConstructorUtils.invokeFirstConstructor(

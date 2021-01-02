@@ -40,6 +40,7 @@ import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.dataset.FileSystemDataset;
 import org.apache.gobblin.time.TimeIterator;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 /**
  * Use {@link AuditCountClient} to retrieve all record count across different tiers
@@ -113,7 +114,7 @@ public class CompactionAuditCountVerifier implements CompactionVerifier<FileSyst
 
     try {
       String factoryName = state.getProp(AuditCountClientFactory.AUDIT_COUNT_CLIENT_FACTORY);
-      ClassAliasResolver<AuditCountClientFactory> conditionClassAliasResolver = new ClassAliasResolver<>(AuditCountClientFactory.class);
+      IClassAliasResolver<AuditCountClientFactory> conditionClassAliasResolver = new ClassAliasResolver<>(AuditCountClientFactory.class);
       AuditCountClientFactory factory = conditionClassAliasResolver.resolveClass(factoryName).newInstance();
       return factory;
     } catch (Exception e) {

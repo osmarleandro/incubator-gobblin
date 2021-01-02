@@ -20,6 +20,7 @@ package org.apache.gobblin.compaction.suite;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 
 /**
@@ -36,7 +37,7 @@ public class CompactionSuiteUtils {
       String factoryName =
           state.getProp(ConfigurationKeys.COMPACTION_SUITE_FACTORY, ConfigurationKeys.DEFAULT_COMPACTION_SUITE_FACTORY);
 
-      ClassAliasResolver<CompactionSuiteFactory> conditionClassAliasResolver =
+      IClassAliasResolver<CompactionSuiteFactory> conditionClassAliasResolver =
           new ClassAliasResolver<>(CompactionSuiteFactory.class);
       CompactionSuiteFactory factory = conditionClassAliasResolver.resolveClass(factoryName).newInstance();
       return factory;

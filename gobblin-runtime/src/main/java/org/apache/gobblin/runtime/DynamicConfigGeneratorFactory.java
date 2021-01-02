@@ -24,6 +24,7 @@ import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.DynamicConfigGenerator;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 
 
@@ -42,7 +43,7 @@ public class DynamicConfigGeneratorFactory {
             ConfigurationKeys.DEFAULT_DYNAMIC_CONFIG_GENERATOR_CLASS_KEY);
 
     try {
-      ClassAliasResolver<DynamicConfigGenerator> aliasResolver =
+      IClassAliasResolver<DynamicConfigGenerator> aliasResolver =
           new ClassAliasResolver<>(DynamicConfigGenerator.class);
       return aliasResolver.resolveClass(dynamicConfigGeneratorClassName).newInstance();
     } catch (ReflectiveOperationException e) {

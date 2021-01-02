@@ -23,6 +23,7 @@ import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.source.extractor.Extractor;
 import org.apache.gobblin.source.extractor.extract.EventBasedExtractor;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 
 import com.google.common.base.Preconditions;
@@ -42,7 +43,7 @@ public class UniversalKafkaSource<S, D> extends KafkaSource<S, D> {
     Preconditions.checkArgument(state.contains(EXTRACTOR_TYPE), "Missing key " + EXTRACTOR_TYPE);
 
     try {
-      ClassAliasResolver<EventBasedExtractor> aliasResolver = new ClassAliasResolver<>(EventBasedExtractor.class);
+      IClassAliasResolver<EventBasedExtractor> aliasResolver = new ClassAliasResolver<>(EventBasedExtractor.class);
       Class<? extends EventBasedExtractor> klazz = aliasResolver.resolveClass(state.getProp(EXTRACTOR_TYPE));
 
       return GobblinConstructorUtils.invokeLongestConstructor(klazz, state);

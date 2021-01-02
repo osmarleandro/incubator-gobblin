@@ -36,6 +36,7 @@ import org.apache.gobblin.data.management.version.finder.VersionFinder;
 import org.apache.gobblin.dataset.DatasetsFinder;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 
 
@@ -47,7 +48,7 @@ public abstract class RetentionAction {
 
   protected final FileSystem fs;
   @SuppressWarnings("rawtypes")
-  protected final ClassAliasResolver<VersionSelectionPolicy> versionSelectionAliasResolver;
+  protected final IClassAliasResolver<VersionSelectionPolicy> versionSelectionAliasResolver;
   protected final boolean isSimulateMode;
 
   public RetentionAction(Config actionConfig, FileSystem fs, Config jobConfig) {

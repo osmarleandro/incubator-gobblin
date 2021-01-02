@@ -29,6 +29,7 @@ import org.apache.gobblin.audit.values.auditor.ValueAuditGenerator;
 import org.apache.gobblin.audit.values.auditor.ValueAuditRuntimeMetadata;
 import org.apache.gobblin.audit.values.policy.column.ColumnProjectionPolicy;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 /**
  * Default factory class to create new {@link RowSelectionPolicy}s
@@ -38,7 +39,7 @@ public class DefaultRowSelectionPolicyFactory {
 
   private static final String ROW_SELECTION_POLICY_CLASS_NAME_KEY = "class";
 
-  private final ClassAliasResolver<RowSelectionPolicy> aliasResolver;
+  private final IClassAliasResolver<RowSelectionPolicy> aliasResolver;
 
   private DefaultRowSelectionPolicyFactory() {
     this.aliasResolver = new ClassAliasResolver<>(RowSelectionPolicy.class);

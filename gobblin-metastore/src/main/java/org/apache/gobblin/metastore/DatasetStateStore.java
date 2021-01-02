@@ -33,6 +33,7 @@ import org.apache.gobblin.metastore.metadata.DatasetStateStoreEntryManager;
 import org.apache.gobblin.metastore.predicates.StateStorePredicate;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 import lombok.Getter;
 
@@ -87,7 +88,7 @@ public interface DatasetStateStore<T extends State> extends StateStore<T> {
   }
 
   static DatasetStateStore buildDatasetStateStore(Config config) throws IOException {
-    ClassAliasResolver<Factory> resolver =
+    IClassAliasResolver<Factory> resolver =
         new ClassAliasResolver<>(DatasetStateStore.Factory.class);
 
     String stateStoreType = ConfigUtils.getString(config, ConfigurationKeys.STATE_STORE_TYPE_KEY,

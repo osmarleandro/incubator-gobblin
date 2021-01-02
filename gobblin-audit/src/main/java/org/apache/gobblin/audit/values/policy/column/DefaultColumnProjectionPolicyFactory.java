@@ -27,6 +27,7 @@ import com.typesafe.config.Config;
 
 import org.apache.gobblin.audit.values.auditor.ValueAuditRuntimeMetadata;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 /**
  * Default factory class to create new {@link ColumnProjectionPolicy}s
@@ -36,7 +37,7 @@ public class DefaultColumnProjectionPolicyFactory {
 
   private static final String COLUMN_PROJECTION_POLICY_CLASS_NAME_KEY = "class";
 
-  private final ClassAliasResolver<ColumnProjectionPolicy> aliasResolver;
+  private final IClassAliasResolver<ColumnProjectionPolicy> aliasResolver;
 
   private DefaultColumnProjectionPolicyFactory() {
     this.aliasResolver = new ClassAliasResolver<>(ColumnProjectionPolicy.class);

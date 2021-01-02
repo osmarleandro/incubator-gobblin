@@ -44,6 +44,7 @@ import org.apache.gobblin.runtime.services.JMXReportingService;
 import org.apache.gobblin.runtime.services.MetricsReportingService;
 import org.apache.gobblin.util.ApplicationLauncherUtils;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 
 /**
@@ -237,7 +238,7 @@ public class ServiceBasedAppLauncher implements ApplicationLauncher {
                                           URI executionInfoServerURI) {
     String factoryClassName = properties.getProperty(ConfigurationKeys.ADMIN_SERVER_FACTORY_CLASS_KEY,
                                                  ConfigurationKeys.DEFAULT_ADMIN_SERVER_FACTORY_CLASS);
-    ClassAliasResolver<AdminWebServerFactory> classResolver =
+    IClassAliasResolver<AdminWebServerFactory> classResolver =
         new ClassAliasResolver<>(AdminWebServerFactory.class);
     try
     {

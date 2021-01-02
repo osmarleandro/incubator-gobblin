@@ -41,9 +41,11 @@ import com.google.common.base.Optional;
 
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.ParallelRunner;
 import org.apache.gobblin.metastore.FsStateStore;
 import org.apache.gobblin.metastore.StateStore;
+import org.apache.gobblin.runtime.TaskStateCollectorServiceHandler.TaskStateCollectorServiceHandlerFactory;
 
 
 /**
@@ -107,7 +109,7 @@ public class TaskStateCollectorService extends AbstractScheduledService {
     if (!StringUtils.isBlank(jobProps.getProperty(ConfigurationKeys.TASK_STATE_COLLECTOR_HANDLER_CLASS))) {
       String handlerTypeName = jobProps.getProperty(ConfigurationKeys.TASK_STATE_COLLECTOR_HANDLER_CLASS);
       try {
-        ClassAliasResolver<TaskStateCollectorServiceHandler.TaskStateCollectorServiceHandlerFactory> aliasResolver =
+        IClassAliasResolver<TaskStateCollectorServiceHandlerFactory> aliasResolver =
             new ClassAliasResolver<>(TaskStateCollectorServiceHandler.TaskStateCollectorServiceHandlerFactory.class);
         TaskStateCollectorServiceHandler.TaskStateCollectorServiceHandlerFactory handlerFactory =
             aliasResolver.resolveClass(handlerTypeName).newInstance();

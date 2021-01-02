@@ -61,6 +61,7 @@ import org.apache.gobblin.runtime.scheduler.QuartzJobSpecScheduler;
 import org.apache.gobblin.runtime.std.DefaultConfigurableImpl;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 /** A simple wrapper {@link DefaultGobblinInstanceDriverImpl} that will instantiate necessary
  * sub-components (e.g. {@link JobCatalog}, {@link JobSpecScheduler}, {@link JobExecutionLauncher}
@@ -189,7 +190,7 @@ public class StandardGobblinInstanceDriver extends DefaultGobblinInstanceDriverI
     private Optional<Boolean> _instrumentationEnabled = Optional.absent();
     private Optional<SharedResourcesBroker<GobblinScopeTypes>> _instanceBroker = Optional.absent();
     private List<GobblinInstancePluginFactory> _plugins = new ArrayList<>();
-    private final ClassAliasResolver<GobblinInstancePluginFactory> _aliasResolver =
+    private final IClassAliasResolver<GobblinInstancePluginFactory> _aliasResolver =
         new ClassAliasResolver<>(GobblinInstancePluginFactory.class);
 
     public Builder(Optional<GobblinInstanceEnvironment> instanceLauncher) {

@@ -55,6 +55,7 @@ import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.kafka.client.DecodeableKafkaRecord;
 import org.apache.gobblin.kafka.client.GobblinKafkaConsumerClient;
+import org.apache.gobblin.kafka.client.GobblinKafkaConsumerClient.GobblinKafkaConsumerClientFactory;
 import org.apache.gobblin.kafka.client.KafkaConsumerRecord;
 import org.apache.gobblin.metrics.ContextAwareGauge;
 import org.apache.gobblin.metrics.Tag;
@@ -72,6 +73,7 @@ import org.apache.gobblin.stream.RecordEnvelope;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ClustersNames;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 
 import static org.apache.gobblin.source.extractor.extract.kafka.KafkaProduceRateTracker.KAFKA_PARTITION_PRODUCE_RATE_KEY;
@@ -92,7 +94,7 @@ public class KafkaStreamingExtractor<S> extends FlushingExtractor<S, DecodeableK
       "gobblin.kafka.extractor.statsReportingIntervalMinutes";
   private static final Long DEFAULT_KAFKA_EXTRACTOR_STATS_REPORTING_INTERVAL_MINUTES = 1L;
 
-  private final ClassAliasResolver<GobblinKafkaConsumerClient.GobblinKafkaConsumerClientFactory>
+  private final IClassAliasResolver<GobblinKafkaConsumerClientFactory>
       kafkaConsumerClientResolver;
   private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
   private final Map<String, AtomicDouble> consumerMetricsGauges = new ConcurrentHashMap<>();

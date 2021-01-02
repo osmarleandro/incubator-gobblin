@@ -33,6 +33,7 @@ import org.apache.gobblin.metrics.reporter.util.FixedSchemaVersionWriter;
 import org.apache.gobblin.metrics.reporter.util.SchemaVersionWriter;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,7 +57,7 @@ public class KafkaReporter extends MetricReportReporter {
     SchemaVersionWriter versionWriter;
     if (config.hasPath(SCHEMA_VERSION_WRITER_TYPE)) {
       try {
-        ClassAliasResolver<SchemaVersionWriter> resolver = new ClassAliasResolver<>(SchemaVersionWriter.class);
+        IClassAliasResolver<SchemaVersionWriter> resolver = new ClassAliasResolver<>(SchemaVersionWriter.class);
         Class<? extends SchemaVersionWriter> klazz = resolver.resolveClass(config.getString(SCHEMA_VERSION_WRITER_TYPE));
         versionWriter = klazz.newInstance();
       } catch (ReflectiveOperationException roe) {
