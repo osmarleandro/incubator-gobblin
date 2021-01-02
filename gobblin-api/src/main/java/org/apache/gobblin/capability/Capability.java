@@ -29,11 +29,11 @@ import lombok.Data;
  */
 @Alpha
 @Data
-public class Capability {
+public class Capability implements ICapability {
   /**
    * Threadsafe capability.
    */
-  public static final Capability THREADSAFE = new Capability("THREADSAFE", false);
+  public static final ICapability THREADSAFE = new Capability("THREADSAFE", false);
 
   private final String name;
   private final boolean critical;
