@@ -19,7 +19,7 @@ package gobblin.source.workunit;
 /***
  * Shim layer for org.apache.gobblin.source.workunit.MultiWorkUnit
  */
-public class MultiWorkUnit extends org.apache.gobblin.source.workunit.MultiWorkUnit {
+public class MultiWorkUnit extends org.apache.gobblin.source.workunit.MultiWorkUnit implements IMultiWorkUnit {
   @Deprecated
   public MultiWorkUnit() {
     super();
