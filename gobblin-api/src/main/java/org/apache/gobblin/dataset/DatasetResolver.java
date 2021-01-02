@@ -26,7 +26,7 @@ import org.apache.gobblin.configuration.State;
  * @deprecated use the more general {@link DescriptorResolver}
  */
 @Deprecated
-public interface DatasetResolver extends DescriptorResolver {
+public interface DatasetResolver extends DescriptorResolver, IDatasetResolver {
   /**
    * Given raw Gobblin dataset, resolve job specific dataset
    *
