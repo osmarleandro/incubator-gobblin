@@ -30,7 +30,7 @@ import com.google.gson.JsonObject;
 /**
  * Utility class for dealing with {@link State} objects.
  */
-public class StateUtils {
+public class StateUtils implements IStateUtils {
 
   /**
    * Converts a {@link JsonObject} to a {@link State} object. It does not add any keys specified in the excludeKeys array
