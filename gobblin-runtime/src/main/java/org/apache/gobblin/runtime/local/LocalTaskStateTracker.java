@@ -44,7 +44,7 @@ import org.apache.gobblin.runtime.TaskExecutor;
  *
  * @author Yinan Li
  */
-public class LocalTaskStateTracker extends AbstractTaskStateTracker {
+public class LocalTaskStateTracker extends AbstractTaskStateTracker implements ILocalTaskStateTracker {
 
   private static final Logger LOG = LoggerFactory.getLogger(LocalTaskStateTracker.class);
 
