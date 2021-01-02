@@ -46,7 +46,7 @@ import org.apache.gobblin.util.Either;
  * {@link KafkaJobMonitor#parseJobSpec(byte[])} to transform the message into one or multiple {@link JobSpec}s.
  */
 @Slf4j
-public abstract class KafkaJobMonitor extends HighLevelConsumer<byte[], byte[]> implements JobSpecMonitor {
+public abstract class KafkaJobMonitor extends HighLevelConsumer<byte[], byte[]> implements JobSpecMonitor, IKafkaJobMonitor {
 
   public static final String KAFKA_JOB_MONITOR_PREFIX = "jobSpecMonitor.kafka";
   public static final String KAFKA_AUTO_OFFSET_RESET_KEY = KAFKA_JOB_MONITOR_PREFIX + ".auto.offset.reset";
