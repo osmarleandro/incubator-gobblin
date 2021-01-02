@@ -27,7 +27,7 @@ import org.apache.gobblin.util.test.BaseClass;
 import org.apache.gobblin.util.test.TestClass;
 
 
-public class GsonInterfaceAdapterTest {
+public class GsonInterfaceAdapterTest implements IGsonInterfaceAdapterTest {
 
   @Test(groups = {"gobblin.util.io"})
   public void test() {
