@@ -24,7 +24,7 @@ import org.apache.gobblin.configuration.State;
 /**
  * For generating additional event metadata to associate with Task Events.
  */
-public interface TaskEventMetadataGenerator {
+public interface TaskEventMetadataGenerator extends ITaskEventMetadataGenerator {
   /**
    * Generate a map of additional metadata for the specified event name.
    * @param eventName the event name used to determine which additional metadata should be emitted
