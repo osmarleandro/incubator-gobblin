@@ -23,7 +23,7 @@ import org.apache.gobblin.configuration.State;
 /**
  * The default {@link DatasetResolver} that directly uses Gobblin raw dataset as job dataset
  */
-public class NoopDatasetResolver implements DatasetResolver {
+public class NoopDatasetResolver implements DatasetResolver, INoopDatasetResolver {
   public static final NoopDatasetResolver INSTANCE = new NoopDatasetResolver();
   public static final String FACTORY = "NOOP";
 
