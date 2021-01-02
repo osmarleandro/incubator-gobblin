@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * Represents a factory object that can build CredentialStores based on a set of config.
  */
-public interface CredentialStoreProvider {
+public interface CredentialStoreProvider extends ICredentialStoreProvider {
   /**
    * Build a credential store based on the passed in configuration parameters -
    * EncryptionConfigParser can be used to help parse known keys out of the config bag.
