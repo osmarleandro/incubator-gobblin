@@ -21,7 +21,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
 import org.apache.gobblin.converter.DataConversionException;
 import org.apache.gobblin.runtime.BoundedBlockingRecordQueue;
-import org.apache.gobblin.runtime.ExecutionModel;
+import org.apache.gobblin.runtime.IExecutionModel;
 import org.apache.gobblin.runtime.TaskContext;
 import org.apache.gobblin.util.concurrent.AutoResetEvent;
 
@@ -33,7 +33,7 @@ public class SynchronousFork extends Fork {
   private AutoResetEvent autoResetEvent;
   private volatile Throwable throwable;
 
-  public SynchronousFork(TaskContext taskContext, Object schema, int branches, int index, ExecutionModel executionModel)
+  public SynchronousFork(TaskContext taskContext, Object schema, int branches, int index, IExecutionModel executionModel)
       throws Exception {
     super(taskContext, schema, branches, index, executionModel);
     this.autoResetEvent = new AutoResetEvent();

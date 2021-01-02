@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.gobblin.runtime.BoundedBlockingRecordQueue;
-import org.apache.gobblin.runtime.ExecutionModel;
+import org.apache.gobblin.runtime.IExecutionModel;
 import org.apache.gobblin.runtime.Task;
 import org.apache.gobblin.runtime.TaskContext;
 import org.apache.gobblin.runtime.TaskExecutor;
@@ -57,7 +57,7 @@ import org.apache.gobblin.converter.DataConversionException;
 public class AsynchronousFork extends Fork {
   private final BoundedBlockingRecordQueue<Object> recordQueue;
 
-  public AsynchronousFork(TaskContext taskContext, Object schema, int branches, int index, ExecutionModel executionModel)
+  public AsynchronousFork(TaskContext taskContext, Object schema, int branches, int index, IExecutionModel executionModel)
       throws Exception {
     super(taskContext, schema, branches, index, executionModel);
     TaskState taskState = taskContext.getTaskState();

@@ -52,6 +52,7 @@ import org.apache.gobblin.records.RecordStreamWithMetadata;
 import org.apache.gobblin.runtime.BoundedBlockingRecordQueue;
 import org.apache.gobblin.runtime.ExecutionModel;
 import org.apache.gobblin.runtime.ForkThrowableHolder;
+import org.apache.gobblin.runtime.IExecutionModel;
 import org.apache.gobblin.runtime.MultiConverter;
 import org.apache.gobblin.runtime.Task;
 import org.apache.gobblin.runtime.TaskContext;
@@ -111,7 +112,7 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
 
   private final int branches;
   private final int index;
-  private final ExecutionModel executionModel;
+  private final IExecutionModel executionModel;
 
   private final Converter converter;
   private final Optional<Object> convertedSchema;
@@ -136,7 +137,7 @@ public class Fork<S, D> implements Closeable, FinalState, RecordStreamConsumer<S
   protected static final Object SHUTDOWN_RECORD = new Object();
   private SharedResourcesBroker<GobblinScopeTypes> broker;
 
-  public Fork(TaskContext taskContext, Object schema, int branches, int index, ExecutionModel executionModel)
+  public Fork(TaskContext taskContext, Object schema, int branches, int index, IExecutionModel executionModel)
       throws Exception {
     this.logger = LoggerFactory.getLogger(Fork.class.getName() + "-" + index);
 

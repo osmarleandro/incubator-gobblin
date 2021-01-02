@@ -24,6 +24,7 @@ import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.converter.DataConversionException;
 import org.apache.gobblin.runtime.ExecutionModel;
+import org.apache.gobblin.runtime.IExecutionModel;
 import org.apache.gobblin.runtime.TaskContext;
 import org.apache.gobblin.writer.DataWriter;
 import org.apache.gobblin.writer.DataWriterBuilder;
@@ -62,7 +63,7 @@ public class ForkTest {
 
   private static class TestFork extends Fork {
 
-    public TestFork(TaskContext taskContext, Object schema, int branches, int index, ExecutionModel executionModel)
+    public TestFork(TaskContext taskContext, Object schema, int branches, int index, IExecutionModel executionModel)
         throws Exception {
       super(taskContext, schema, branches, index, executionModel);
     }

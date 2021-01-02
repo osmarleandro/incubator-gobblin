@@ -67,7 +67,7 @@ public class StreamModelTaskRunner {
   private final List<RecordStreamProcessor<?,?,?,?>> recordStreamProcessors;
   private final RowLevelPolicyChecker rowChecker;
   private final TaskExecutor taskExecutor;
-  private final ExecutionModel taskMode;
+  private final IExecutionModel taskMode;
   private final AtomicBoolean shutdownRequested;
   private final Optional<FineGrainedWatermarkTracker> watermarkTracker;
   private final Optional<WatermarkManager> watermarkManager;

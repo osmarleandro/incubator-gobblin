@@ -151,7 +151,7 @@ public class Task implements TaskIFace {
   private final Converter converter;
   private final InstrumentedExtractorBase extractor;
   private final RowLevelPolicyChecker rowChecker;
-  private final ExecutionModel taskMode;
+  private final IExecutionModel taskMode;
   private final Optional<WatermarkManager> watermarkManager;
   private final Optional<FineGrainedWatermarkTracker> watermarkTracker;
   private final Optional<WatermarkStorage> watermarkStorage;
@@ -284,7 +284,7 @@ public class Task implements TaskIFace {
     }
   }
 
-  public static ExecutionModel getExecutionModel(State state) {
+  public static IExecutionModel getExecutionModel(State state) {
     String mode = state
         .getProp(TaskConfigurationKeys.TASK_EXECUTION_MODE, TaskConfigurationKeys.DEFAULT_TASK_EXECUTION_MODE);
     try {

@@ -24,7 +24,7 @@ import org.apache.gobblin.annotation.Alpha;
  * An Enum to capture the execution model of a specific Gobblin task.
  */
 @Alpha
-public enum ExecutionModel {
+public enum ExecutionModel implements IExecutionModel {
   BATCH, // Tasks start and stop
   STREAMING // Tasks run continuously until failure / termination
 }
