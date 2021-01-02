@@ -26,7 +26,7 @@ import org.apache.gobblin.records.RecordStreamProcessor;
  *
  * @author Yinan Li
  */
-public class SchemaConversionException extends RecordStreamProcessor.StreamProcessingException {
+public class SchemaConversionException extends RecordStreamProcessor.StreamProcessingException implements ISchemaConversionException {
 
   private static final long serialVersionUID = 1L;
 
