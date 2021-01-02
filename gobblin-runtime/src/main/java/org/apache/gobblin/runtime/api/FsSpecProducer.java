@@ -85,7 +85,7 @@ public class FsSpecProducer implements SpecProducer<Spec> {
     return writeSpec(updatedSpec, SpecExecutor.Verb.UPDATE);
   }
 
-  private Future<?> writeSpec(Spec spec, SpecExecutor.Verb verb) {
+  private Future<?> writeSpec(ISpec spec, SpecExecutor.Verb verb) {
     if (spec instanceof JobSpec) {
       try {
         AvroJobSpec avroJobSpec = convertToAvroJobSpec((JobSpec) spec, verb);

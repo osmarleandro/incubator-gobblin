@@ -36,6 +36,7 @@ import com.typesafe.config.Config;
 import org.apache.gobblin.metrics.reporter.util.AvroBinarySerializer;
 import org.apache.gobblin.metrics.reporter.util.AvroSerializer;
 import org.apache.gobblin.metrics.reporter.util.FixedSchemaVersionWriter;
+import org.apache.gobblin.runtime.api.ISpec;
 import org.apache.gobblin.runtime.api.JobSpec;
 import org.apache.gobblin.runtime.api.Spec;
 import org.apache.gobblin.runtime.api.SpecExecutor;
@@ -137,7 +138,7 @@ public class SimpleKafkaSpecProducer implements SpecProducer<Spec>, Closeable  {
     return _kafkaProducer;
   }
 
-  private AvroJobSpec convertToAvroJobSpec(Spec spec, SpecExecutor.Verb verb) {
+  private AvroJobSpec convertToAvroJobSpec(ISpec spec, SpecExecutor.Verb verb) {
     if (spec instanceof JobSpec) {
       JobSpec jobSpec = (JobSpec) spec;
       AvroJobSpec.Builder avroJobSpecBuilder = AvroJobSpec.newBuilder();

@@ -24,7 +24,7 @@ import java.net.URI;
 /**
  * A basic interface for an object with a {@link URI}, version, and description.
  */
-public interface Spec extends Serializable {
+public interface Spec extends Serializable, ISpec {
   URI getUri();
   String getVersion();
   String getDescription();

@@ -48,6 +48,7 @@ import org.apache.gobblin.metrics.MetricContext;
 import org.apache.gobblin.metrics.Tag;
 import org.apache.gobblin.runtime.api.FlowSpec;
 import org.apache.gobblin.runtime.api.GobblinInstanceEnvironment;
+import org.apache.gobblin.runtime.api.ISpec;
 import org.apache.gobblin.runtime.api.MutableSpecCatalog;
 import org.apache.gobblin.runtime.api.Spec;
 import org.apache.gobblin.runtime.api.SpecCatalog;
@@ -229,7 +230,7 @@ public class TopologyCatalog extends AbstractIdleService implements SpecCatalog,
   }
 
   @Override
-  public Spec getSpecs(URI uri) throws SpecNotFoundException {
+  public ISpec getSpecs(URI uri) throws SpecNotFoundException {
     try {
       return specStore.getSpec(uri);
     } catch (IOException e) {

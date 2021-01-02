@@ -42,6 +42,7 @@ import com.typesafe.config.Config;
 
 import org.apache.gobblin.runtime.api.FlowSpec;
 import org.apache.gobblin.runtime.api.GobblinInstanceEnvironment;
+import org.apache.gobblin.runtime.api.ISpec;
 import org.apache.gobblin.runtime.api.InstrumentedSpecStore;
 import org.apache.gobblin.runtime.api.Spec;
 import org.apache.gobblin.runtime.api.SpecNotFoundException;
@@ -190,7 +191,7 @@ public class FSSpecStore extends InstrumentedSpecStore {
   }
 
   @Override
-  public Spec updateSpecImpl(Spec spec) throws IOException, SpecNotFoundException {
+  public ISpec updateSpecImpl(Spec spec) throws IOException, SpecNotFoundException {
     addSpec(spec);
     return spec;
   }
@@ -218,7 +219,7 @@ public class FSSpecStore extends InstrumentedSpecStore {
   }
 
   @Override
-  public Spec getSpec(URI specUri, String version) throws IOException, SpecNotFoundException {
+  public ISpec getSpec(URI specUri, String version) throws IOException, SpecNotFoundException {
     Preconditions.checkArgument(null != specUri, "Spec URI should not be null");
     Preconditions.checkArgument(null != version, "Version should not be null");
 

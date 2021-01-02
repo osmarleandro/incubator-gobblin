@@ -76,7 +76,7 @@ public interface SpecStore {
    * @return Updated {@link Spec}.
    * @throws SpecNotFoundException If {@link Spec} being updated is not present in store.
    */
-  Spec updateSpec(Spec spec) throws IOException, SpecNotFoundException;
+  ISpec updateSpec(Spec spec) throws IOException, SpecNotFoundException;
 
   /***
    * Retrieve the latest version of the {@link Spec} by URI from the {@link SpecStore}.
@@ -100,7 +100,7 @@ public interface SpecStore {
    * @throws IOException Exception in retrieving the {@link Spec}.
    * @throws SpecNotFoundException If {@link Spec} being retrieved is not present in store.
    */
-  Spec getSpec(URI specUri, String version) throws IOException, SpecNotFoundException;
+  ISpec getSpec(URI specUri, String version) throws IOException, SpecNotFoundException;
 
   /***
    * Retrieve all versions of the {@link Spec} by URI from the {@link SpecStore}.

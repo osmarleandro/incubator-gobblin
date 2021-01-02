@@ -426,7 +426,7 @@ public class FlowSpec implements Configurable, Spec {
      * @param spec spec
      * @return {@link FlowConfig}
      */
-    public static FlowConfig toFlowConfig(Spec spec) {
+    public static FlowConfig toFlowConfig(ISpec spec) {
       FlowSpec flowSpec = (FlowSpec) spec;
       FlowConfig flowConfig = new FlowConfig();
       Properties flowProps = flowSpec.getConfigAsProperties();

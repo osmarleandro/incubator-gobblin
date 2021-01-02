@@ -129,12 +129,12 @@ public abstract class InstrumentedSpecStore implements SpecStore {
   }
 
   @Override
-  public Spec updateSpec(Spec spec) throws IOException, SpecNotFoundException {
+  public ISpec updateSpec(Spec spec) throws IOException, SpecNotFoundException {
     if (!instrumentationEnabled) {
       return updateSpecImpl(spec);
     } else {
       long startTimeMillis = System.currentTimeMillis();
-      Spec ret = updateSpecImpl(spec);
+      ISpec ret = updateSpecImpl(spec);
       Instrumented.updateTimer(this.updateTimer, System.currentTimeMillis() - startTimeMillis, TimeUnit.MILLISECONDS);
       return ret;
     }
@@ -165,7 +165,7 @@ public abstract class InstrumentedSpecStore implements SpecStore {
   }
 
   public abstract void addSpecImpl(Spec spec) throws IOException;
-  public abstract Spec updateSpecImpl(Spec spec) throws IOException, SpecNotFoundException;
+  public abstract ISpec updateSpecImpl(Spec spec) throws IOException, SpecNotFoundException;
   public abstract boolean existsImpl(URI specUri) throws IOException;
   public abstract Spec getSpecImpl(URI specUri) throws IOException, SpecNotFoundException;
   public abstract boolean deleteSpecImpl(URI specUri) throws IOException;
