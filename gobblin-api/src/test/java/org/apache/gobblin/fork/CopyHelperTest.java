@@ -26,7 +26,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @Test
-public class CopyHelperTest {
+public class CopyHelperTest implements ICopyHelperTest {
 
   private static final Random RANDOM = new Random();
 
