@@ -26,7 +26,7 @@ import com.google.gson.JsonElement;
  * way to serialize and de-serialize {@link Watermark}s, and is useful for implementing the {@link Watermark#toJson()}
  * method.
  */
-public class WatermarkSerializerHelper {
+public class WatermarkSerializerHelper implements IWatermarkSerializerHelper {
 
   private static final Gson GSON = new Gson();
 
