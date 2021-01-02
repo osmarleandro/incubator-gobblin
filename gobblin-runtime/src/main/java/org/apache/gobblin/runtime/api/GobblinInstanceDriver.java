@@ -46,7 +46,7 @@ public interface GobblinInstanceDriver extends Service, JobLifecycleListenersCon
   MutableJobCatalog getMutableJobCatalog();
 
   /** The service the determine when jobs should be executed.*/
-  JobSpecScheduler getJobScheduler();
+  IJobSpecScheduler getJobScheduler();
 
   /** The service for executing Gobblin jobs */
   JobExecutionLauncher getJobLauncher();

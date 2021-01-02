@@ -39,6 +39,7 @@ import org.apache.gobblin.runtime.api.Configurable;
 import org.apache.gobblin.runtime.api.ExecutionResult;
 import org.apache.gobblin.runtime.api.GobblinInstanceDriver;
 import org.apache.gobblin.runtime.api.GobblinInstanceLauncher.ConfigAccessor;
+import org.apache.gobblin.runtime.api.IJobSpecScheduler;
 import org.apache.gobblin.runtime.api.JobCatalog;
 import org.apache.gobblin.runtime.api.JobExecutionDriver;
 import org.apache.gobblin.runtime.api.JobExecutionLauncher;
@@ -125,7 +126,7 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
   }
 
   /** {@inheritDoc} */
-  @Override public JobSpecScheduler getJobScheduler() {
+  @Override public IJobSpecScheduler getJobScheduler() {
     return _jobScheduler;
   }
 
