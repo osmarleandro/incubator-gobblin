@@ -20,7 +20,7 @@ package org.apache.gobblin.runtime;
 /**
  * An exception that is thrown when anything wrong with a fork.
  */
-public class ForkException extends Exception {
+public class ForkException extends Exception implements IForkException {
   private static final long serialVersionUID = -7131035635096992762L;
 
   public ForkException(String message, Throwable cause) {
