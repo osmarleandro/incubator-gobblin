@@ -27,7 +27,7 @@ import org.apache.hadoop.mapreduce.Mapper;
  * Customized application implementation should extends this class instead of implementing {@link CustomizedProgresser}
  * directly as the interface could be changed if we are attempting to add Reducer's progress as well.
  */
-public class CustomizedProgresserBase implements CustomizedProgresser {
+public class CustomizedProgresserBase implements CustomizedProgresser, ICustomizedProgresserBase {
 
   private static final String STATIC_PROGRESS = "customizedProgress.staticProgressValue";
   private static final float DEFAULT_STATIC_PROGRESS = 0.5f;
