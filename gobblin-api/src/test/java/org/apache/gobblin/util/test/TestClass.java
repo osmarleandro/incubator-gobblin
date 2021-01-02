@@ -32,7 +32,7 @@ import com.google.common.collect.Maps;
  * Used for {@link org.apache.gobblin.util.io.GsonInterfaceAdapterTest}.
  */
 @EqualsAndHashCode(callSuper = true)
-public class TestClass extends BaseClass {
+public class TestClass extends BaseClass implements ITestClass {
 
   private static final Random random = new Random();
 
