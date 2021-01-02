@@ -71,6 +71,7 @@ import org.apache.gobblin.metrics.event.EventSubmitter;
 import org.apache.gobblin.metrics.event.FailureEventBuilder;
 import org.apache.gobblin.metrics.event.TaskEvent;
 import org.apache.gobblin.publisher.DataPublisher;
+import org.apache.gobblin.publisher.ISingleTaskDataPublisher;
 import org.apache.gobblin.publisher.SingleTaskDataPublisher;
 import org.apache.gobblin.qualitychecker.row.RowLevelPolicyCheckResults;
 import org.apache.gobblin.qualitychecker.row.RowLevelPolicyChecker;
@@ -617,7 +618,7 @@ public class Task implements TaskIFace {
     Closer closer = Closer.create();
     try {
       Class<? extends DataPublisher> dataPublisherClass = getTaskPublisherClass();
-      SingleTaskDataPublisher publisher =
+      ISingleTaskDataPublisher publisher =
           closer.register(SingleTaskDataPublisher.getInstance(dataPublisherClass, this.taskState));
 
       LOG.info("Publishing data from task " + this.taskId);
