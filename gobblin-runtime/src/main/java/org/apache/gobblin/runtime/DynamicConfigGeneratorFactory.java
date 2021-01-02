@@ -30,7 +30,7 @@ import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 /**
  * For getting an instance of a {@link DynamicConfigGenerator}
  */
-public class DynamicConfigGeneratorFactory {
+public class DynamicConfigGeneratorFactory implements IDynamicConfigGeneratorFactory {
   /**
    * Get an instance of a {@link DynamicConfigGenerator}
    * @param config {@link Config} to pass to the constructor
