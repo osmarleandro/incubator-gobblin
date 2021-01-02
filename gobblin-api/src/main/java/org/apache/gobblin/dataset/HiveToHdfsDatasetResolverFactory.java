@@ -20,7 +20,7 @@ package org.apache.gobblin.dataset;
 import com.typesafe.config.Config;
 
 
-public class HiveToHdfsDatasetResolverFactory implements DatasetResolverFactory {
+public class HiveToHdfsDatasetResolverFactory implements DatasetResolverFactory, IHiveToHdfsDatasetResolverFactory {
   @Override
   public DatasetResolver createResolver(Config config) {
     return HiveToHdfsDatasetResolver.INSTANCE;
