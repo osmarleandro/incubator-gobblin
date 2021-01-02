@@ -34,7 +34,7 @@ import org.apache.gobblin.util.EmailUtils;
  * @author Yinan Li
  */
 @Alias("EmailNotificationJobListener")
-public class EmailNotificationJobListener extends AbstractJobListener {
+public class EmailNotificationJobListener extends AbstractJobListener implements IEmailNotificationJobListener {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificationJobListener.class);
 
