@@ -179,7 +179,7 @@ public class JobListeners {
 
     private void closeJobListeners() throws IOException {
       IOException exception = null;
-      for (JobListener jobListener : this.jobListeners) {
+      for (IJobListener jobListener : this.jobListeners) {
         if (jobListener instanceof Closeable) {
           try {
             ((Closeable) jobListener).close();

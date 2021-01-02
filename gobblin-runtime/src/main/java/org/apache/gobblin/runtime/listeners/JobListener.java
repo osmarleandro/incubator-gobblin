@@ -23,7 +23,7 @@ import org.apache.gobblin.source.workunit.WorkUnit;
 /**
  * An interface for classes used for callback on job state changes.
  */
-public interface JobListener {
+public interface JobListener extends IJobListener {
 
   /**
    * Called when a job is to be prepared, i.e. before determining the {@link WorkUnit}s.
