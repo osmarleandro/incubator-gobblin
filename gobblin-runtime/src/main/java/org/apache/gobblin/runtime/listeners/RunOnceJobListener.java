@@ -35,7 +35,7 @@ import org.apache.gobblin.runtime.JobState;
  *
  * @author Yinan Li
  */
-public class RunOnceJobListener extends AbstractJobListener {
+public class RunOnceJobListener extends AbstractJobListener implements IRunOnceJobListener {
 
   private static final Logger LOG = LoggerFactory.getLogger(RunOnceJobListener.class);
 
