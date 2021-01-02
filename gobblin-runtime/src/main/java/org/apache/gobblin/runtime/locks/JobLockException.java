@@ -23,7 +23,7 @@ package org.apache.gobblin.runtime.locks;
  *
  * @author joelbaranick
  */
-public class JobLockException extends Exception {
+public class JobLockException extends Exception implements IJobLockException {
   public JobLockException(Throwable cause) {
         super(cause);
     }
