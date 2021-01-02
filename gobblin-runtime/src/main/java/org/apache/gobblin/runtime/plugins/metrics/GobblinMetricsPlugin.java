@@ -28,7 +28,7 @@ import org.apache.gobblin.runtime.instance.plugin.BaseIdlePluginImpl;
 /**
  * A {@link GobblinInstancePlugin} for enabling metrics.
  */
-public class GobblinMetricsPlugin extends BaseIdlePluginImpl {
+public class GobblinMetricsPlugin extends BaseIdlePluginImpl implements IGobblinMetricsPlugin {
 
   @Alias("metrics")
   public static class Factory implements GobblinInstancePluginFactory {
