@@ -23,7 +23,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.Lists;
 
 
-public class HierarchicalAckableTest {
+public class HierarchicalAckableTest implements IHierarchicalAckableTest {
 
   @Test
   public void testCloseBeforeAck() throws Exception {
