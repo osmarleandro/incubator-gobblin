@@ -26,7 +26,7 @@ import org.apache.gobblin.runtime.api.JobTemplate;
  * Callbacks executed during job resolution by {@link JobSpecResolver}.
  */
 @Alpha
-public interface JobResolutionCallbacks {
+public interface JobResolutionCallbacks extends IJobResolutionCallbacks {
 
 	/**
 	 * Called before a job is resolved, providing the original job spec and template to be used.
