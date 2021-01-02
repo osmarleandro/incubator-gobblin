@@ -47,7 +47,7 @@ import org.apache.gobblin.runtime.listeners.JobListener;
  * @author Yinan Li
  */
 @Slf4j
-public class CliMRJobLauncher extends Configured implements ApplicationLauncher, JobLauncher, Tool {
+public class CliMRJobLauncher extends Configured implements ApplicationLauncher, JobLauncher, Tool, ICliMRJobLauncher {
 
   private final Closer closer = Closer.create();
 
