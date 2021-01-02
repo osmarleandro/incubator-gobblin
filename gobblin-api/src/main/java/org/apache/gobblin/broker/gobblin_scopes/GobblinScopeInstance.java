@@ -22,7 +22,7 @@ import org.apache.gobblin.broker.SimpleScope;
 /**
  * {@link org.apache.gobblin.broker.iface.ScopeInstance} superclass for scopes used in Gobblin ingestion jobs.
  */
-public class GobblinScopeInstance extends SimpleScope<GobblinScopeTypes> {
+public class GobblinScopeInstance extends SimpleScope<GobblinScopeTypes> implements IGobblinScopeInstance {
 
   public GobblinScopeInstance(GobblinScopeTypes type, String scopeId) {
     super(type, scopeId);
