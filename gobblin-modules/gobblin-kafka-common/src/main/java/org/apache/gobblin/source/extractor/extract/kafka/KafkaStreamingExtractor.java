@@ -62,7 +62,7 @@ import org.apache.gobblin.metrics.kafka.KafkaSchemaRegistry;
 import org.apache.gobblin.metrics.kafka.SchemaRegistryException;
 import org.apache.gobblin.source.extractor.CheckpointableWatermark;
 import org.apache.gobblin.source.extractor.ComparableWatermark;
-import org.apache.gobblin.source.extractor.Watermark;
+import org.apache.gobblin.source.extractor.IWatermark;
 import org.apache.gobblin.source.extractor.WatermarkSerializerHelper;
 import org.apache.gobblin.source.extractor.extract.FlushingExtractor;
 import org.apache.gobblin.source.extractor.extract.LongWatermark;
@@ -156,7 +156,7 @@ public class KafkaStreamingExtractor<S> extends FlushingExtractor<S, DecodeableK
     }
 
     @Override
-    public short calculatePercentCompletion(Watermark lowWatermark, Watermark highWatermark) {
+    public short calculatePercentCompletion(IWatermark lowWatermark, IWatermark highWatermark) {
       return 0;
     }
 

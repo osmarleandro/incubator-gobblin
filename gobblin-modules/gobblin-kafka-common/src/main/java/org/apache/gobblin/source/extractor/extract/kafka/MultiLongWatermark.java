@@ -26,6 +26,7 @@ import com.google.common.math.LongMath;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
+import org.apache.gobblin.source.extractor.IWatermark;
 import org.apache.gobblin.source.extractor.Watermark;
 
 
@@ -75,7 +76,7 @@ public class MultiLongWatermark implements Watermark {
    * @return a percentage value between 0 and 100.
    */
   @Override
-  public short calculatePercentCompletion(Watermark lowWatermark, Watermark highWatermark) {
+  public short calculatePercentCompletion(IWatermark lowWatermark, IWatermark highWatermark) {
     Preconditions.checkArgument(
         lowWatermark instanceof MultiLongWatermark && highWatermark instanceof MultiLongWatermark,
         String.format("Arguments of %s.%s must be of type %s", MultiLongWatermark.class.getSimpleName(),

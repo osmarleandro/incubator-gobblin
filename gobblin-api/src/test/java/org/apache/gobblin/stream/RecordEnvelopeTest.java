@@ -31,7 +31,7 @@ import org.apache.gobblin.fork.CopyNotSupportedException;
 import org.apache.gobblin.fork.Copyable;
 import org.apache.gobblin.source.extractor.CheckpointableWatermark;
 import org.apache.gobblin.source.extractor.ComparableWatermark;
-import org.apache.gobblin.source.extractor.Watermark;
+import org.apache.gobblin.source.extractor.IWatermark;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -268,7 +268,7 @@ public class RecordEnvelopeTest {
     }
 
     @Override
-    public short calculatePercentCompletion(Watermark lowWatermark, Watermark highWatermark) {
+    public short calculatePercentCompletion(IWatermark lowWatermark, IWatermark highWatermark) {
       return 0;
     }
 

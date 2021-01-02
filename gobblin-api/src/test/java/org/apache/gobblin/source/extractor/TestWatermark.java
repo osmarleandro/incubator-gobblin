@@ -35,7 +35,7 @@ public class TestWatermark implements Watermark {
   }
 
   @Override
-  public short calculatePercentCompletion(Watermark lowWatermark, Watermark highWatermark) {
+  public short calculatePercentCompletion(IWatermark lowWatermark, IWatermark highWatermark) {
     TestWatermark testLowWatermark = GSON.fromJson(lowWatermark.toJson(), TestWatermark.class);
     TestWatermark testHighWatermark = GSON.fromJson(highWatermark.toJson(), TestWatermark.class);
     return (short) (100 * (this.watermark - testLowWatermark.getLongWatermark()) / (testHighWatermark

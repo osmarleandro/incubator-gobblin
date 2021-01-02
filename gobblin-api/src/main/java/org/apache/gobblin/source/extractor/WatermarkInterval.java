@@ -32,19 +32,19 @@ public class WatermarkInterval {
   public static final String LOW_WATERMARK_TO_JSON_KEY = "low.watermark.to.json";
   public static final String EXPECTED_HIGH_WATERMARK_TO_JSON_KEY = "expected.watermark.to.json";
 
-  private final Watermark lowWatermark;
-  private final Watermark expectedHighWatermark;
+  private final IWatermark lowWatermark;
+  private final IWatermark expectedHighWatermark;
 
-  public WatermarkInterval(Watermark lowWatermark, Watermark expectedHighWatermark) {
+  public WatermarkInterval(IWatermark lowWatermark, IWatermark expectedHighWatermark) {
     this.lowWatermark = lowWatermark;
     this.expectedHighWatermark = expectedHighWatermark;
   }
 
-  public Watermark getLowWatermark() {
+  public IWatermark getLowWatermark() {
     return this.lowWatermark;
   }
 
-  public Watermark getExpectedHighWatermark() {
+  public IWatermark getExpectedHighWatermark() {
     return this.expectedHighWatermark;
   }
 

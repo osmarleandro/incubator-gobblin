@@ -21,7 +21,7 @@ import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 
 import org.apache.gobblin.source.extractor.ComparableWatermark;
-import org.apache.gobblin.source.extractor.Watermark;
+import org.apache.gobblin.source.extractor.IWatermark;
 import org.apache.gobblin.source.extractor.WatermarkSerializerHelper;
 
 import lombok.AllArgsConstructor;
@@ -51,7 +51,7 @@ public class StringWatermark implements ComparableWatermark {
   }
 
   @Override
-  public short calculatePercentCompletion(Watermark lowWatermark, Watermark highWatermark) {
+  public short calculatePercentCompletion(IWatermark lowWatermark, IWatermark highWatermark) {
     return 0;
   }
 }

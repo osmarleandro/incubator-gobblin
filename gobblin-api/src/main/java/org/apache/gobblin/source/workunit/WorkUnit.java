@@ -30,6 +30,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import org.apache.gobblin.source.extractor.Extractor;
+import org.apache.gobblin.source.extractor.IWatermark;
 import org.apache.gobblin.source.extractor.Watermark;
 import org.apache.gobblin.source.extractor.WatermarkInterval;
 import lombok.ToString;
@@ -211,7 +212,7 @@ public class WorkUnit extends State {
    * @param gson a {@link Gson} object used to deserialize the watermark.
    * @return the low watermark in this {@code WorkUnit}.
    */
-  public <T extends Watermark> T getLowWatermark(Class<T> watermarkClass, Gson gson) {
+  public <T extends IWatermark> T getLowWatermark(Class<T> watermarkClass, Gson gson) {
     JsonElement json = getLowWatermark();
     if (json == null) {
       return null;
@@ -225,7 +226,7 @@ public class WorkUnit extends State {
    * @param watermarkClass the watermark class for this {@code WorkUnit}.
    * @return the low watermark in this {@code WorkUnit}.
    */
-  public <T extends Watermark> T getLowWatermark(Class<T> watermarkClass) {
+  public <T extends IWatermark> T getLowWatermark(Class<T> watermarkClass) {
     return getLowWatermark(watermarkClass, GSON);
   }
 
@@ -246,7 +247,7 @@ public class WorkUnit extends State {
    * @param gson a {@link Gson} object used to deserialize the watermark.
    * @return the expected high watermark in this {@code WorkUnit}.
    */
-  public <T extends Watermark> T getExpectedHighWatermark(Class<T> watermarkClass, Gson gson) {
+  public <T extends IWatermark> T getExpectedHighWatermark(Class<T> watermarkClass, Gson gson) {
     JsonElement json = getExpectedHighWatermark();
     if (json == null) {
       return null;
@@ -260,7 +261,7 @@ public class WorkUnit extends State {
    * @param watermarkClass the watermark class for this {@code WorkUnit}.
    * @return the expected high watermark in this {@code WorkUnit}.
    */
-  public <T extends Watermark> T getExpectedHighWatermark(Class<T> watermarkClass) {
+  public <T extends IWatermark> T getExpectedHighWatermark(Class<T> watermarkClass) {
     return getExpectedHighWatermark(watermarkClass, GSON);
   }
 

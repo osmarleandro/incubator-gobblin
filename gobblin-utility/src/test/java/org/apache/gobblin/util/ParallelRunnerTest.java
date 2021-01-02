@@ -52,6 +52,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import org.apache.gobblin.configuration.WorkUnitState;
+import org.apache.gobblin.source.extractor.IWatermark;
 import org.apache.gobblin.source.extractor.Watermark;
 import org.apache.gobblin.source.extractor.WatermarkSerializerHelper;
 import org.apache.gobblin.source.workunit.WorkUnit;
@@ -281,7 +282,7 @@ public class ParallelRunnerTest {
     }
 
     @Override
-    public short calculatePercentCompletion(Watermark lowWatermark, Watermark highWatermark) {
+    public short calculatePercentCompletion(IWatermark lowWatermark, IWatermark highWatermark) {
       return 0;
     }
 
