@@ -20,7 +20,7 @@ package org.apache.gobblin.runtime.api;
 /**
  * An exception when {@link Spec} cannot be correctly serialized/deserialized from underlying storage.
  */
-public class SpecSerDeException extends RuntimeException {
+public class SpecSerDeException extends RuntimeException implements ISpecSerDeException {
 
   public SpecSerDeException(Spec spec, Throwable cause) {
     super("Error occurred when loading Spec with URI " + spec.getUri(), cause);
