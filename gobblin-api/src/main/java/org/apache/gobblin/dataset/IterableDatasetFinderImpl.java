@@ -28,7 +28,7 @@ import lombok.experimental.Delegate;
  * Wraps a {@link DatasetsFinder} into an {@link IterableDatasetFinder}.
  */
 @AllArgsConstructor
-public class IterableDatasetFinderImpl<T extends Dataset> implements IterableDatasetFinder<T> {
+public class IterableDatasetFinderImpl<T extends Dataset> implements IterableDatasetFinder<T>, IIterableDatasetFinderImpl<T> {
 
   @Delegate
   private final DatasetsFinder<T> datasetFinder;
