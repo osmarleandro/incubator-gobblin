@@ -20,7 +20,7 @@ package org.apache.gobblin.fork;
  * A helper class to copy things that may or may not be {@link Copyable}.
  * Supports implementations for common primitive types.
  */
-public class CopyHelper {
+public class CopyHelper implements ICopyHelper {
 
   /**
    * Check if an object is copyable using the {@link #copy(Object)} method.
