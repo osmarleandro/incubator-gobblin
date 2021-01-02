@@ -32,7 +32,7 @@ import org.apache.gobblin.configuration.WorkUnitState;
  * @param <DI> input data type
  * @param <DO> output data type
  */
-public interface RecordStreamProcessor<SI, SO, DI, DO> {
+public interface RecordStreamProcessor<SI, SO, DI, DO> extends IRecordStreamProcessor<SI, SO, DI, DO> {
 
   /**
    * Return a {@link RecordStreamWithMetadata} with the appropriate modifications.

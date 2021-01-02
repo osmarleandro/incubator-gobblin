@@ -74,6 +74,7 @@ import org.apache.gobblin.publisher.DataPublisher;
 import org.apache.gobblin.publisher.SingleTaskDataPublisher;
 import org.apache.gobblin.qualitychecker.row.RowLevelPolicyCheckResults;
 import org.apache.gobblin.qualitychecker.row.RowLevelPolicyChecker;
+import org.apache.gobblin.records.IRecordStreamProcessor;
 import org.apache.gobblin.records.RecordStreamProcessor;
 import org.apache.gobblin.runtime.api.TaskEventMetadataGenerator;
 import org.apache.gobblin.runtime.fork.AsynchronousFork;
@@ -196,7 +197,7 @@ public class Task implements TaskIFace {
     this.recordStreamProcessors = this.taskContext.getRecordStreamProcessors();
 
     // add record stream processors to closer if they are closeable
-    for (RecordStreamProcessor r: recordStreamProcessors) {
+    for (IRecordStreamProcessor r: recordStreamProcessors) {
       if (r instanceof Closeable) {
         this.closer.register((Closeable)r);
       }
