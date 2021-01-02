@@ -22,7 +22,7 @@ import org.apache.gobblin.metastore.DatasetStateStore;
 import java.util.Properties;
 
 @Alias("fs")
-public class FsDatasetStateStoreFactory implements DatasetStateStore.Factory {
+public class FsDatasetStateStoreFactory implements DatasetStateStore.Factory, IFsDatasetStateStoreFactory {
   @Override
   public DatasetStateStore<JobState.DatasetState> createStateStore(Config config) {
     try {
