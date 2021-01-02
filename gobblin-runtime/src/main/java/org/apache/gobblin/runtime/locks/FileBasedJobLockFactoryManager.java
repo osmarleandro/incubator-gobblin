@@ -32,7 +32,7 @@ import org.apache.gobblin.runtime.instance.hadoop.HadoopConfigLoader;
  */
 @Alias(value="file")
 public class FileBasedJobLockFactoryManager
-       extends AbstractJobLockFactoryManager<FileBasedJobLock, FileBasedJobLockFactory> {
+       extends AbstractJobLockFactoryManager<FileBasedJobLock, FileBasedJobLockFactory> implements IFileBasedJobLockFactoryManager {
   public static final String CONFIG_PREFIX = "job.lock.file";
 
   @Override
