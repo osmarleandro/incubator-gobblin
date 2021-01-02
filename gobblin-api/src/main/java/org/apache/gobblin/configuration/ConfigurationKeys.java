@@ -26,7 +26,7 @@ import com.google.common.base.Charsets;
 /**
  * A central place for all Gobblin configuration property keys.
  */
-public class ConfigurationKeys {
+public class ConfigurationKeys implements IConfigurationKeys {
 
   /**
    * System configuration properties.
