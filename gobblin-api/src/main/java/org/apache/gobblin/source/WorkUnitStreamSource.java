@@ -31,7 +31,7 @@ import org.apache.gobblin.source.workunit.WorkUnitStream;
  *    processing available work units while future work units are still being computed.
  *  * Infinite work unit streams: in the future, some job launchers will support infinite streams of work units.
  */
-public interface WorkUnitStreamSource<S, D> extends Source<S, D> {
+public interface WorkUnitStreamSource<S, D> extends Source<S, D>, IWorkUnitStreamSource<S, D> {
   /**
    * Get the {@link WorkUnitStream} to process.
    */
