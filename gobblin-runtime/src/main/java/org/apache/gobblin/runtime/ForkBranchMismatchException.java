@@ -24,7 +24,7 @@ package org.apache.gobblin.runtime;
  *
  * @author Yinan Li
  */
-public class ForkBranchMismatchException extends Exception {
+public class ForkBranchMismatchException extends Exception implements IForkBranchMismatchException {
 
   private static final long serialVersionUID = 1L;
 
