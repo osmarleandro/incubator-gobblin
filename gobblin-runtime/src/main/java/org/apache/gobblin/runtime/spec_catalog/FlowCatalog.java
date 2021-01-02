@@ -59,6 +59,7 @@ import org.apache.gobblin.runtime.spec_store.FSSpecStore;
 import org.apache.gobblin.service.ServiceConfigKeys;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.callbacks.CallbackResult;
 import org.apache.gobblin.util.callbacks.CallbacksDispatcher;
 
@@ -88,7 +89,7 @@ public class FlowCatalog extends AbstractIdleService implements SpecCatalog, Mut
   // to provide synchronization needed for flow specs
   private final Map<String, Object> specSyncObjects = new HashMap<>();
 
-  private final ClassAliasResolver<SpecStore> aliasResolver;
+  private final IClassAliasResolver<SpecStore> aliasResolver;
 
   public FlowCatalog(Config config) {
     this(config, Optional.<Logger>absent());

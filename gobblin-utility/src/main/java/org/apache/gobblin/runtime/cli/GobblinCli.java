@@ -21,6 +21,7 @@ import com.google.common.collect.Sets;
 
 import org.apache.gobblin.annotation.Alias;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 
 /**
@@ -29,7 +30,7 @@ import org.apache.gobblin.util.ClassAliasResolver;
 public class GobblinCli {
 
   public static void main(String[] args) {
-    ClassAliasResolver<CliApplication> resolver = new ClassAliasResolver<>(CliApplication.class);
+    IClassAliasResolver<CliApplication> resolver = new ClassAliasResolver<>(CliApplication.class);
 
     if (args.length < 1 || Sets.newHashSet("-h", "--help").contains(args[0])) {
       printUsage(resolver);
@@ -52,7 +53,7 @@ public class GobblinCli {
     }
   }
 
-  private static void printUsage(ClassAliasResolver<CliApplication> resolver) {
+  private static void printUsage(IClassAliasResolver<CliApplication> resolver) {
     System.out.println("Usage: gobblin cli <command>");
     System.out.println("Available commands:");
     for (Alias alias : resolver.getAliasObjects()) {

@@ -115,6 +115,7 @@ import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
 import org.apache.gobblin.util.EmailUtils;
 import org.apache.gobblin.util.ExecutorsUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.JvmUtils;
 import org.apache.gobblin.util.io.StreamUtils;
 import org.apache.gobblin.util.logs.LogCopier;
@@ -884,7 +885,7 @@ public class GobblinYarnAppLauncher {
     Path tokenFilePath = new Path(this.fs.getHomeDirectory(), this.applicationName + Path.SEPARATOR +
         GobblinYarnConfigurationKeys.TOKEN_FILE_NAME);
 
-    ClassAliasResolver<AbstractYarnAppSecurityManager> aliasResolver = new ClassAliasResolver<>(
+    IClassAliasResolver<AbstractYarnAppSecurityManager> aliasResolver = new ClassAliasResolver<>(
         AbstractYarnAppSecurityManager.class);
     try {
      return (AbstractYarnAppSecurityManager) GobblinConstructorUtils.invokeLongestConstructor(Class.forName(aliasResolver.resolve(

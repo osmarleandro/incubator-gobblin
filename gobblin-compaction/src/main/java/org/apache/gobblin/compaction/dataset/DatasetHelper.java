@@ -40,6 +40,7 @@ import org.apache.gobblin.compaction.conditions.RecompactionConditionFactory;
 import org.apache.gobblin.compaction.mapreduce.MRCompactor;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.FileListUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.RecordCountProvider;
 import org.apache.gobblin.util.recordcount.LateFileRecordCountProvider;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
@@ -92,7 +93,7 @@ public class DatasetHelper {
   }
 
   private RecompactionCondition createRecompactionCondition () {
-    ClassAliasResolver<RecompactionConditionFactory> conditionClassAliasResolver = new ClassAliasResolver<>(RecompactionConditionFactory.class);
+    IClassAliasResolver<RecompactionConditionFactory> conditionClassAliasResolver = new ClassAliasResolver<>(RecompactionConditionFactory.class);
     String factoryName = this.dataset.jobProps().getProp(MRCompactor.COMPACTION_RECOMPACT_CONDITION,
         MRCompactor.DEFAULT_COMPACTION_RECOMPACT_CONDITION);
     try {

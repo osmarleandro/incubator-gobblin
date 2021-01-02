@@ -38,7 +38,9 @@ import com.typesafe.config.ConfigValueFactory;
 
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.State;
+import org.apache.gobblin.metastore.StateStore.Factory;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 
 /**
@@ -52,7 +54,7 @@ public class FsStateStoreTest {
 
   @BeforeClass
   public void setUp() throws Exception {
-    ClassAliasResolver<StateStore.Factory> resolver =
+    IClassAliasResolver<Factory> resolver =
         new ClassAliasResolver<>(StateStore.Factory.class);
 
     stateStoreFactory =

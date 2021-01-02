@@ -36,6 +36,7 @@ import org.apache.gobblin.annotation.Alpha;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.runtime.spec_executorInstance.InMemorySpecExecutor;
 
 import lombok.AllArgsConstructor;
@@ -89,7 +90,7 @@ public class TopologySpec implements Configurable, Spec {
         specExecutorClass = config.getString(SPEC_EXECUTOR_INSTANCE_KEY);
       }
       try {
-        ClassAliasResolver<SpecExecutor> _aliasResolver =
+        IClassAliasResolver<SpecExecutor> _aliasResolver =
             new ClassAliasResolver<>(SpecExecutor.class);
         specExecutorInstance = (SpecExecutor) ConstructorUtils
             .invokeConstructor(Class.forName(_aliasResolver

@@ -109,6 +109,7 @@ import org.apache.gobblin.service.monitoring.KafkaJobStatusMonitor;
 import org.apache.gobblin.service.monitoring.KafkaJobStatusMonitorFactory;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 
 
@@ -168,7 +169,7 @@ public class GobblinServiceManager implements ApplicationLauncher, StandardMetri
 
   protected Optional<HelixManager> helixManager;
 
-  protected ClassAliasResolver<TopologySpecFactory> aliasResolver;
+  protected IClassAliasResolver<TopologySpecFactory> aliasResolver;
 
   protected GitConfigMonitor gitConfigMonitor;
 
@@ -308,7 +309,7 @@ public class GobblinServiceManager implements ApplicationLauncher, StandardMetri
     this.isRestLIServerEnabled = ConfigUtils.getBoolean(config,
         ServiceConfigKeys.GOBBLIN_SERVICE_RESTLI_SERVER_ENABLED_KEY, true);
 
-    ClassAliasResolver<GroupOwnershipService> groupOwnershipAliasResolver = new ClassAliasResolver<>(GroupOwnershipService.class);
+    IClassAliasResolver<GroupOwnershipService> groupOwnershipAliasResolver = new ClassAliasResolver<>(GroupOwnershipService.class);
     String groupOwnershipServiceClass = ServiceConfigKeys.DEFAULT_GROUP_OWNERSHIP_SERVICE;
     LOGGER.info("I am here " + groupOwnershipServiceClass);
     if (config.hasPath(ServiceConfigKeys.GROUP_OWNERSHIP_SERVICE_CLASS)) {

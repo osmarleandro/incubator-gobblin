@@ -36,6 +36,7 @@ import org.apache.gobblin.runtime.api.TopologySpec;
 import org.apache.gobblin.service.ServiceConfigKeys;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.runtime.api.SpecExecutor;
 
 
@@ -46,7 +47,7 @@ public class ConfigBasedTopologySpecFactory implements TopologySpecFactory {
   private static final Splitter SPLIT_BY_COMMA = Splitter.on(",").omitEmptyStrings().trimResults();
   private final Config _config;
   private final Logger _log;
-  private final ClassAliasResolver<SpecExecutor> _aliasResolver;
+  private final IClassAliasResolver<SpecExecutor> _aliasResolver;
 
   public ConfigBasedTopologySpecFactory(Config config) {
     this(config, Optional.<Logger>absent());

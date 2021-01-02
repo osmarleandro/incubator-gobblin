@@ -36,6 +36,7 @@ import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.data.management.retention.dataset.CleanableDataset;
 import org.apache.gobblin.data.management.retention.dataset.finder.TimeBasedDatasetStoreDatasetFinder;
 import org.apache.gobblin.metastore.DatasetStateStore;
+import org.apache.gobblin.metastore.DatasetStateStore.Factory;
 import org.apache.gobblin.metastore.DatasetStoreDataset;
 import org.apache.gobblin.metastore.MysqlStateStore;
 import org.apache.gobblin.metastore.testing.ITestMetastoreDatabase;
@@ -45,6 +46,7 @@ import org.apache.gobblin.runtime.MysqlDatasetStateStore;
 import org.apache.gobblin.runtime.TaskState;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 
 /**
@@ -95,7 +97,7 @@ public class CleanableMysqlDatasetStoreDatasetTest {
     configBuilder.addPrimitive(ConfigurationKeys.STATE_STORE_DB_USER_KEY, TEST_USER);
     configBuilder.addPrimitive(ConfigurationKeys.STATE_STORE_DB_PASSWORD_KEY, TEST_PASSWORD);
 
-    ClassAliasResolver<DatasetStateStore.Factory> resolver = new ClassAliasResolver<>(DatasetStateStore.Factory.class);
+    IClassAliasResolver<Factory> resolver = new ClassAliasResolver<>(DatasetStateStore.Factory.class);
 
     DatasetStateStore.Factory stateStoreFactory = resolver.resolveClass("mysql").newInstance();
     this.config = configBuilder.build();

@@ -29,6 +29,7 @@ import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.limiter.broker.SharedLimiterKey;
 
 
@@ -44,7 +45,7 @@ public class ThrottlingPolicyFactory implements SharedResourceFactory<Throttling
   public static final String RELOAD_FREQUENCY_KEY = "reloadFrequencyMillis";
   public static final long DEFAULT_RELOAD_FREQUENCY = 5 * 60 * 1000L; // 5 minutes
 
-  public static final ClassAliasResolver<SpecificPolicyFactory> POLICY_CLASS_RESOLVER = new
+  public static final IClassAliasResolver<SpecificPolicyFactory> POLICY_CLASS_RESOLVER = new
       ClassAliasResolver<>(SpecificPolicyFactory.class);
 
   @Override

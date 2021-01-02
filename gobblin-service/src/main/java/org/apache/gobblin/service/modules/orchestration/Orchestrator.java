@@ -71,6 +71,7 @@ import org.apache.gobblin.service.monitoring.FsJobStatusRetriever;
 import org.apache.gobblin.service.monitoring.JobStatusRetriever;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 
 
@@ -100,7 +101,7 @@ public class Orchestrator implements SpecCatalogListener, Instrumentable {
   @Setter
   private FlowStatusGenerator flowStatusGenerator;
 
-  private final ClassAliasResolver<SpecCompiler> aliasResolver;
+  private final IClassAliasResolver<SpecCompiler> aliasResolver;
 
   private Map<String, FlowCompiledState> flowGauges = Maps.newHashMap();
 

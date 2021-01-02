@@ -48,6 +48,7 @@ import org.apache.gobblin.source.extractor.Extractor;
 import org.apache.gobblin.source.extractor.extract.EventBasedExtractor;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 
 /**
@@ -61,7 +62,7 @@ public abstract class KafkaExtractor<S, D> extends EventBasedExtractor<S, D> {
   private static final Logger LOG = LoggerFactory.getLogger(KafkaExtractor.class);
 
 
-  private final ClassAliasResolver<GobblinKafkaConsumerClientFactory> kafkaConsumerClientResolver;
+  private final IClassAliasResolver<GobblinKafkaConsumerClientFactory> kafkaConsumerClientResolver;
   private final AtomicBoolean shutdownRequested = new AtomicBoolean(false);
   private final String recordCreationTimestampFieldName;
   private final TimeUnit recordCreationTimestampUnit;

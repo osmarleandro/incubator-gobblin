@@ -33,8 +33,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.metastore.StateStore;
+import org.apache.gobblin.metastore.StateStore.Factory;
 import org.apache.gobblin.source.extractor.CheckpointableWatermark;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.io.GsonInterfaceAdapter;
 import org.apache.gobblin.writer.WatermarkStorage;
 
@@ -88,7 +90,7 @@ public class StateStoreBasedWatermarkStorage implements WatermarkStorage {
     Preconditions.checkArgument(taskState != null);
     Preconditions.checkArgument(!taskState.getProp(ConfigurationKeys.JOB_NAME_KEY).isEmpty());
     String watermarkStateStoreType = taskState.getProp(WATERMARK_STORAGE_TYPE_KEY, WATERMARK_STORAGE_TYPE_DEFAULT);
-    ClassAliasResolver<StateStore.Factory> resolver =
+    IClassAliasResolver<Factory> resolver =
         new ClassAliasResolver<>(StateStore.Factory.class);
     StateStore.Factory stateStoreFactory;
 

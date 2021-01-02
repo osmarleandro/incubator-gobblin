@@ -26,6 +26,7 @@ import com.typesafe.config.Config;
 
 import org.apache.gobblin.audit.values.auditor.ValueAuditRuntimeMetadata;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 /**
  * Default factory class to create new {@link AuditSink}s
@@ -36,7 +37,7 @@ public class DefaultAuditSinkFactory {
   private static final String AUDIT_SINK_CLASS_NAME_KEY = "class";
   private static final String DEFAULT_AUDIT_SINK_CLASS =  FsAuditSink.class.getCanonicalName();
 
-  private final ClassAliasResolver<AuditSink> aliasResolver;
+  private final IClassAliasResolver<AuditSink> aliasResolver;
 
   private DefaultAuditSinkFactory() {
     this.aliasResolver = new ClassAliasResolver<>(AuditSink.class);

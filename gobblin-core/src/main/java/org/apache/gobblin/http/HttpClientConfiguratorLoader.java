@@ -23,6 +23,7 @@ import com.typesafe.config.Config;
 
 import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 /**
  * Creates an instance of HttpClientConfigurator using dependency injection from configuration.
@@ -37,7 +38,7 @@ public class HttpClientConfiguratorLoader {
   public static final Class<? extends HttpClientConfigurator> DEFAULT_CONFIGURATOR_CLASS =
       DefaultHttpClientConfigurator.class;
 
-  private static final ClassAliasResolver<HttpClientConfigurator> TYPE_RESOLVER =
+  private static final IClassAliasResolver<HttpClientConfigurator> TYPE_RESOLVER =
       new ClassAliasResolver<>(HttpClientConfigurator.class);
   private final HttpClientConfigurator _configurator;
 

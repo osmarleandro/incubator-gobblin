@@ -45,6 +45,7 @@ import org.apache.gobblin.runtime.api.SpecExecutor;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
 import org.apache.gobblin.util.ExecutorsUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 
 @Alpha
@@ -61,7 +62,7 @@ public class ScheduledJobConfigurationManager extends JobConfigurationManager {
 
   protected final SpecConsumer _specConsumer;
 
-  private final ClassAliasResolver<SpecConsumer> aliasResolver;
+  private final IClassAliasResolver<SpecConsumer> aliasResolver;
 
   public ScheduledJobConfigurationManager(EventBus eventBus, Config config) {
     super(eventBus, config);

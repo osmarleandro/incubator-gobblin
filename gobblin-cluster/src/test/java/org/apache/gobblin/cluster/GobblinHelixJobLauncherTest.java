@@ -57,6 +57,7 @@ import lombok.Getter;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.metastore.DatasetStateStore;
+import org.apache.gobblin.metastore.DatasetStateStore.Factory;
 import org.apache.gobblin.metrics.Tag;
 import org.apache.gobblin.runtime.FsDatasetStateStore;
 import org.apache.gobblin.runtime.JobContext;
@@ -65,6 +66,7 @@ import org.apache.gobblin.runtime.JobState;
 import org.apache.gobblin.runtime.listeners.AbstractJobListener;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 
 /**
@@ -158,7 +160,7 @@ public class GobblinHelixJobLauncherTest {
     String stateStoreType = ConfigUtils.getString(baseConfig, ConfigurationKeys.STATE_STORE_TYPE_KEY,
         ConfigurationKeys.DEFAULT_STATE_STORE_TYPE);
 
-    ClassAliasResolver<DatasetStateStore.Factory> resolver =
+    IClassAliasResolver<Factory> resolver =
         new ClassAliasResolver<>(DatasetStateStore.Factory.class);
 
     DatasetStateStore.Factory stateStoreFactory =

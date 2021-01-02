@@ -32,6 +32,7 @@ import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.ResourceCoordinate;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.limiter.Limiter;
 import org.apache.gobblin.util.limiter.LimiterFactory;
 import org.apache.gobblin.util.limiter.MultiLimiter;
@@ -64,7 +65,7 @@ public class SharedLimiterFactory<S extends ScopeType<S>> implements SharedResou
   public static final String SKIP_GLOBAL_LIMITER_KEY = "skipGlobalLimiter";
   public static final String FAIL_ON_UNKNOWN_RESOURCE_ID = "faiOnUnknownResourceId";
 
-  private static final ClassAliasResolver<LimiterFactory> RESOLVER = new ClassAliasResolver<>(LimiterFactory.class);
+  private static final IClassAliasResolver<LimiterFactory> RESOLVER = new ClassAliasResolver<>(LimiterFactory.class);
 
   @Override
   public String getName() {
