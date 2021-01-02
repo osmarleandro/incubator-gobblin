@@ -73,7 +73,7 @@ import org.apache.gobblin.metrics.event.EventSubmitter;
 import org.apache.gobblin.util.ExecutorsUtils;
 import org.apache.gobblin.util.FileListUtils;
 import org.apache.gobblin.util.HadoopUtils;
-import org.apache.gobblin.util.RecordCountProvider;
+import org.apache.gobblin.util.IRecordCountProvider;
 import org.apache.gobblin.util.WriterUtils;
 import org.apache.gobblin.util.executors.ScalingThreadPoolExecutor;
 import org.apache.gobblin.util.recordcount.LateFileRecordCountProvider;
@@ -163,8 +163,8 @@ public abstract class MRCompactorJobRunner implements Runnable, Comparable<MRCom
   protected final boolean renameSourceDir;
   protected final boolean usePrimeReducers;
   protected final EventSubmitter eventSubmitter;
-  private final RecordCountProvider inputRecordCountProvider;
-  private final RecordCountProvider outputRecordCountProvider;
+  private final IRecordCountProvider inputRecordCountProvider;
+  private final IRecordCountProvider outputRecordCountProvider;
   private final LateFileRecordCountProvider lateInputRecordCountProvider;
   private final LateFileRecordCountProvider lateOutputRecordCountProvider;
   private final DatasetHelper datasetHelper;
@@ -238,11 +238,11 @@ public abstract class MRCompactorJobRunner implements Runnable, Comparable<MRCom
     }
 
     try {
-      this.inputRecordCountProvider = (RecordCountProvider) Class
+      this.inputRecordCountProvider = (IRecordCountProvider) Class
           .forName(this.dataset.jobProps().getProp(MRCompactor.COMPACTION_INPUT_RECORD_COUNT_PROVIDER,
               MRCompactor.DEFAULT_COMPACTION_INPUT_RECORD_COUNT_PROVIDER))
           .newInstance();
-      this.outputRecordCountProvider = (RecordCountProvider) Class
+      this.outputRecordCountProvider = (IRecordCountProvider) Class
           .forName(this.dataset.jobProps().getProp(MRCompactor.COMPACTION_OUTPUT_RECORD_COUNT_PROVIDER,
               MRCompactor.DEFAULT_COMPACTION_OUTPUT_RECORD_COUNT_PROVIDER))
           .newInstance();
