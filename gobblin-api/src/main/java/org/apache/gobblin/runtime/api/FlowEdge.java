@@ -25,7 +25,7 @@ import com.typesafe.config.Config;
  * - Numerical value based: Return an numerical value for evaluation.
  * - Boolean value based: Return either true or false.
  */
-public interface FlowEdge {
+public interface FlowEdge extends IFlowEdge {
 
   /**
    * @return Uniqueness of an edge is defined by
