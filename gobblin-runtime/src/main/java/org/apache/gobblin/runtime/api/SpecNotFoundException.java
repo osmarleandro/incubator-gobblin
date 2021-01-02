@@ -23,7 +23,7 @@ import java.net.URI;
 /**
  * An {@link Exception} thrown when a {@link Spec} with the given {@link URI} cannot be found.
  */
-public class SpecNotFoundException extends Exception {
+public class SpecNotFoundException extends Exception implements ISpecNotFoundException {
   private static final long serialVersionUID = 1L;
   private final URI _missingJobSpecURI;
 
