@@ -26,7 +26,7 @@ import java.nio.charset.StandardCharsets;
  * Serializes Java Strings similar to a Hadoop Text without depending on the underlying
  * Hadoop libraries. Code is mostly taken from Hadoop 2.3's WritableUtils.
  */
-public class TextSerializer {
+public class TextSerializer implements ITextSerializer {
   /**
    * Serialize a String using the same logic as a Hadoop Text object
    */
