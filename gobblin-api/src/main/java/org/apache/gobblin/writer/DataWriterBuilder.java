@@ -42,7 +42,7 @@ public abstract class DataWriterBuilder<S, D> {
 
   protected Destination destination;
   protected String writerId;
-  protected WriterOutputFormat format;
+  protected IWriterOutputFormat format;
   protected S schema;
   protected int branches;
   protected int branch;
@@ -66,7 +66,7 @@ public abstract class DataWriterBuilder<S, D> {
    * @param format output format of the writer
    * @return this {@link DataWriterBuilder} instance
    */
-  public DataWriterBuilder<S, D> writeInFormat(WriterOutputFormat format) {
+  public DataWriterBuilder<S, D> writeInFormat(IWriterOutputFormat format) {
     this.format = format;
     log.debug("writeInFormat : {}", this.format);
     return this;

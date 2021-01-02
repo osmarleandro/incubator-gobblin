@@ -36,7 +36,7 @@ public abstract class FluentDataWriterBuilder<S, D, B extends FluentDataWriterBu
   }
 
   @Override
-  public B writeInFormat(WriterOutputFormat format) {
+  public B writeInFormat(IWriterOutputFormat format) {
     super.writeInFormat(format);
     return typedSelf();
   }
