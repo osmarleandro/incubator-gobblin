@@ -20,6 +20,6 @@ package org.apache.gobblin.source.extractor;
 /**
  * {@link Watermark} that is also {@link Comparable}.
  */
-public interface ComparableWatermark extends Watermark, Comparable<ComparableWatermark>{
+public interface ComparableWatermark extends Watermark, Comparable<ComparableWatermark>, IComparableWatermark{
 
 }
