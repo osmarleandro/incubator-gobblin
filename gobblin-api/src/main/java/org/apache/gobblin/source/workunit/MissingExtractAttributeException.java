@@ -17,7 +17,7 @@
 
 package org.apache.gobblin.source.workunit;
 
-public class MissingExtractAttributeException extends Exception {
+public class MissingExtractAttributeException extends Exception implements IMissingExtractAttributeException {
 
   private static final long serialVersionUID = 1L;
 
