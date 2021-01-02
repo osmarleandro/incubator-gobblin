@@ -23,7 +23,7 @@ import org.apache.gobblin.configuration.State;
 /***
  * Shim layer for org.apache.gobblin.runtime.JobState
  */
-public class JobState extends org.apache.gobblin.runtime.JobState {
+public class JobState extends org.apache.gobblin.runtime.JobState implements IJobState {
   // Necessary for serialization/deserialization
   public JobState() {
   }
