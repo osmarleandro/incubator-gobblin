@@ -31,7 +31,7 @@ import com.google.common.base.Strings;
 import org.apache.gobblin.compat.hadoop.TextSerializer;
 
 
-public class TextSerializerTest {
+public class TextSerializerTest implements ITextSerializerTest {
   private static final String[] textsToSerialize = new String[]{"abracadabra", Strings.repeat("longString", 128000)};
 
   @Test
