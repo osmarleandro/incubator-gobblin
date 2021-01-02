@@ -27,7 +27,7 @@ import org.apache.gobblin.metastore.DatasetStateStore;
 import org.apache.gobblin.metastore.MysqlDataSourceFactory;
 
 @Alias("mysql")
-public class MysqlDatasetStateStoreFactory implements DatasetStateStore.Factory {
+public class MysqlDatasetStateStoreFactory implements DatasetStateStore.Factory, IMysqlDatasetStateStoreFactory {
   @Override
   public DatasetStateStore<JobState.DatasetState> createStateStore(Config config) {
     String stateStoreTableName = config.hasPath(ConfigurationKeys.STATE_STORE_DB_TABLE_KEY) ?
