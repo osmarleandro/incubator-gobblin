@@ -56,7 +56,7 @@ import javax.sql.DataSource;
  *
  */
 public class MysqlDatasetStateStore extends MysqlStateStore<JobState.DatasetState>
-    implements DatasetStateStore<JobState.DatasetState> {
+    implements DatasetStateStore<JobState.DatasetState>, IMysqlDatasetStateStore {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(MysqlDatasetStateStore.class);
 
