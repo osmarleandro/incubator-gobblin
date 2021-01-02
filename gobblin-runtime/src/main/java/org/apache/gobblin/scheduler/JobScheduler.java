@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.apache.gobblin.runtime.job_spec.IJobSpecResolver;
 import org.apache.gobblin.runtime.job_spec.JobSpecResolver;
 import org.apache.gobblin.source.Source;
 import org.apache.gobblin.util.ConfigUtils;
@@ -139,7 +140,7 @@ public class JobScheduler extends AbstractIdleService {
   private final Closer closer = Closer.create();
 
   @Getter
-  private final JobSpecResolver jobSpecResolver;
+  private final IJobSpecResolver jobSpecResolver;
 
   @Getter
   private volatile boolean cancelRequested = false;

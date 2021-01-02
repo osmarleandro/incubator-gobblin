@@ -31,12 +31,12 @@ public interface JobResolutionCallbacks {
 	/**
 	 * Called before a job is resolved, providing the original job spec and template to be used.
 	 */
-	void beforeResolution(JobSpecResolver jobSpecResolver, JobSpec jobSpec, JobTemplate jobTemplate)
+	void beforeResolution(IJobSpecResolver jobSpecResolver, JobSpec jobSpec, JobTemplate jobTemplate)
 			throws JobTemplate.TemplateException;
 
 	/**
 	 * Called after a job is resolved, providing the final resolved spec.
 	 */
-	void afterResolution(JobSpecResolver jobSpecResolver, ResolvedJobSpec resolvedJobSpec);
+	void afterResolution(IJobSpecResolver jobSpecResolver, ResolvedJobSpec resolvedJobSpec);
 
 }

@@ -46,7 +46,7 @@ import lombok.AllArgsConstructor;
  * - Calling resolution callbacks.
  */
 @AllArgsConstructor
-public class JobSpecResolver {
+public class JobSpecResolver implements IJobSpecResolver {
 
 	public static final String JOB_RESOLUTION_ACTIONS_KEY = "org.apache.gobblin.jobResolution.actions";
 
@@ -58,7 +58,7 @@ public class JobSpecResolver {
 	 * Obtain a mock {@link JobSpecResolver} with an empty configuration. It does not run any callbacks.
 	 * @return
 	 */
-	public static JobSpecResolver mock() {
+	public static IJobSpecResolver mock() {
 		try {
 			return new Builder().sysConfig(ConfigFactory.empty()).build();
 		} catch (IOException ioe) {
@@ -122,7 +122,7 @@ public class JobSpecResolver {
 		/**
 		 * @return a {@link JobSpecResolver}
 		 */
-		public JobSpecResolver build() {
+		public IJobSpecResolver build() {
 			return new JobSpecResolver(this.jobCatalog, this.jobResolutionCallbacks, this.sysConfig);
 		}
 	}

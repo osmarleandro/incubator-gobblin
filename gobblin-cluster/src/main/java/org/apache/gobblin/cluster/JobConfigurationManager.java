@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.gobblin.cluster.event.CancelJobConfigArrivalEvent;
+import org.apache.gobblin.runtime.job_spec.IJobSpecResolver;
 import org.apache.gobblin.runtime.job_spec.JobSpecResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,7 @@ public class JobConfigurationManager extends AbstractIdleService implements Stan
   protected final EventBus eventBus;
   protected final Config config;
   protected Optional<String> jobConfDirPath;
-  protected final JobSpecResolver jobSpecResolver;
+  protected final IJobSpecResolver jobSpecResolver;
 
   public JobConfigurationManager(EventBus eventBus, Config config) {
     this.eventBus = eventBus;

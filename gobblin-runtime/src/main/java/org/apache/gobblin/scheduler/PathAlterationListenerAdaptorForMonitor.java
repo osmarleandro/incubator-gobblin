@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.apache.gobblin.runtime.job_spec.JobSpecResolver;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.Path;
@@ -33,6 +32,7 @@ import com.google.common.collect.Maps;
 
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.runtime.JobException;
+import org.apache.gobblin.runtime.job_spec.IJobSpecResolver;
 import org.apache.gobblin.runtime.listeners.EmailNotificationJobListener;
 import org.apache.gobblin.runtime.listeners.RunOnceJobListener;
 import org.apache.gobblin.util.PathUtils;
@@ -52,7 +52,7 @@ public class PathAlterationListenerAdaptorForMonitor extends PathAlterationListe
   JobScheduler jobScheduler;
   /** Store path to job mappings. Required for correctly unscheduling. */
   private final Map<Path, String> jobNameMap;
-  private final JobSpecResolver jobSpecResolver;
+  private final IJobSpecResolver jobSpecResolver;
 
   PathAlterationListenerAdaptorForMonitor(Path jobConfigFileDirPath, JobScheduler jobScheduler) {
     this.jobConfigFileDirPath = jobConfigFileDirPath;

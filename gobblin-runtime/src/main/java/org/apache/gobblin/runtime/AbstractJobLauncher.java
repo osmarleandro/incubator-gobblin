@@ -74,6 +74,7 @@ import org.apache.gobblin.runtime.api.JobSpec;
 import org.apache.gobblin.runtime.api.JobTemplate;
 import org.apache.gobblin.runtime.api.MultiEventMetadataGenerator;
 import org.apache.gobblin.runtime.api.SpecNotFoundException;
+import org.apache.gobblin.runtime.job_spec.IJobSpecResolver;
 import org.apache.gobblin.runtime.job_spec.JobSpecResolver;
 import org.apache.gobblin.runtime.listeners.CloseableJobListener;
 import org.apache.gobblin.runtime.listeners.JobExecutionEventSubmitterListener;
@@ -241,7 +242,7 @@ public abstract class AbstractJobLauncher implements JobLauncher {
                                                                                       SpecNotFoundException,
                                                                                       JobTemplate.TemplateException {
     Config config = ConfigUtils.propertiesToConfig(jobProps);
-    JobSpecResolver resolver = JobSpecResolver.builder(config).build();
+    IJobSpecResolver resolver = JobSpecResolver.builder(config).build();
     JobSpec jobSpec = null;
     if (jobProps.containsKey(GOBBLIN_JOB_TEMPLATE_KEY)) {
       URI templateUri = new URI(jobProps.getProperty(GOBBLIN_JOB_TEMPLATE_KEY));

@@ -26,7 +26,6 @@ import java.util.Set;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.gobblin.runtime.api.JobSpec;
-import org.apache.gobblin.runtime.job_spec.JobSpecResolver;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
@@ -43,6 +42,7 @@ import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.runtime.api.JobTemplate;
 import org.apache.gobblin.runtime.api.SpecNotFoundException;
 import org.apache.gobblin.runtime.job_catalog.PackagedTemplatesJobCatalogDecorator;
+import org.apache.gobblin.runtime.job_spec.IJobSpecResolver;
 import org.apache.gobblin.runtime.template.ResourceBasedJobTemplate;
 import org.apache.gobblin.util.filesystem.PathAlterationObserverScheduler;
 import org.apache.gobblin.util.filesystem.PathAlterationListener;
@@ -67,7 +67,7 @@ public class SchedulerUtils {
    * @param sysProps Gobblin framework configuration properties
    * @return a list of job configurations in the form of {@link java.util.Properties}
    */
-  public static List<Properties> loadGenericJobConfigs(Properties sysProps, JobSpecResolver resolver)
+  public static List<Properties> loadGenericJobConfigs(Properties sysProps, IJobSpecResolver resolver)
       throws ConfigurationException, IOException {
     Path rootPath = new Path(sysProps.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY));
     PullFileLoader loader = new PullFileLoader(rootPath, rootPath.getFileSystem(new Configuration()),
@@ -98,7 +98,7 @@ public class SchedulerUtils {
    * @return a list of job configurations in the form of {@link java.util.Properties}
    */
   public static List<Properties> loadGenericJobConfigs(Properties sysProps, Path commonPropsPath,
-      Path jobConfigPathDir, JobSpecResolver resolver)
+      Path jobConfigPathDir, IJobSpecResolver resolver)
       throws ConfigurationException, IOException {
 
     PullFileLoader loader = new PullFileLoader(jobConfigPathDir, jobConfigPathDir.getFileSystem(new Configuration()),
@@ -129,7 +129,7 @@ public class SchedulerUtils {
    * @return a job configuration in the form of {@link java.util.Properties}
    */
   public static Properties loadGenericJobConfig(Properties sysProps, Path jobConfigPath, Path jobConfigPathDir,
-      JobSpecResolver resolver) throws ConfigurationException, IOException {
+      IJobSpecResolver resolver) throws ConfigurationException, IOException {
 
     PullFileLoader loader = new PullFileLoader(jobConfigPathDir, jobConfigPathDir.getFileSystem(new Configuration()),
         getJobConfigurationFileExtensions(sysProps), PullFileLoader.DEFAULT_HOCON_PULL_FILE_EXTENSIONS);
@@ -170,7 +170,7 @@ public class SchedulerUtils {
     }));
   }
 
-  private static Properties resolveTemplate(Properties jobProps, JobSpecResolver resolver) throws IOException {
+  private static Properties resolveTemplate(Properties jobProps, IJobSpecResolver resolver) throws IOException {
     try {
       JobSpec.Builder jobSpecBuilder = JobSpec.builder().withConfig(ConfigUtils.propertiesToConfig(jobProps));
       if (jobProps.containsKey(ConfigurationKeys.JOB_TEMPLATE_PATH)) {

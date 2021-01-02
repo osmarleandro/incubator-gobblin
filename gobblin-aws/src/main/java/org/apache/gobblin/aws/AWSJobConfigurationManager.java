@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.gobblin.runtime.job_spec.IJobSpecResolver;
 import org.apache.gobblin.runtime.job_spec.JobSpecResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,7 +89,7 @@ public class AWSJobConfigurationManager extends JobConfigurationManager {
   private final long refreshIntervalInSeconds;
 
   private final ScheduledExecutorService fetchJobConfExecutor;
-  private final JobSpecResolver jobSpecResolver;
+  private final IJobSpecResolver jobSpecResolver;
 
   public AWSJobConfigurationManager(EventBus eventBus, Config config) {
     super(eventBus, config);

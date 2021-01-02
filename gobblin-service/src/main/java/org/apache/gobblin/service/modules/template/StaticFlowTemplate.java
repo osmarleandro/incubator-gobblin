@@ -41,6 +41,7 @@ import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.runtime.api.JobSpec;
 import org.apache.gobblin.runtime.api.JobTemplate;
 import org.apache.gobblin.runtime.api.SpecNotFoundException;
+import org.apache.gobblin.runtime.job_spec.IJobSpecResolver;
 import org.apache.gobblin.runtime.job_spec.JobSpecResolver;
 import org.apache.gobblin.runtime.job_spec.ResolvedJobSpec;
 import org.apache.gobblin.service.modules.dataset.DatasetDescriptor;
@@ -70,7 +71,7 @@ public class StaticFlowTemplate implements FlowTemplate {
 
   private transient Config rawConfig;
 
-  private final transient JobSpecResolver jobSpecResolver;
+  private final transient IJobSpecResolver jobSpecResolver;
 
   public StaticFlowTemplate(URI flowTemplateDirUri, String version, String description, Config config,
       FlowCatalogWithTemplates catalog)

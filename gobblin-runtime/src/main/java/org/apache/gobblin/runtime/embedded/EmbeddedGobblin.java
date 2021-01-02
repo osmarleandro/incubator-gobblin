@@ -97,6 +97,7 @@ import org.apache.gobblin.runtime.instance.StandardGobblinInstanceDriver;
 import org.apache.gobblin.runtime.job_catalog.ImmutableFSJobCatalog;
 import org.apache.gobblin.runtime.job_catalog.PackagedTemplatesJobCatalogDecorator;
 import org.apache.gobblin.runtime.job_catalog.StaticJobCatalog;
+import org.apache.gobblin.runtime.job_spec.IJobSpecResolver;
 import org.apache.gobblin.runtime.job_spec.JobSpecResolver;
 import org.apache.gobblin.runtime.job_spec.ResolvedJobSpec;
 import org.apache.gobblin.runtime.plugins.GobblinInstancePluginUtils;
@@ -454,7 +455,7 @@ public class EmbeddedGobblin {
 
     ResolvedJobSpec resolvedJobSpec;
     try {
-      JobSpecResolver resolver = JobSpecResolver.builder(sysProps).build();
+      IJobSpecResolver resolver = JobSpecResolver.builder(sysProps).build();
       resolvedJobSpec = resolver.resolveJobSpec(jobSpec);
     } catch (SpecNotFoundException | JobTemplate.TemplateException | IOException exc) {
       throw new RuntimeException("Failed to resolved template.", exc);

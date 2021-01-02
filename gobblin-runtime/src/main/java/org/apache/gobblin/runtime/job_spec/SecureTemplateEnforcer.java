@@ -28,7 +28,7 @@ import org.apache.gobblin.runtime.api.SecureJobTemplate;
 public class SecureTemplateEnforcer implements JobResolutionCallbacks {
 
 	@Override
-	public void beforeResolution(JobSpecResolver jobSpecResolver, JobSpec jobSpec, JobTemplate jobTemplate)
+	public void beforeResolution(IJobSpecResolver jobSpecResolver, JobSpec jobSpec, JobTemplate jobTemplate)
 			throws JobTemplate.TemplateException {
 		if (!(jobTemplate instanceof SecureJobTemplate) || !((SecureJobTemplate) jobTemplate).isSecure()) {
 			throw new JobTemplate.TemplateException(String.format("Unallowed template resolution. %s is not a secure template.",
@@ -37,7 +37,7 @@ public class SecureTemplateEnforcer implements JobResolutionCallbacks {
 	}
 
 	@Override
-	public void afterResolution(JobSpecResolver jobSpecResolver, ResolvedJobSpec resolvedJobSpec) {
+	public void afterResolution(IJobSpecResolver jobSpecResolver, ResolvedJobSpec resolvedJobSpec) {
 		// NOOP
 	}
 }

@@ -48,7 +48,7 @@ public class JobSpecResolverTest {
 		JobCatalogWithTemplates catalog = Mockito.mock(JobCatalogWithTemplates.class);
 		Mockito.when(catalog.getTemplate(Mockito.eq(URI.create("my://template")))).thenReturn(jobTemplate);
 
-		JobSpecResolver resolver = JobSpecResolver.builder(sysConfig).jobCatalog(catalog).build();
+		IJobSpecResolver resolver = JobSpecResolver.builder(sysConfig).jobCatalog(catalog).build();
 		JobSpec jobSpec = JobSpec.builder()
 				.withConfig(ConfigFactory.parseMap(ImmutableMap.of("key", "value")))
 				.withTemplate(URI.create("my://template")).build();
@@ -77,7 +77,7 @@ public class JobSpecResolverTest {
 		Mockito.when(catalog.getTemplate(Mockito.eq(URI.create("my://template.insecure")))).thenReturn(insecureTemplate);
 		Mockito.when(catalog.getTemplate(Mockito.eq(URI.create("my://template.secure")))).thenReturn(secureTemplate);
 
-		JobSpecResolver resolver = JobSpecResolver.builder(sysConfig).jobCatalog(catalog)
+		IJobSpecResolver resolver = JobSpecResolver.builder(sysConfig).jobCatalog(catalog)
 				// This resolution action should block any resolution that does not use a secure template
 				.jobResolutionAction(new SecureTemplateEnforcer()).build();
 
