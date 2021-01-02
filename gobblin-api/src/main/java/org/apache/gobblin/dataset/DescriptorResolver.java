@@ -23,7 +23,7 @@ import org.apache.gobblin.configuration.State;
 /**
  * A resolver transforms an existing {@link Descriptor} to a new one
  */
-public interface DescriptorResolver {
+public interface DescriptorResolver extends IDescriptorResolver {
   /**
    * Given raw Gobblin descriptor, resolve a job specific descriptor
    *
