@@ -31,7 +31,7 @@ import com.typesafe.config.ConfigFactory;
  * A secure template is a {@link JobTemplate} which only allows the user configuration to specify a static set of
  * keys. This allows most of the template to be non overridable to tightly control how a job executes.
  */
-public interface SecureJobTemplate extends JobTemplate {
+public interface SecureJobTemplate extends JobTemplate, ISecureJobTemplate {
 
 	/**
 	 * Filter the user config to only preserve the keys allowed by a secure template.
