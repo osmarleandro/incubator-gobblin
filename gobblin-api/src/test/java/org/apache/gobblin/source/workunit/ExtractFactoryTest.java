@@ -26,7 +26,7 @@ import com.google.common.collect.Sets;
 
 
 @Test(groups = { "gobblin.source.workunit" })
-public class ExtractFactoryTest {
+public class ExtractFactoryTest implements IExtractFactoryTest {
 
   /**
    * Verify that each {@link Extract} created by an {@ExtractFactory} has a unique ID.
