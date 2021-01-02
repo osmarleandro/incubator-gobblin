@@ -40,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
  * elapsed and at least 75% of tasks have finished).
  */
 @Slf4j
-public class JobInterruptionPredicate extends AbstractScheduledService {
+public class JobInterruptionPredicate extends AbstractScheduledService implements IJobInterruptionPredicate {
 
 	public static final String INTERRUPTION_SQL = "org.apache.gobblin.jobInterruptionPredicate.sql";
 
