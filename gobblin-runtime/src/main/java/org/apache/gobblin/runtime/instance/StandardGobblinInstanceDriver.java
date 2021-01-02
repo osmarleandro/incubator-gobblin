@@ -65,7 +65,7 @@ import org.apache.gobblin.util.ConfigUtils;
 /** A simple wrapper {@link DefaultGobblinInstanceDriverImpl} that will instantiate necessary
  * sub-components (e.g. {@link JobCatalog}, {@link JobSpecScheduler}, {@link JobExecutionLauncher}
  * and it will manage their lifecycle. */
-public class StandardGobblinInstanceDriver extends DefaultGobblinInstanceDriverImpl {
+public class StandardGobblinInstanceDriver extends DefaultGobblinInstanceDriverImpl implements IStandardGobblinInstanceDriver {
 
   public static final String INSTANCE_CFG_PREFIX = "gobblin.instance";
   /** A comma-separated list of class names or aliases of {@link GobblinInstancePluginFactory} for
