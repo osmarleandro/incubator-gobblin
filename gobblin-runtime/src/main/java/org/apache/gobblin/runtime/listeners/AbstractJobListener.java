@@ -30,7 +30,7 @@ import org.apache.gobblin.runtime.JobContext;
  *
  * @author Joel Baranick
  */
-public abstract class AbstractJobListener implements JobListener {
+public abstract class AbstractJobListener implements JobListener, IAbstractJobListener {
   private final Optional<Logger> _log;
 
   public AbstractJobListener(Optional<Logger> log) {
