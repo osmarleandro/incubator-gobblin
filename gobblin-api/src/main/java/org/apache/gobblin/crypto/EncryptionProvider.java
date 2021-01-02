@@ -25,7 +25,7 @@ import org.apache.gobblin.codec.StreamCodec;
  * Represents a builder that can construct encryption providers given a type and various
  * configuration parameters.
  */
-public interface EncryptionProvider {
+public interface EncryptionProvider extends IEncryptionProvider {
   /**
    * Build a StreamEncryptor with the given configuration parameters.
    *
