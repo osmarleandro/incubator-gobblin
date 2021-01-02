@@ -22,7 +22,7 @@ package org.apache.gobblin.records;
  * @param <S> schema type
  * @param <D> data type
  */
-public interface RecordStreamConsumer<S, D> {
+public interface RecordStreamConsumer<S, D> extends IRecordStreamConsumer<S, D> {
 
   /**
    * Subscribe to the input {@link RecordStreamWithMetadata}.
