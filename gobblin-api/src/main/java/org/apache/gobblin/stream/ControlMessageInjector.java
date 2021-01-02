@@ -35,7 +35,7 @@ import io.reactivex.Flowable;
  * @param <DI>
  */
 public abstract class ControlMessageInjector<SI, DI> implements Closeable,
-        RecordStreamProcessor<SI, SI, DI, DI> {
+        RecordStreamProcessor<SI, SI, DI, DI>, IControlMessageInjector<SI, DI> {
 
   /**
    * Initialize this {@link ControlMessageInjector}.
@@ -43,7 +43,7 @@ public abstract class ControlMessageInjector<SI, DI> implements Closeable,
    * @param workUnitState a {@link WorkUnitState} object carrying configuration properties
    * @return an initialized {@link ControlMessageInjector} instance
    */
-  protected ControlMessageInjector<SI, DI> init(WorkUnitState workUnitState) {
+  protected IControlMessageInjector<SI, DI> init(WorkUnitState workUnitState) {
     return this;
   }
 
