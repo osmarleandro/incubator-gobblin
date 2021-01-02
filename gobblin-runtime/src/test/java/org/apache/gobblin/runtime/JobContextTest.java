@@ -46,7 +46,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
 import com.google.common.io.Files;
 
-import org.apache.gobblin.commit.DeliverySemantics;
+import org.apache.gobblin.commit.IDeliverySemantics;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.util.Either;
 import org.apache.gobblin.util.Id;
@@ -314,7 +314,7 @@ public class JobContextTest {
 
     @Override
     protected Callable<Void> createSafeDatasetCommit(boolean shouldCommitDataInJob, boolean isJobCancelled,
-        DeliverySemantics deliverySemantics, String datasetUrn, JobState.DatasetState datasetState,
+        IDeliverySemantics deliverySemantics, String datasetUrn, JobState.DatasetState datasetState,
         boolean isMultithreaded, JobContext jobContext) {
       ControllableCallable<Void> callable;
       if (this.successPredicate.apply(datasetUrn)) {
