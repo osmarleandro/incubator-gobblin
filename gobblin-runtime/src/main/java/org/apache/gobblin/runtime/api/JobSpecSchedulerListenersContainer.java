@@ -22,7 +22,7 @@ import java.util.List;
  * Implemented by classes that can manage a collection of {@link JobSpecSchedulerListener}
  * instances.
  */
-public interface JobSpecSchedulerListenersContainer {
+public interface JobSpecSchedulerListenersContainer extends IJobSpecSchedulerListenersContainer {
   void registerJobSpecSchedulerListener(JobSpecSchedulerListener listener);
 
   /** Like {@link #registerJobSpecSchedulerListener(JobSpecSchedulerListener)} but it will create a
