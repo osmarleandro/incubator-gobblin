@@ -25,7 +25,7 @@ import org.apache.gobblin.runtime.JobState;
 /**
  * Type used to retrieve the progress of a Gobblin job.
  */
-public interface JobProgress {
+public interface JobProgress extends IJobProgress {
 
 	String getJobId();
 	int getTaskCount();
