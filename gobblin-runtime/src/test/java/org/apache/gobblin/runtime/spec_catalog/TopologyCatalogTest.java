@@ -24,6 +24,7 @@ import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.gobblin.runtime.api.FlowSpec;
+import org.apache.gobblin.runtime.api.ISpec;
 import org.apache.gobblin.runtime.api.SpecExecutor;
 import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
@@ -117,7 +118,7 @@ public class TopologyCatalogTest {
     Collection<Spec> specs = topologyCatalog.getSpecs();
     logger.info("[Before Create] Number of specs: " + specs.size());
     int i=0;
-    for (Spec spec : specs) {
+    for (ISpec spec : specs) {
       TopologySpec topologySpec = (TopologySpec) spec;
       logger.info("[Before Create] Spec " + i++ + ": " + gson.toJson(topologySpec));
     }
@@ -130,7 +131,7 @@ public class TopologyCatalogTest {
     specs = topologyCatalog.getSpecs();
     logger.info("[After Create] Number of specs: " + specs.size());
     i = 0;
-    for (Spec spec : specs) {
+    for (ISpec spec : specs) {
       topologySpec = (TopologySpec) spec;
       logger.info("[After Create] Spec " + i++ + ": " + gson.toJson(topologySpec));
     }
@@ -143,7 +144,7 @@ public class TopologyCatalogTest {
     Collection<Spec> specs = topologyCatalog.getSpecs();
     logger.info("[Before Delete] Number of specs: " + specs.size());
     int i=0;
-    for (Spec spec : specs) {
+    for (ISpec spec : specs) {
       TopologySpec topologySpec = (TopologySpec) spec;
       logger.info("[Before Delete] Spec " + i++ + ": " + gson.toJson(topologySpec));
     }
@@ -155,7 +156,7 @@ public class TopologyCatalogTest {
     specs = topologyCatalog.getSpecs();
     logger.info("[After Create] Number of specs: " + specs.size());
     i = 0;
-    for (Spec spec : specs) {
+    for (ISpec spec : specs) {
       topologySpec = (TopologySpec) spec;
       logger.info("[After Create] Spec " + i++ + ": " + gson.toJson(topologySpec));
     }

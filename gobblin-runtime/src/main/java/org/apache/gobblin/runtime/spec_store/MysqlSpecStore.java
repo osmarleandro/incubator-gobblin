@@ -45,6 +45,7 @@ import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.metastore.MysqlDataSourceFactory;
 import org.apache.gobblin.runtime.api.FlowSpec;
 import org.apache.gobblin.runtime.api.FlowSpecSearchObject;
+import org.apache.gobblin.runtime.api.ISpec;
 import org.apache.gobblin.runtime.api.InstrumentedSpecStore;
 import org.apache.gobblin.runtime.api.Spec;
 import org.apache.gobblin.runtime.api.SpecNotFoundException;
@@ -137,7 +138,7 @@ public class MysqlSpecStore extends InstrumentedSpecStore {
   /**
    * Temporarily only used for testing since tag it not exposed in endpoint of {@link org.apache.gobblin.runtime.api.FlowSpec}
    */
-  public void addSpec(Spec spec, String tagValue) throws IOException {
+  public void addSpec(ISpec spec, String tagValue) throws IOException {
     try (Connection connection = this.dataSource.getConnection();
         PreparedStatement statement = connection.prepareStatement(String.format(INSERT_STATEMENT, this.tableName))) {
       setAddPreparedStatement(statement, spec, tagValue);
@@ -173,7 +174,7 @@ public class MysqlSpecStore extends InstrumentedSpecStore {
 
   @Override
   // TODO : this method is not doing what the contract is in the SpecStore interface
-  public Spec updateSpecImpl(Spec spec) throws IOException {
+  public ISpec updateSpecImpl(Spec spec) throws IOException {
     addSpec(spec);
     return spec;
   }
@@ -201,7 +202,7 @@ public class MysqlSpecStore extends InstrumentedSpecStore {
   }
 
   @Override
-  public Spec getSpec(URI specUri, String version) throws IOException, SpecNotFoundException {
+  public ISpec getSpec(URI specUri, String version) throws IOException, SpecNotFoundException {
     return getSpec(specUri);
   }
 
@@ -398,7 +399,7 @@ public class MysqlSpecStore extends InstrumentedSpecStore {
     }
   }
 
-  protected void setAddPreparedStatement(PreparedStatement statement, Spec spec, String tagValue) throws SQLException {
+  protected void setAddPreparedStatement(PreparedStatement statement, ISpec spec, String tagValue) throws SQLException {
     FlowSpec flowSpec = (FlowSpec) spec;
     URI specUri = flowSpec.getUri();
     Config flowConfig = flowSpec.getConfig();

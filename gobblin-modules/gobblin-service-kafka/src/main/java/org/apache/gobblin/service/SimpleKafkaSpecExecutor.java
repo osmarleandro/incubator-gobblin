@@ -27,6 +27,7 @@ import com.google.common.base.Optional;
 import com.google.common.io.Closer;
 import com.typesafe.config.Config;
 
+import org.apache.gobblin.runtime.api.ISpec;
 import org.apache.gobblin.runtime.api.Spec;
 import org.apache.gobblin.runtime.api.SpecExecutor;
 import org.apache.gobblin.runtime.api.SpecProducer;
@@ -86,9 +87,9 @@ public class SimpleKafkaSpecExecutor extends AbstractSpecExecutor {
 
     protected SpecExecutor.Verb _verb;
     protected URI _uri;
-    protected Spec _spec;
+    protected ISpec _spec;
 
-    public SpecExecutorInstanceDataPacket(SpecExecutor.Verb verb, URI uri, Spec spec) {
+    public SpecExecutorInstanceDataPacket(SpecExecutor.Verb verb, URI uri, ISpec spec) {
       _verb = verb;
       _uri = uri;
       _spec = spec;

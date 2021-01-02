@@ -64,7 +64,7 @@ public interface SpecCatalog extends SpecCatalogListenersContainer, Instrumentab
    * Get a {@link Spec} by uri.
    * @throws SpecNotFoundException if no such Spec exists
    **/
-  Spec getSpecs(URI uri) throws SpecNotFoundException;
+  ISpec getSpecs(URI uri) throws SpecNotFoundException;
 
   /**
    * Get a {@link Spec} by {@link SpecSearchObject}.

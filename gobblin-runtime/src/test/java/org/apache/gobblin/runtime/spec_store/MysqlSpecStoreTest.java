@@ -42,6 +42,7 @@ import org.apache.gobblin.metastore.testing.ITestMetastoreDatabase;
 import org.apache.gobblin.metastore.testing.TestMetastoreDatabaseFactory;
 import org.apache.gobblin.runtime.api.FlowSpec;
 import org.apache.gobblin.runtime.api.FlowSpecSearchObject;
+import org.apache.gobblin.runtime.api.ISpec;
 import org.apache.gobblin.runtime.api.Spec;
 import org.apache.gobblin.runtime.api.SpecSerDe;
 import org.apache.gobblin.runtime.api.SpecSerDeException;
@@ -268,7 +269,7 @@ public class MysqlSpecStoreTest {
     }
 
     @Override
-    public void addSpec(Spec spec, String tagValue) throws IOException {
+    public void addSpec(ISpec spec, String tagValue) throws IOException {
       try (Connection connection = this.dataSource.getConnection();
           PreparedStatement statement = connection.prepareStatement(String.format(INSERT_STATEMENT, this.tableName))) {
         setAddPreparedStatement(statement, spec, tagValue);
