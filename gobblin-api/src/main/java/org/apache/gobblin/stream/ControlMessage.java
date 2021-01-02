@@ -22,7 +22,7 @@ package org.apache.gobblin.stream;
  * forward control messages as is. Specific constructs may react to the control message to trigger actions.
  * @param <D>
  */
-public abstract class ControlMessage<D> extends StreamEntity<D> {
+public abstract class ControlMessage<D> extends StreamEntity<D> implements IControlMessage<D> {
   public ControlMessage() {
     super();
   }
