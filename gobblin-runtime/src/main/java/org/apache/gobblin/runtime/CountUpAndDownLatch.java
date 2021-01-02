@@ -26,7 +26,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * A {@link CountDownLatch} that allows counting up. Backed by a {@link Phaser}.
  */
-class CountUpAndDownLatch extends CountDownLatch {
+class CountUpAndDownLatch extends CountDownLatch implements ICountUpAndDownLatch {
 
   private final Phaser phaser;
 

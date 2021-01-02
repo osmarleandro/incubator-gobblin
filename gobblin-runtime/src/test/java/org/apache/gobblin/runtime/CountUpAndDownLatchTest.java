@@ -39,7 +39,7 @@ public class CountUpAndDownLatchTest {
     try {
       executorService = Executors.newFixedThreadPool(1);
 
-      CountUpAndDownLatch countUpAndDownLatch = new CountUpAndDownLatch(1);
+      ICountUpAndDownLatch countUpAndDownLatch = new CountUpAndDownLatch(1);
 
       Assert.assertFalse(countUpAndDownLatch.await(50, TimeUnit.MILLISECONDS));
 
