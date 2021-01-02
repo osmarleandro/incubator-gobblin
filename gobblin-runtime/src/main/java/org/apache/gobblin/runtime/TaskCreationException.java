@@ -24,7 +24,7 @@ import java.io.IOException;
 /**
  * Exception thrown while creating task for execution within {@link GobblinMultiTaskAttempt}.
  */
-public class TaskCreationException extends IOException {
+public class TaskCreationException extends IOException implements ITaskCreationException {
   public TaskCreationException(String message) {
     super(message);
   }
