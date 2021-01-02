@@ -22,7 +22,7 @@ import java.io.IOException;
 /**
  * A fact
  */
-public interface JobSpecMonitorFactory {
+public interface JobSpecMonitorFactory extends IJobSpecMonitorFactory {
   /**
    * Add a {@link JobSpecMonitor} that will be notified of new jobs. {@link JobSpecMonitor}
    * will call put for any new / updated jobs, and remove for any deleted jobs.
