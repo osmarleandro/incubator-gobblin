@@ -44,7 +44,7 @@ import org.apache.gobblin.runtime.spec_catalog.AddSpecResponse;
 import org.apache.gobblin.util.ConfigUtils;
 
 
-public interface SpecCatalog extends SpecCatalogListenersContainer, Instrumentable, StandardMetricsBridge {
+public interface SpecCatalog extends SpecCatalogListenersContainer, Instrumentable, StandardMetricsBridge, ISpecCatalog {
   /**
    * Returns an immutable {@link Collection} of {@link Spec}s that are known to the catalog.
    * This method should only be used for short list of {@link Spec}s, otherwise it would risk overusing memory.
