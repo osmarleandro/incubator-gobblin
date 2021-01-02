@@ -41,8 +41,8 @@ import org.apache.gobblin.metrics.event.sla.SlaEventKeys;
 import org.apache.gobblin.metrics.reporter.util.NoopSchemaVersionWriter;
 import org.apache.gobblin.metrics.reporter.util.SchemaVersionWriter;
 import org.apache.gobblin.runtime.api.GobblinInstanceDriver;
+import org.apache.gobblin.runtime.api.IJobSpecMonitor;
 import org.apache.gobblin.runtime.api.JobSpec;
-import org.apache.gobblin.runtime.api.JobSpecMonitor;
 import org.apache.gobblin.runtime.api.JobSpecMonitorFactory;
 import org.apache.gobblin.runtime.api.MutableJobCatalog;
 import org.apache.gobblin.runtime.metrics.RuntimeMetrics;
@@ -86,7 +86,7 @@ public class SLAEventKafkaJobMonitor extends KafkaAvroJobMonitor<GobblinTracking
   public static class Factory implements JobSpecMonitorFactory {
 
     @Override
-    public JobSpecMonitor forJobCatalog(GobblinInstanceDriver instanceDriver, MutableJobCatalog jobCatalog)
+    public IJobSpecMonitor forJobCatalog(GobblinInstanceDriver instanceDriver, MutableJobCatalog jobCatalog)
         throws IOException {
       Config config = instanceDriver.getSysConfig().getConfig().getConfig(CONFIG_PREFIX).withFallback(DEFAULTS);
       return forConfig(config, jobCatalog);
@@ -99,7 +99,7 @@ public class SLAEventKafkaJobMonitor extends KafkaAvroJobMonitor<GobblinTracking
      *                           topic should simply be "topic").
      * @throws IOException
      */
-    public JobSpecMonitor forConfig(Config localScopeConfig, MutableJobCatalog jobCatalog) throws IOException {
+    public IJobSpecMonitor forConfig(Config localScopeConfig, MutableJobCatalog jobCatalog) throws IOException {
 
       Preconditions.checkArgument(localScopeConfig.hasPath(TEMPLATE_KEY));
       Preconditions.checkArgument(localScopeConfig.hasPath(TOPIC_KEY));

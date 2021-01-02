@@ -21,6 +21,6 @@ import com.google.common.util.concurrent.Service;
 /**
  * Discovers jobs to execute and generates JobSpecs for each one.
  */
-public interface JobSpecMonitor extends Service {
+public interface JobSpecMonitor extends Service, IJobSpecMonitor {
 
 }

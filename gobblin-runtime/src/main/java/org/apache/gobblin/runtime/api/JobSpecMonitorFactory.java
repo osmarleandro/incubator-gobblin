@@ -30,6 +30,6 @@ public interface JobSpecMonitorFactory {
    *                          used to access the environment for configuration
    * @param  jobCatalog       the job catalog to be notified for JobSpec operations.
    */
-  JobSpecMonitor forJobCatalog(GobblinInstanceDriver instanceDriver, MutableJobCatalog jobCatalog) throws IOException;
+  IJobSpecMonitor forJobCatalog(GobblinInstanceDriver instanceDriver, MutableJobCatalog jobCatalog) throws IOException;
 
 }
