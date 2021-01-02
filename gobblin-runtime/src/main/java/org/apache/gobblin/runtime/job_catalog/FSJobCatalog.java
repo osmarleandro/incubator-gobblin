@@ -58,7 +58,7 @@ import org.apache.gobblin.util.filesystem.PathAlterationObserver;
  * The job Catalog for file system to persist the job configuration information.
  * This implementation has no support for caching.
  */
-public class FSJobCatalog extends ImmutableFSJobCatalog implements MutableJobCatalog, JobCatalogWithTemplates {
+public class FSJobCatalog extends ImmutableFSJobCatalog implements MutableJobCatalog, JobCatalogWithTemplates, IFSJobCatalog {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FSJobCatalog.class);
   public static final String CONF_EXTENSION = ".conf";
