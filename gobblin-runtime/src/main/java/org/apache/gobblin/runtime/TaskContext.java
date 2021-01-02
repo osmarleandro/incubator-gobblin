@@ -52,6 +52,7 @@ import org.apache.gobblin.util.limiter.NonRefillableLimiter;
 import org.apache.gobblin.util.ForkOperatorUtils;
 import org.apache.gobblin.writer.DataWriterBuilder;
 import org.apache.gobblin.writer.Destination;
+import org.apache.gobblin.writer.IWriterOutputFormat;
 import org.apache.gobblin.writer.WatermarkStorage;
 import org.apache.gobblin.writer.WriterOutputFormat;
 
@@ -171,13 +172,13 @@ public class TaskContext {
    * @param index branch index
    * @return output format of the writer
    */
-  public WriterOutputFormat getWriterOutputFormat(int branches, int index) {
+  public IWriterOutputFormat getWriterOutputFormat(int branches, int index) {
     String writerOutputFormatValue = this.taskState.getProp(
         ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_FORMAT_KEY, branches, index),
         WriterOutputFormat.OTHER.name());
     log.debug("Found writer output format value = {}", writerOutputFormatValue);
 
-    WriterOutputFormat wof = Enums.getIfPresent(WriterOutputFormat.class, writerOutputFormatValue.toUpperCase())
+    IWriterOutputFormat wof = Enums.getIfPresent(WriterOutputFormat.class, writerOutputFormatValue.toUpperCase())
         .or(WriterOutputFormat.OTHER);
     log.debug("Returning writer output format = {}", wof);
     return wof;
