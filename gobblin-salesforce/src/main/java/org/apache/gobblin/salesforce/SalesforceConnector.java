@@ -33,6 +33,7 @@ import com.google.common.collect.Lists;
 
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.State;
+import org.apache.gobblin.password.IPasswordManager;
 import org.apache.gobblin.password.PasswordManager;
 import org.apache.gobblin.source.extractor.exception.RestApiConnectionException;
 import org.apache.gobblin.source.extractor.extract.restapi.RestApiConnector;
@@ -68,7 +69,7 @@ public class SalesforceConnector extends RestApiConnector {
     String clientId = this.state.getProp(ConfigurationKeys.SOURCE_CONN_CLIENT_ID);
     String clientSecret = this.state.getProp(ConfigurationKeys.SOURCE_CONN_CLIENT_SECRET);
     if (this.state.getPropAsBoolean(ConfigurationKeys.SOURCE_CONN_DECRYPT_CLIENT_SECRET, false)) {
-      PasswordManager passwordManager = PasswordManager.getInstance(this.state);
+      IPasswordManager passwordManager = PasswordManager.getInstance(this.state);
       clientId = passwordManager.readPassword(clientId);
       clientSecret = passwordManager.readPassword(clientSecret);
     }

@@ -111,7 +111,7 @@ public class PasswordManagerTest {
 
     state.setProp(ConfigurationKeys.ENCRYPT_KEY_LOC, masterPasswordFile.toString());
     state.setProp(ConfigurationKeys.NUMBER_OF_ENCRYPT_KEYS, 3);
-    PasswordManager passwordManager = PasswordManager.getInstance(state);
+    IPasswordManager passwordManager = PasswordManager.getInstance(state);
 
     // Test current master password
     encryptor.setPassword(masterPassword);
@@ -161,7 +161,7 @@ public class PasswordManagerTest {
     BasicTextEncryptor encryptor = new BasicTextEncryptor();
 
     state.setProp(ConfigurationKeys.ENCRYPT_KEY_LOC, masterPasswordFile.toString());
-    PasswordManager passwordManager = PasswordManager.getInstance(state);
+    IPasswordManager passwordManager = PasswordManager.getInstance(state);
 
     // Test current master password
     encryptor.setPassword(masterPassword);

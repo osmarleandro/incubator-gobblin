@@ -31,6 +31,7 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
+import org.apache.gobblin.password.IPasswordManager;
 import org.apache.gobblin.password.PasswordManager;
 import org.apache.gobblin.util.ConfigUtils;
 
@@ -111,7 +112,7 @@ public class SSLContextFactory {
     // srcConfig.getString() will throw ConfigException if any key is missing
     String keyStoreFilePath = srcConfig.getString(KEY_STORE_FILE_PATH);
     String trustStoreFilePath = srcConfig.getString(TRUST_STORE_FILE_PATH);
-    PasswordManager passwdMgr = PasswordManager.getInstance(ConfigUtils.configToState(srcConfig));
+    IPasswordManager passwdMgr = PasswordManager.getInstance(ConfigUtils.configToState(srcConfig));
     String keyStorePassword = passwdMgr.readPassword(srcConfig.getString(KEY_STORE_PASSWORD));
     String trustStorePassword = passwdMgr.readPassword(srcConfig.getString(TRUST_STORE_PASSWORD));
 

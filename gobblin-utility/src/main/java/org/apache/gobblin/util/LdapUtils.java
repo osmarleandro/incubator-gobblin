@@ -28,6 +28,8 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
+
+import org.apache.gobblin.password.IPasswordManager;
 import org.apache.gobblin.password.PasswordManager;
 import org.apache.log4j.Logger;
 
@@ -62,7 +64,7 @@ public class LdapUtils {
   private final String _memberOf = "memberof";
 
   public LdapUtils(Config config) {
-    PasswordManager passwordManager = PasswordManager.getInstance(ConfigUtils.configToState(config));
+    IPasswordManager passwordManager = PasswordManager.getInstance(ConfigUtils.configToState(config));
     String password = passwordManager.readPassword(config.getString(LDAP_PASSWORD_KEY));
     _ldapHost = config.getString(LDAP_HOST_KEY);
     _ldapPort = config.getString(LDAP_PORT_KEY);

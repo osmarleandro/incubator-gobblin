@@ -69,6 +69,7 @@ import com.typesafe.config.Config;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.gobblin.configuration.ConfigurationKeys;
+import org.apache.gobblin.password.IPasswordManager;
 import org.apache.gobblin.password.PasswordManager;
 import org.apache.gobblin.util.ConfigUtils;
 import org.apache.gobblin.util.Either;
@@ -116,7 +117,7 @@ public abstract class GitMonitoringService extends AbstractIdleService {
     this.folderName = config.getString(ConfigurationKeys.GIT_MONITOR_CONFIG_BASE_DIR);
     boolean shouldCheckpointHashes = ConfigUtils.getBoolean(config, SHOULD_CHECKPOINT_HASHES, true);
 
-    PasswordManager passwordManager = PasswordManager.getInstance(ConfigUtils.configToState(config));
+    IPasswordManager passwordManager = PasswordManager.getInstance(ConfigUtils.configToState(config));
     Either<CredentialsProvider, SshSessionFactory> providerSessionFactoryEither;
     boolean isSshWithPublicKeyEnabled = ConfigUtils.getBoolean(config, ConfigurationKeys.GIT_MONITOR_SSH_WITH_PUBLIC_KEY_ENABLED, false);
     if (isSshWithPublicKeyEnabled) {

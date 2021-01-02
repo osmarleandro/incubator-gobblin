@@ -54,6 +54,7 @@ import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.metastore.metadata.StateStoreEntryManager;
 import org.apache.gobblin.metastore.predicates.StateStorePredicate;
 import org.apache.gobblin.metastore.predicates.StoreNamePredicate;
+import org.apache.gobblin.password.IPasswordManager;
 import org.apache.gobblin.password.PasswordManager;
 import org.apache.gobblin.util.ConfigUtils;
 import org.apache.gobblin.util.io.StreamUtils;
@@ -178,7 +179,7 @@ public class MysqlStateStore<T extends State> implements StateStore<T> {
    */
   public static BasicDataSource newDataSource(Config config) {
     BasicDataSource basicDataSource = new BasicDataSource();
-    PasswordManager passwordManager = PasswordManager.getInstance(ConfigUtils.configToProperties(config));
+    IPasswordManager passwordManager = PasswordManager.getInstance(ConfigUtils.configToProperties(config));
 
     basicDataSource.setDriverClassName(ConfigUtils.getString(config, ConfigurationKeys.STATE_STORE_DB_JDBC_DRIVER_KEY,
         ConfigurationKeys.DEFAULT_STATE_STORE_DB_JDBC_DRIVER));
@@ -205,7 +206,7 @@ public class MysqlStateStore<T extends State> implements StateStore<T> {
    * @return a {@link String} to identify the data source
    */
   public static String getDataSourceId(Config config) {
-    PasswordManager passwordManager = PasswordManager.getInstance(ConfigUtils.configToProperties(config));
+    IPasswordManager passwordManager = PasswordManager.getInstance(ConfigUtils.configToProperties(config));
 
     return ConfigUtils.getString(config, ConfigurationKeys.STATE_STORE_DB_JDBC_DRIVER_KEY,
         ConfigurationKeys.DEFAULT_STATE_STORE_DB_JDBC_DRIVER) + "::"
