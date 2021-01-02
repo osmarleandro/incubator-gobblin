@@ -29,6 +29,7 @@ import com.google.common.math.LongMath;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
+import org.apache.gobblin.source.extractor.IWatermark;
 import org.apache.gobblin.source.extractor.Watermark;
 
 
@@ -57,7 +58,7 @@ public class MultiKeyValueLongWatermark implements Watermark {
   }
 
   @Override
-  public short calculatePercentCompletion(Watermark lowWatermark, Watermark highWatermark) {
+  public short calculatePercentCompletion(IWatermark lowWatermark, IWatermark highWatermark) {
     Preconditions.checkArgument(
         lowWatermark instanceof MultiKeyValueLongWatermark && highWatermark instanceof MultiKeyValueLongWatermark,
         String.format("lowWatermark and highWatermark are not instances of %s",

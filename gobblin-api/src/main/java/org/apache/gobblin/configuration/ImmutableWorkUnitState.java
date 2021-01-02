@@ -21,7 +21,7 @@ import java.io.DataInput;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.gobblin.source.extractor.Watermark;
+import org.apache.gobblin.source.extractor.IWatermark;
 
 
 /**
@@ -42,7 +42,7 @@ public class ImmutableWorkUnitState extends WorkUnitState {
   }
 
   @Override
-  public void setActualHighWatermark(Watermark watermark) {
+  public void setActualHighWatermark(IWatermark watermark) {
     throw new UnsupportedOperationException();
   }
 

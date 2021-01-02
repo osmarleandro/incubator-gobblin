@@ -26,7 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import org.apache.gobblin.source.extractor.ComparableWatermark;
-import org.apache.gobblin.source.extractor.Watermark;
+import org.apache.gobblin.source.extractor.IWatermark;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -57,7 +57,7 @@ public class LongWatermark implements ComparableWatermark {
   }
 
   @Override
-  public short calculatePercentCompletion(Watermark lowWatermark, Watermark highWatermark) {
+  public short calculatePercentCompletion(IWatermark lowWatermark, IWatermark highWatermark) {
     Preconditions.checkArgument(lowWatermark instanceof LongWatermark);
     Preconditions.checkArgument(highWatermark instanceof LongWatermark);
     long total = ((LongWatermark) highWatermark).value - ((LongWatermark) lowWatermark).value;

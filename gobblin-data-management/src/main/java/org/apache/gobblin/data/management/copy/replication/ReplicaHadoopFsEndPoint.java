@@ -38,7 +38,7 @@ import com.google.common.io.CharStreams;
 import com.typesafe.config.Config;
 
 import org.apache.gobblin.source.extractor.ComparableWatermark;
-import org.apache.gobblin.source.extractor.Watermark;
+import org.apache.gobblin.source.extractor.IWatermark;
 import org.apache.gobblin.util.FileListUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -108,7 +108,7 @@ public class ReplicaHadoopFsEndPoint extends HadoopFsEndPoint {
         try (FSDataInputStream fin = fs.open(metaData)) {
           InputStreamReader reader = new InputStreamReader(fin, Charsets.UTF_8);
           String content = CharStreams.toString(reader);
-          Watermark w = WatermarkMetadataUtil.deserialize(content);
+          IWatermark w = WatermarkMetadataUtil.deserialize(content);
           if (w instanceof ComparableWatermark) {
             this.cachedWatermark = Optional.of((ComparableWatermark) w);
           }

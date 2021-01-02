@@ -65,7 +65,7 @@ public class DefaultCheckpointableWatermark implements CheckpointableWatermark {
   }
 
   @Override
-  public short calculatePercentCompletion(Watermark lowWatermark, Watermark highWatermark) {
+  public short calculatePercentCompletion(IWatermark lowWatermark, IWatermark highWatermark) {
     return comparable.calculatePercentCompletion(lowWatermark, highWatermark);
   }
 
