@@ -43,7 +43,7 @@ import org.apache.gobblin.runtime.api.JobSpec;
 /**
  * An abstract base for {@link JobCatalog}s implementing boilerplate methods (metrics, listeners, etc.)
  */
-public abstract class JobCatalogBase extends AbstractIdleService implements JobCatalog {
+public abstract class JobCatalogBase extends AbstractIdleService implements JobCatalog, IJobCatalogBase {
 
   protected final JobCatalogListenersList listeners;
   protected final Logger log;
