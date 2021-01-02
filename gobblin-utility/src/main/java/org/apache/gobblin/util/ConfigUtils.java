@@ -52,6 +52,7 @@ import com.typesafe.config.ConfigList;
 import com.typesafe.config.ConfigValue;
 
 import org.apache.gobblin.configuration.State;
+import org.apache.gobblin.password.IPasswordManager;
 import org.apache.gobblin.password.PasswordManager;
 
 
@@ -560,7 +561,7 @@ public class ConfigUtils {
 
     Config encryptedConfig = config.getConfig(encConfigPath.get());
 
-    PasswordManager passwordManager = PasswordManager.getInstance(configToProperties(config));
+    IPasswordManager passwordManager = PasswordManager.getInstance(configToProperties(config));
     Map<String, String> tmpMap = Maps.newHashMap();
     for (Map.Entry<String, ConfigValue> entry : encryptedConfig.entrySet()) {
       String val = entry.getValue().unwrapped().toString();

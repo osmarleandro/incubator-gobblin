@@ -66,7 +66,7 @@ import lombok.EqualsAndHashCode;
  *
  * @author Ziyang Liu
  */
-public class PasswordManager {
+public class PasswordManager implements IPasswordManager {
 
   private static final Logger LOG = LoggerFactory.getLogger(PasswordManager.class);
 
@@ -145,7 +145,7 @@ public class PasswordManager {
   /**
    * Get an instance with no master password, which cannot encrypt or decrypt passwords.
    */
-  public static PasswordManager getInstance() {
+  public static IPasswordManager getInstance() {
     try {
       return CACHED_INSTANCES.get(new CachedInstanceKey());
     } catch (ExecutionException e) {
@@ -156,7 +156,7 @@ public class PasswordManager {
   /**
    * Get an instance. The location of the master password file is provided via "encrypt.key.loc".
    */
-  public static PasswordManager getInstance(State state) {
+  public static IPasswordManager getInstance(State state) {
     try {
       return CACHED_INSTANCES
           .get(new CachedInstanceKey(state));
@@ -168,14 +168,14 @@ public class PasswordManager {
   /**
    * Get an instance. The location of the master password file is provided via "encrypt.key.loc".
    */
-  public static PasswordManager getInstance(Properties props) {
+  public static IPasswordManager getInstance(Properties props) {
     return getInstance(new State(props));
   }
 
   /**
    * Get an instance. The master password file is given by masterPwdLoc.
    */
-  public static PasswordManager getInstance(Path masterPwdLoc) {
+  public static IPasswordManager getInstance(Path masterPwdLoc) {
     State state = new State();
     state.setProp(ConfigurationKeys.ENCRYPT_KEY_LOC, masterPwdLoc.toString());
     state.setProp(ConfigurationKeys.ENCRYPT_KEY_FS_URI, masterPwdLoc.toUri());

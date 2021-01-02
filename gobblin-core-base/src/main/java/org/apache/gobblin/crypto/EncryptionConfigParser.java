@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.configuration.WorkUnitState;
+import org.apache.gobblin.password.IPasswordManager;
 import org.apache.gobblin.password.PasswordManager;
 import org.apache.gobblin.util.ForkOperatorUtils;
 
@@ -162,7 +163,7 @@ public class EncryptionConfigParser {
       return null;
     }
 
-    PasswordManager passwordManager = PasswordManager.getInstance(taskState);
+    IPasswordManager passwordManager = PasswordManager.getInstance(taskState);
     if (properties.containsKey(ENCRYPTION_KEYSTORE_PASSWORD_KEY)) {
       properties.put(ENCRYPTION_KEYSTORE_PASSWORD_KEY,
           passwordManager.readPassword((String)properties.get(ENCRYPTION_KEYSTORE_PASSWORD_KEY)));
