@@ -61,7 +61,7 @@ import org.apache.gobblin.source.extractor.JobCommitPolicy;
  */
 @RequiredArgsConstructor
 @Slf4j
-final class SafeDatasetCommit implements Callable<Void> {
+final class SafeDatasetCommit implements Callable<Void>, ISafeDatasetCommit {
 
   private static final Object GLOBAL_LOCK = new Object();
 
