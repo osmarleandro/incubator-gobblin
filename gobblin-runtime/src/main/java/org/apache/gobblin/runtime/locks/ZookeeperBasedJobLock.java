@@ -46,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Joel Baranick
  */
 @Slf4j
-public class ZookeeperBasedJobLock implements ListenableJobLock {
+public class ZookeeperBasedJobLock implements ListenableJobLock, IZookeeperBasedJobLock {
   private static final String LOCKS_ROOT_PATH = "/locks";
   private static final String CONNECTION_STRING_DEFAULT = "localhost:2181";
   private static final int LOCKS_ACQUIRE_TIMEOUT_MILLISECONDS_DEFAULT = 5000;
