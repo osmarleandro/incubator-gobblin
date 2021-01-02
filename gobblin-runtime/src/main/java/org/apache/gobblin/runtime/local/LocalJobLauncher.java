@@ -61,7 +61,7 @@ import org.apache.gobblin.source.workunit.WorkUnitStream;
  * @author Yinan Li
  */
 @Slf4j
-public class LocalJobLauncher extends AbstractJobLauncher {
+public class LocalJobLauncher extends AbstractJobLauncher implements ILocalJobLauncher {
 
   private static final Logger LOG = LoggerFactory.getLogger(LocalJobLauncher.class);
 
