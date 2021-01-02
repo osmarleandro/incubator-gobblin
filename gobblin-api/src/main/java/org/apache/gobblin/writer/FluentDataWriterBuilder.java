@@ -22,7 +22,7 @@ package org.apache.gobblin.writer;
  * and use "return {@link #typedSelf()}" instead of "return this" in their setters.
  */
 public abstract class FluentDataWriterBuilder<S, D, B extends FluentDataWriterBuilder<S, D, B>>
-    extends DataWriterBuilder<S, D> {
+    extends DataWriterBuilder<S, D> implements IFluentDataWriterBuilder<S, D, B> {
 
   @SuppressWarnings("unchecked")
   protected B typedSelf() {
