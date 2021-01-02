@@ -30,7 +30,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Objects;
 
 import org.apache.gobblin.commit.CommitStep;
-import org.apache.gobblin.source.extractor.Watermark;
+import org.apache.gobblin.source.extractor.IWatermark;
 
 /**
  * A {@link CommitStep} to write watermark metadata to Hdfs
@@ -40,11 +40,11 @@ import org.apache.gobblin.source.extractor.Watermark;
 public class WatermarkMetadataGenerationCommitStep implements CommitStep {
   private final String fsUriString;
   private final Path targetDirPath;
-  private final Watermark watermark;
+  private final IWatermark watermark;
 
   private boolean completed = false;
 
-  public WatermarkMetadataGenerationCommitStep(String fsString, Path targetDirPath, Watermark wm) {
+  public WatermarkMetadataGenerationCommitStep(String fsString, Path targetDirPath, IWatermark wm) {
     this.fsUriString = fsString;
     this.targetDirPath = targetDirPath;
     this.watermark = wm;

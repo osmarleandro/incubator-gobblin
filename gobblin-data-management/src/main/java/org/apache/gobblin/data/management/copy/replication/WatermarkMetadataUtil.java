@@ -22,6 +22,7 @@ import java.util.List;
 import com.google.common.base.Splitter;
 import com.google.gson.JsonParser;
 
+import org.apache.gobblin.source.extractor.IWatermark;
 import org.apache.gobblin.source.extractor.Watermark;
 import org.apache.gobblin.source.extractor.WatermarkSerializerHelper;
 
@@ -34,11 +35,11 @@ public class WatermarkMetadataUtil {
 
   public static final String DELIMITER = "\n";
 
-  public static String serialize(Watermark watermark) {
+  public static String serialize(IWatermark watermark) {
     return watermark.getClass().getCanonicalName() + DELIMITER + watermark.toJson().toString();
   }
 
-  public static Watermark deserialize(String content) throws WatermarkMetadataMulFormatException {
+  public static IWatermark deserialize(String content) throws WatermarkMetadataMulFormatException {
     List<String> tmp = Splitter.on(DELIMITER).trimResults().omitEmptyStrings().splitToList(content);
     if (tmp.size() < 2) {
       throw new WatermarkMetadataMulFormatException("wrong format " + content);

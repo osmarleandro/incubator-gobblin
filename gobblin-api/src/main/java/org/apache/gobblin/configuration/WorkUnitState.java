@@ -32,6 +32,7 @@ import com.google.gson.JsonParser;
 import org.apache.gobblin.broker.gobblin_scopes.GobblinScopeTypes;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 import org.apache.gobblin.broker.iface.SubscopedBrokerBuilder;
+import org.apache.gobblin.source.extractor.IWatermark;
 import org.apache.gobblin.source.extractor.Watermark;
 import org.apache.gobblin.source.workunit.Extract;
 import org.apache.gobblin.source.workunit.ImmutableWorkUnit;
@@ -215,7 +216,7 @@ public class WorkUnitState extends State {
    * does not contain an actual high watermark, and the corresponding {@code WorkUnit} does not contain a low
    * watermark.
    */
-  public <T extends Watermark> T getActualHighWatermark(Class<T> watermarkClass, Gson gson) {
+  public <T extends IWatermark> T getActualHighWatermark(Class<T> watermarkClass, Gson gson) {
     JsonElement json = getActualHighWatermark();
     if (json == null) {
       json = this.workUnit.getLowWatermark();
@@ -237,7 +238,7 @@ public class WorkUnitState extends State {
    * does not contain an actual high watermark, and the corresponding {@code WorkUnit} does not contain a low
    * watermark.
    */
-  public <T extends Watermark> T getActualHighWatermark(Class<T> watermarkClass) {
+  public <T extends IWatermark> T getActualHighWatermark(Class<T> watermarkClass) {
     return getActualHighWatermark(watermarkClass, GSON);
   }
 
@@ -262,7 +263,7 @@ public class WorkUnitState extends State {
    * interface, this method should become part of the {@link org.apache.gobblin.source.extractor.Extractor} interface. For example,
    * a method such as getCurrentHighWatermark() should be added.
    */
-  public void setActualHighWatermark(Watermark watermark) {
+  public void setActualHighWatermark(IWatermark watermark) {
     /**
      * TODO
      *
