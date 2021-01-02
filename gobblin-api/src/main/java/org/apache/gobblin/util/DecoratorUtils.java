@@ -35,7 +35,7 @@ public class DecoratorUtils {
    */
   public static Object resolveUnderlyingObject(Object obj) {
     while(obj instanceof Decorator) {
-      obj = ((Decorator)obj).getDecoratedObject();
+      obj = ((IDecorator)obj).getDecoratedObject();
     }
     return obj;
   }
@@ -57,7 +57,7 @@ public class DecoratorUtils {
     List<Object> lineage = Lists.newArrayList(obj);
     Object currentObject = obj;
     while(currentObject instanceof Decorator) {
-      currentObject = ((Decorator)currentObject).getDecoratedObject();
+      currentObject = ((IDecorator)currentObject).getDecoratedObject();
       lineage.add(currentObject);
     }
 

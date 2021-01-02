@@ -21,12 +21,6 @@ package org.apache.gobblin.util;
 /**
  * Interface for decorator patterns.
  */
-public interface Decorator {
-
-  /**
-   * Get directly underlying object.
-   * @return directly underlying object.
-   */
-  public Object getDecoratedObject();
+public interface Decorator extends IDecorator {
 
 }

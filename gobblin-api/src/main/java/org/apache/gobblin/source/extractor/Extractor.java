@@ -27,6 +27,7 @@ import org.apache.gobblin.runtime.JobShutdownException;
 import org.apache.gobblin.stream.RecordEnvelope;
 import org.apache.gobblin.stream.StreamEntity;
 import org.apache.gobblin.util.Decorator;
+import org.apache.gobblin.util.IDecorator;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 import io.reactivex.Emitter;
@@ -101,8 +102,8 @@ public interface Extractor<S, D> extends Closeable {
    * @throws JobShutdownException if the extractor does not support early termination. This will cause the task to fail.
    */
   default void shutdown() throws JobShutdownException {
-    if (this instanceof Decorator && ((Decorator) this).getDecoratedObject() instanceof Extractor) {
-      ((Extractor) ((Decorator) this).getDecoratedObject()).shutdown();
+    if (this instanceof Decorator && ((IDecorator) this).getDecoratedObject() instanceof Extractor) {
+      ((Extractor) ((IDecorator) this).getDecoratedObject()).shutdown();
     } else {
       throw new JobShutdownException(this.getClass().getName() + ": Extractor does not support shutdown.");
     }
