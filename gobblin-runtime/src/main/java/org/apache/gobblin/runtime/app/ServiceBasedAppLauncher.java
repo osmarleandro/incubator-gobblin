@@ -69,7 +69,7 @@ import org.apache.gobblin.util.ClassAliasResolver;
  * </p>
  */
 @Alpha
-public class ServiceBasedAppLauncher implements ApplicationLauncher {
+public class ServiceBasedAppLauncher implements ApplicationLauncher, IServiceBasedAppLauncher {
 
   /**
    * The name of the application. Not applicable for YARN jobs, which uses a separate key for the application name.

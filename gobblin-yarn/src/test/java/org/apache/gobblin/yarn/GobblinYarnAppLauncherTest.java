@@ -80,6 +80,7 @@ import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.DynamicConfigGenerator;
 import org.apache.gobblin.metrics.kafka.KafkaAvroSchemaRegistry;
 import org.apache.gobblin.metrics.kafka.KafkaSchemaRegistry;
+import org.apache.gobblin.runtime.app.IServiceBasedAppLauncher;
 import org.apache.gobblin.runtime.app.ServiceBasedAppLauncher;
 import org.apache.gobblin.testing.AssertWithBackoff;
 
@@ -395,7 +396,7 @@ public class GobblinYarnAppLauncherTest implements HelixMessageTestBase {
     Assert.assertEquals(appMaster.getConfig().getString(ConfigurationKeys.DYNAMIC_CONFIG_GENERATOR_CLASS_KEY),
         TestDynamicConfigGenerator.class.getName());
 
-    ServiceBasedAppLauncher appLauncher = appMaster.getAppLauncher();
+    IServiceBasedAppLauncher appLauncher = appMaster.getAppLauncher();
     Field servicesField = ServiceBasedAppLauncher.class.getDeclaredField("services");
     servicesField.setAccessible(true);
 
@@ -498,7 +499,7 @@ public class GobblinYarnAppLauncherTest implements HelixMessageTestBase {
       return this.config;
     }
 
-    public ServiceBasedAppLauncher getAppLauncher() {
+    public IServiceBasedAppLauncher getAppLauncher() {
       return this.applicationLauncher;
     }
 
