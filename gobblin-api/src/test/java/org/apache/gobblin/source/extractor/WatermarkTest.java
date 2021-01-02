@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
  * Tests for {@link Watermark}, {@link WatermarkInterval}, and {@link WatermarkSerializerHelper}.
  */
 @Test(groups = {"gobblin.source.extractor"})
-public class WatermarkTest {
+public class WatermarkTest implements IWatermarkTest {
 
   @Test
   public void testWatermarkWorkUnitSerialization() {
