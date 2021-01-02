@@ -21,7 +21,7 @@ import org.apache.gobblin.source.workunit.WorkUnit;
 /***
  * Shim layer for org.apache.gobblin.configuration.WorkUnitState
  */
-public class WorkUnitState extends org.apache.gobblin.configuration.WorkUnitState {
+public class WorkUnitState extends org.apache.gobblin.configuration.WorkUnitState implements IWorkUnitState {
   /**
    * Default constructor used for deserialization.
    */
