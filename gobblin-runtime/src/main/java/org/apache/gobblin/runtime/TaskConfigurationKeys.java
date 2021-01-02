@@ -20,7 +20,7 @@ package org.apache.gobblin.runtime;
 /**
  * A class that contains configuration keys for a {@link Task}
  */
-public class TaskConfigurationKeys {
+public class TaskConfigurationKeys implements ITaskConfigurationKeys {
   /**
    * Configuration properties related to continuous / streaming mode
    */
