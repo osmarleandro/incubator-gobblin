@@ -17,18 +17,9 @@
 
 package org.apache.gobblin.source.workunit;
 
-import java.util.List;
-
 /**
  * A bin packing algorithm for packing {@link WorkUnit}s into {@link MultiWorkUnit}s.
  */
-public interface WorkUnitBinPacker {
-
-  /**
-   * Packs the input {@link WorkUnit}s into {@link MultiWorkUnit}s.
-   * @param workUnitsIn List of {@link WorkUnit}s to pack.
-   * @param weighter {@link WorkUnitWeighter} that provides weights for {@link WorkUnit}s.
-   */
-  public List<WorkUnit> pack(List<WorkUnit> workUnitsIn, WorkUnitWeighter weighter);
+public interface WorkUnitBinPacker extends IWorkUnitBinPacker {
 
 }
