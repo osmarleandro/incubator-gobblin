@@ -23,7 +23,7 @@ import com.typesafe.config.Config;
  * These are configuration values that cannot be determined statically at job specification time.
  * One example is the SSL certificate location of a certificate that is fetched at runtime.
  */
-public interface DynamicConfigGenerator {
+public interface DynamicConfigGenerator extends IDynamicConfigGenerator {
   /**
    * Generate dynamic configuration that should be added to the job configuration.
    * @param config configuration
