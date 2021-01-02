@@ -22,7 +22,7 @@ import gobblin.source.extractor.CheckpointableWatermark;
 /***
  * Shim layer for org.apache.gobblin.runtime.CheckpointableWatermarkState
  */
-public class CheckpointableWatermarkState extends org.apache.gobblin.runtime.CheckpointableWatermarkState {
+public class CheckpointableWatermarkState extends org.apache.gobblin.runtime.CheckpointableWatermarkState implements ICheckpointableWatermarkState {
   public CheckpointableWatermarkState(CheckpointableWatermark watermark, Gson gson) {
     super(watermark, gson);
   }
