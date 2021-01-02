@@ -26,11 +26,11 @@ import org.apache.hadoop.fs.FileSystem;
 
 import org.apache.gobblin.broker.ResourceInstance;
 import org.apache.gobblin.broker.iface.ConfigView;
+import org.apache.gobblin.broker.iface.ISharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.NotConfiguredException;
 import org.apache.gobblin.broker.iface.ScopeType;
 import org.apache.gobblin.broker.iface.ScopedConfigView;
 import org.apache.gobblin.broker.iface.SharedResourceFactory;
-import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 
 import lombok.extern.slf4j.Slf4j;
@@ -75,7 +75,7 @@ public class FileSystemFactory<S extends ScopeType<S>> implements SharedResource
   }
 
   @Override
-  public SharedResourceFactoryResponse<FileSystem> createResource(SharedResourcesBroker<S> broker,
+  public ISharedResourceFactoryResponse<FileSystem> createResource(SharedResourcesBroker<S> broker,
       ScopedConfigView<S, FileSystemKey> config) throws NotConfiguredException {
     try {
 

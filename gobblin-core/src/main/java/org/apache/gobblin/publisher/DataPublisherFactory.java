@@ -23,11 +23,11 @@ import java.util.Collections;
 import org.apache.gobblin.broker.ImmediatelyInvalidResourceEntry;
 import org.apache.gobblin.broker.ResourceInstance;
 import org.apache.gobblin.broker.iface.ConfigView;
+import org.apache.gobblin.broker.iface.ISharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.NotConfiguredException;
 import org.apache.gobblin.broker.iface.ScopeType;
 import org.apache.gobblin.broker.iface.ScopedConfigView;
 import org.apache.gobblin.broker.iface.SharedResourceFactory;
-import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 import org.apache.gobblin.capability.Capability;
 import org.apache.gobblin.configuration.State;
@@ -70,7 +70,7 @@ public class DataPublisherFactory<S extends ScopeType<S>>
   }
 
   @Override
-  public SharedResourceFactoryResponse<DataPublisher> createResource(SharedResourcesBroker<S> broker,
+  public ISharedResourceFactoryResponse<DataPublisher> createResource(SharedResourcesBroker<S> broker,
       ScopedConfigView<S, DataPublisherKey> config) throws NotConfiguredException {
     try {
       DataPublisherKey key = config.getKey();

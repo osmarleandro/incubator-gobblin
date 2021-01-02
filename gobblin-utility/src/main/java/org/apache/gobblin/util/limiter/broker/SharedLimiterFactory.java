@@ -22,13 +22,13 @@ import com.typesafe.config.Config;
 
 import org.apache.gobblin.broker.ResourceInstance;
 import org.apache.gobblin.broker.iface.ConfigView;
+import org.apache.gobblin.broker.iface.ISharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.NoSuchScopeException;
 import org.apache.gobblin.broker.iface.NotConfiguredException;
 import org.apache.gobblin.broker.iface.ScopeType;
 import org.apache.gobblin.broker.iface.ScopedConfigView;
 import org.apache.gobblin.broker.iface.SharedResourceFactory;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
-import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.ResourceCoordinate;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
@@ -72,7 +72,7 @@ public class SharedLimiterFactory<S extends ScopeType<S>> implements SharedResou
   }
 
   @Override
-  public SharedResourceFactoryResponse<Limiter>
+  public ISharedResourceFactoryResponse<Limiter>
     createResource(SharedResourcesBroker<S> broker, ScopedConfigView<S, SharedLimiterKey> configView)
       throws NotConfiguredException{
 
