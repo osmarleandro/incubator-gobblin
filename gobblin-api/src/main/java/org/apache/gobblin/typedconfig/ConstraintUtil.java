@@ -33,7 +33,7 @@ import org.apache.gobblin.typedconfig.compiletime.StringRegex;
  * supports: IntRange, LongRange, EnumOption, StringRegex
  */
 @Slf4j
-public class ConstraintUtil {
+public class ConstraintUtil implements IConstraintUtil {
   private ConstraintUtil() {
   }
 
