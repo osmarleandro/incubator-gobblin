@@ -25,7 +25,7 @@ import org.apache.gobblin.configuration.ConfigurationKeys;
 /**
  * Utility methods for generating event metadata
  */
-public class EventMetadataUtils {
+public class EventMetadataUtils implements IEventMetadataUtils {
   public static final String TASK_FAILURE_MESSAGE_KEY = "task.failure.message";
   public static final String JOB_FAILURE_MESSAGE_KEY = "job.failure.message";
 
