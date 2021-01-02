@@ -40,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Alpha
 @Slf4j
-public class DatasetStateCommitStep extends CommitStepBase {
+public class DatasetStateCommitStep extends CommitStepBase implements IDatasetStateCommitStep {
 
   private final String datasetUrn;
   private final DatasetState datasetState;
