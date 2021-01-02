@@ -25,7 +25,7 @@ import org.apache.gobblin.annotation.Alias;
  * NoOp dynamic config generator that returns an empty {@link Config}
  */
 @Alias("noop")
-public class NoopDynamicConfigGenerator implements DynamicConfigGenerator {
+public class NoopDynamicConfigGenerator implements DynamicConfigGenerator, INoopDynamicConfigGenerator {
 
   public NoopDynamicConfigGenerator() {
   }
