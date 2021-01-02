@@ -17,7 +17,7 @@
 
 package org.apache.gobblin.runtime.api;
 
-public interface SpecCatalogListenersContainer {
+public interface SpecCatalogListenersContainer extends ISpecCatalogListenersContainer {
   /**
    * Adds a {@link SpecCatalogListener} that will be invoked upon updates on the
    * {@link SpecCatalog}. Upon registration {@link SpecCatalogListener#onAddSpec(Spec)} will be
