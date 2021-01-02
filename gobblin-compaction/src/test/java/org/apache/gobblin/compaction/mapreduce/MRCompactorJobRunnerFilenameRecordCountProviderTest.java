@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.io.Files;
 
-import org.apache.gobblin.util.RecordCountProvider;
+import org.apache.gobblin.util.IRecordCountProvider;
 import org.apache.gobblin.util.recordcount.IngestionRecordCountProvider;
 import org.apache.gobblin.util.recordcount.LateFileRecordCountProvider;
 
@@ -52,7 +52,7 @@ public class MRCompactorJobRunnerFilenameRecordCountProviderTest {
       }
       fs.mkdirs(testDir);
 
-      RecordCountProvider originFileNameFormat = new IngestionRecordCountProvider();
+      IRecordCountProvider originFileNameFormat = new IngestionRecordCountProvider();
 
       LateFileRecordCountProvider lateFileRecordCountProvider = new LateFileRecordCountProvider(originFileNameFormat);
 

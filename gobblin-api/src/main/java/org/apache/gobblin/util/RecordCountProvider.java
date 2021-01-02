@@ -26,7 +26,7 @@ import org.apache.hadoop.fs.Path;
 /**
  * A class for obtaining record counts from data.
  */
-public abstract class RecordCountProvider {
+public abstract class RecordCountProvider implements IRecordCountProvider {
 
   /**
    * Get record count from a given {@link Path}.
@@ -37,14 +37,14 @@ public abstract class RecordCountProvider {
    * Convert a {@link Path} from another {@link RecordCountProvider} so that it can be used
    * in {@link #getRecordCount(Path)} of this {@link RecordCountProvider}.
    */
-  public Path convertPath(Path path, String extension, RecordCountProvider src) {
+  public Path convertPath(Path path, String extension, IRecordCountProvider src) {
     if (this.getClass().equals(src.getClass())) {
       return path;
     }
     throw getNotImplementedException(src);
   }
 
-  protected NotImplementedException getNotImplementedException(RecordCountProvider src) {
+  protected NotImplementedException getNotImplementedException(IRecordCountProvider src) {
     return new NotImplementedException(String.format("converting from %s to %s is not implemented",
         src.getClass().getName(), this.getClass().getName()));
   }

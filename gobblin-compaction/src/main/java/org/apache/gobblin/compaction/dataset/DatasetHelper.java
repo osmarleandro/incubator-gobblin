@@ -40,7 +40,7 @@ import org.apache.gobblin.compaction.conditions.RecompactionConditionFactory;
 import org.apache.gobblin.compaction.mapreduce.MRCompactor;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.FileListUtils;
-import org.apache.gobblin.util.RecordCountProvider;
+import org.apache.gobblin.util.IRecordCountProvider;
 import org.apache.gobblin.util.recordcount.LateFileRecordCountProvider;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 
@@ -56,8 +56,8 @@ import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 public class DatasetHelper {
   private final FileSystem fs;
   private final Dataset dataset;
-  private final RecordCountProvider inputRecordCountProvider;
-  private final RecordCountProvider outputRecordCountProvider;
+  private final IRecordCountProvider inputRecordCountProvider;
+  private final IRecordCountProvider outputRecordCountProvider;
   private final LateFileRecordCountProvider lateInputRecordCountProvider;
   private final LateFileRecordCountProvider lateOutputRecordCountProvider;
   private final RecompactionCondition condition;
@@ -72,11 +72,11 @@ public class DatasetHelper {
     this.condition = createRecompactionCondition();
 
     try {
-      this.inputRecordCountProvider = (RecordCountProvider) Class
+      this.inputRecordCountProvider = (IRecordCountProvider) Class
           .forName(this.dataset.jobProps().getProp(MRCompactor.COMPACTION_INPUT_RECORD_COUNT_PROVIDER,
               MRCompactor.DEFAULT_COMPACTION_INPUT_RECORD_COUNT_PROVIDER))
           .newInstance();
-      this.outputRecordCountProvider = (RecordCountProvider) Class
+      this.outputRecordCountProvider = (IRecordCountProvider) Class
           .forName(this.dataset.jobProps().getProp(MRCompactor.COMPACTION_OUTPUT_RECORD_COUNT_PROVIDER,
               MRCompactor.DEFAULT_COMPACTION_OUTPUT_RECORD_COUNT_PROVIDER))
           .newInstance();
