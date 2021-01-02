@@ -53,7 +53,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Getter
 @Slf4j
-public class AvroJobSpecKafkaJobMonitor extends KafkaAvroJobMonitor<AvroJobSpec> {
+public class AvroJobSpecKafkaJobMonitor extends KafkaAvroJobMonitor<AvroJobSpec> implements IAvroJobSpecKafkaJobMonitor {
 
   public static final String CONFIG_PREFIX = "gobblin.jobMonitor.avroJobSpec";
   public static final String TOPIC_KEY = "topic";
