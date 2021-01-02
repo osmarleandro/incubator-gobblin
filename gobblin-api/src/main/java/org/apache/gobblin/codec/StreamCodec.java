@@ -28,7 +28,7 @@ import org.apache.gobblin.annotation.Alpha;
  * Interface for an object that can encrypt a bytestream.
  */
 @Alpha
-public interface StreamCodec {
+public interface StreamCodec extends IStreamCodec {
   /**
    * Wrap a bytestream and return a new stream that encodes the bytes written to it and writes
    * the result into origStream

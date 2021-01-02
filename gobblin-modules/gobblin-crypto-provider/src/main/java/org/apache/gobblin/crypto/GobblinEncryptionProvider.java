@@ -26,6 +26,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 
 import org.apache.gobblin.annotation.Alpha;
+import org.apache.gobblin.codec.IStreamCodec;
 import org.apache.gobblin.codec.StreamCodec;
 
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +58,7 @@ public class GobblinEncryptionProvider implements CredentialStoreProvider, Encry
    * @return A StreamCodec for the requested algorithm
    * @throws IllegalArgumentException If the given algorithm/parameter pair cannot be built
    */
-  public StreamCodec buildStreamEncryptor(Map<String, Object> parameters) {
+  public IStreamCodec buildStreamEncryptor(Map<String, Object> parameters) {
     String encryptionType = EncryptionConfigParser.getEncryptionType(parameters);
     if (encryptionType == null) {
       throw new IllegalArgumentException("Encryption type not present in parameters!");
