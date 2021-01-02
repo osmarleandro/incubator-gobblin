@@ -21,7 +21,7 @@ import java.net.URI;
 /**
  * An exception thrown when a JobSpec with a given URI is not found.
  */
-public class JobSpecNotFoundException extends SpecNotFoundException {
+public class JobSpecNotFoundException extends SpecNotFoundException implements IJobSpecNotFoundException {
   public JobSpecNotFoundException(URI missingJobSpecURI) {
     super(missingJobSpecURI);
   }
