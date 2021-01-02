@@ -37,7 +37,7 @@ import org.apache.gobblin.configuration.ConfigurationKeys;
  *
  * @author Yinan Li
  */
-public class FileBasedJobLock implements JobLock {
+public class FileBasedJobLock implements JobLock, IFileBasedJobLock {
   /** Legacy */
   public static final String JOB_LOCK_DIR = "job.lock.dir";
   public static final String LOCK_FILE_EXTENSION = ".lock";
