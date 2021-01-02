@@ -29,7 +29,7 @@ import org.apache.gobblin.runtime.task.TaskIFace;
  * A {@link TaskFactory} that runs an {@link MRTask}. This factory is intended to publish data in the task directly, and
  * uses a {@link NoopPublisher}.
  */
-public class MRTaskFactory implements TaskFactory {
+public class MRTaskFactory implements TaskFactory, IMRTaskFactory {
 
   @Override
   public TaskIFace createTask(TaskContext taskContext) {
