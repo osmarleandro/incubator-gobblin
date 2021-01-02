@@ -35,7 +35,7 @@ import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
  * of {@link TaskStateCollectorService}.
  */
 @Slf4j
-public class HiveRegTaskStateCollectorServiceHandlerImpl implements TaskStateCollectorServiceHandler {
+public class HiveRegTaskStateCollectorServiceHandlerImpl implements TaskStateCollectorServiceHandler, IHiveRegTaskStateCollectorServiceHandlerImpl {
 
   private static final String TASK_COLLECTOR_SERVICE_PREFIX = "task.collector.service";
   private static final String HIVE_REG_PUBLISHER_CLASS = "hive.reg.publisher.class";
