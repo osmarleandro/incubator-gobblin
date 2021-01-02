@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableMap;
 
 import org.apache.gobblin.metrics.event.EventName;
 import org.apache.gobblin.runtime.api.EventMetadataGenerator;
+import org.apache.gobblin.runtime.api.IMultiEventMetadataGenerator;
 import org.apache.gobblin.runtime.api.MultiEventMetadataGenerator;
 
 
@@ -36,7 +37,7 @@ public class MultiEventMetadataGeneratorTest {
   @Test
   public void testInstantiate() {
     JobContext jobContext = Mockito.mock(JobContext.class);
-    MultiEventMetadataGenerator multiEventMetadataGenerator = new MultiEventMetadataGenerator(ImmutableList.of(
+    IMultiEventMetadataGenerator multiEventMetadataGenerator = new MultiEventMetadataGenerator(ImmutableList.of(
         "org.apache.gobblin.runtime.MultiEventMetadataGeneratorTest$DummyEventMetadataGenerator",
         "org.apache.gobblin.runtime.MultiEventMetadataGeneratorTest$DummyEventMetadataGenerator2"));
 

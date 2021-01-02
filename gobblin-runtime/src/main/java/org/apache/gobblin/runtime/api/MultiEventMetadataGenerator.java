@@ -33,7 +33,7 @@ import org.apache.gobblin.util.ClassAliasResolver;
  * {@link EventMetadataGenerator}s are supposed to be provided by a comma separated string.
  * If multiple {@link EventMetadataGenerator}s add the same metadata, the one that comes later will take precedence.
  */
-public class MultiEventMetadataGenerator {
+public class MultiEventMetadataGenerator implements IMultiEventMetadataGenerator {
   private final List<EventMetadataGenerator> eventMetadataGenerators = Lists.newArrayList();
 
   public MultiEventMetadataGenerator(List<String> multiEventMetadataGeneratorList) {
