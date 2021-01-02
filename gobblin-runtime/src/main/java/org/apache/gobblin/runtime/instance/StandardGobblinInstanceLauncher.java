@@ -49,7 +49,7 @@ import org.apache.gobblin.runtime.std.DefaultConfigurableImpl;
  * As a driver, it uses {@link StandardGobblinInstanceDriver}.
  */
 public class StandardGobblinInstanceLauncher extends AbstractIdleService
-      implements GobblinInstanceLauncher {
+      implements GobblinInstanceLauncher, IStandardGobblinInstanceLauncher {
   private final Logger _log;
   private final String _name;
   private final Configurable _instanceConf;
