@@ -19,7 +19,7 @@ package org.apache.gobblin.runtime.api;
 /**
  * Manages a collection of {@link JobCatalogListener}s .
  */
-public interface JobCatalogListenersContainer {
+public interface JobCatalogListenersContainer extends IJobCatalogListenersContainer {
 
   /**
    * Adds a {@link JobCatalogListener} that will be invoked upon updates on the
