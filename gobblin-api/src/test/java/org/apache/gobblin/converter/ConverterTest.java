@@ -35,7 +35,7 @@ import org.apache.gobblin.stream.StreamEntity;
 import io.reactivex.Flowable;
 
 
-public class ConverterTest {
+public class ConverterTest implements IConverterTest {
 
   @Test
   public void testEmptyOutputIterable() throws Exception {
