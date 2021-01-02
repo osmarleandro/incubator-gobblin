@@ -19,7 +19,7 @@ package org.apache.gobblin.recordaccess;
 /**
  * A ServiceProvider that can construct a RecordAccessor based on an object's type.
  */
-public interface RecordAccessorProvider {
+public interface RecordAccessorProvider extends IRecordAccessorProvider {
   /**
    * Build and return a RecordAccessor that can manipulate the object passed in.
    *
