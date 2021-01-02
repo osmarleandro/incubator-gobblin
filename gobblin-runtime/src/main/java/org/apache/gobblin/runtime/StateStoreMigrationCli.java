@@ -56,7 +56,7 @@ import static org.apache.gobblin.configuration.ConfigurationKeys.*;
  */
 @Slf4j
 @Alias(value = "stateMigration", description = "Command line tools for migrating state store")
-public class StateStoreMigrationCli implements CliApplication {
+public class StateStoreMigrationCli implements CliApplication, IStateStoreMigrationCli {
   private static final String SOURCE_KEY = "source";
   private static final String DESTINATION_KEY = "destination";
   private static final String JOB_NAME_KEY = "jobName";
