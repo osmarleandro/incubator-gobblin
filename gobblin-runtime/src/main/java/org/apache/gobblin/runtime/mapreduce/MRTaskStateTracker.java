@@ -45,7 +45,7 @@ import org.apache.gobblin.source.workunit.WorkUnit;
  *
  * @author Yinan Li
  */
-public class MRTaskStateTracker extends AbstractTaskStateTracker {
+public class MRTaskStateTracker extends AbstractTaskStateTracker implements IMRTaskStateTracker {
 
   private static final Logger LOG = LoggerFactory.getLogger(MRTaskStateTracker.class);
 
