@@ -49,7 +49,7 @@ import com.google.common.util.concurrent.AbstractIdleService;
  *   All metrics are collected via a {@link JmxReporter}.
  * </p>
  */
-public class JMXReportingService extends AbstractIdleService {
+public class JMXReportingService extends AbstractIdleService implements IJMXReportingService {
 
   private final MetricRegistry metricRegistry = new MetricRegistry();
   private Map<String, MetricSet> additionalMetricSets;
