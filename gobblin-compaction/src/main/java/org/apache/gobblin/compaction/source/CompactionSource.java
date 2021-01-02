@@ -62,7 +62,7 @@ import org.apache.gobblin.data.management.dataset.DefaultFileSystemGlobFinder;
 import org.apache.gobblin.data.management.dataset.SimpleDatasetRequest;
 import org.apache.gobblin.data.management.dataset.SimpleDatasetRequestor;
 import org.apache.gobblin.dataset.Dataset;
-import org.apache.gobblin.dataset.DatasetsFinder;
+import org.apache.gobblin.dataset.IDatasetsFinder;
 import org.apache.gobblin.runtime.JobState;
 import org.apache.gobblin.runtime.task.FailedTask;
 import org.apache.gobblin.runtime.task.TaskUtils;
@@ -112,7 +112,7 @@ public class CompactionSource implements WorkUnitStreamSource<String, String> {
   public WorkUnitStream getWorkunitStream(SourceState state) {
     try {
       fs = getSourceFileSystem(state);
-      DatasetsFinder<Dataset> finder = DatasetUtils.instantiateDatasetFinder(state.getProperties(),
+      IDatasetsFinder<Dataset> finder = DatasetUtils.instantiateDatasetFinder(state.getProperties(),
           fs, DefaultFileSystemGlobFinder.class.getName());
 
       List<Dataset> datasets = finder.findDatasets();

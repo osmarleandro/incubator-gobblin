@@ -67,6 +67,7 @@ import org.apache.gobblin.data.management.partition.FileSet;
 import org.apache.gobblin.data.management.partition.FileSetResourceEstimator;
 import org.apache.gobblin.dataset.Dataset;
 import org.apache.gobblin.dataset.DatasetsFinder;
+import org.apache.gobblin.dataset.IDatasetsFinder;
 import org.apache.gobblin.dataset.IterableDatasetFinder;
 import org.apache.gobblin.dataset.IterableDatasetFinderImpl;
 import org.apache.gobblin.instrumented.Instrumented;
@@ -191,7 +192,7 @@ public class CopySource extends AbstractSource<String, FileAwareInputStream> {
       final CopyConfiguration copyConfiguration = CopyConfiguration.builder(targetFs, state.getProperties()).build();
 
       this.eventSubmitter = new EventSubmitter.Builder(this.metricContext, CopyConfiguration.COPY_PREFIX).build();
-      DatasetsFinder<CopyableDatasetBase> datasetFinder = DatasetUtils
+      IDatasetsFinder<CopyableDatasetBase> datasetFinder = DatasetUtils
           .instantiateDatasetFinder(state.getProperties(), sourceFs, DEFAULT_DATASET_PROFILE_CLASS_KEY,
               this.eventSubmitter, state);
 

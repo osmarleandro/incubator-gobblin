@@ -17,12 +17,6 @@
 
 package org.apache.gobblin.dataset;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.hadoop.fs.Path;
-
-
 /**
  * Finds {@link Dataset}s in the file system.
  *
@@ -31,18 +25,5 @@ import org.apache.hadoop.fs.Path;
  *   ({@link org.apache.hadoop.fs.FileSystem}, {@link java.util.Properties}).
  * </p>
  */
-public interface DatasetsFinder<T extends Dataset> {
-
-  /**
-   * Find all {@link Dataset}s in the file system.
-   * @return List of {@link Dataset}s in the file system.
-   * @throws IOException
-   */
-  public List<T> findDatasets() throws IOException;
-
-  /**
-   * @return The deepest common root shared by all {@link Dataset}s root paths returned by this finder.
-   */
-  @Deprecated
-  public Path commonDatasetRoot();
+public interface DatasetsFinder<T extends Dataset> extends IDatasetsFinder<T> {
 }
