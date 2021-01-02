@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 import org.apache.commons.math3.util.Pair;
+import org.apache.gobblin.password.IPasswordManager;
 import org.apache.gobblin.password.PasswordManager;
 import org.apache.gobblin.util.ConfigUtils;
 import org.apache.gobblin.writer.Batch;
@@ -65,7 +66,7 @@ public class ElasticsearchRestWriter extends ElasticsearchWriterBase implements 
         ElasticsearchWriterConfigurationKeys.ELASTICSEARCH_WRITER_CLIENT_THREADPOOL_DEFAULT);
     try {
 
-      PasswordManager passwordManager = PasswordManager.getInstance();
+      IPasswordManager passwordManager = PasswordManager.getInstance();
       Boolean sslEnabled = ConfigUtils.getBoolean(config,
           ElasticsearchWriterConfigurationKeys.ELASTICSEARCH_WRITER_SSL_ENABLED,
           ElasticsearchWriterConfigurationKeys.ELASTICSEARCH_WRITER_SSL_ENABLED_DEFAULT);

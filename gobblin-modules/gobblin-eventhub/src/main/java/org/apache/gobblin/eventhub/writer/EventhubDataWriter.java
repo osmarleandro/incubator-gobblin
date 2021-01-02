@@ -42,6 +42,7 @@ import com.microsoft.azure.servicebus.SharedAccessSignatureTokenProvider;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.gobblin.password.IPasswordManager;
 import org.apache.gobblin.password.PasswordManager;
 import org.apache.gobblin.writer.Batch;
 import org.apache.gobblin.writer.BatchAsyncDataWriter;
@@ -124,7 +125,7 @@ public class EventhubDataWriter implements SyncDataWriter<String>, BatchAsyncDat
 
   /** User needs to provide eventhub properties */
   public EventhubDataWriter(Properties properties) {
-    PasswordManager manager = PasswordManager.getInstance(properties);
+    IPasswordManager manager = PasswordManager.getInstance(properties);
 
     namespaceName = properties.getProperty(BatchedEventhubDataWriter.EVH_NAMESPACE);
     eventHubName =  properties.getProperty(BatchedEventhubDataWriter.EVH_HUBNAME);
