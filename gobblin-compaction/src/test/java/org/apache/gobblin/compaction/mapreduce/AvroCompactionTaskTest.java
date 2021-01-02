@@ -53,7 +53,7 @@ import org.apache.gobblin.data.management.dataset.DatasetUtils;
 import org.apache.gobblin.data.management.dataset.SimpleDatasetHierarchicalPrioritizer;
 import org.apache.gobblin.data.management.dataset.TimePartitionGlobFinder;
 import org.apache.gobblin.data.management.retention.profile.ConfigurableGlobDatasetFinder;
-import org.apache.gobblin.runtime.api.JobExecutionResult;
+import org.apache.gobblin.runtime.api.IJobExecutionResult;
 import org.apache.gobblin.runtime.embedded.EmbeddedGobblin;
 
 import static org.apache.gobblin.compaction.mapreduce.test.TestCompactionTaskUtils.createEmbeddedGobblinCompactionJob;
@@ -87,7 +87,7 @@ public class AvroCompactionTaskTest {
     newestFile.setLastModified(Long.MAX_VALUE);
 
     EmbeddedGobblin embeddedGobblin = createEmbeddedGobblinCompactionJob("dedup", basePath.getAbsolutePath());
-    JobExecutionResult result = embeddedGobblin.run();
+    IJobExecutionResult result = embeddedGobblin.run();
     Assert.assertTrue(result.isSuccessful());
   }
 
@@ -105,7 +105,7 @@ public class AvroCompactionTaskTest {
     writeFileWithContent(jobDir, "file2", r2, 18);
 
     EmbeddedGobblin embeddedGobblin = createEmbeddedGobblinCompactionJob("non-dedup", basePath.getAbsolutePath().toString());
-    JobExecutionResult result = embeddedGobblin.run();
+    IJobExecutionResult result = embeddedGobblin.run();
     Assert.assertTrue(result.isSuccessful());
   }
 
@@ -140,7 +140,7 @@ public class AvroCompactionTaskTest {
         .setConfiguration(TimePartitionGlobFinder.LOOKBACK_SPEC, "P3D")
         .setConfiguration(TimePartitionGlobFinder.ENABLE_VIRTUAL_PARTITION, "true");
 
-    JobExecutionResult result = embeddedGobblin.run();
+    IJobExecutionResult result = embeddedGobblin.run();
     Assert.assertTrue(result.isSuccessful());
   }
 
@@ -157,7 +157,7 @@ public class AvroCompactionTaskTest {
     writeFileWithContent(jobDir, "file1", r1, 20);
 
     EmbeddedGobblin embeddedGobblin = createEmbeddedGobblinCompactionJob("Recompaction-First", basePath);
-    JobExecutionResult result = embeddedGobblin.run();
+    IJobExecutionResult result = embeddedGobblin.run();
     long recordCount = InputRecordCountHelper.readRecordCount(fs, (new Path (basePath, new Path("Identity/MemberAccount/hourly/2017/04/03/10"))));
     Assert.assertTrue(result.isSuccessful());
     Assert.assertEquals(recordCount, 20);
@@ -188,7 +188,7 @@ public class AvroCompactionTaskTest {
 
     EmbeddedGobblin embeddedGobblin = createEmbeddedGobblinCompactionJob("Recompaction-First", basePath);
     embeddedGobblin.setConfiguration(ConfigurationKeys.RECOMPACTION_WRITE_TO_NEW_FOLDER, "true");
-    JobExecutionResult result = embeddedGobblin.run();
+    IJobExecutionResult result = embeddedGobblin.run();
     long recordCount = InputRecordCountHelper.readRecordCount(fs, (new Path (basePath, new Path("Identity/MemberAccount/hourly/2017/04/03/10"))));
     Assert.assertTrue(result.isSuccessful());
     Assert.assertEquals(recordCount, 20);
@@ -220,7 +220,7 @@ public class AvroCompactionTaskTest {
     writeFileWithContent(jobDir, "file1", r1, 20);
 
     EmbeddedGobblin embeddedGobblin = createEmbeddedGobblinCompactionJob("Recompaction-First", basePath);
-    JobExecutionResult result = embeddedGobblin.run();
+    IJobExecutionResult result = embeddedGobblin.run();
     long recordCount = InputRecordCountHelper.readRecordCount(fs, (new Path (basePath, new Path("Identity/MemberAccount/hourly/2017/04/03/10"))));
     Assert.assertTrue(result.isSuccessful());
     Assert.assertEquals(recordCount, 20);
@@ -343,7 +343,7 @@ public class AvroCompactionTaskTest {
      }
 
      EmbeddedGobblin embeddedGobblin = createEmbeddedGobblinCompactionJob("workunit_stream", basePath.getAbsolutePath().toString());
-     JobExecutionResult result = embeddedGobblin.run();
+     IJobExecutionResult result = embeddedGobblin.run();
 
      Assert.assertTrue(result.isSuccessful());
    }
@@ -363,7 +363,7 @@ public class AvroCompactionTaskTest {
     }
 
     EmbeddedGobblin embeddedGobblin = createEmbeddedGobblinForAllFailures("workunit_stream_all_failure", basePath.getAbsolutePath().toString());
-    JobExecutionResult result = embeddedGobblin.run();
+    IJobExecutionResult result = embeddedGobblin.run();
 
     Assert.assertFalse(result.isSuccessful());
   }
@@ -387,7 +387,7 @@ public class AvroCompactionTaskTest {
     writeFileWithContent(jobDir2, "file_random", r1, 20);
 
     EmbeddedGobblin embeddedGobblin = createEmbeddedGobblinForHiveRegistrationFailure("hive_registration_failure", basePath.getAbsolutePath().toString());
-    JobExecutionResult result = embeddedGobblin.run();
+    IJobExecutionResult result = embeddedGobblin.run();
 
     Assert.assertFalse(result.isSuccessful());
   }
@@ -420,7 +420,7 @@ public class AvroCompactionTaskTest {
     }
 
     EmbeddedGobblin embeddedGobblin = createEmbeddedGobblinWithPriority("workunit_stream_priority", basePath.getAbsolutePath().toString());
-    JobExecutionResult result = embeddedGobblin.run();
+    IJobExecutionResult result = embeddedGobblin.run();
 
     Assert.assertTrue(result.isSuccessful());
   }

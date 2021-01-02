@@ -56,7 +56,7 @@ import org.apache.gobblin.converter.GobblinMetricsPinotFlattenerConverter;
 import org.apache.gobblin.data.management.copy.CopyConfiguration;
 import org.apache.gobblin.data.management.copy.CopySource;
 import org.apache.gobblin.data.management.copy.SchemaCheckedCopySource;
-import org.apache.gobblin.runtime.api.JobExecutionResult;
+import org.apache.gobblin.runtime.api.IJobExecutionResult;
 import org.apache.gobblin.util.HiveJdbcConnector;
 import org.apache.gobblin.util.PathUtils;
 import org.apache.gobblin.util.filesystem.DataFileVersionStrategy;
@@ -224,7 +224,7 @@ public class EmbeddedGobblinDistcpTest {
     embedded.setConfiguration(ConfigurationKeys.AVRO_SCHEMA_CHECK_STRATEGY, "org.apache.gobblin.util.schema_check.AvroSchemaCheckDefaultStrategy");
     //test when schema is not the expected one, the job will be aborted.
     embedded.setConfiguration(ConfigurationKeys.COPY_EXPECTED_SCHEMA, "{\"type\":\"record\",\"name\":\"baseRecord\",\"fields\":[{\"name\":\"foo1\",\"type\":[\"null\",\"int\"],\"doc\":\"this is for test\",\"default\":null}]}");
-    JobExecutionResult result = embedded.run();
+    IJobExecutionResult result = embedded.run();
     Assert.assertTrue(new File(tmpSource, fileName).exists());
     Assert.assertFalse(result.isSuccessful());
     Assert.assertFalse(new File(tmpTarget, fileName).exists());

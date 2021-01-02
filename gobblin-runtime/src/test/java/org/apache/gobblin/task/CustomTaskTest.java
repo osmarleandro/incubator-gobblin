@@ -23,7 +23,7 @@ import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.common.io.Files;
 import org.apache.gobblin.configuration.ConfigurationKeys;
-import org.apache.gobblin.runtime.api.JobExecutionResult;
+import org.apache.gobblin.runtime.api.IJobExecutionResult;
 import org.apache.gobblin.runtime.embedded.EmbeddedGobblin;
 import org.apache.gobblin.writer.test.TestingEventBuses;
 import java.io.File;
@@ -40,7 +40,7 @@ public class CustomTaskTest {
   @Test(timeOut = 30000)
   public void testTaskFailsWithException() throws Exception {
     // Test that the job runner fails with a reasonable amount of time if a custom task throws an exception
-    JobExecutionResult result =
+    IJobExecutionResult result =
         new EmbeddedGobblin("alwaysThrowsJob").setConfiguration(ConfigurationKeys.SOURCE_CLASS_KEY, FailsWithExceptionTaskFactory.Source.class.getName())
         .run();
     Assert.assertFalse(result.isSuccessful());
@@ -55,7 +55,7 @@ public class CustomTaskTest {
     EventBus eventBus = TestingEventBuses.getEventBus(eventBusId);
     eventBus.register(listener);
 
-    JobExecutionResult result =
+    IJobExecutionResult result =
         new EmbeddedGobblin("testJob").setConfiguration(ConfigurationKeys.SOURCE_CLASS_KEY, EventBusPublishingTaskFactory.Source.class.getName())
         .setConfiguration(EventBusPublishingTaskFactory.Source.NUM_TASKS_KEY, "10").setConfiguration(EventBusPublishingTaskFactory.EVENTBUS_ID_KEY, eventBusId)
         .run();
@@ -93,7 +93,7 @@ public class CustomTaskTest {
         .setConfiguration(ConfigurationKeys.STATE_STORE_ENABLED, Boolean.toString(true))
         .setConfiguration(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY, stateStore.getAbsolutePath());
 
-    JobExecutionResult result = embeddedGobblin.run();
+    IJobExecutionResult result = embeddedGobblin.run();
     Assert.assertTrue(result.isSuccessful());
 
     SetMultimap<String, Integer> seenEvents = HashMultimap.create();

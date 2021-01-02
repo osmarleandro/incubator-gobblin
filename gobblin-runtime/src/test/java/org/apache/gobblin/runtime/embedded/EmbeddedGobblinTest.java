@@ -24,7 +24,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.apache.gobblin.configuration.ConfigurationKeys;
-import org.apache.gobblin.runtime.api.JobExecutionResult;
+import org.apache.gobblin.runtime.api.IJobExecutionResult;
 import org.apache.gobblin.runtime.template.ResourceBasedJobTemplate;
 import org.apache.gobblin.util.test.HelloWorldSource;
 import org.apache.gobblin.writer.test.GobblinTestEventBusWriter;
@@ -45,7 +45,7 @@ public class EmbeddedGobblinTest {
     embeddedGobblin.setConfiguration(ConfigurationKeys.WRITER_BUILDER_CLASS, GobblinTestEventBusWriter.Builder.class.getName());
     embeddedGobblin.setConfiguration(GobblinTestEventBusWriter.FULL_EVENTBUSID_KEY, eventBusId);
     embeddedGobblin.setConfiguration(HelloWorldSource.NUM_HELLOS_FULL_KEY, Integer.toString(numHellos));
-    JobExecutionResult result = embeddedGobblin.run();
+    IJobExecutionResult result = embeddedGobblin.run();
 
     Assert.assertTrue(result.isSuccessful());
 
@@ -68,7 +68,7 @@ public class EmbeddedGobblinTest {
     embeddedGobblin.setConfiguration(ConfigurationKeys.WRITER_BUILDER_CLASS, GobblinTestEventBusWriter.Builder.class.getName());
     embeddedGobblin.setConfiguration(GobblinTestEventBusWriter.FULL_EVENTBUSID_KEY, eventBusId);
 
-    JobExecutionResult result = embeddedGobblin.run();
+    IJobExecutionResult result = embeddedGobblin.run();
 
     Assert.assertTrue(result.isSuccessful());
 

@@ -31,10 +31,10 @@ import com.google.common.collect.ImmutableMap;
 import com.typesafe.config.ConfigFactory;
 
 import org.apache.gobblin.runtime.api.GobblinInstanceDriver;
+import org.apache.gobblin.runtime.api.IJobExecutionResult;
 import org.apache.gobblin.runtime.api.JobExecutionDriver;
 import org.apache.gobblin.runtime.api.JobExecutionLauncher;
 import org.apache.gobblin.runtime.api.JobExecutionMonitor;
-import org.apache.gobblin.runtime.api.JobExecutionResult;
 import org.apache.gobblin.runtime.api.JobLifecycleListener;
 import org.apache.gobblin.runtime.api.JobSpec;
 import org.apache.gobblin.runtime.instance.DefaultGobblinInstanceDriverImpl.JobSpecRunnable;
@@ -109,7 +109,7 @@ public class TestStandardGobblinInstanceLauncher {
     }
 
     new Thread(jobDriver).run();
-    JobExecutionResult jobResult = jobDriver.get(5, TimeUnit.SECONDS);
+    IJobExecutionResult jobResult = jobDriver.get(5, TimeUnit.SECONDS);
 
     Assert.assertTrue(jobResult.isSuccessful());
 
@@ -159,7 +159,7 @@ public class TestStandardGobblinInstanceLauncher {
 
     JobExecutionDriver jobDriver = jobDrivers.poll(10, TimeUnit.SECONDS);
     Assert.assertNotNull(jobDriver);
-    JobExecutionResult jobResult = jobDriver.get(5, TimeUnit.SECONDS);
+    IJobExecutionResult jobResult = jobDriver.get(5, TimeUnit.SECONDS);
 
     Assert.assertTrue(jobResult.isSuccessful());
 
@@ -210,7 +210,7 @@ public class TestStandardGobblinInstanceLauncher {
 
     JobExecutionDriver jobDriver = jobDrivers.poll(10, TimeUnit.SECONDS);
     Assert.assertNotNull(jobDriver);
-    JobExecutionResult jobResult = jobDriver.get(5, TimeUnit.SECONDS);
+    IJobExecutionResult jobResult = jobDriver.get(5, TimeUnit.SECONDS);
 
     Assert.assertTrue(jobResult.isSuccessful());
     instanceLauncher.stopAsync();
@@ -269,7 +269,7 @@ public class TestStandardGobblinInstanceLauncher {
 
     JobExecutionDriver jobDriver = jobDrivers.poll(10, TimeUnit.SECONDS);
     Assert.assertNotNull(jobDriver);
-    JobExecutionResult jobResult = jobDriver.get(5, TimeUnit.SECONDS);
+    IJobExecutionResult jobResult = jobDriver.get(5, TimeUnit.SECONDS);
 
     Assert.assertTrue(jobResult.isSuccessful());
     instanceLauncher.stopAsync();

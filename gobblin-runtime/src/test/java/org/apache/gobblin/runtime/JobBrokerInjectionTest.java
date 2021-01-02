@@ -45,8 +45,8 @@ import org.apache.gobblin.converter.DataConversionException;
 import org.apache.gobblin.converter.SchemaConversionException;
 import org.apache.gobblin.converter.SingleRecordIterable;
 import org.apache.gobblin.runtime.api.GobblinInstanceDriver;
+import org.apache.gobblin.runtime.api.IJobExecutionResult;
 import org.apache.gobblin.runtime.api.JobExecutionDriver;
-import org.apache.gobblin.runtime.api.JobExecutionResult;
 import org.apache.gobblin.runtime.api.JobLifecycleListener;
 import org.apache.gobblin.runtime.api.JobSpec;
 import org.apache.gobblin.runtime.instance.StandardGobblinInstanceDriver;
@@ -106,7 +106,7 @@ public class JobBrokerInjectionTest {
 
     JobExecutionDriver jobDriver = jobDrivers.poll(10, TimeUnit.SECONDS);
     Assert.assertNotNull(jobDriver);
-    JobExecutionResult jobResult = jobDriver.get(100000, TimeUnit.SECONDS);
+    IJobExecutionResult jobResult = jobDriver.get(100000, TimeUnit.SECONDS);
 
     Assert.assertTrue(jobResult.isSuccessful());
 

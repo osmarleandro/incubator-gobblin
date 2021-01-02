@@ -33,8 +33,8 @@ import com.google.common.eventbus.Subscribe;
 
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.SourceState;
+import org.apache.gobblin.runtime.api.IJobExecutionResult;
 import org.apache.gobblin.runtime.api.JobExecutionDriver;
-import org.apache.gobblin.runtime.api.JobExecutionResult;
 import org.apache.gobblin.runtime.embedded.EmbeddedGobblin;
 import org.apache.gobblin.source.WorkUnitStreamSource;
 import org.apache.gobblin.source.workunit.BasicWorkUnitStream;
@@ -85,7 +85,7 @@ public class TestWorkUnitStreamSource {
     eventBus.post(new MySource.NextWorkUnit());
     eventBus.post(new MySource.NextWorkUnit());
 
-    JobExecutionResult result = driver.get(5, TimeUnit.SECONDS);
+    IJobExecutionResult result = driver.get(5, TimeUnit.SECONDS);
     Assert.assertTrue(result.isSuccessful());
 
     SetMultimap<String, Integer> eventsSeen = listener.getEventsSeenMap();

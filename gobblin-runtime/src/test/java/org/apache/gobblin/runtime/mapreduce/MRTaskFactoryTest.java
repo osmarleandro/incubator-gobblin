@@ -25,7 +25,7 @@ import com.google.common.io.Files;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.SourceState;
 import org.apache.gobblin.configuration.WorkUnitState;
-import org.apache.gobblin.runtime.api.JobExecutionResult;
+import org.apache.gobblin.runtime.api.IJobExecutionResult;
 import org.apache.gobblin.runtime.embedded.EmbeddedGobblin;
 import org.apache.gobblin.runtime.task.TaskUtils;
 import org.apache.gobblin.source.Source;
@@ -86,7 +86,7 @@ public class MRTaskFactoryTest {
         .setConfiguration(MRWordCountSource.INPUT_DIRECTORIES_KEY, job1Dir.getAbsolutePath() + "," + job2Dir.getAbsolutePath())
         .setConfiguration(MRWordCountSource.OUTPUT_LOCATION, outputSuperPath.getAbsolutePath());
 
-    JobExecutionResult result = embeddedGobblin.run();
+    IJobExecutionResult result = embeddedGobblin.run();
     logger.removeAppender(testAppender);
 
     Assert.assertTrue(result.isSuccessful());

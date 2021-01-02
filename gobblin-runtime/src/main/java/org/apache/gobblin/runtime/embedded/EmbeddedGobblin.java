@@ -82,6 +82,7 @@ import org.apache.gobblin.runtime.api.Configurable;
 import org.apache.gobblin.runtime.api.GobblinInstanceDriver;
 import org.apache.gobblin.runtime.api.GobblinInstanceEnvironment;
 import org.apache.gobblin.runtime.api.GobblinInstancePluginFactory;
+import org.apache.gobblin.runtime.api.IJobExecutionResult;
 import org.apache.gobblin.runtime.api.JobCatalog;
 import org.apache.gobblin.runtime.api.JobExecutionDriver;
 import org.apache.gobblin.runtime.api.JobExecutionResult;
@@ -404,7 +405,7 @@ public class EmbeddedGobblin {
    * @return a {@link JobExecutionResult} containing the result of the execution.
    */
   @NotOnCli
-  public JobExecutionResult run() throws InterruptedException, TimeoutException, ExecutionException {
+  public IJobExecutionResult run() throws InterruptedException, TimeoutException, ExecutionException {
     JobExecutionDriver jobDriver = runAsync();
     return jobDriver.get(this.jobTimeout.getTimeout(), this.jobTimeout.getTimeUnit());
   }

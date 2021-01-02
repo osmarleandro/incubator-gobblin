@@ -54,7 +54,7 @@ import org.apache.gobblin.compaction.mapreduce.test.TestCompactionOrcJobConfigur
 import org.apache.gobblin.compaction.mapreduce.test.TestCompactionTaskUtils;
 import org.apache.gobblin.compaction.verify.InputRecordCountHelper;
 import org.apache.gobblin.configuration.State;
-import org.apache.gobblin.runtime.api.JobExecutionResult;
+import org.apache.gobblin.runtime.api.IJobExecutionResult;
 import org.apache.gobblin.runtime.embedded.EmbeddedGobblin;
 
 import static org.apache.gobblin.compaction.mapreduce.CompactionCombineFileInputFormat.COMPACTION_JOB_MAPRED_MAX_SPLIT_SIZE;
@@ -130,7 +130,7 @@ public class OrcCompactionTaskTest {
         .setConfiguration(COMPACTION_JOB_MAPRED_MAX_SPLIT_SIZE, splitSize + "")
         .setConfiguration(COMPACTION_JOB_MAPRED_MIN_SPLIT_SIZE, splitSize + "")
         .setConfiguration(COMPACTION_OUTPUT_EXTENSION, extensionName);
-    JobExecutionResult execution = embeddedGobblin.run();
+    IJobExecutionResult execution = embeddedGobblin.run();
     Assert.assertTrue(execution.isSuccessful());
 
     // Result verification: Verify the duplicate count is expected.
@@ -162,7 +162,7 @@ public class OrcCompactionTaskTest {
         .setConfiguration(COMPACTION_OUTPUT_EXTENSION, extensionName)
         // A shuffle key that shouldn't be taken.
         .setConfiguration(ORC_MAPPER_SHUFFLE_KEY_SCHEMA, "struct<k:int>");
-    JobExecutionResult execution = embeddedGobblin.run();
+    IJobExecutionResult execution = embeddedGobblin.run();
     Assert.assertTrue(execution.isSuccessful());
 
     // Result verification
@@ -214,7 +214,7 @@ public class OrcCompactionTaskTest {
         TestCompactionOrcJobConfigurator.Factory.class.getName())
         .setConfiguration(COMPACTION_OUTPUT_EXTENSION, extensionName)
         .setConfiguration(COMPACTION_LATEDATA_THRESHOLD_FOR_RECOMPACT_PER_DATASET, "Identity.*:0.1");
-    JobExecutionResult execution = embeddedGobblin.run();
+    IJobExecutionResult execution = embeddedGobblin.run();
     Assert.assertTrue(execution.isSuccessful());
 
     // Result verification
@@ -296,7 +296,7 @@ public class OrcCompactionTaskTest {
             TestCompactionOrcJobConfigurator.Factory.class.getName())
         .setConfiguration(COMPACTION_OUTPUT_EXTENSION, extensionName)
         .setConfiguration(ORC_MAPPER_SHUFFLE_KEY_SCHEMA, "struct<a:struct<a:int,c:int>>");
-    JobExecutionResult execution = embeddedGobblin.run();
+    IJobExecutionResult execution = embeddedGobblin.run();
     Assert.assertTrue(execution.isSuccessful());
 
     // Verifying result: Reducer should catch all the false-duplicates
@@ -344,7 +344,7 @@ public class OrcCompactionTaskTest {
             TestCompactionOrcJobConfigurator.Factory.class.getName())
         .setConfiguration(COMPACTION_OUTPUT_EXTENSION, "orc")
         .setConfiguration(COMPACTION_SHOULD_DEDUPLICATE, "false");
-    JobExecutionResult execution = embeddedGobblin_nondedup.run();
+    IJobExecutionResult execution = embeddedGobblin_nondedup.run();
     Assert.assertTrue(execution.isSuccessful());
 
     // Non-dedup result verification
