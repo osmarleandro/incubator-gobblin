@@ -38,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.gobblin.commit.CommitSequence;
 import org.apache.gobblin.commit.CommitStep;
 import org.apache.gobblin.commit.DeliverySemantics;
+import org.apache.gobblin.commit.IDeliverySemantics;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.instrumented.Instrumented;
@@ -70,7 +71,7 @@ final class SafeDatasetCommit implements Callable<Void> {
 
   private final boolean shouldCommitDataInJob;
   private final boolean isJobCancelled;
-  private final DeliverySemantics deliverySemantics;
+  private final IDeliverySemantics deliverySemantics;
   private final String datasetUrn;
   private final JobState.DatasetState datasetState;
   private final boolean isMultithreaded;

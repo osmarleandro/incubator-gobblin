@@ -34,7 +34,7 @@ import com.typesafe.config.ConfigFactory;
 import org.apache.gobblin.broker.gobblin_scopes.GobblinScopeTypes;
 import org.apache.gobblin.broker.SharedResourcesBrokerFactory;
 import org.apache.gobblin.commit.CommitSequenceStore;
-import org.apache.gobblin.commit.DeliverySemantics;
+import org.apache.gobblin.commit.IDeliverySemantics;
 import org.apache.gobblin.metastore.JobHistoryStore;
 import org.apache.gobblin.source.Source;
 
@@ -80,7 +80,7 @@ public class DummyJobContext extends JobContext {
 
   @Override
   protected Callable<Void> createSafeDatasetCommit(boolean shouldCommitDataInJob, boolean isJobCancelled,
-      DeliverySemantics deliverySemantics, String datasetUrn, JobState.DatasetState datasetState,
+      IDeliverySemantics deliverySemantics, String datasetUrn, JobState.DatasetState datasetState,
       boolean isMultithreaded, JobContext jobContext) {
     return new Callable<Void>() {
       @Override

@@ -30,7 +30,7 @@ import org.apache.gobblin.configuration.State;
  *
  * @author Ziyang Liu
  */
-public enum DeliverySemantics {
+public enum DeliverySemantics implements IDeliverySemantics {
 
   /**
    * Each data record from the source is guaranteed to be delivered at least once.
@@ -46,7 +46,7 @@ public enum DeliverySemantics {
    * Get the devliery semantics type from {@link ConfigurationKeys#DELIVERY_SEMANTICS}.
    * The default value is {@link Type#AT_LEAST_ONCE}.
    */
-  public static DeliverySemantics parse(State state) {
+  public static IDeliverySemantics parse(State state) {
     String value =
         state.getProp(ConfigurationKeys.GOBBLIN_RUNTIME_DELIVERY_SEMANTICS, AT_LEAST_ONCE.toString()).toUpperCase();
     Optional<DeliverySemantics> semantics = Enums.getIfPresent(DeliverySemantics.class, value);
