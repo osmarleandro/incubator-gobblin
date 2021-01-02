@@ -17,7 +17,7 @@
 
 package org.apache.gobblin.source.extractor;
 
-public class DataRecordException extends Exception {
+public class DataRecordException extends Exception implements IDataRecordException {
 
   private static final long serialVersionUID = 1L;
 
