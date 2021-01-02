@@ -27,7 +27,7 @@ import com.typesafe.config.Config;
  *
  * <p>Implementations of this interface must define the default constructor</p>
  */
-public interface JobLockFactoryManager<T extends JobLock, F extends JobLockFactory<T>> {
+public interface JobLockFactoryManager<T extends JobLock, F extends JobLockFactory<T>> extends IJobLockFactoryManager<T, F> {
 
   /** Provides an instance of a job lock factory with the specified config. If an instance with
    * the same configuration (implementation-specific) already exists, the old instance may be
