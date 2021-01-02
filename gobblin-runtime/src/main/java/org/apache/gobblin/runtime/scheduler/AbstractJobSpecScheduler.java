@@ -31,6 +31,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.AbstractIdleService;
 
+import org.apache.gobblin.runtime.api.IJobSpecSchedule;
 import org.apache.gobblin.runtime.api.JobSpec;
 import org.apache.gobblin.runtime.api.JobSpecSchedule;
 import org.apache.gobblin.runtime.api.JobSpecScheduler;
@@ -101,7 +102,7 @@ public abstract class AbstractJobSpecScheduler extends AbstractIdleService
   }
 
   /** {@inheritDoc} */
-  @Override public JobSpecSchedule scheduleOnce(JobSpec jobSpec, Runnable jobRunnable) {
+  @Override public IJobSpecSchedule scheduleOnce(JobSpec jobSpec, Runnable jobRunnable) {
     _log.info("Scheduling once JobSpec " + jobSpec);
     Runnable runOnceRunnable = new RunOnceRunnable(jobSpec.getUri(), jobRunnable);
     return scheduleJob(jobSpec, runOnceRunnable);

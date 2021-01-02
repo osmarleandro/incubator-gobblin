@@ -22,7 +22,7 @@ import com.google.common.base.Optional;
  * The schedule for a job
  *
  */
-public interface JobSpecSchedule {
+public interface JobSpecSchedule extends IJobSpecSchedule {
   /** The JobSpec of the Gobblin job to be run */
   JobSpec getJobSpec();
   /** The runnable that should be invoked by the scheduler */

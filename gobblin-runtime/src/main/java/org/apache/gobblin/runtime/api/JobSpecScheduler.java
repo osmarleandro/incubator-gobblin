@@ -39,7 +39,7 @@ public interface JobSpecScheduler extends JobSpecSchedulerListenersContainer {
    * @param   jobSpec     the JobSpec of the job
    * @param   jobRunnable a runnable that will execute the job
    */
-  public JobSpecSchedule scheduleJob(JobSpec jobSpec, Runnable jobRunnable);
+  public IJobSpecSchedule scheduleJob(JobSpec jobSpec, Runnable jobRunnable);
 
   /**
    * Add a Gobblin job for scheduling. Job is guaranteed to run only once regardless of job outcome.
@@ -47,7 +47,7 @@ public interface JobSpecScheduler extends JobSpecSchedulerListenersContainer {
    * @param   jobSpec     the JobSpec of the job
    * @param   jobRunnable a runnable that will execute the job
    */
-  public JobSpecSchedule scheduleOnce(JobSpec jobSpec, Runnable jobRunnable);
+  public IJobSpecSchedule scheduleOnce(JobSpec jobSpec, Runnable jobRunnable);
 
   /**
    * Remove a job from scheduling. This will not affect any executions that are currently running.
