@@ -25,7 +25,7 @@ import org.apache.gobblin.util.CLIPasswordEncryptor;
  * An application that uses {@link org.apache.gobblin.password.PasswordManager} to encrypt and decrypt strings.
  */
 @Alias(value = "passwordManager", description = "Encrypt or decrypt strings for the password manager.")
-public class PasswordManagerCLI implements CliApplication {
+public class PasswordManagerCLI implements CliApplication, IPasswordManagerCLI {
 
   @Override
   public void run(String[] args) {
