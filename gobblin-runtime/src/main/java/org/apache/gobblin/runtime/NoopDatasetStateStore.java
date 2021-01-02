@@ -36,7 +36,7 @@ import com.google.common.collect.Maps;
 /**
  * An extension of {@link FsDatasetStateStore} where all operations are noop. Used to disable the state store.
  */
-public class NoopDatasetStateStore extends FsDatasetStateStore {
+public class NoopDatasetStateStore extends FsDatasetStateStore implements INoopDatasetStateStore {
 
   @Alias("noop")
   public static class Factory implements DatasetStateStore.Factory {
