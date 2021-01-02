@@ -23,6 +23,6 @@ import org.apache.gobblin.runtime.embedded.EmbeddedGobblin;
 /**
  * A factory for {@link EmbeddedGobblin} instances.
  */
-public interface EmbeddedGobblinCliFactory extends CliObjectFactory<EmbeddedGobblin> {
+public interface EmbeddedGobblinCliFactory extends CliObjectFactory<EmbeddedGobblin>, IEmbeddedGobblinCliFactory {
 
 }
