@@ -31,7 +31,7 @@ import lombok.experimental.Delegate;
 public class IterableDatasetFinderImpl<T extends Dataset> implements IterableDatasetFinder<T> {
 
   @Delegate
-  private final DatasetsFinder<T> datasetFinder;
+  private final IDatasetsFinder<T> datasetFinder;
 
   @Override
   public Iterator<T> getDatasetsIterator()
