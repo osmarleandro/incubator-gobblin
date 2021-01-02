@@ -32,7 +32,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
 /** Unit tests for {@link AssertWithBackoff} */
-public class AssertWithBackoffTest {
+public class AssertWithBackoffTest implements IAssertWithBackoffTest {
 
   @BeforeClass
   public void setUp() {
