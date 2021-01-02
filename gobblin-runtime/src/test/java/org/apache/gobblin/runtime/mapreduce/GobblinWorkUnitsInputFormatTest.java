@@ -76,7 +76,7 @@ public class GobblinWorkUnitsInputFormatTest {
 
     FileSystemTestUtils.addFileSystemForTest(baseUri, configuration, fs);
 
-    GobblinWorkUnitsInputFormat inputFormat = new GobblinWorkUnitsInputFormat();
+    IGobblinWorkUnitsInputFormat inputFormat = new GobblinWorkUnitsInputFormat();
     Job job = Job.getInstance(configuration);
     FileInputFormat.addInputPath(job, workUnitsDir);
 
@@ -108,7 +108,7 @@ public class GobblinWorkUnitsInputFormatTest {
 
     FileSystemTestUtils.addFileSystemForTest(baseUri, configuration, fs);
 
-    GobblinWorkUnitsInputFormat inputFormat = new GobblinWorkUnitsInputFormat();
+    IGobblinWorkUnitsInputFormat inputFormat = new GobblinWorkUnitsInputFormat();
     Job job = Job.getInstance(configuration);
     FileInputFormat.addInputPath(job, workUnitsDir);
     GobblinWorkUnitsInputFormat.setMaxMappers(job, 6);
@@ -141,7 +141,7 @@ public class GobblinWorkUnitsInputFormatTest {
     List<String> paths = Lists.newArrayList("/path1", "/path2");
     GobblinWorkUnitsInputFormat.GobblinSplit split = new GobblinWorkUnitsInputFormat.GobblinSplit(paths);
 
-    GobblinWorkUnitsInputFormat inputFormat = new GobblinWorkUnitsInputFormat();
+    IGobblinWorkUnitsInputFormat inputFormat = new GobblinWorkUnitsInputFormat();
     RecordReader<LongWritable, Text> recordReader =
         inputFormat.createRecordReader(split, new TaskAttemptContextImpl(new Configuration(), new TaskAttemptID("a", 1,
         TaskType.MAP, 1, 1)));

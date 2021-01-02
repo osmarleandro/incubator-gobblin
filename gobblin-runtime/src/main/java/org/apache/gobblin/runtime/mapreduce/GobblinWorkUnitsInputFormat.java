@@ -57,7 +57,7 @@ import lombok.extern.slf4j.Slf4j;
  * An input format for reading Gobblin inputs (work unit and multi work unit files).
  */
 @Slf4j
-public class GobblinWorkUnitsInputFormat extends InputFormat<LongWritable, Text> {
+public class GobblinWorkUnitsInputFormat extends InputFormat<LongWritable, Text> implements IGobblinWorkUnitsInputFormat {
 
   private static final String MAX_MAPPERS = GobblinWorkUnitsInputFormat.class.getName() + ".maxMappers";
 
