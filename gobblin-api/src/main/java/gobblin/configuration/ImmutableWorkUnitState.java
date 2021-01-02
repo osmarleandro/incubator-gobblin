@@ -19,7 +19,7 @@ package gobblin.configuration;
 /***
  * Shim layer for org.apache.gobblin.configuration.ImmutableWorkUnitState
  */
-public class ImmutableWorkUnitState extends org.apache.gobblin.configuration.ImmutableWorkUnitState {
+public class ImmutableWorkUnitState extends org.apache.gobblin.configuration.ImmutableWorkUnitState implements IImmutableWorkUnitState {
   public ImmutableWorkUnitState(WorkUnitState workUnitState) {
     super(workUnitState);
   }
