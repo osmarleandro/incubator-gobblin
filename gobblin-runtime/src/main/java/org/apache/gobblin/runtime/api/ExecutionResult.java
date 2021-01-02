@@ -22,5 +22,5 @@ package org.apache.gobblin.runtime.api;
  *
  * @see JobExecutionResult as a derived class.
  */
-public interface ExecutionResult {
+public interface ExecutionResult extends IExecutionResult {
 }
