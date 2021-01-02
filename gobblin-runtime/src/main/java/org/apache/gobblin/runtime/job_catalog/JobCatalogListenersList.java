@@ -38,7 +38,7 @@ import org.apache.gobblin.util.callbacks.CallbacksDispatcher;
 
 /** A helper class to manage a list of {@link JobCatalogListener}s for a
  * {@link JobCatalog}. It will dispatch the callbacks to each listener sequentially.*/
-public class JobCatalogListenersList implements JobCatalogListener, JobCatalogListenersContainer, Closeable {
+public class JobCatalogListenersList implements JobCatalogListener, JobCatalogListenersContainer, Closeable, IJobCatalogListenersList {
   private final CallbacksDispatcher<JobCatalogListener> _disp;
 
   public JobCatalogListenersList() {
