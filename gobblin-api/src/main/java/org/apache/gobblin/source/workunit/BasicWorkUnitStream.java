@@ -33,7 +33,7 @@ import lombok.Getter;
 /**
  * A basic implementation of {@link WorkUnitStream}.
  */
-public class BasicWorkUnitStream implements WorkUnitStream {
+public class BasicWorkUnitStream implements WorkUnitStream, IBasicWorkUnitStream {
 
   /**
    * Iterator over the {@link WorkUnit}s. Best practice is to only generate {@link WorkUnit}s on demand to save memory.
