@@ -20,7 +20,7 @@ package org.apache.gobblin.runtime.metrics;
 /**
  * Constants used for naming {@link org.apache.gobblin.metrics.Metric}s and metric metadata in gobblin-runtime.
  */
-public class RuntimeMetrics {
+public class RuntimeMetrics implements IRuntimeMetrics {
 
   // Metric names
   public static final String GOBBLIN_KAFKA_HIGH_LEVEL_CONSUMER_MESSAGES_READ =
