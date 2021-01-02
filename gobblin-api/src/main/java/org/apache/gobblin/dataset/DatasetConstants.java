@@ -17,7 +17,7 @@
 
 package org.apache.gobblin.dataset;
 
-public class DatasetConstants {
+public class DatasetConstants implements IDatasetConstants {
   /** Platforms */
   public static final String PLATFORM_FILE = "file";
   public static final String PLATFORM_HDFS = "hdfs";
