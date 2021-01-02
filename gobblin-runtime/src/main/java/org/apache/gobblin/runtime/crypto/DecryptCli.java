@@ -45,7 +45,7 @@ import org.apache.gobblin.runtime.cli.CliApplication;
 
 
 @Alias(value = "decrypt", description = "Decryption utilities")
-public class DecryptCli implements CliApplication {
+public class DecryptCli implements CliApplication, IDecryptCli {
   private static final Option KEYSTORE_LOCATION =
       Option.builder("k").longOpt("ks_location").hasArg().required().desc("Keystore location").build();
   private static final Option INPUT_LOCATION =
