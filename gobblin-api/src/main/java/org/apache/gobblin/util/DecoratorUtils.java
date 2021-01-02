@@ -25,7 +25,7 @@ import com.google.common.collect.Lists;
 /**
  * Utilities for classes implementing the decorator interface.
  */
-public class DecoratorUtils {
+public class DecoratorUtils implements IDecoratorUtils {
 
   /**
    * Resolves the truly underlying object in a possible chain of {@link org.apache.gobblin.util.Decorator}.
