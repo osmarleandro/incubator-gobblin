@@ -28,7 +28,7 @@ import org.apache.gobblin.runtime.api.JobSpecSchedulerListener;
  * Default no-op implementation for {@link JobSpecSchedulerListener}. It may optionally log
  * the callbacks.
  */
-public class DefaultJobSpecSchedulerListenerImpl implements JobSpecSchedulerListener {
+public class DefaultJobSpecSchedulerListenerImpl implements JobSpecSchedulerListener, IDefaultJobSpecSchedulerListenerImpl {
   protected final Optional<Logger> _log;
 
   /**
