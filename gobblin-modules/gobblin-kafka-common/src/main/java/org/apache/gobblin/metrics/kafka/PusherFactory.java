@@ -27,11 +27,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.apache.gobblin.broker.ResourceInstance;
 import org.apache.gobblin.broker.StringNameSharedResourceKey;
+import org.apache.gobblin.broker.iface.ISharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.NotConfiguredException;
 import org.apache.gobblin.broker.iface.ScopeType;
 import org.apache.gobblin.broker.iface.ScopedConfigView;
 import org.apache.gobblin.broker.iface.SharedResourceFactory;
-import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 
 
@@ -54,7 +54,7 @@ public abstract class PusherFactory<T, S extends ScopeType<S>> implements Shared
   }
 
   @Override
-  public SharedResourceFactoryResponse<Pusher<T>> createResource(SharedResourcesBroker<S> broker,
+  public ISharedResourceFactoryResponse<Pusher<T>> createResource(SharedResourcesBroker<S> broker,
       ScopedConfigView<S, StringNameSharedResourceKey> config)
       throws NotConfiguredException {
     Config pusherConfig = config.getConfig().withFallback(FALLBACK);

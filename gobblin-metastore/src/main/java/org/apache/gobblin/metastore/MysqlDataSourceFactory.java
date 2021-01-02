@@ -25,11 +25,11 @@ import com.typesafe.config.Config;
 
 import org.apache.gobblin.broker.ResourceInstance;
 import org.apache.gobblin.broker.iface.ConfigView;
+import org.apache.gobblin.broker.iface.ISharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.NotConfiguredException;
 import org.apache.gobblin.broker.iface.ScopeType;
 import org.apache.gobblin.broker.iface.ScopedConfigView;
 import org.apache.gobblin.broker.iface.SharedResourceFactory;
-import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +68,7 @@ public class MysqlDataSourceFactory<S extends ScopeType<S>>
   }
 
   @Override
-  public SharedResourceFactoryResponse<BasicDataSource> createResource(SharedResourcesBroker<S> broker,
+  public ISharedResourceFactoryResponse<BasicDataSource> createResource(SharedResourcesBroker<S> broker,
     ScopedConfigView<S, MysqlDataSourceKey> config) throws NotConfiguredException {
     MysqlDataSourceKey key = config.getKey();
     Config configuration = key.getConfig();

@@ -20,5 +20,5 @@ package org.apache.gobblin.broker.iface;
 /**
  * An empty interface for responses from a {@link SharedResourceFactory}.
  */
-public interface SharedResourceFactoryResponse<T> {
+public interface SharedResourceFactoryResponse<T> extends ISharedResourceFactoryResponse<T> {
 }

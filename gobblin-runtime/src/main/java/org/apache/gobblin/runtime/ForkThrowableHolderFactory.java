@@ -21,10 +21,10 @@ import org.apache.gobblin.broker.EmptyKey;
 import org.apache.gobblin.broker.ResourceInstance;
 import org.apache.gobblin.broker.gobblin_scopes.GobblinScopeTypes;
 import org.apache.gobblin.broker.iface.ConfigView;
+import org.apache.gobblin.broker.iface.ISharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.NotConfiguredException;
 import org.apache.gobblin.broker.iface.ScopedConfigView;
 import org.apache.gobblin.broker.iface.SharedResourceFactory;
-import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 
 
@@ -36,7 +36,7 @@ public class ForkThrowableHolderFactory implements SharedResourceFactory<ForkThr
   }
 
   @Override
-  public SharedResourceFactoryResponse<ForkThrowableHolder> createResource(
+  public ISharedResourceFactoryResponse<ForkThrowableHolder> createResource(
       SharedResourcesBroker<GobblinScopeTypes> broker, ScopedConfigView<GobblinScopeTypes, EmptyKey> config)
       throws NotConfiguredException {
     return new ResourceInstance<>(new ForkThrowableHolder());

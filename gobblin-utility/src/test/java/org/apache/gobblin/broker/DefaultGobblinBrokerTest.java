@@ -32,11 +32,11 @@ import org.apache.gobblin.broker.gobblin_scopes.GobblinScopeTypes;
 import org.apache.gobblin.broker.gobblin_scopes.JobScopeInstance;
 import org.apache.gobblin.broker.gobblin_scopes.TaskScopeInstance;
 import org.apache.gobblin.broker.iface.ConfigView;
+import org.apache.gobblin.broker.iface.ISharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.NoSuchScopeException;
 import org.apache.gobblin.broker.iface.NotConfiguredException;
 import org.apache.gobblin.broker.iface.ScopedConfigView;
 import org.apache.gobblin.broker.iface.SharedResourceFactory;
-import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 
 import lombok.Data;
@@ -240,7 +240,7 @@ public class DefaultGobblinBrokerTest {
       }
 
       @Override
-      public SharedResourceFactoryResponse<Long> createResource(SharedResourcesBroker<SimpleScopeType> broker,
+      public ISharedResourceFactoryResponse<Long> createResource(SharedResourcesBroker<SimpleScopeType> broker,
           ScopedConfigView<SimpleScopeType, EmptyKey> config) throws NotConfiguredException {
         throw new UnsupportedOperationException();
       }
@@ -299,7 +299,7 @@ public class DefaultGobblinBrokerTest {
     }
 
     @Override
-    public SharedResourceFactoryResponse<Long> createResource(SharedResourcesBroker<SimpleScopeType> broker,
+    public ISharedResourceFactoryResponse<Long> createResource(SharedResourcesBroker<SimpleScopeType> broker,
         ScopedConfigView<SimpleScopeType, EmptyKey> config) throws NotConfiguredException {
       MyResourceEntry<Long> resourceEntry = new MyResourceEntry<>(new Random().nextLong());
       lastResourceEntry = resourceEntry;

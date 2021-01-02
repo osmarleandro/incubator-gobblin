@@ -20,12 +20,12 @@ package org.apache.gobblin.metrics.broker;
 import com.typesafe.config.ConfigValue;
 import org.apache.gobblin.broker.ResourceInstance;
 import org.apache.gobblin.broker.iface.ConfigView;
+import org.apache.gobblin.broker.iface.ISharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.NoSuchScopeException;
 import org.apache.gobblin.broker.iface.NotConfiguredException;
 import org.apache.gobblin.broker.iface.ScopeType;
 import org.apache.gobblin.broker.iface.ScopedConfigView;
 import org.apache.gobblin.broker.iface.SharedResourceFactory;
-import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 import org.apache.gobblin.metrics.MetricContext;
 import org.apache.gobblin.metrics.RootMetricContext;
@@ -57,7 +57,7 @@ public class MetricContextFactory<S extends ScopeType<S>> implements SharedResou
   }
 
   @Override
-  public SharedResourceFactoryResponse<MetricContext> createResource(SharedResourcesBroker<S> broker,
+  public ISharedResourceFactoryResponse<MetricContext> createResource(SharedResourcesBroker<S> broker,
       ScopedConfigView<S, MetricContextKey> config) throws NotConfiguredException {
 
     try {

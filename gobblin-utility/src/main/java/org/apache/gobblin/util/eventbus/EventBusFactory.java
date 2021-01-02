@@ -23,11 +23,11 @@ import com.google.common.eventbus.EventBus;
 
 import org.apache.gobblin.broker.ResourceInstance;
 import org.apache.gobblin.broker.iface.ConfigView;
+import org.apache.gobblin.broker.iface.ISharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.NotConfiguredException;
 import org.apache.gobblin.broker.iface.ScopeType;
 import org.apache.gobblin.broker.iface.ScopedConfigView;
 import org.apache.gobblin.broker.iface.SharedResourceFactory;
-import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 
 
@@ -53,7 +53,7 @@ public class EventBusFactory<S extends ScopeType<S>> implements SharedResourceFa
   }
 
   @Override
-  public SharedResourceFactoryResponse<EventBus> createResource(SharedResourcesBroker<S> broker,
+  public ISharedResourceFactoryResponse<EventBus> createResource(SharedResourcesBroker<S> broker,
       ScopedConfigView<S, EventBusKey> config) {
     EventBusKey eventBusKey = config.getKey();
     EventBus eventBus = new EventBus(eventBusKey.getSourceClassName());

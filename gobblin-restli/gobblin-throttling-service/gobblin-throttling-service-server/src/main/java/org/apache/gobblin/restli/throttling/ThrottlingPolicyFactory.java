@@ -22,10 +22,10 @@ import com.typesafe.config.Config;
 import org.apache.gobblin.broker.ResourceInstance;
 import org.apache.gobblin.broker.TTLResourceEntry;
 import org.apache.gobblin.broker.iface.ConfigView;
+import org.apache.gobblin.broker.iface.ISharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.NotConfiguredException;
 import org.apache.gobblin.broker.iface.ScopedConfigView;
 import org.apache.gobblin.broker.iface.SharedResourceFactory;
-import org.apache.gobblin.broker.iface.SharedResourceFactoryResponse;
 import org.apache.gobblin.broker.iface.SharedResourcesBroker;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
@@ -53,7 +53,7 @@ public class ThrottlingPolicyFactory implements SharedResourceFactory<Throttling
   }
 
   @Override
-  public SharedResourceFactoryResponse<ThrottlingPolicy> createResource(SharedResourcesBroker<ThrottlingServerScopes> broker,
+  public ISharedResourceFactoryResponse<ThrottlingPolicy> createResource(SharedResourcesBroker<ThrottlingServerScopes> broker,
       ScopedConfigView<ThrottlingServerScopes, SharedLimiterKey> configView) throws NotConfiguredException {
 
     Config config = configView.getConfig();
