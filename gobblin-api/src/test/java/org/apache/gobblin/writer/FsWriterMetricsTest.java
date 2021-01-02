@@ -25,7 +25,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 
-public class FsWriterMetricsTest {
+public class FsWriterMetricsTest implements IFsWriterMetricsTest {
   @Test
   public void testSerialization() throws IOException {
     final String WRITER_ID = "foobar123";
