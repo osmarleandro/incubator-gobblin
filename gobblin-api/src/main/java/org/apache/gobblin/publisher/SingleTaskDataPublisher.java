@@ -28,7 +28,7 @@ import org.apache.gobblin.configuration.WorkUnitState;
 /**
  * A subclass of {@link DataPublisher} that can publish data of a single {@link Task}.
  */
-public abstract class SingleTaskDataPublisher extends DataPublisher {
+public abstract class SingleTaskDataPublisher extends DataPublisher implements ISingleTaskDataPublisher {
 
   public SingleTaskDataPublisher(State state) {
     super(state);
