@@ -29,7 +29,7 @@ import lombok.EqualsAndHashCode;
  * Dataset comparator that compares by dataset urn.
  */
 @EqualsAndHashCode
-public class URNLexicographicalComparator implements Comparator<URNIdentified>, Serializable {
+public class URNLexicographicalComparator implements Comparator<URNIdentified>, Serializable, IURNLexicographicalComparator {
   private static final long serialVersionUID = 2647543651352156568L;
 
   @Override
