@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.Properties;
 import org.apache.commons.io.FileUtils;
 import org.apache.gobblin.runtime.api.FlowSpec;
+import org.apache.gobblin.runtime.api.ISpec;
 import org.apache.gobblin.runtime.api.Spec;
 import org.apache.gobblin.runtime.api.SpecExecutor;
 import org.apache.gobblin.runtime.api.SpecNotFoundException;
@@ -124,7 +125,7 @@ public class FlowCatalogTest {
     Collection<Spec> specs = flowCatalog.getSpecs();
     logger.info("[Before Create] Number of specs: " + specs.size());
     int i=0;
-    for (Spec spec : specs) {
+    for (ISpec spec : specs) {
       FlowSpec flowSpec = (FlowSpec) spec;
       logger.info("[Before Create] Spec " + i++ + ": " + gson.toJson(flowSpec));
     }
@@ -137,7 +138,7 @@ public class FlowCatalogTest {
     specs = flowCatalog.getSpecs();
     logger.info("[After Create] Number of specs: " + specs.size());
     i = 0;
-    for (Spec spec : specs) {
+    for (ISpec spec : specs) {
       flowSpec = (FlowSpec) spec;
       logger.info("[After Create] Spec " + i++ + ": " + gson.toJson(flowSpec));
     }
@@ -155,7 +156,7 @@ public class FlowCatalogTest {
     Collection<Spec> specs = flowCatalog.getSpecs();
     logger.info("[Before Delete] Number of specs: " + specs.size());
     int i=0;
-    for (Spec spec : specs) {
+    for (ISpec spec : specs) {
       FlowSpec flowSpec = (FlowSpec) spec;
       logger.info("[Before Delete] Spec " + i++ + ": " + gson.toJson(flowSpec));
     }
@@ -167,7 +168,7 @@ public class FlowCatalogTest {
     specs = flowCatalog.getSpecs();
     logger.info("[After Delete] Number of specs: " + specs.size());
     i = 0;
-    for (Spec spec : specs) {
+    for (ISpec spec : specs) {
       flowSpec = (FlowSpec) spec;
       logger.info("[After Delete] Spec " + i++ + ": " + gson.toJson(flowSpec));
     }

@@ -36,8 +36,8 @@ import com.typesafe.config.Config;
 
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.runtime.api.FlowSpec;
+import org.apache.gobblin.runtime.api.ISpec;
 import org.apache.gobblin.runtime.api.JobSpec;
-import org.apache.gobblin.runtime.api.Spec;
 import org.apache.gobblin.runtime.api.SpecExecutor;
 import org.apache.gobblin.runtime.api.TopologySpec;
 import org.apache.gobblin.runtime.spec_executorInstance.InMemorySpecExecutor;
@@ -194,7 +194,7 @@ public class IdentityFlowToJobSpecCompilerTest {
 
     // Assert FlowSpec compilation
     Dag.DagNode<JobExecutionPlan> dagNode = jobExecutionPlanDag.getStartNodes().get(0);
-    Spec spec = dagNode.getValue().getJobSpec();
+    ISpec spec = dagNode.getValue().getJobSpec();
     Assert.assertTrue(spec instanceof JobSpec, "Expected JobSpec compiled from FlowSpec.");
 
     // Assert JobSpec properties
@@ -228,7 +228,7 @@ public class IdentityFlowToJobSpecCompilerTest {
     // Assert FlowSpec compilation
     Assert.assertEquals(jobExecutionPlanDag.getStartNodes().size(), 1);
     Dag.DagNode<JobExecutionPlan> dagNode = jobExecutionPlanDag.getStartNodes().get(0);
-    Spec spec = dagNode.getValue().getJobSpec();
+    ISpec spec = dagNode.getValue().getJobSpec();
     Assert.assertTrue(spec instanceof JobSpec, "Expected JobSpec compiled from FlowSpec.");
 
     // Assert JobSpec properties

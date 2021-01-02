@@ -28,7 +28,7 @@ import com.google.gson.JsonSerializer;
 import com.typesafe.config.ConfigRenderOptions;
 
 import org.apache.gobblin.runtime.api.FlowSpec;
-import org.apache.gobblin.runtime.api.Spec;
+import org.apache.gobblin.runtime.api.ISpec;
 
 
 public class FlowSpecSerializer implements JsonSerializer<FlowSpec> {
@@ -61,7 +61,7 @@ public class FlowSpecSerializer implements JsonSerializer<FlowSpec> {
 
     JsonArray childSpecs = new JsonArray();
     if (src.getChildSpecs().isPresent()) {
-      for (Spec spec : src.getChildSpecs().get()) {
+      for (ISpec spec : src.getChildSpecs().get()) {
         childSpecs.add(context.serialize(spec));
       }
     }

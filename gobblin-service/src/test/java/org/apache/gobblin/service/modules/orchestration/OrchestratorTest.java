@@ -41,6 +41,7 @@ import com.google.gson.GsonBuilder;
 import com.typesafe.config.Config;
 
 import org.apache.gobblin.runtime.api.FlowSpec;
+import org.apache.gobblin.runtime.api.ISpec;
 import org.apache.gobblin.runtime.api.Spec;
 import org.apache.gobblin.runtime.api.TopologySpec;
 import org.apache.gobblin.runtime.app.ServiceBasedAppLauncher;
@@ -178,7 +179,7 @@ public class OrchestratorTest {
     Collection<Spec> specs = topologyCatalog.getSpecs();
     logger.info("[Before Create] Number of specs: " + specs.size());
     int i=0;
-    for (Spec spec : specs) {
+    for (ISpec spec : specs) {
       TopologySpec topologySpec = (TopologySpec) spec;
       logger.info("[Before Create] Spec " + i++ + ": " + gson.toJson(topologySpec));
     }
@@ -195,7 +196,7 @@ public class OrchestratorTest {
     specs = topologyCatalog.getSpecs();
     logger.info("[After Create] Number of specs: " + specs.size());
     i = 0;
-    for (Spec spec : specs) {
+    for (ISpec spec : specs) {
       topologySpec = (TopologySpec) spec;
       logger.info("[After Create] Spec " + i++ + ": " + gson.toJson(topologySpec));
     }
@@ -216,7 +217,7 @@ public class OrchestratorTest {
     Collection<Spec> specs = flowCatalog.getSpecs();
     logger.info("[Before Create] Number of specs: " + specs.size());
     int i=0;
-    for (Spec spec : specs) {
+    for (ISpec spec : specs) {
       FlowSpec flowSpec = (FlowSpec) spec;
       logger.info("[Before Create] Spec " + i++ + ": " + gson.toJson(flowSpec));
     }
@@ -233,7 +234,7 @@ public class OrchestratorTest {
     specs = flowCatalog.getSpecs();
     logger.info("[After Create] Number of specs: " + specs.size());
     i = 0;
-    for (Spec spec : specs) {
+    for (ISpec spec : specs) {
       flowSpec = (FlowSpec) spec;
       logger.info("[After Create] Spec " + i++ + ": " + gson.toJson(flowSpec));
     }
@@ -255,7 +256,7 @@ public class OrchestratorTest {
     Collection<Spec> specs = flowCatalog.getSpecs();
     logger.info("[Before Delete] Number of specs: " + specs.size());
     int i=0;
-    for (Spec spec : specs) {
+    for (ISpec spec : specs) {
       FlowSpec flowSpec = (FlowSpec) spec;
       logger.info("[Before Delete] Spec " + i++ + ": " + gson.toJson(flowSpec));
     }
@@ -273,7 +274,7 @@ public class OrchestratorTest {
     specs = flowCatalog.getSpecs();
     logger.info("[After Delete] Number of specs: " + specs.size());
     i = 0;
-    for (Spec spec : specs) {
+    for (ISpec spec : specs) {
       flowSpec = (FlowSpec) spec;
       logger.info("[After Delete] Spec " + i++ + ": " + gson.toJson(flowSpec));
     }
