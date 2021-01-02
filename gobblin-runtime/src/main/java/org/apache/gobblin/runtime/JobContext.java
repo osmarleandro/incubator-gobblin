@@ -54,6 +54,7 @@ import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.instrumented.Instrumented;
 import org.apache.gobblin.metastore.DatasetStateStore;
+import org.apache.gobblin.metastore.DatasetStateStore.Factory;
 import org.apache.gobblin.metastore.JobHistoryStore;
 import org.apache.gobblin.metastore.MetaStoreModule;
 import org.apache.gobblin.metrics.GobblinMetrics;
@@ -68,6 +69,7 @@ import org.apache.gobblin.util.ConfigUtils;
 import org.apache.gobblin.util.Either;
 import org.apache.gobblin.util.ExecutorsUtils;
 import org.apache.gobblin.util.HadoopUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.Id;
 import org.apache.gobblin.util.JobLauncherUtils;
 import org.apache.gobblin.util.executors.IteratorExecutor;
@@ -193,7 +195,7 @@ public class JobContext implements Closeable {
           .getString(jobConfig, ConfigurationKeys.STATE_STORE_TYPE_KEY, ConfigurationKeys.DEFAULT_STATE_STORE_TYPE));
     }
 
-    ClassAliasResolver<DatasetStateStore.Factory> resolver = new ClassAliasResolver<>(DatasetStateStore.Factory.class);
+    IClassAliasResolver<Factory> resolver = new ClassAliasResolver<>(DatasetStateStore.Factory.class);
 
     try {
       DatasetStateStore.Factory stateStoreFactory = resolver.resolveClass(stateStoreType).newInstance();

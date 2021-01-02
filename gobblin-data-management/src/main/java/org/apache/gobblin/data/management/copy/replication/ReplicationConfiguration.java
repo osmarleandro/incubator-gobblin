@@ -33,6 +33,7 @@ import com.typesafe.config.Config;
 import org.apache.gobblin.data.management.copy.CopyConfiguration;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.filesystem.DataFileVersionStrategy;
 
 import lombok.Getter;
@@ -83,19 +84,19 @@ public class ReplicationConfiguration {
   public static final String DATA_FLOW_TOPOLOGY_PICKER_CLASS = "dataFlowTopologyPickerClass";
   public static final String DEFAULT_DATA_FLOW_TOPOLOGY_PICKER_CLASS =
       DataFlowTopologyPickerByHadoopFsSource.class.getCanonicalName();
-  public static final ClassAliasResolver<DataFlowTopologyPickerBySource> dataFlowTopologyPickerResolver =
+  public static final IClassAliasResolver<DataFlowTopologyPickerBySource> dataFlowTopologyPickerResolver =
       new ClassAliasResolver<>(DataFlowTopologyPickerBySource.class);
 
   // end point factory
   public static final String END_POINT_FACTORY_CLASS = "endPointFactoryClass";
   public static final String DEFAULT_END_POINT_FACTORY_CLASS = HadoopFsEndPointFactory.class.getCanonicalName();
-  public static final ClassAliasResolver<EndPointFactory> endPointFactoryResolver =
+  public static final IClassAliasResolver<EndPointFactory> endPointFactoryResolver =
       new ClassAliasResolver<>(EndPointFactory.class);
 
   // copy route generator
   public static final String COPYROUTE_OPTIMIZER_CLASS = "copyRouteOptimizerClass";
   public static final String DEFAULT_COPYROUTE_OPTIMIZER_CLASS = CopyRouteGeneratorOptimizedNetworkBandwidth.class.getCanonicalName();
-  public static final ClassAliasResolver<CopyRouteGenerator> copyRouteGeneratorResolver =
+  public static final IClassAliasResolver<CopyRouteGenerator> copyRouteGeneratorResolver =
       new ClassAliasResolver<>(CopyRouteGenerator.class);
 
 

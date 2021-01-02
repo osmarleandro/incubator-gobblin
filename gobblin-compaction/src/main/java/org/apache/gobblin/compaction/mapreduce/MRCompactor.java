@@ -79,6 +79,7 @@ import org.apache.gobblin.util.DatasetFilterUtils;
 import org.apache.gobblin.util.ExecutorsUtils;
 import org.apache.gobblin.util.FileListUtils;
 import org.apache.gobblin.util.HadoopUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.recordcount.CompactionRecordCountProvider;
 import org.apache.gobblin.util.recordcount.IngestionRecordCountProvider;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
@@ -401,7 +402,7 @@ public class MRCompactor implements Compactor {
   }
 
   private CompactorCompletionListener getCompactionCompleteListener () {
-    ClassAliasResolver<CompactorCompletionListenerFactory> classAliasResolver = new ClassAliasResolver<>(CompactorCompletionListenerFactory.class);
+    IClassAliasResolver<CompactorCompletionListenerFactory> classAliasResolver = new ClassAliasResolver<>(CompactorCompletionListenerFactory.class);
     String listenerName= this.state.getProp(MRCompactor.COMPACTION_COMPLETE_LISTERNER,
         MRCompactor.DEFAULT_COMPACTION_COMPLETE_LISTERNER);
     try {

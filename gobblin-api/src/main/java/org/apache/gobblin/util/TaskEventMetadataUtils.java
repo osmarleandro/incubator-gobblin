@@ -30,7 +30,7 @@ public class TaskEventMetadataUtils {
     String taskEventMetadataGeneratorClassName =
         taskState.getProp(ConfigurationKeys.TASK_EVENT_METADATA_GENERATOR_CLASS_KEY,
             ConfigurationKeys.DEFAULT_TASK_EVENT_METADATA_GENERATOR_CLASS_KEY);
-    ClassAliasResolver<TaskEventMetadataGenerator> aliasResolver =
+    IClassAliasResolver<TaskEventMetadataGenerator> aliasResolver =
         new ClassAliasResolver<>(TaskEventMetadataGenerator.class);
     try {
       return aliasResolver.resolveClass(taskEventMetadataGeneratorClassName).newInstance();

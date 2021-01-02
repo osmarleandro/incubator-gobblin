@@ -28,6 +28,7 @@ import org.apache.commons.pool2.impl.DefaultPooledObject;
 import lombok.Setter;
 
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 
 
@@ -54,7 +55,7 @@ public class HttpClientFactory extends BasePooledObjectFactory<HttpClient>{
       client.getParams().setSoTimeout(soTimeout);
     }
 
-    ClassAliasResolver<HttpMethodRetryHandler> aliasResolver = new ClassAliasResolver<>(HttpMethodRetryHandler.class);
+    IClassAliasResolver<HttpMethodRetryHandler> aliasResolver = new ClassAliasResolver<>(HttpMethodRetryHandler.class);
     HttpMethodRetryHandler httpMethodRetryHandler;
     try {
       httpMethodRetryHandler = GobblinConstructorUtils.invokeLongestConstructor(aliasResolver.resolveClass(httpMethodRetryHandlerClass), httpMethodRetryCount, httpRequestSentRetryEnabled);

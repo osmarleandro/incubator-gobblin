@@ -49,7 +49,7 @@ import org.apache.gobblin.annotation.Alias;
  * </b>
  */
 @Slf4j
-public class ClassAliasResolver<T> {
+public class ClassAliasResolver<T> implements IClassAliasResolver<T> {
 
   // Scan all packages in the classpath with prefix gobblin, com.linkedin.gobblin when class is loaded.
   // Since scan is expensive we do it only once when class is loaded.

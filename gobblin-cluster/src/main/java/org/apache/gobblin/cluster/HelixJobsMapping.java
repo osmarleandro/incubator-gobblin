@@ -32,9 +32,11 @@ import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.metastore.FsStateStore;
 import org.apache.gobblin.metastore.StateStore;
+import org.apache.gobblin.metastore.StateStore.Factory;
 import org.apache.gobblin.runtime.JobState;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.JobLauncherUtils;
 
 
@@ -73,7 +75,7 @@ public class HelixJobsMapping {
                                                                         ConfigurationKeys.STATE_STORE_TYPE_KEY,
                                                                         ConfigurationKeys.DEFAULT_STATE_STORE_TYPE));
 
-    ClassAliasResolver<StateStore.Factory> resolver =
+    IClassAliasResolver<Factory> resolver =
         new ClassAliasResolver<>(StateStore.Factory.class);
     StateStore.Factory stateStoreFactory;
 

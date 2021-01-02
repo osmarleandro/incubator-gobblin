@@ -74,6 +74,7 @@ import org.apache.gobblin.source.extractor.extract.LongWatermark;
 import org.apache.gobblin.source.workunit.WorkUnit;
 import org.apache.gobblin.util.AutoReturnableObject;
 import org.apache.gobblin.util.HadoopUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 import org.apache.gobblin.util.io.GsonInterfaceAdapter;
 import org.apache.gobblin.util.reflection.GobblinConstructorUtils;
 import org.apache.gobblin.util.ClassAliasResolver;
@@ -156,7 +157,7 @@ public class HiveSource implements Source {
   protected long beginGetWorkunitsTime;
   protected List<String> ignoreDataPathIdentifierList;
 
-  protected final ClassAliasResolver<HiveBaseExtractorFactory> classAliasResolver =
+  protected final IClassAliasResolver<HiveBaseExtractorFactory> classAliasResolver =
       new ClassAliasResolver<>(HiveBaseExtractorFactory.class);
 
   @Override

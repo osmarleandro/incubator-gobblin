@@ -26,6 +26,7 @@ import com.typesafe.config.Config;
 
 import org.apache.gobblin.runtime.api.GobblinInstancePluginFactory;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 
 /**
@@ -33,7 +34,7 @@ import org.apache.gobblin.util.ClassAliasResolver;
  */
 public class GobblinInstancePluginUtils {
 
-  private static final ClassAliasResolver<GobblinInstancePluginFactory> RESOLVER =
+  private static final IClassAliasResolver<GobblinInstancePluginFactory> RESOLVER =
       new ClassAliasResolver<>(GobblinInstancePluginFactory.class);
 
   public static final String PLUGINS_KEY = PluginStaticKeys.INSTANCE_CONFIG_PREFIX + "pluginAliases";

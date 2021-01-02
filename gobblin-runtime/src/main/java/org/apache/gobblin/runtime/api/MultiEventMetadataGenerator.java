@@ -26,6 +26,7 @@ import com.google.common.collect.Maps;
 import org.apache.gobblin.metrics.event.EventName;
 import org.apache.gobblin.runtime.JobContext;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 
 /**
@@ -39,7 +40,7 @@ public class MultiEventMetadataGenerator {
   public MultiEventMetadataGenerator(List<String> multiEventMetadataGeneratorList) {
     for (String eventMetadatadataGeneratorClassName : multiEventMetadataGeneratorList) {
       try {
-        ClassAliasResolver<EventMetadataGenerator> aliasResolver = new ClassAliasResolver<>(EventMetadataGenerator.class);
+        IClassAliasResolver<EventMetadataGenerator> aliasResolver = new ClassAliasResolver<>(EventMetadataGenerator.class);
         this.eventMetadataGenerators.add(aliasResolver.resolveClass(eventMetadatadataGeneratorClassName).newInstance());
       } catch (ReflectiveOperationException e) {
         throw new RuntimeException("Could not construct EventMetadataGenerator " + eventMetadatadataGeneratorClassName, e);

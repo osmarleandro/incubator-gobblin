@@ -19,7 +19,10 @@ package org.apache.gobblin.runtime.commit;
 
 import com.typesafe.config.ConfigFactory;
 import org.apache.gobblin.metastore.DatasetStateStore;
+import org.apache.gobblin.metastore.DatasetStateStore.Factory;
 import org.apache.gobblin.util.ClassAliasResolver;
+import org.apache.gobblin.util.IClassAliasResolver;
+
 import java.io.IOException;
 
 import com.google.common.base.Preconditions;
@@ -102,7 +105,7 @@ public class DatasetStateCommitStep extends CommitStepBase {
 
   private DatasetStateStore getDatasetStateStore() throws IOException {
     if (this.stateStore == null) {
-      ClassAliasResolver<DatasetStateStore.Factory> resolver =
+      IClassAliasResolver<Factory> resolver =
           new ClassAliasResolver<>(DatasetStateStore.Factory.class);
 
       String stateStoreType = this.props.getProp(ConfigurationKeys.DATASET_STATE_STORE_TYPE_KEY,

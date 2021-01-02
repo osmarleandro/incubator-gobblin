@@ -31,6 +31,7 @@ import org.apache.gobblin.runtime.job_catalog.InMemoryJobCatalog;
 import org.apache.gobblin.runtime.job_catalog.PackagedTemplatesJobCatalogDecorator;
 import org.apache.gobblin.util.ClassAliasResolver;
 import org.apache.gobblin.util.ConfigUtils;
+import org.apache.gobblin.util.IClassAliasResolver;
 
 import com.google.common.base.Splitter;
 import com.typesafe.config.Config;
@@ -93,7 +94,7 @@ public class JobSpecResolver {
 			for (String action : Splitter.on(",").trimResults().omitEmptyStrings()
 					.split(ConfigUtils.getString(sysConfig, JOB_RESOLUTION_ACTIONS_KEY, ""))) {
 				try {
-					ClassAliasResolver<JobResolutionCallbacks> resolver = new ClassAliasResolver<>(JobResolutionCallbacks.class);
+					IClassAliasResolver<JobResolutionCallbacks> resolver = new ClassAliasResolver<>(JobResolutionCallbacks.class);
 					JobResolutionCallbacks actionInstance = resolver.resolveClass(action).newInstance();
 					this.jobResolutionCallbacks.add(actionInstance);
 				} catch (ReflectiveOperationException roe) {
