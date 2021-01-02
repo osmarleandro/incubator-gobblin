@@ -27,5 +27,5 @@ public interface DescriptorResolverFactory {
   /**
    * @param config configurations only about {@link DescriptorResolver}
    */
-  DescriptorResolver createResolver(Config config);
+  IDescriptorResolver createResolver(Config config);
 }
