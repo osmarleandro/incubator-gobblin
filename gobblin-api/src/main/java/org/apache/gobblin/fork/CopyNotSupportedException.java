@@ -22,7 +22,7 @@ package org.apache.gobblin.fork;
  *
  * @author Yinan Li
  */
-public class CopyNotSupportedException extends Exception {
+public class CopyNotSupportedException extends Exception implements ICopyNotSupportedException {
 
   private static final long serialVersionUID = 1L;
 
