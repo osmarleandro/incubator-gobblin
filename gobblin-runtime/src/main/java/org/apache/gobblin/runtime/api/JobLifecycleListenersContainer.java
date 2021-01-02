@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * An interface for managing instances of {@link JobLifecycleListener}.
  */
-public interface JobLifecycleListenersContainer {
+public interface JobLifecycleListenersContainer extends IJobLifecycleListenersContainer {
   void registerJobLifecycleListener(JobLifecycleListener listener);
   /**
    * Like {@link #registerJobLifecycleListener(JobLifecycleListener)} but it will create a weak
