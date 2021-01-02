@@ -37,7 +37,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 
-public class RecordEnvelopeTest {
+public class RecordEnvelopeTest implements IRecordEnvelopeTest {
 
   @Test
   public void testDerivedRecordCreation() {
