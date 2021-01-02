@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-
+import org.apache.gobblin.util.IRecordCountProvider;
 import org.apache.gobblin.util.RecordCountProvider;
 import lombok.AllArgsConstructor;
 
@@ -35,7 +35,7 @@ public class LateFileRecordCountProvider extends RecordCountProvider {
   private static final String LATE_COMPONENT = ".late";
   private static final String EMPTY_STRING = "";
 
-  private RecordCountProvider recordCountProviderWithoutSuffix;
+  private IRecordCountProvider recordCountProviderWithoutSuffix;
 
   /**
    * Construct filename for a late file. If the file does not exists in the output dir, retain the original name.

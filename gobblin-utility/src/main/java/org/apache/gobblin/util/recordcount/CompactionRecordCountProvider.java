@@ -20,6 +20,7 @@ package org.apache.gobblin.util.recordcount;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import org.apache.gobblin.util.IRecordCountProvider;
 import org.apache.gobblin.util.RecordCountProvider;
 import org.apache.hadoop.fs.Path;
 
@@ -90,7 +91,7 @@ public class CompactionRecordCountProvider extends RecordCountProvider {
    * This method currently supports converting the given {@link Path} from {@link IngestionRecordCountProvider}.
    * The converted {@link Path} will start with {@link #M_OUTPUT_FILE_PREFIX}.
    */
-  public Path convertPath(Path path, String extension, RecordCountProvider src) {
+  public Path convertPath(Path path, String extension, IRecordCountProvider src) {
     if (this.getClass().equals(src.getClass())) {
       return path;
     } else if (src.getClass().equals(IngestionRecordCountProvider.class)) {

@@ -33,7 +33,7 @@ import org.apache.gobblin.compaction.mapreduce.MRCompactor;
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.configuration.State;
 import org.apache.gobblin.util.HadoopUtils;
-import org.apache.gobblin.util.RecordCountProvider;
+import org.apache.gobblin.util.IRecordCountProvider;
 import org.apache.gobblin.util.recordcount.IngestionRecordCountProvider;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -58,7 +58,7 @@ public class InputRecordCountHelper {
   @Getter
   private final FileSystem fs;
   private final State state;
-  private final RecordCountProvider inputRecordCountProvider;
+  private final IRecordCountProvider inputRecordCountProvider;
   private final String extensionName;
 
   @Deprecated
@@ -74,7 +74,7 @@ public class InputRecordCountHelper {
       this.fs = getSourceFileSystem(state);
       this.state = state;
       this.extensionName = state.getProp(COMPACTION_OUTPUT_EXTENSION, DEFAULT_COMPACTION_OUTPUT_EXTENSION);
-      this.inputRecordCountProvider = (RecordCountProvider) Class.forName(
+      this.inputRecordCountProvider = (IRecordCountProvider) Class.forName(
           state.getProp(MRCompactor.COMPACTION_INPUT_RECORD_COUNT_PROVIDER,
               MRCompactor.DEFAULT_COMPACTION_INPUT_RECORD_COUNT_PROVIDER)).newInstance();
     } catch (Exception e) {
