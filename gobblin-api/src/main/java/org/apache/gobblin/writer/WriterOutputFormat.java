@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Yinan Li
  */
-public enum WriterOutputFormat {
+public enum WriterOutputFormat implements IWriterOutputFormat {
   AVRO("avro"),
   PARQUET("parquet"),
   PROTOBUF("protobuf"),
