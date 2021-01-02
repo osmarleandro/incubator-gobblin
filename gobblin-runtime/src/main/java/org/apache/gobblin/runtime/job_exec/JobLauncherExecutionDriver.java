@@ -58,6 +58,7 @@ import org.apache.gobblin.runtime.JobState;
 import org.apache.gobblin.runtime.JobState.RunningState;
 import org.apache.gobblin.runtime.api.Configurable;
 import org.apache.gobblin.runtime.api.GobblinInstanceEnvironment;
+import org.apache.gobblin.runtime.api.IJobExecutionMonitor;
 import org.apache.gobblin.runtime.api.JobExecution;
 import org.apache.gobblin.runtime.api.JobExecutionDriver;
 import org.apache.gobblin.runtime.api.JobExecutionLauncher;
@@ -447,7 +448,7 @@ public class JobLauncherExecutionDriver extends FutureTask<JobExecutionResult> i
     }
 
     @Override
-    public JobExecutionMonitor launchJob(JobSpec jobSpec) {
+    public IJobExecutionMonitor launchJob(JobSpec jobSpec) {
       Preconditions.checkNotNull(jobSpec);
       if (!(jobSpec instanceof ResolvedJobSpec)) {
         try {

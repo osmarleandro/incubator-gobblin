@@ -31,9 +31,9 @@ import com.google.common.collect.ImmutableMap;
 import com.typesafe.config.ConfigFactory;
 
 import org.apache.gobblin.runtime.api.GobblinInstanceDriver;
+import org.apache.gobblin.runtime.api.IJobExecutionMonitor;
 import org.apache.gobblin.runtime.api.JobExecutionDriver;
 import org.apache.gobblin.runtime.api.JobExecutionLauncher;
-import org.apache.gobblin.runtime.api.JobExecutionMonitor;
 import org.apache.gobblin.runtime.api.JobExecutionResult;
 import org.apache.gobblin.runtime.api.JobLifecycleListener;
 import org.apache.gobblin.runtime.api.JobSpec;
@@ -103,7 +103,7 @@ public class TestStandardGobblinInstanceLauncher {
   private void checkLaunchJob(StandardGobblinInstanceLauncher instanceLauncher, JobSpec js1,
       GobblinInstanceDriver instance) throws TimeoutException, InterruptedException, ExecutionException {
     JobExecutionDriver jobDriver = null;
-    JobExecutionMonitor monitor = instance.getJobLauncher().launchJob(js1);
+    IJobExecutionMonitor monitor = instance.getJobLauncher().launchJob(js1);
     if (monitor instanceof JobLauncherExecutionDriver.JobExecutionMonitorAndDriver) {
       jobDriver = ((JobLauncherExecutionDriver.JobExecutionMonitorAndDriver) monitor).getDriver();
     }

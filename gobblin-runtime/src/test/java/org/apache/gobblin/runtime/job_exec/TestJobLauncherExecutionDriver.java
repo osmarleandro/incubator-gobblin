@@ -32,8 +32,8 @@ import com.typesafe.config.ConfigValueFactory;
 
 import org.apache.gobblin.configuration.ConfigurationKeys;
 import org.apache.gobblin.runtime.JobLauncherFactory;
+import org.apache.gobblin.runtime.api.IJobExecutionMonitor;
 import org.apache.gobblin.runtime.api.JobExecution;
-import org.apache.gobblin.runtime.api.JobExecutionMonitor;
 import org.apache.gobblin.runtime.api.JobSpec;
 import org.apache.gobblin.runtime.local.LocalJobLauncher;
 import org.apache.gobblin.runtime.mapreduce.MRJobLauncher;
@@ -72,7 +72,7 @@ public class TestJobLauncherExecutionDriver {
               .withLog(log);
 
       JobLauncherExecutionDriver jled = null;
-      JobExecutionMonitor monitor = launcher.launchJob(jobSpec1);
+      IJobExecutionMonitor monitor = launcher.launchJob(jobSpec1);
       if (monitor instanceof JobLauncherExecutionDriver.JobExecutionMonitorAndDriver) {
         jled = ((JobLauncherExecutionDriver.JobExecutionMonitorAndDriver) monitor).getDriver();
       }

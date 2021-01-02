@@ -45,7 +45,7 @@ public interface JobExecutionLauncher extends Instrumentable {
    *
    * @see JobExecutionMonitor
    */
-  JobExecutionMonitor launchJob(JobSpec jobSpec);
+  IJobExecutionMonitor launchJob(JobSpec jobSpec);
 
   /**
    * Common metrics for all launcher implementations.

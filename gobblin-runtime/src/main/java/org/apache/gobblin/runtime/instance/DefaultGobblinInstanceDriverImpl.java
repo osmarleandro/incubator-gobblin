@@ -39,10 +39,10 @@ import org.apache.gobblin.runtime.api.Configurable;
 import org.apache.gobblin.runtime.api.ExecutionResult;
 import org.apache.gobblin.runtime.api.GobblinInstanceDriver;
 import org.apache.gobblin.runtime.api.GobblinInstanceLauncher.ConfigAccessor;
+import org.apache.gobblin.runtime.api.IJobExecutionMonitor;
 import org.apache.gobblin.runtime.api.JobCatalog;
 import org.apache.gobblin.runtime.api.JobExecutionDriver;
 import org.apache.gobblin.runtime.api.JobExecutionLauncher;
-import org.apache.gobblin.runtime.api.JobExecutionMonitor;
 import org.apache.gobblin.runtime.api.JobExecutionState;
 import org.apache.gobblin.runtime.api.JobLifecycleListener;
 import org.apache.gobblin.runtime.api.JobSpec;
@@ -209,7 +209,7 @@ public class DefaultGobblinInstanceDriverImpl extends AbstractIdleService
     @Override
     public void run() {
       try {
-        JobExecutionMonitor monitor = _jobLauncher.launchJob(new ResolvedJobSpec(_jobSpec, _instanceDriver));
+        IJobExecutionMonitor monitor = _jobLauncher.launchJob(new ResolvedJobSpec(_jobSpec, _instanceDriver));
         if (!(monitor instanceof JobLauncherExecutionDriver.JobExecutionMonitorAndDriver)) {
           throw new UnsupportedOperationException(JobLauncherExecutionDriver.JobExecutionMonitorAndDriver.class.getName() + " is expected.");
         }

@@ -24,6 +24,6 @@ import java.util.concurrent.Future;
  *
  * It can also be used to get current job running status, which is described by {@link MonitoredObject}.
  */
-public interface JobExecutionMonitor extends Future<ExecutionResult> {
+public interface JobExecutionMonitor extends Future<ExecutionResult>, IJobExecutionMonitor {
   MonitoredObject getRunningState();
 }
