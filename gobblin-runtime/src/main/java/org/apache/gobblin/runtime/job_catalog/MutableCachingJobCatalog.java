@@ -28,7 +28,7 @@ import org.apache.gobblin.runtime.api.MutableJobCatalog;
 /**
  * Implements a write-through cache of a decorated JobCatalog
  */
-public class MutableCachingJobCatalog extends CachingJobCatalog implements MutableJobCatalog {
+public class MutableCachingJobCatalog extends CachingJobCatalog implements MutableJobCatalog, IMutableCachingJobCatalog {
 
   public MutableCachingJobCatalog(MutableJobCatalog fallback, Optional<Logger> log) {
     super(fallback, log);
