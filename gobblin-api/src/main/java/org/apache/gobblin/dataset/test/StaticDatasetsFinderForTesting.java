@@ -34,7 +34,7 @@ import lombok.AllArgsConstructor;
  * A {@link org.apache.gobblin.dataset.DatasetsFinder} that returns a predefined set of {@link Dataset}s for testing.
  */
 @AllArgsConstructor
-public class StaticDatasetsFinderForTesting implements IterableDatasetFinder<Dataset> {
+public class StaticDatasetsFinderForTesting implements IterableDatasetFinder<Dataset>, IStaticDatasetsFinderForTesting {
 
   private final List<Dataset> datasets;
 
