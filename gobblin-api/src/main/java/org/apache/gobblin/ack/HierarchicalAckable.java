@@ -39,7 +39,7 @@ import lombok.RequiredArgsConstructor;
  * childAckable.ack(); // When acking all children, parents will be acked.
  */
 @RequiredArgsConstructor
-public class HierarchicalAckable implements Closeable {
+public class HierarchicalAckable implements Closeable, IHierarchicalAckable {
 
   private final List<Ackable> parentAckables;
   private final AtomicInteger remainingCallbacks = new AtomicInteger();
