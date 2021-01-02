@@ -20,7 +20,7 @@ package org.apache.gobblin.ack;
 /**
  * An interface for entities that can be acked
  */
-public interface Ackable {
+public interface Ackable extends IAckable {
 
   /**
    * Acknowledge this entity as a success.
