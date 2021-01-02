@@ -27,7 +27,7 @@ import org.apache.gobblin.source.extractor.CheckpointableWatermark;
  * Making {@link CheckpointableWatermark} look like {@link State} so it can be
  * stored in a Gobblin state store.
  */
-public class CheckpointableWatermarkState extends State {
+public class CheckpointableWatermarkState extends State implements ICheckpointableWatermarkState {
 
   /**
    * Create a CheckpointableWatermarkState object from a CheckpointableWatermark
