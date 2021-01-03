@@ -18,7 +18,6 @@
 package org.apache.gobblin.converter.avro;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericDatumWriter;
@@ -32,7 +31,6 @@ import com.google.common.collect.Lists;
 
 import org.apache.gobblin.configuration.WorkUnitState;
 import org.apache.gobblin.converter.Converter;
-import org.apache.gobblin.converter.DataConversionException;
 import org.apache.gobblin.converter.SchemaConversionException;
 
 
@@ -43,14 +41,14 @@ public abstract class AvroToJsonStringConverterBase<T> extends Converter<Schema,
 
   private Schema schema;
 
-  private final ThreadLocal<Serializer> serializer = new ThreadLocal<Serializer>() {
+  protected final ThreadLocal<Serializer> serializer = new ThreadLocal<Serializer>() {
     @Override
     protected Serializer initialValue() {
       return new Serializer(AvroToJsonStringConverterBase.this.schema);
     }
   };
 
-  private static class Serializer {
+  static class Serializer {
 
     private final Encoder encoder;
     private final GenericDatumWriter<GenericRecord> writer;
@@ -79,17 +77,6 @@ public abstract class AvroToJsonStringConverterBase<T> extends Converter<Schema,
       throws SchemaConversionException {
     this.schema = inputSchema;
     return this.schema.toString();
-  }
-
-  @Override
-  public Iterable<T> convertRecord(String outputSchema, GenericRecord inputRecord, WorkUnitState workUnit)
-      throws DataConversionException {
-    try {
-      byte[] utf8Bytes = this.serializer.get().serialize(inputRecord);
-      return Collections.singleton(processUtf8Bytes(utf8Bytes));
-    } catch (IOException ioe) {
-      throw new DataConversionException(ioe);
-    }
   }
 
   protected abstract T processUtf8Bytes(byte[] utf8Bytes);
