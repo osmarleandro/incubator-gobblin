@@ -16,12 +16,28 @@
  */
 package org.apache.gobblin.converter.avro;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+
+import org.apache.avro.generic.GenericRecord;
+import org.apache.gobblin.configuration.WorkUnitState;
+import org.apache.gobblin.converter.DataConversionException;
 
 
 public class AvroToJsonStringConverter extends AvroToJsonStringConverterBase<String> {
   @Override
   protected String processUtf8Bytes(byte[] utf8Bytes) {
     return new String(utf8Bytes, StandardCharsets.UTF_8);
+  }
+
+@Override
+public Iterable<String> convertRecord(String outputSchema, GenericRecord inputRecord, WorkUnitState workUnit) throws DataConversionException {
+    try {
+      byte[] utf8Bytes = this.serializer.get().serialize(inputRecord);
+      return Collections.singleton(processUtf8Bytes(utf8Bytes));
+    } catch (IOException ioe) {
+      throw new DataConversionException(ioe);
+    }
   }
 }
