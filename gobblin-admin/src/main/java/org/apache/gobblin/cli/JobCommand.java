@@ -54,7 +54,7 @@ public class JobCommand implements CliApplication {
     }
 
     private interface SubCommand {
-        void execute(CommandLine parsedArgs, AdminClient adminClient, int resultsLimit)
+        void execute(CommandLine parsedArgs, AdminClient_RENAMED adminClient, int resultsLimit)
                 throws CommandException;
     }
 
@@ -96,7 +96,7 @@ public class JobCommand implements CliApplication {
     public void run(String[] args) throws Exception {
         this.options = createCommandLineOptions();
         DefaultParser parser = new DefaultParser();
-        AdminClient adminClient = null;
+        AdminClient_RENAMED adminClient = null;
 
         try {
             CommandLine parsedOpts = parser.parse(options, args);
@@ -112,7 +112,7 @@ public class JobCommand implements CliApplication {
                 printHelpAndExit("The port must be a valid integer.", false);
             }
 
-            adminClient = new AdminClient(host, port);
+            adminClient = new AdminClient_RENAMED(host, port);
             try {
                 getAction(parsedOpts).execute(parsedOpts, adminClient, resultLimit);
             } catch (CommandException e) {
@@ -127,7 +127,7 @@ public class JobCommand implements CliApplication {
 
     private static class ListAllItemsCommand implements SubCommand {
         @Override
-        public void execute(CommandLine parsedOpts, AdminClient adminClient, int resultsLimit)
+        public void execute(CommandLine parsedOpts, AdminClient_RENAMED adminClient, int resultsLimit)
         throws CommandException {
             try {
                 if (parsedOpts.hasOption(NAME_OPT)) {
@@ -145,7 +145,7 @@ public class JobCommand implements CliApplication {
 
     private static class ListOneItemWithDetails implements SubCommand {
         @Override
-        public void execute(CommandLine parsedOpts, AdminClient adminClient, int resultsLimit)
+        public void execute(CommandLine parsedOpts, AdminClient_RENAMED adminClient, int resultsLimit)
                 throws CommandException {
             try {
                 if (parsedOpts.hasOption(ID_OPT)) {
@@ -163,7 +163,7 @@ public class JobCommand implements CliApplication {
 
     private static class ListItemsWithPropertiesCommand implements SubCommand {
         @Override
-        public void execute(CommandLine parsedOpts, AdminClient adminClient, int resultsLimit) throws CommandException {
+        public void execute(CommandLine parsedOpts, AdminClient_RENAMED adminClient, int resultsLimit) throws CommandException {
             try {
                 if (parsedOpts.hasOption(ID_OPT)) {
                     JobInfoPrintUtils.printJobProperties(
