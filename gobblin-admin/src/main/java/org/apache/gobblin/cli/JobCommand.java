@@ -131,11 +131,11 @@ public class JobCommand implements CliApplication {
         throws CommandException {
             try {
                 if (parsedOpts.hasOption(NAME_OPT)) {
-                    JobInfoPrintUtils.printJobRuns(adminClient.queryByJobName(parsedOpts.getOptionValue(NAME_OPT), resultsLimit));
+                    JobInfoPrintUtils_RENAMED.printJobRuns(adminClient.queryByJobName(parsedOpts.getOptionValue(NAME_OPT), resultsLimit));
                 } else if (parsedOpts.hasOption(RECENT_OPT)) {
-                    JobInfoPrintUtils.printAllJobs(adminClient.queryAllJobs(QueryListType.RECENT, resultsLimit), resultsLimit);
+                    JobInfoPrintUtils_RENAMED.printAllJobs(adminClient.queryAllJobs(QueryListType.RECENT, resultsLimit), resultsLimit);
                 } else {
-                    JobInfoPrintUtils.printAllJobs(adminClient.queryAllJobs(QueryListType.DISTINCT, resultsLimit), resultsLimit);
+                    JobInfoPrintUtils_RENAMED.printAllJobs(adminClient.queryAllJobs(QueryListType.DISTINCT, resultsLimit), resultsLimit);
                 }
             } catch (RemoteInvocationException e) {
                 throw new CommandException("Error talking to adminServer: " + e.getMessage());
@@ -149,7 +149,7 @@ public class JobCommand implements CliApplication {
                 throws CommandException {
             try {
                 if (parsedOpts.hasOption(ID_OPT)) {
-                    JobInfoPrintUtils.printJob(
+                    JobInfoPrintUtils_RENAMED.printJob(
                             adminClient.queryByJobId(parsedOpts.getOptionValue(ID_OPT))
                     );
                 } else {
@@ -166,7 +166,7 @@ public class JobCommand implements CliApplication {
         public void execute(CommandLine parsedOpts, AdminClient adminClient, int resultsLimit) throws CommandException {
             try {
                 if (parsedOpts.hasOption(ID_OPT)) {
-                    JobInfoPrintUtils.printJobProperties(
+                    JobInfoPrintUtils_RENAMED.printJobProperties(
                             adminClient.queryByJobId(parsedOpts.getOptionValue(ID_OPT))
                     );
                 } else if (parsedOpts.hasOption(NAME_OPT)) {
@@ -174,7 +174,7 @@ public class JobCommand implements CliApplication {
                     if (infos.size() == 0) {
                         System.out.println("No job by that name found");
                     } else {
-                        JobInfoPrintUtils.printJobProperties(Optional.of(infos.get(0)));
+                        JobInfoPrintUtils_RENAMED.printJobProperties(Optional.of(infos.get(0)));
                     }
                 } else {
                     throw new CommandException("Please specify a job id or name");
