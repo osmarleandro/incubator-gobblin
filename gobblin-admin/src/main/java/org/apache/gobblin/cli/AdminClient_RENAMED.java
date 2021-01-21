@@ -31,14 +31,14 @@ import java.util.List;
 /**
  * Simple wrapper around the JobExecutionInfoClient
  */
-public class AdminClient {
+public class AdminClient_RENAMED {
   private final JobExecutionInfoClient client;
   private Closer closer;
 
   /**
    * Creates a new client with the host and port specified.
    */
-  public AdminClient(String host, int port) {
+  public AdminClient_RENAMED(String host, int port) {
     this.closer = Closer.create();
 
     URI serverUri = URI.create(String.format("http://%s:%d/", host, port));
