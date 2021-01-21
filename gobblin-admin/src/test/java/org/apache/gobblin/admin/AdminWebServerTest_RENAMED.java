@@ -33,7 +33,7 @@ import java.util.Properties;
 import static org.testng.AssertJUnit.*;
 
 
-public class AdminWebServerTest {
+public class AdminWebServerTest_RENAMED {
   private AdminWebServer server;
   private final String portNumber = "54320";
 
