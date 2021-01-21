@@ -34,14 +34,14 @@ import static org.testng.AssertJUnit.*;
 
 
 public class AdminWebServerTest {
-  private AdminWebServer server;
+  private AdminWebServer_RENAMED server;
   private final String portNumber = "54320";
 
   @BeforeTest
   public void startServer() {
     Properties properties = new Properties();
     properties.put(ConfigurationKeys.ADMIN_SERVER_PORT_KEY, this.portNumber);
-    this.server = new AdminWebServer(properties, URI.create("http://foobar:3333"));
+    this.server = new AdminWebServer_RENAMED(properties, URI.create("http://foobar:3333"));
 
     try {
       this.server.startUp();

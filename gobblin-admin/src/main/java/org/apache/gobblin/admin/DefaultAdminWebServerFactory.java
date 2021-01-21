@@ -33,7 +33,7 @@ public class DefaultAdminWebServerFactory implements AdminWebServerFactory {
   /** {@inheritDoc} */
   @Override
   public Service createInstance(Properties config, URI executionInfoServerURI) {
-    return new AdminWebServer(config, executionInfoServerURI);
+    return new AdminWebServer_RENAMED(config, executionInfoServerURI);
   }
 
 }
