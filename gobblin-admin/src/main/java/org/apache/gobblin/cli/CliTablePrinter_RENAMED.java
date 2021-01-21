@@ -32,7 +32,7 @@ import com.google.common.primitives.Ints;
  *
  * @author ahollenbach@nerdwallet.com
  */
-public class CliTablePrinter {
+public class CliTablePrinter_RENAMED {
   /**
    * Labels for each columns
    */
@@ -64,7 +64,7 @@ public class CliTablePrinter {
   private String rowFormat;
 
 
-  public CliTablePrinter(List<String> labels, List<String> flags, int indentation, int delimiterWidth,
+  public CliTablePrinter_RENAMED(List<String> labels, List<String> flags, int indentation, int delimiterWidth,
       List<List<String>> data) {
     Preconditions.checkArgument(data.size() > 0);
     Preconditions.checkArgument(data.get(0).size() > 0);
@@ -86,7 +86,7 @@ public class CliTablePrinter {
   }
 
   /**
-   * Used to build a {@link CliTablePrinter} object.
+   * Used to build a {@link CliTablePrinter_RENAMED} object.
    */
   public static final class Builder {
     private List<String> labels;
@@ -125,8 +125,8 @@ public class CliTablePrinter {
       return this;
     }
 
-    public CliTablePrinter build() {
-      return new CliTablePrinter(this.labels, this.flags, this.indentation, this.delimiterWidth, this.data);
+    public CliTablePrinter_RENAMED build() {
+      return new CliTablePrinter_RENAMED(this.labels, this.flags, this.indentation, this.delimiterWidth, this.data);
     }
   }
 

@@ -91,7 +91,7 @@ public class JobInfoPrintUtils {
                     decimalFormatter.format(jobInfo.getDuration() / 1000.0) : "-");
             data.add(entry);
         }
-        new CliTablePrinter.Builder()
+        new CliTablePrinter_RENAMED.Builder()
                 .labels(labels)
                 .data(data)
                 .flags(flags)
@@ -151,7 +151,7 @@ public class JobInfoPrintUtils {
 
             data.add(entry);
         }
-        new CliTablePrinter.Builder()
+        new CliTablePrinter_RENAMED.Builder()
                 .labels(labels)
                 .data(data)
                 .flags(flags)
@@ -190,7 +190,7 @@ public class JobInfoPrintUtils {
         data.add(Arrays.asList("Tracking URL", jobExecutionInfo.getTrackingUrl()));
         data.add(Arrays.asList("Launcher Type", jobExecutionInfo.getLauncherType().name()));
 
-        new CliTablePrinter.Builder()
+        new CliTablePrinter_RENAMED.Builder()
                 .data(data)
                 .flags(flags)
                 .delimiterWidth(2)
@@ -217,7 +217,7 @@ public class JobInfoPrintUtils {
             data.add(Arrays.asList(entry.getKey(), entry.getValue()));
         }
 
-        new CliTablePrinter.Builder()
+        new CliTablePrinter_RENAMED.Builder()
                 .labels(labels)
                 .data(data)
                 .flags(flags)
@@ -245,7 +245,7 @@ public class JobInfoPrintUtils {
             data.add(Arrays.asList(metric.getName(), metric.getValue()));
         }
 
-        new CliTablePrinter.Builder()
+        new CliTablePrinter_RENAMED.Builder()
                 .data(data)
                 .flags(flags)
                 .delimiterWidth(2)
