@@ -40,8 +40,8 @@ import java.util.Properties;
 /**
  * Serves the admin UI interface using embedded Jetty.
  */
-public class AdminWebServer extends AbstractIdleService {
-  private static final Logger LOGGER = LoggerFactory.getLogger(AdminWebServer.class);
+public class AdminWebServer_RENAMED extends AbstractIdleService {
+  private static final Logger LOGGER = LoggerFactory.getLogger(AdminWebServer_RENAMED.class);
 
   private final URI restServerUri;
   private final URI serverUri;
@@ -49,7 +49,7 @@ public class AdminWebServer extends AbstractIdleService {
   private final long refreshInterval;
   protected Server server;
 
-  public AdminWebServer(Properties properties, URI restServerUri) {
+  public AdminWebServer_RENAMED(Properties properties, URI restServerUri) {
     Preconditions.checkNotNull(properties);
     Preconditions.checkNotNull(restServerUri);
 
@@ -87,8 +87,8 @@ public class AdminWebServer extends AbstractIdleService {
         if (request.getRequestURI().equals("/js/settings.js")) {
           response.setContentType("application/javascript");
           response.setStatus(HttpServletResponse.SC_OK);
-          response.getWriter().println(String.format(responseTemplate, AdminWebServer.this.restServerUri.toString(),
-              AdminWebServer.this.hideJobsWithoutTasksByDefault, AdminWebServer.this.refreshInterval));
+          response.getWriter().println(String.format(responseTemplate, AdminWebServer_RENAMED.this.restServerUri.toString(),
+              AdminWebServer_RENAMED.this.hideJobsWithoutTasksByDefault, AdminWebServer_RENAMED.this.refreshInterval));
           baseRequest.setHandled(true);
         }
       }
